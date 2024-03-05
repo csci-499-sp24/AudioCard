@@ -19,6 +19,10 @@ const port = process.env.PORT || 8080;
     }
 );
 
+console.log('DB_USERNAME: ', process.env.DB_USERNAME);
+console.log('DB_PASSWORD', process.env.DB_PASSWORD);
+console.log('DB_HOST: ', process.env.DB_HOST);
+
 app.get("/api/home", (req, res) => {
     res.json({message: "Hello World!"});
 });
