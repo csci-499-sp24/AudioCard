@@ -45,3 +45,6 @@ next-env.d.ts
 
 # local env files
 /server/.env
+
+#sens info
+/server/config.js

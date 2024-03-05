@@ -1,25 +1,20 @@
 const express = require("express");
 const cors = require('cors')
 const Sequelize = require('sequelize');
-const config = require('./config');
 
 const app = express();
 app.use(cors());
 
 const port = process.env.PORT || 8080;
 
-const dbConfig = config.development; 
-
-//const sequelize = new Sequelize('database-1.cxey2w8s8sk8.us-east-2.rds.amazonaws.com')
-
  const sequelize = new Sequelize(
-    dbConfig.database,
-    dbConfig.username,
-    dbConfig.password,
+    'my_db',
+    process.env.DB_USERNAME,
+    process.env.DB_PASSWORD,
     {
-        host: dbConfig.host,
-        port: dbConfig.port,
-        dialect: dbConfig.dialect,
+        host: process.env.DB_HOST,
+        port: 3306,
+        dialect: 'mysql',
     }
 );
 

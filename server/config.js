@@ -1,9 +1,9 @@
 const config = {
     development: {
         database: 'my_db',
-        username: process.env.DB_USERNAME,
-        password: process.env.DB_PASSWORD,
-        host: process.env.DB_HOST,
+        username: 'fibsquad499',
+        password: 'fibsquad499',
+        host: 'database-2.cxey2w8s8sk8.us-east-2.rds.amazonaws.com',
         port: 3306,
         dialect: 'mysql',
     },
