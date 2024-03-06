@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router'; // Import the useRouter hook
 import { auth } from '../utils/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import Link from 'next/link';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -40,8 +41,7 @@ const Login = () => {
                 />
                 <button type="submit">Login</button>
             </form>
-
-            <link href="/signup" >Sign Up </link>
+            <Link href="/signup">Sign Up</Link>
         </div>
     );
 };
