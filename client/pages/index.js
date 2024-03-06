@@ -39,6 +39,8 @@ function Index() {
         <div>
           <div>User Email: {userEmail}</div>
           <button onClick={handleLogout}>Logout</button>
+
+         
         </div>
       )}
     </div>
