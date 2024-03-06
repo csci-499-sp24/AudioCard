@@ -1,40 +1,21 @@
-const express = require("express");
-const cors = require('cors')
-const Sequelize = require('sequelize');
-require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const apiRoutes = require('./routes/api');
+const sequelize = require('./config/db');
 
 const app = express();
+
+// Middleware
 app.use(cors());
+app.use(express.json());
 
-const port = process.env.PORT || 8080;
+// Routes
+app.use('/api', apiRoutes);
 
- const sequelize = new Sequelize(
-    'my_db',
-    process.env.DB_USERNAME,
-    process.env.DB_PASSWORD,
-    {
-        host: process.env.DB_HOST,
-        port: 3306,
-        dialect: 'mysql',
-    }
-);
-
-console.log('DB_USERNAME: ', process.env.DB_USERNAME);
-console.log('DB_PASSWORD', process.env.DB_PASSWORD);
-console.log('DB_HOST: ', process.env.DB_HOST);
-
-app.get("/api/home", (req, res) => {
-    res.json({message: "Hello World!"});
-});
-
-sequelize
-  .authenticate()
-  .then(() => {
-    app.listen(port, () => {
-      console.log(`Server started on port ${port}`);
-      console.log('Connection to the database has been established successfully.');
+// Start the server
+const PORT = process.env.PORT || 8080;
+sequelize.sync().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
     });
-  })
-  .catch((err) => {
-    console.error('Unable to connect to the database:', err);
-  }); 
+});
