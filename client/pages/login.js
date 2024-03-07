@@ -16,7 +16,7 @@ const Login = () => {
             await signInWithEmailAndPassword(auth, email, password);
             console.log('Logged in successfully');
             // Redirect to the index page after successful login
-            router.push('/');
+            router.push('/dashboard');
         } catch (error) {
             setError(error.message);
         }
