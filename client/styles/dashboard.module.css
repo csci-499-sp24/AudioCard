@@ -1,0 +1,141 @@
+.dashboard {
+    display: block;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.menu {
+    position: fixed;
+    left: -100%;
+    width: 200px;
+    height: 100%;
+    background-color: #f0f0f0;
+    border-right: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    transition: left 0.3s;
+    z-index: 1000;
+    top: 60px;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu ul li {
+    padding: 30px 0;
+    border-bottom: 1px solid #ccc;
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+}
+
+.menu ul li:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+.hamburger {
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    padding: 0 15px;
+}
+
+.hamburger.active {
+    color: #3498db;
+}
+
+.menuOpen {
+    left: 0;
+}
+
+.header {
+    display: flex;
+    position: relative;
+    height: 60px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #718ecc;
+    z-index: 1100;
+}
+
+.brandName {
+    font-size: 30px;
+    font-weight: bold;
+    margin-left: 25px;
+}
+
+.logoutButton {
+    background-color: #5531da;
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.welcome {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.cardsetHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cardsetTitle {
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.createCardsetButton {
+    background-color: #56c3e7;
+    border: none;
+    color: white;
+    padding: 15px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+
+.cardsetsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    border: 1px solid #000;
+    padding: 20px;
+}
+
+.cardset {
+    flex: 0 0 300px;
+    height: 100px;
+    width: 50px;
+    border: 1px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

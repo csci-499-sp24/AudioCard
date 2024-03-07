@@ -22,7 +22,7 @@ const SignUp = () => {
 
             console.log('User signed up successfully');
             // Redirect to the index page after successful signup
-            router.push('/');
+            router.push('/dashboard');
         } catch (error) {
             setError(error.message);
         }
