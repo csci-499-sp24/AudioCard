@@ -33,13 +33,17 @@ const Dashboard = () => {
         if(!userData){
             fetchUserData();
         }
-        fetchCardsets();
         return () => unsubscribe();
     }, [user, userData]);
 
+    useEffect(() => {
+        fetchCardsets();
+    }, [userData]);
+    
     const fetchCardsets = async () => {
         if (!userData || !userData.id) {
-            await fetchUserData();
+            fetchUserData();
+            return;
         }
         try{
             const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+'/api/getcardsets',  {params: { userId: userData.id}});
