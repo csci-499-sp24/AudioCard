@@ -88,3 +88,54 @@
     padding: 20px;
     overflow-y: auto;
 }
+
+.welcome {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.cardsetHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cardsetTitle {
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.createCardsetButton {
+    background-color: #56c3e7;
+    border: none;
+    color: white;
+    padding: 15px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+
+.cardsetsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    border: 1px solid #000;
+    padding: 20px;
+}
+
+.cardset {
+    flex: 0 0 300px;
+    height: 100px;
+    width: 50px;
+    border: 1px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

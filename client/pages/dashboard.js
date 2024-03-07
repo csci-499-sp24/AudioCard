@@ -6,6 +6,7 @@ import styles from '../styles/dashboard.module.css';
 const menuItems = [
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Cardsets', path: '/' },
+    { name: 'Search', path: '/' },
     { name: 'Settings', path: '/' },
 ];
 
@@ -26,7 +27,7 @@ const Dashboard = () => {
     }, []);
 
     const navigateTo = (path) => {
-        setMenuOpen(false); 
+        setMenuOpen(false);
         router.push(path);
     };
 
@@ -39,7 +40,7 @@ const Dashboard = () => {
             <div className={styles.header}>
                 <button className={`${styles.hamburger} ${menuOpen ? styles.active : ''}`} onClick={toggleMenu}>☰</button>
                 <h1 className={styles.brandName}>Audiocard</h1>
-                <button className={styles.logoutButton} onClick={() => auth.signOut()}>Logout</button>
+                <button className={styles.logoutButton} onClick={() => { auth.signOut(); router.push('/login'); }}>Logout</button>
             </div>
             <div className={`${styles.menu} ${menuOpen ? styles.menuOpen : ''}`}>
                 <ul>
@@ -51,7 +52,16 @@ const Dashboard = () => {
                 </ul>
             </div>
             <div className={styles.content}>
-                <h1>Welcome, {user.email}</h1>
+                <h1 className={styles.welcome}>Welcome, {user?.email}</h1>
+                <div className={styles.cardsetHeader}>
+                    <h2 className={styles.cardsetTitle}>Your Cardsets</h2>
+                    <button className={styles.createCardsetButton}>Make Card Set</button>
+                </div>
+                <div className={styles.cardsetsContainer}>
+                    <div className={styles.cardset}>CARDSET TITLE</div>
+                    <div className={styles.cardset}>CARDSET TITLE</div>
+                    <div className={styles.cardset}>CARDSET TITLE</div>
+                </div>
             </div>
         </div>
     );
