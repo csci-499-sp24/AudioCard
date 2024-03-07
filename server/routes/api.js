@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user');
+const {User, Cardset} = require('../models/modelRelations');
 
 // Route for user sign-up
 router.post('/signup', async (req, res) => {
@@ -14,6 +14,17 @@ router.post('/signup', async (req, res) => {
     } catch (error) {
         console.error('Error signing up user:', error);
         res.status(500).json({ error: 'Error signing up user' });
+    }
+});
+
+router.post('/createcardset', async(req, res) => {
+    try{
+        const cardsetData = req.body;
+        const cardset = await Cardset.create(cardsetData);
+        res.status(201).json({ cardset });
+    } catch (error) {
+        console.error('Error creating cardset:', error);
+        res.status(500).json({ error: 'Error creating a cardset' });
     }
 });
 
