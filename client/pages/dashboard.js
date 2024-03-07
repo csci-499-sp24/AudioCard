@@ -4,6 +4,7 @@ import { auth } from '../utils/firebase';
 import styles from '../styles/dashboard.module.css';
 import { CreateCardset } from '@/components/CreateCardset';
 import axios from 'axios';
+import { CardsetView } from '@/components/CardsetView';
 
 const menuItems = [
     { name: 'Dashboard', path: '/dashboard' },
@@ -17,6 +18,7 @@ const Dashboard = () => {
     const [userData, setUserData] = useState(null);
     const [menuOpen, setMenuOpen] = useState(false);
     const [cardsets, setCardsets] = useState([]);
+    const [selectedCardset, setSelectedCardset] = useState(null);
 
     const router = useRouter();
 
@@ -37,7 +39,7 @@ const Dashboard = () => {
 
     const fetchCardsets = async () => {
         if (!userData || !userData.id) {
-            return;
+            await fetchUserData();
         }
         try{
             const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+'/api/getcardsets',  {params: { userId: userData.id}});
@@ -63,7 +65,11 @@ const Dashboard = () => {
     }
 
     const handleCreateCardset = () => {
-        fetchCardsets(userData);
+        fetchCardsets();
+    }
+
+    const selectCardset = (cardset) => {
+        setSelectedCardset(cardset);
     }
 
     const navigateTo = (path) => {
@@ -98,13 +104,12 @@ const Dashboard = () => {
                     <button className={styles.createCardsetButton}>Make Card Set</button>
                 </div>
                 <div className={styles.cardsetsContainer}>
-                    {cardsets && 
-                    cardsets.map((cardset, index) => {
-                        return <div key={index} className={styles.cardset}>{cardset.title} </div>
+                    {cardsets.map((cardset, index) => {
+                        return <div key={index} className={styles.cardset} onClick={()=> selectCardset(cardset)}>{cardset.title} </div>
                     })}
                 </div>
                 <CreateCardset userId={user?.uid} onCreateCardset={handleCreateCardset}/>
-
+                {selectedCardset && <CardsetView cardset={selectedCardset}/>}
             </div>
         </div>
     );
