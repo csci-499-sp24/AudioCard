@@ -15,10 +15,13 @@ const SignUp = () => {
         e.preventDefault();
         try {
             // Create user account with Firebase Authentication
-            await createUserWithEmailAndPassword(auth, email, password);
+            await createUserWithEmailAndPassword(auth, email, password).then((userCred) => {
+                const firebaseId = userCred.user.uid;
+                axios.post(process.env.NEXT_PUBLIC_SERVER_URL+'/api/signup', { firebaseId, username, email });
+            });
 
             // Send user data to the server to add to the database
-            await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+'/api/signup', { username, email });
+            //await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+'/api/signup', { , username, email });
 
             console.log('User signed up successfully');
             // Redirect to the index page after successful signup

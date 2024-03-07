@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { auth } from '../utils/firebase';
 import styles from '../styles/dashboard.module.css';
 import { CreateCardset } from '@/components/CreateCardset';
+import axios from 'axios';
 
 const menuItems = [
     { name: 'Dashboard', path: '/dashboard' },
@@ -13,7 +14,10 @@ const menuItems = [
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
+    const [userData, setUserData] = useState(null);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [cardsets, setCardsets] = useState([]);
+
     const router = useRouter();
 
     useEffect(() => {
@@ -24,8 +28,43 @@ const Dashboard = () => {
                 setUser(null);
             }
         });
+        if(!userData){
+            fetchUserData();
+        }
+        fetchCardsets();
         return () => unsubscribe();
-    }, []);
+    }, [user, userData]);
+
+    const fetchCardsets = async () => {
+        if (!userData || !userData.id) {
+            return;
+        }
+        try{
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+'/api/getcardsets',  {params: { userId: userData.id}});
+            const cardsetsData = response.data.cardsets;
+            setCardsets(cardsetsData);
+        } catch (error) {
+            console.error('Error fetching card sets:', error);
+        }
+    }
+
+    const fetchUserData = async () => {
+        if (!user || !user.uid) {
+            return;
+        }
+        try{
+            const firebaseId = user?.uid
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+'/api/getuser',  {params: { firebaseId: firebaseId}});
+            const userData = response.data.user;
+            setUserData(userData);
+        } catch (error) {
+            console.error('Error fetching card sets:', error);
+        }
+    }
+
+    const handleCreateCardset = () => {
+        fetchCardsets(userData);
+    }
 
     const navigateTo = (path) => {
         setMenuOpen(false);
@@ -59,11 +98,12 @@ const Dashboard = () => {
                     <button className={styles.createCardsetButton}>Make Card Set</button>
                 </div>
                 <div className={styles.cardsetsContainer}>
-                    <div className={styles.cardset}>CARDSET TITLE</div>
-                    <div className={styles.cardset}>CARDSET TITLE</div>
-                    <div className={styles.cardset}>CARDSET TITLE</div>
+                    {cardsets && 
+                    cardsets.map((cardset, index) => {
+                        return <div key={index} className={styles.cardset}>{cardset.title} </div>
+                    })}
                 </div>
-                <CreateCardset userId={user?.uid}/>
+                <CreateCardset userId={user?.uid} onCreateCardset={handleCreateCardset}/>
 
             </div>
         </div>

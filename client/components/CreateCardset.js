@@ -1,19 +1,18 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 
-export const CreateCardset = ({userId}) => {
-    const [showForm, setShowForm] = useState(false);
+export const CreateCardset = ({userId, onCreateCardset}) => {
     
-    const onSubmit = (event) =>{
+    const onSubmit = async (event) =>{
         event.preventDefault();
         if (userId){
             const newSetData = {
-                ownerUid: userId,
                 title: event.target.title.value,
                 subject: event.target.subject.value,
                 isPublic: event.target.isPublic.checked
             }
-            axios.post(process.env.NEXT_PUBLIC_SERVER_URL+'/api/createcardset', newSetData);
+            await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+'/api/createcardset', {userId, newSetData});
+            onCreateCardset();
         }
     }
 
