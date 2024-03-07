@@ -11,6 +11,7 @@ const menuItems = [
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
+    const [menuOpen, setMenuOpen] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -25,12 +26,22 @@ const Dashboard = () => {
     }, []);
 
     const navigateTo = (path) => {
+        setMenuOpen(false); 
         router.push(path);
+    };
+
+    const toggleMenu = () => {
+        setMenuOpen(prevState => !prevState);
     };
 
     return (
         <div className={styles.dashboard}>
-            <div className={styles.menu}>
+            <div className={styles.header}>
+                <button className={`${styles.hamburger} ${menuOpen ? styles.active : ''}`} onClick={toggleMenu}>☰</button>
+                <h1 className={styles.brandName}>Audiocard</h1>
+                <button className={styles.logoutButton} onClick={() => auth.signOut()}>Logout</button>
+            </div>
+            <div className={`${styles.menu} ${menuOpen ? styles.menuOpen : ''}`}>
                 <ul>
                     {menuItems.map((item, index) => (
                         <li key={index} onClick={() => navigateTo(item.path)}>
@@ -38,6 +49,9 @@ const Dashboard = () => {
                         </li>
                     ))}
                 </ul>
+            </div>
+            <div className={styles.content}>
+                <h1>Welcome, {user.email}</h1>
             </div>
         </div>
     );
