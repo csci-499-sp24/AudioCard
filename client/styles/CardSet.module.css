@@ -1,0 +1,10 @@
+.setContainer{
+    display: flex;
+    justify-content: center;
+}
+
+.setTitle{
+    color: #37505C;
+    display: flex;
+    justify-content: center;
+}

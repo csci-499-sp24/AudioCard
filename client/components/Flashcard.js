@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import style from '../styles/flashcard.module.css';
 
 export const Flashcard = ({cardData}) => {
     const [isFlipped, setFlipped] = useState(false);
@@ -23,16 +24,25 @@ export const Flashcard = ({cardData}) => {
     }
     
   return (
-    <div className="flex justify-center items-center h-min">
-      <button className="bg-blue-500" onClick={() => handleChange(-1)}>Previous</button>
-      <div className="bg-purple-600 flex justify-center items-center h-28 w-52" onClick={() => setFlipped(!isFlipped)}>
-          {isFlipped? 
-          <div>{cardData[index] ? cardData[index].definition : "Loading"}</div> : 
-          <div>Question:{cardData[index] ? cardData[index].term : "Loading" }</div> 
-        }
+    <div className="container">
+      <div className="row align-items-center">
+        <div className="col d-flex justify-content-end">
+          <button className="btn btn-secondary" onClick={() => handleChange(-1)}>Previous</button>
+        </div>
+        <div className="col">
+          <div className={style.flashcardContainer} onClick={() => setFlipped(!isFlipped)}>
+          <div>
+              {isFlipped? 
+              <div>{cardData[index] ? cardData[index].definition : "Loading"}</div> : 
+              <div>Question: {cardData[index] ? cardData[index].term : "Loading" }</div> 
+            }
+          </div>
+          </div>
       </div>
-      <button className="bg-blue-500" onClick={() => handleChange(1)}>Next</button>
+      <div className="col d-flex justify-content-start">
+        <button className="btn btn-secondary" onClick={() => handleChange(1)}>Next</button>
+      </div>
     </div>
-
+    </div>
   )
 }

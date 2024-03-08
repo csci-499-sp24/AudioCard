@@ -83,7 +83,7 @@ const Login = () => {
                         </div>
 
                         <div className='text-center mt-4'>
-                            <button type="submit" className="btn btn-dark">Login</button>
+                            <button type="submit" className="btn btn-secondary">Login</button>
                         </div>
                     </form>
                     

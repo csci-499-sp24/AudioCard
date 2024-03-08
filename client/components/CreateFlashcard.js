@@ -18,7 +18,7 @@ export const CreateFlashcard = ({cardset, onCreateFlashcard}) => {
 
   return (
     <div className="bg-slate-500 w-min">
-        <div>Create a cardset</div>
+        <div>Add a flashcard</div>
             <form className="display flex flex-col" onSubmit={(e) => onSubmit(e)}>
                 <div className="flex flex-row">
                     <label htmlFor="question">Question: </label>
@@ -28,7 +28,7 @@ export const CreateFlashcard = ({cardset, onCreateFlashcard}) => {
                     <label htmlFor="answer" className="basis-1/2">Answer: </label>
                     <input type="text" id="answer" name="answer"/>
                 </div>
-                <button type="submit">Submit</button>
+                <button className="btn btn-secondary btn-large" type="submit">Submit</button>
             </form>
         </div>
     
