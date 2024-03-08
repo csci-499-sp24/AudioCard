@@ -1,4 +1,31 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css');
 
+:root {
+  --bs-primary: #007bff;        
+  --bs-secondary: #37505C; 
+  ;  
+}
+
+body {
+    background-color: white;
+    font-family: 'Roboto',  'Open Sans';
+}
+
+.btn-secondary {
+    color: #ffffff;
+    background-color: var(--bs-secondary);
+  }
+  
+button {
+    background-color:#69A2B0; 
+    border: 1px purple;
+}
+
+.btn-secondary:hover {
+    background-color: #507d8a;
+    border-color: #507d8a; 
+}
+
+.smallButton{
+    width: 150px;
+}

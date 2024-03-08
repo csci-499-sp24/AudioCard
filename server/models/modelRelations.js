@@ -7,6 +7,7 @@
  User.hasMany(Cardset);
 
  Cardset.hasMany(Flashcard);
+ Flashcard.belongsTo(Cardset);
 
  module.exports = {
     User,

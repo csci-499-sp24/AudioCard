@@ -12,6 +12,7 @@ function Index() {
       if (user) {
         // User is signed in, set the user's email
         setUserEmail(user.email);
+        router.push('/dashboard');
       } else {
         // No user is signed in, redirect to the login page
         router.push('/login');
@@ -31,20 +32,6 @@ function Index() {
       console.error('Error signing out:', error);
     }
   };
-
-  return (
-    <div>
-      <div>Return message from server</div>
-      {userEmail && (
-        <div>
-          <div>User Email: {userEmail}</div>
-          <button onClick={handleLogout}>Logout</button>
-
-         
-        </div>
-      )}
-    </div>
-  );
 }
 
 export default Index;

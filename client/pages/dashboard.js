@@ -85,12 +85,19 @@ const Dashboard = () => {
         setMenuOpen(prevState => !prevState);
     };
 
+    const [showCreateCardsetForm, setShowCreateCardsetForm] = useState(false);
+
+    // Function to toggle the visibility of the CreateCardset form
+    const toggleCreateCardsetForm = () => {
+      setShowCreateCardsetForm(!showCreateCardsetForm);
+    };
+
     return (
         <div className={styles.dashboard}>
             <div className={styles.header}>
                 <button className={`${styles.hamburger} ${menuOpen ? styles.active : ''}`} onClick={toggleMenu}>☰</button>
-                <h1 className={styles.brandName}>Audiocard</h1>
-                <button className={styles.logoutButton} onClick={() => { auth.signOut(); router.push('/login'); }}>Logout</button>
+                <h1 className={styles.brandName}>AudioCard</h1>
+                <button className="btn btn-secondary btn-large" onClick={() => { auth.signOut(); router.push('/login'); }}>Logout</button>
             </div>
             <div className={`${styles.menu} ${menuOpen ? styles.menuOpen : ''}`}>
                 <ul>
@@ -105,14 +112,14 @@ const Dashboard = () => {
                 <h1 className={styles.welcome}>Welcome, {user?.email}</h1>
                 <div className={styles.cardsetHeader}>
                     <h2 className={styles.cardsetTitle}>Your Cardsets</h2>
-                    <button className={styles.createCardsetButton}>Make Card Set</button>
+                    <button className="btn btn-secondary btn-large" onClick={toggleCreateCardsetForm}>Make Card Set</button>
                 </div>
-                <div className={styles.cardsetsContainer}>
+                <div className={`rounded p-4 ${styles.cardsetsContainer}`}>
                     {cardsets.map((cardset, index) => {
-                        return <div key={index} className={styles.cardset} onClick={()=> selectCardset(cardset)}>{cardset.title} </div>
+                        return <div key={index} className={styles.cardset} onClick={()=> selectCardset(cardset)}>{cardset.title}</div>
                     })}
                 </div>
-                <CreateCardset userId={user?.uid} onCreateCardset={handleCreateCardset}/>
+                {showCreateCardsetForm && <CreateCardset userId={user?.uid} onCreateCardset={handleCreateCardset}/>}
                 {selectedCardset && <CardsetView cardset={selectedCardset}/>}
             </div>
         </div>
