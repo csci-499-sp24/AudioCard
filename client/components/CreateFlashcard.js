@@ -11,7 +11,7 @@ export const CreateFlashcard = ({cardset, onCreateFlashcard}) => {
                 term: event.target.question.value,
                 definition: event.target.answer.value
             }
-            await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+'/api/createflashcard', {cardsetId, newCardData});
+            await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+`/api/flashcards/${cardset.id}`, {cardsetId, newCardData});
             onCreateFlashcard();
         }
     }
