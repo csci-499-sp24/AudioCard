@@ -17,7 +17,7 @@ export const CardsetView = ({userId, cardset}) => {
 
     const fetchFlashCards = async () => {
         try{
-            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardset.id}`);
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardset.id}/flashcards`);
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
         } catch(error) {
