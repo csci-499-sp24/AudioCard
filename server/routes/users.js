@@ -1,21 +1,35 @@
 const express = require('express');
 const router = express.Router();
-const { Cardset, User } = require('../models/modelRelations');
+const { User, Cardset } = require('../models/modelRelations');
+const flashcards = require ('./flashcards');
 
-//Route for public cardsets
-router.route('/')
+router.route('/signup')
+.post(async (req, res) => {
+    try {
+        const { firebaseId, username, email } = req.body;
+        const user = await User.create({ firebaseId, username, email });
+        res.status(201).json({ user });
+    } catch (error) {
+        console.error('Error signing up user:', error);
+        res.status(500).json({ error: 'Error signing up user' });
+    }
+});
+
+//Get user's database entry using their firebaseId
+router.route('/getuser')
 .get(async(req, res) => {
     try{
-        const publicSets = await Cardset.findAll({ where:{ isPublic: true}});
-        res.status(200).json({publicSets});
+        const { firebaseId } = req.query;
+        const user = await User.findOne({ where: { firebaseId }});
+        res.status(200).json({ user });
     } catch (error) {
-        console.error('Error fetching public cardsets:', error);
-        res.status(500).json({ error: 'Error fetching public cardsets' });
+        console.error('Error fetching database user:', error);
+        res.status(500).json({ error: 'Error fetching database user' });
     }
 })
 
-//Route for cardsets owned/created by user
-router.route('/:userid')
+//Users cardsets
+router.route('/:userid/cardsets')
 .post(async(req, res) => {
     try{
         const { newSetData } = req.body;
@@ -46,5 +60,7 @@ router.route('/:userid')
             res.status(500).json({ error: 'Error fetching card sets' });
         }
 })
+
+router.use('/:userid/cardsets', flashcards);
 
 module.exports = router;

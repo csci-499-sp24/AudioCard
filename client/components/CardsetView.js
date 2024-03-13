@@ -4,7 +4,7 @@ import { Flashcard } from './Flashcard';
 import { CreateFlashcard } from './CreateFlashcard';
 import styles from '../styles/CardSet.module.css';
 
-export const CardsetView = ({cardset}) => {
+export const CardsetView = ({userId, cardset}) => {
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
 
     useEffect(()=>{
@@ -17,7 +17,7 @@ export const CardsetView = ({cardset}) => {
 
     const fetchFlashCards = async () => {
         try{
-            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+`/api/flashcards/${cardset.id}`);
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardset.id}`);
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
         } catch(error) {

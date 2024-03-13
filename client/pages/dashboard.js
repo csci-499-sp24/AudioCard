@@ -46,7 +46,7 @@ const Dashboard = () => {
             return;
         }
         try{
-            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+`/api/cardsets/${userData.id}`,  {params: { userId: userData.id}});
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userData.id}/cardsets`,  {params: { userId: userData.id}});
             const cardsetsData = response.data.cardsets;
             setCardsets(cardsetsData);
         } catch (error) {
@@ -120,7 +120,7 @@ const Dashboard = () => {
                     })}
                 </div>
                 {showCreateCardsetForm && <CreateCardset userId={userData?.id} onCreateCardset={handleCreateCardset}/>}
-                {selectedCardset && <CardsetView cardset={selectedCardset}/>}
+                {selectedCardset && <CardsetView userId={userData?.id} cardset={selectedCardset}/>}
             </div>
         </div>
     );

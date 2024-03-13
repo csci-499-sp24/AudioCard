@@ -12,7 +12,7 @@ export const CreateCardset = ({userId, onCreateCardset}) => {
                 subject: event.target.subject.value,
                 isPublic: event.target.isPublic.checked
             }
-            await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+`/api/cardsets/${userId}`, { newSetData });
+            await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets`, { newSetData });
             onCreateCardset();
         }
     }

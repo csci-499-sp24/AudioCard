@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { Cardset, Flashcard } = require('../models/modelRelations');
 
-//routes for flashcards specified by their parent cardset's id
+//route for flashcards of a set (uses api/users/:userid/cardsets/:cardsetid)
 router.route('/:cardsetid')
 .post(async(req, res) => {
     try{
@@ -19,8 +19,7 @@ router.route('/:cardsetid')
 })
 .get(async(req, res) => {
     try{
-        const { cardsetid } = req.params;
-        const flashcards = await Flashcard.findAll({ where: { cardsetid }})
+        const flashcards = await Flashcard.findAll({ where: { cardsetid: req.params.cardsetid }})
         res.status(200).json({ flashcards });
     } catch (error) {
         console.error('Error fetching flashcards:', error);

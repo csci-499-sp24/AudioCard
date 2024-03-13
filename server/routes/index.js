@@ -1,11 +1,9 @@
 const express = require('express');
 const app = express();
-const cardsetRoutes = require('./cardsetRoutes');
-const usersRoutes = require('./usersRoutes');
-const flashcardRoutes = require('./flashcardRoutes');
+const cardsetsRoutes = require('./cardsets');
+const usersRoutes = require('./users');
 
-app.use('/cardsets', cardsetRoutes);
+app.use('/cardsets', cardsetsRoutes);
 app.use('/users', usersRoutes);
-app.use('/flashcards', flashcardRoutes);
 
 module.exports = app;
