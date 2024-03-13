@@ -22,13 +22,20 @@ const Explore = () => {
     };
 
     return (
-        <div>
+        <div className="container mt-5">
             <h1>Explore Cardsets</h1>
-            <ul>
+            <div className="row">
                 {cardsets.map((cardset) => (
-                    <li key={cardset.id}>{cardset.title}</li>
+                    <div key={cardset.id} className="col-sm-6 col-md-4 col-lg-3 mb-4    ">
+                        <div className="card h-100">
+                            <div className="card-body">
+                                <h5 className="card-title">{cardset.title}</h5>
+                                <p>Subject: {cardset.subject}</p>
+                            </div>
+                        </div>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 }
