@@ -46,7 +46,7 @@ const Dashboard = () => {
             return;
         }
         try{
-            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+'/api/getcardsets',  {params: { userId: userData.id}});
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userData.id}/cardsets`,  {params: { userId: userData.id}});
             const cardsetsData = response.data.cardsets;
             setCardsets(cardsetsData);
         } catch (error) {
@@ -60,7 +60,7 @@ const Dashboard = () => {
         }
         try{
             const firebaseId = user?.uid
-            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+'/api/getuser',  {params: { firebaseId: firebaseId}});
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+'/api/users/getuser',  {params: { firebaseId: firebaseId}});
             const userData = response.data.user;
             setUserData(userData);
         } catch (error) {
@@ -119,8 +119,8 @@ const Dashboard = () => {
                         return <div key={index} className={styles.cardset} onClick={()=> selectCardset(cardset)}>{cardset.title}</div>
                     })}
                 </div>
-                {showCreateCardsetForm && <CreateCardset userId={user?.uid} onCreateCardset={handleCreateCardset}/>}
-                {selectedCardset && <CardsetView cardset={selectedCardset}/>}
+                {showCreateCardsetForm && <CreateCardset userId={userData?.id} onCreateCardset={handleCreateCardset}/>}
+                {selectedCardset && <CardsetView userId={userData?.id} cardset={selectedCardset}/>}
             </div>
         </div>
     );

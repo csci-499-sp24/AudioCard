@@ -23,7 +23,7 @@ const SignUp = () => {
                 // Create user account with Firebase Authentication
                 await createUserWithEmailAndPassword(auth, email, password).then((userCred) => {
                     const firebaseId = userCred.user.uid;
-                    axios.post(process.env.NEXT_PUBLIC_SERVER_URL+'/api/signup', { firebaseId, username, email });
+                    axios.post(process.env.NEXT_PUBLIC_SERVER_URL+'/api/users/signup', { firebaseId, username, email });
                 });
 
                 // Send user data to the server to add to the database
