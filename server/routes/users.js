@@ -51,15 +51,37 @@ router.route('/:userid/cardsets')
         res.status(500).json({ error: 'Error fetching card sets' });
     }
 })
-.delete(
-    async(req, res) => {
-        try{
-            //Implementation for deleting cardsets from a user
-        } catch (error) {
-            console.error('Error fetching card sets:', error);
-            res.status(500).json({ error: 'Error fetching card sets' });
-        }
+
+//Update specific cardset
+router.route('/:userid/cardsets/:cardsetid')
+.put(async(req,res)=> {
+    try{
+        const { updatedData } = req.body;
+        const cardset = await Cardset.update(updatedData, {where: { id: req.params.cardsetid }});
+        res.status(200).json(cardset);
+    } catch (error) {
+        console.error('Error updating cardset:', error);
+        res.status(500).json({ error: 'Error updating a cardset' });
+    }
 })
+.delete(async(req,res) => {
+    try{
+        const cardset = await Cardset.findOne({where: { id: req.params.cardsetid }});
+        if (!cardset) {
+            return res.status(404).json({ error: 'Cardset not found' });
+        }
+        const flashcards = await cardset.getFlashcards();
+        await Promise.all(flashcards.map(async (flashcard) => {
+            await flashcard.destroy();
+        }));
+        await cardset.destroy();
+        res.status(200).send('Cardset and its flashcards deleted');
+    } catch (error) {
+        console.error('Error deleting cardset:', error);
+        res.status(500).json({ error: 'Error deleting a cardset' });
+    }
+})
+
 
 router.use('/:userid/cardsets', flashcards);
 

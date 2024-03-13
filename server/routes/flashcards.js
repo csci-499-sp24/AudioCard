@@ -3,7 +3,7 @@ const router = express.Router();
 const { Cardset, Flashcard } = require('../models/modelRelations');
 
 //route for flashcards of a set (uses api/users/:userid/cardsets/:cardsetid)
-router.route('/:cardsetid')
+router.route('/:cardsetid/flashcards')
 .post(async(req, res) => {
     try{
         const { cardsetId, newCardData } = req.body;
@@ -25,6 +25,31 @@ router.route('/:cardsetid')
         console.error('Error fetching flashcards:', error);
         res.status(500).json({ error: 'Error fetching flashcards' });
     }
-});
+})
+
+router.route('/:cardsetid/flashcards/:flashcardid')
+.put(async(req, res)=> {
+    try{
+        const { updatedData } = req.body;
+        const flashcard = await Flashcard.update(updatedData, {where: { id: req.params.flashcardid }});
+        res.status(200).json(flashcard);
+    } catch (error) {
+        console.error('Error updating flashcard:', error);
+        res.status(500).json({ error: 'Error updating a flashcard' });
+    }
+})
+.delete(async(req,res) => {
+    try{
+        const flashcard = await Flashcard.findOne({where: { id: req.params.flashcardid }});
+        if (!flashcard) {
+            return res.status(404).json({ error: 'Flashcard not found' });
+        }
+        await flashcard.destroy();
+        res.status(200).send('Flashcard deleted');
+    } catch (error) {
+        console.error('Error deleting flashcard:', error);
+        res.status(500).json({ error: 'Error deleting a flashcard' });
+    }
+})
 
 module.exports = router;
