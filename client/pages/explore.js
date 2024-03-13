@@ -15,7 +15,10 @@ const Explore = () => {
                 process.env.NEXT_PUBLIC_SERVER_URL + "/api/cardsets"
               );
               const cardsetsData = response.data.publicSets;
-              setCardsets(cardsetsData);
+              for (let cardset of cardsetsData) {
+                cardset.title = cardset.title.charAt(0).toUpperCase() + cardset.title.slice(1);
+              }
+              setCardsets(cardsetsWithUsernames);
         } catch (error) {
             console.error("Error fetching card sets:", error);
         }
@@ -31,6 +34,7 @@ const Explore = () => {
                             <div className="card-body">
                                 <h5 className="card-title">{cardset.title}</h5>
                                 <p>Subject: {cardset.subject}</p>
+                                <p className="card-text"><small className="text-muted">Created at: {new Date(cardset.createdAt).toLocaleDateString()}</small></p>
                             </div>
                         </div>
                     </div>
