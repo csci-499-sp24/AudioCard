@@ -4,10 +4,18 @@ import axios from "axios";
 
 const Explore = () => {
     const [cardsets, setCardsets] = useState([]);
+    const [searchInput, setSearchInput] = useState();
+    const [filteredCardsets, setFilteredCardsets] = useState([]);
 
     useEffect(() => {
         fetchCardsets();
     }, []);
+
+    const onSearchChange = (e) =>{
+        e.preventDefault();
+        setFilteredCardsets(cardsets.filter(cardset => cardset.title.toLowerCase().includes(e.target.value) || cardset.subject.toLowerCase().includes(e.target.value)))
+        //setSearchInput(e.target.value);
+    }
 
     const fetchCardsets = async () => {
         try {
@@ -27,8 +35,14 @@ const Explore = () => {
     return (
         <div className="container mt-4">
             <h1 className="mb-4">Explore Cardsets</h1>
+            <div className='row'>
+                <form class="form-inline" onSubmit={((e) => e.preventDefault())}>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" onChange={(e) => onSearchChange(e)}/>
+                </form>
+            </div>
+
             <div className="row">
-                {cardsets.map((cardset) => (
+                {filteredCardsets.length > 0 ? filteredCardsets.map((cardset) => (
                     <div key={cardset.id} className="col-sm-6 col-md-4 col-lg-3 mb-4">
                         <div className="card h-100">
                             <div className="card-body">
@@ -39,7 +53,19 @@ const Explore = () => {
                             </div>
                         </div>
                     </div>
-                ))}
+                )):
+                cardsets.map((cardset) => (
+                    <div key={cardset.id} className="col-sm-6 col-md-4 col-lg-3 mb-4">
+                        <div className="card h-100">
+                            <div className="card-body">
+                                <h5 className="card-title">{cardset.title}</h5>
+                                <p className="card-subject">Subject: {cardset.subject}</p>
+                                <p className="card-count">{cardset.flashcardCount} flashcard</p>
+                                <p className="card-createdTime"><small className="text-muted">Created at: {new Date(cardset.createdAt).toLocaleDateString()}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                )) }
             </div>
             <style jsx>{`
                 .card:hover {
