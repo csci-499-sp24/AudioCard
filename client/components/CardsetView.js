@@ -40,7 +40,7 @@ export const CardsetView = ({userId, cardset}) => {
                 <Flashcard cardData={currentCardsetData}/>
             </div>
         </div>
-        <div clasName="row">
+        <div className="row">
             <div className="col">
                 {/* Form for creating new flashcards */}
                 <CreateFlashcard cardset={cardset} onCreateFlashcard={handleCreateFlashcard}/>
