@@ -27,10 +27,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/dashboard.js"
     ],
-    "/explore": [
+    "/login": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/explore.js"
+      "static/chunks/pages/login.js"
     ]
   },
   "ampFirstPages": []
