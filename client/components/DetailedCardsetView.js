@@ -6,6 +6,7 @@ export const CardsetView = ({cardset}) => {
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const firebaseId = auth.currentUser.uid;
     const [userData, setUserData] = useState(null);
+    const [copyCreated, setCopyCreated] = useState(false); 
 
     useEffect(() => {
         fetchUserData();
@@ -63,7 +64,7 @@ export const CardsetView = ({cardset}) => {
                 await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userData.id}/cardsets/${newCardsetId}/flashcards`, {cardsetId, newCardData});
             }));
 
-            console.log('Cardset added to library');
+            setCopyCreated(true);
         } catch (error) {
             console.error('Error adding cardset to library:', error);
         }
@@ -81,7 +82,8 @@ export const CardsetView = ({cardset}) => {
                 </div>
             </div>
             <div className='col d-flex justify-content-end align-items-center'>
-                <button className="btn btn-secondary copybutton"  onClick={() => makeCopy()}>Make a copy</button>
+                <button className="btn btn-secondary copybutton"  onClick={() => makeCopy()} disabled={copyCreated}>
+                    {copyCreated ? "Copy created" : "Make a copy"} </button>
             </div>
         </div>
             <div className="flashcardContainer">
