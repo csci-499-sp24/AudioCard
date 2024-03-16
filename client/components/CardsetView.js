@@ -53,7 +53,7 @@ export const CardsetView = ({ userId, cardset }) => {
                 {/*Pass all the cards of the cardset to the flashcard component*/}
                 <div className="row">
                     <div className='col'>
-                        <Flashcard cardData={currentCardsetData} />
+                        <Flashcard cardData={currentCardsetData} userId = {userId} cardsetId = {cardset.id} />
                     </div>
                 </div>
                 <div className="row">
