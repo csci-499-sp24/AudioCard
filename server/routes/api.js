@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {User, Cardset, Flashcard} = require('../models/modelRelations');
+const { User, Cardset, Flashcard } = require('../models/modelRelations');
 
 // Route for user sign-up
 router.post('/signup', async (req, res) => {
@@ -17,11 +17,11 @@ router.post('/signup', async (req, res) => {
     }
 });
 
-router.post('/createcardset', async(req, res) => {
-    try{
+router.post('/createcardset', async (req, res) => {
+    try {
         const { userId, newSetData } = req.body;
         const firebaseId = userId;
-        const user = await User.findOne({where: { firebaseId }});
+        const user = await User.findOne({ where: { firebaseId } });
         const cardset = await Cardset.create(newSetData);
         await user.addCardset(cardset);
         res.status(201).json({ cardset });
@@ -31,11 +31,11 @@ router.post('/createcardset', async(req, res) => {
     }
 });
 
-router.post('/createflashcard', async(req, res) => {
-    try{
+router.post('/createflashcard', async (req, res) => {
+    try {
         const { cardsetId, newCardData } = req.body;
         const id = cardsetId
-        const cardset = await Cardset.findOne({where: { id }});
+        const cardset = await Cardset.findOne({ where: { id } });
         const flashcard = await Flashcard.create(newCardData);
         await cardset.addFlashcard(flashcard);
         res.status(201).json({ flashcard });
@@ -45,10 +45,10 @@ router.post('/createflashcard', async(req, res) => {
     }
 });
 
-router.get('/getcardsets', async(req, res) => {
-    try{
+router.get('/getcardsets', async (req, res) => {
+    try {
         const { userId } = req.query;
-        const cardsets = await Cardset.findAll({ where: { userId }})
+        const cardsets = await Cardset.findAll({ where: { userId } })
         res.status(200).json({ cardsets });
     } catch (error) {
         console.error('Error fetching card sets:', error);
@@ -56,10 +56,10 @@ router.get('/getcardsets', async(req, res) => {
     }
 });
 
-router.get('/getflashcards', async(req, res) => {
-    try{
+router.get('/getflashcards', async (req, res) => {
+    try {
         const { cardsetId } = req.query;
-        const flashcards = await Flashcard.findAll({ where: { cardsetId }})
+        const flashcards = await Flashcard.findAll({ where: { cardsetId } })
         res.status(200).json({ flashcards });
     } catch (error) {
         console.error('Error fetching flashcards:', error);
@@ -67,14 +67,42 @@ router.get('/getflashcards', async(req, res) => {
     }
 });
 
-router.get('/getuser', async(req, res) => {
-    try{
+router.get('/getuser', async (req, res) => {
+    try {
         const { firebaseId } = req.query;
-        const user = await User.findOne({ where: { firebaseId }});
+        const user = await User.findOne({ where: { firebaseId } });
         res.status(200).json({ user });
     } catch (error) {
         console.error('Error fetching database user:', error);
         res.status(500).json({ error: 'Error fetching database user' });
+    }
+});
+
+router.post('/updateflashcard/:flashcardId', async (req, res) => {
+    try {
+        const { flashcardId } = req.params;
+        const { term, definition } = req.body; // Separate term (question) and definition (answer)
+
+        // Update the flashcard
+        const flashcard = await Flashcard.findByPk(flashcardId);
+        if (!flashcard) {
+            return res.status(404).json({ error: 'Flashcard not found' });
+        }
+
+        // Update the question and/or answer
+        if (term) {
+            flashcard.term = term; // Update question
+        }
+        if (definition) {
+            flashcard.definition = definition; // Update answer
+        }
+
+        await flashcard.save();
+
+        res.status(200).json({ flashcard });
+    } catch (error) {
+        console.error('Error updating flashcard:', error);
+        res.status(500).json({ error: 'Error updating flashcard' });
     }
 });
 
