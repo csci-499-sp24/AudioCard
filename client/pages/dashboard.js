@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { auth } from '../utils/firebase';
+import axios from 'axios';
 import styles from '../styles/dashboard.module.css';
 import { CreateCardset } from '@/components/CreateCardset';
-import axios from 'axios';
 import { CardsetView } from '@/components/CardsetView';
+import Navbar from '@/components/Navbar/Navbar';
 
 const menuItems = [
     { name: 'Dashboard', path: '/dashboard' },
@@ -93,36 +94,42 @@ const Dashboard = () => {
     };
 
     return (
-        <div className={styles.dashboard}>
-            <div className={styles.header}>
-                <button className={`${styles.hamburger} ${menuOpen ? styles.active : ''}`} onClick={toggleMenu}>☰</button>
-                <h1 className={styles.brandName}>AudioCard</h1>
-                <button className="btn btn-secondary btn-large" onClick={() => { auth.signOut(); router.push('/login'); }}>Logout</button>
-            </div>
-            <div className={`${styles.menu} ${menuOpen ? styles.menuOpen : ''}`}>
-                <ul>
-                    {menuItems.map((item, index) => (
-                        <li key={index} onClick={() => navigateTo(item.path)}>
-                            {item.name}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <div className={styles.content}>
-                <h1 className={styles.welcome}>Welcome, {user?.email}</h1>
-                <div className={styles.cardsetHeader}>
-                    <h2 className={styles.cardsetTitle}>Your Cardsets</h2>
-                    <button className="btn btn-secondary btn-large" onClick={toggleCreateCardsetForm}>Make Card Set</button>
+        <div className="wrapper">
+            <Navbar/>
+            
+            <div className="container">
+                <div className="row px-2">
+                    <div className="col-12 mt-5" id={styles.greeting}>
+                        <h1 className="" id={styles.welcome}>Welcome, <span className="font-weight-bold text-dark">{user?.email}</span></h1> 
+                    </div>
+                    <div className="col-12 my-3">
+                        <div className="d-flex justify-content-between">
+                            <h4 className={styles.cardsetTitle}>Your Flashcard Sets</h4>
+                            <button className="btn btn-secondary btn-large" onClick={toggleCreateCardsetForm}>Make Card Set</button>
+                        </div>
+                    </div>
+
+                    <div className="col-12 my-3">
+                        <div className="d-flex justify-content-between">
+                            {showCreateCardsetForm && <CreateCardset userId={user?.uid} onCreateCardset={handleCreateCardset}/>}
+                            {selectedCardset && <CardsetView cardset={selectedCardset}/>}   
+                        </div>
+                    </div>
+
+                    <div className="container">
+                        <div className="row px-2">
+                            { cardsets.map((cardset, index) => { 
+                                return <div key={index} className={styles.cardset} onClick={()=> selectCardset(cardset)}>
+                                    { cardset.title }
+                                </div>
+                            })}
+                        </div>
+                    </div>
                 </div>
-                <div className={`rounded p-4 ${styles.cardsetsContainer}`}>
-                    {cardsets.map((cardset, index) => {
-                        return <div key={index} className={styles.cardset} onClick={()=> selectCardset(cardset)}>{cardset.title}</div>
-                    })}
-                </div>
-                {showCreateCardsetForm && <CreateCardset userId={userData?.id} onCreateCardset={handleCreateCardset}/>}
-                {selectedCardset && <CardsetView userId={userData?.id} cardset={selectedCardset}/>}
             </div>
         </div>
+
     );
 };
+
 export default Dashboard;

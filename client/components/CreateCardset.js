@@ -17,37 +17,38 @@ export const CreateCardset = ({userId, onCreateCardset}) => {
         }
     }
 
-  return (
-    <div className={`rounded p-10 ${styles.formContainer}`}>
-        <div className="container">
-            <div className="row justify-content-center">
-                <div className="text-center">Create a cardset</div>
-            </div>
-        <form className="display flex flex-col" onSubmit={(e) => onSubmit(e)}>
-        <div className="row">
-            <div className="form-group text-center">
-            <label htmlFor="title" className="basis-1/2">Title: </label>
-            <input type="text" id="title" name="title"/>
-            </div>
+    return (
+        <div className="mb-5 p-4" id={styles.createCardset}>
+            <h5>Create a new cardset</h5>
+
+            <form className="row row-cols-lg-auto g-3 align-items-center" onSubmit={(e) => onSubmit(e)}>
+                <div className="col-12">
+                    <label className="visually-hidden" htmlFor="title">Title</label>
+                    <div className="input-group">
+                        <input type="text" id="title" name="title" className="form-control" placeholder="Title"/>
+                    </div>
+                </div>
+
+                <div className="col-12">
+                    <label className="visually-hidden" htmlFor="subject">Subject</label>
+                    <div className="input-group">
+                        <input type="text" className="form-control" id="subject" placeholder="Subject"/>
+                    </div>
+                </div>
+
+                <div className="col-12">
+                    <div className="form-check">
+                        <input className="form-check-input" type="checkbox" id="isPublic"/>
+                        <label className="form-check-label" htmlFor="isPublic">
+                            Make publicly viewable?
+                        </label>
+                    </div>
+                </div>
+
+                <div className="col-12">
+                    <button type="submit" className="btn btn-secondary">Create</button>
+                </div>
+            </form>
         </div>
-        <div className="row">
-            <div className="form-group text-center">
-            <label htmlFor="subject">Subject: </label>
-            <input type="text" id="subject" name="subject"/>
-            </div>
-        </div>
-        <div className="row">
-            <div className="form-group text-center">
-            <label htmlFor="isPublic" className="basis-1/2">Make publicly viewable?:  </label>
-            <input type="checkbox" id="isPublic" name="isPublic"/>
-            </div>
-        </div>
-        <div className="row d-flex justify-content-center">
-        <button type="submit" className="btn btn-secondary smallButton">Submit</button>
-        </div>
-        </form>
-        </div>
-    </div>
-    
-  )
+    )
 }
