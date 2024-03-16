@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { auth } from '../utils/firebase';
+import { EditView } from "@/components/EditCardset";
 
 const Cardset_Page = () => {
     const [allCardsets, setAllCardsets] = useState([]);
@@ -9,6 +10,7 @@ const Cardset_Page = () => {
     const [selectedCardset, setSelectedCardset] = useState(null);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [userData, setUserData] = useState(null);
+    const [isEditPageOpen, setIsEditPageOpen] = useState(false);
 
     const pageSize = 4;
 
@@ -83,6 +85,10 @@ const Cardset_Page = () => {
         fetchFlashCards(cardset);
     }
 
+    const handleCloseEditPage = () => {
+        setIsEditPageOpen(false);
+    }
+
     return (
         <div className="container">
             <div className="cardsetsContainer">
@@ -116,7 +122,9 @@ const Cardset_Page = () => {
                         )}
                     </div>
                     <div className='col d-flex justify-content-end align-items-center'>
-                        <button className="btn btn-secondary editButton">Edit Set</button>
+                        {selectedCardset && (
+                            <button className="btn btn-secondary editButton" onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
+                        )}
                     </div>
                 </div>
                 <div className="flashcardContainer">
@@ -128,8 +136,19 @@ const Cardset_Page = () => {
                     ))}
                 </div>
             </div>
-
-            
+            {isEditPageOpen && (
+            <div className="edit-page-view">
+            <div className="edit-page-content">
+                <button className="close-btn" onClick={handleCloseEditPage}>
+                &times;
+                </button>
+                {selectedCardset && (
+                    <EditView cardset={selectedCardset} userId={userData.id} />
+                )}
+            </div>
+            </div>
+        )}
+                
             <style jsx>{`
                 .heading{
                     margin-top: 20px;
@@ -166,6 +185,19 @@ const Cardset_Page = () => {
                     background-color: #f0f0f0; 
                     padding: 20px; 
                     border-radius: 8px; 
+                }
+
+                .edit-page-view {
+                    position: fixed;
+                    top: 0;
+                    left: 0; 
+                    width: 100%; 
+                    height: 100%;
+                    background-color: #ADD8E6;
+                    z-index: 999;
+                    overflow-y: auto;
+                    transition: transform 0.3s ease;
+                    transform: translateX(${isEditPageOpen ? "0" : "100%"});
                 }
             `}</style>
         </div>

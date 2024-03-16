@@ -101,7 +101,7 @@ export const CardsetView = ({cardset}) => {
                 }
 
                 .flashcard {
-                    background-color: #f0f0f0; 
+                    background-color: #FFFFFF; 
                     padding: 20px; 
                     border-radius: 8px; 
                 }

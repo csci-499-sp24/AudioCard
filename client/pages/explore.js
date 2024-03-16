@@ -81,7 +81,7 @@ const Explore = () => {
                     right: 0;
                     width: 50%; /* Adjust as needed */
                     height: 100%;
-                    background-color: #CCCCCC;
+                    background-color: #ADD8E6;
                     z-index: 999;
                     overflow-y: auto;
                     transition: transform 0.3s ease;
