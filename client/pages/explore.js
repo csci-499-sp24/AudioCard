@@ -38,10 +38,10 @@ const Explore = () => {
                 break;
             case 'creationNewest':
                 sortedCardsets = sortByCreation();
+                sortedCardsets.reverse();
                 break;
             case 'creationOldest':
                 sortedCardsets = sortByCreation();
-                sortedCardsets.reverse();
                 break;
             case 'alphabeticalOrder':
                 sortedCardsets = sortByAlphabet();
