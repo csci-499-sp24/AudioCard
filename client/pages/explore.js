@@ -132,7 +132,7 @@ const Explore = () => {
                 )):
                 cardsets.map((cardset) => (
                         <div key={cardset.id} className="col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div className="card h-100">
+                            <div className="card h-100" onClick={() => handleCardsetClick(cardset)}>
                                 <div className="card-body">
                                     <h5 className="card-title">{cardset.title}</h5>
                                     <p className="card-subject">Subject: {cardset.subject}</p>
@@ -156,6 +156,7 @@ const Explore = () => {
           </div>
         </div>
       )}
+      </div>
             <style jsx>{`
                     .container {
                     margin-right: ${isDetailedViewOpen ? "50%" : "auto"};
@@ -192,7 +193,6 @@ const Explore = () => {
                   }
                 `}</style>
             </div>
-        </div>
     );
 }
 
