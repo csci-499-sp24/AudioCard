@@ -99,7 +99,7 @@ const Explore = () => {
             <Navbar/>
             <div className="container mt-5">
                 <h1 className="mb-4">Explore Cardsets</h1>
-            <div className=' d-flex mb-5'>
+            <div className='d-flex mb-5'>
                 <form className="form-inline" onSubmit={((e) => e.preventDefault())}>
                     <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" onInput={(e) => onSearchChange(e)}/>
                 </form>

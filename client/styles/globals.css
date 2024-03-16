@@ -12,6 +12,7 @@
 body {
     background-color: #F2F5F6;
     font-family: 'Roboto',  'Open Sans';
+    overflow-y: scroll;
 }
 
 .btn-secondary {
