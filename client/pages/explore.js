@@ -87,13 +87,13 @@ const Explore = () => {
             <Navbar/>
             <div className="container mt-5">
                 <h1 className="mb-4">Explore Cardsets</h1>
-            <div className='d-flex mt-4'>
+            <div className=' d-flex mb-5'>
                 <form className="form-inline" onSubmit={((e) => e.preventDefault())}>
                     <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" onInput={(e) => onSearchChange(e)}/>
                 </form>
                 <div className="dropdown">
                     <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {sortingBy.length > 0 ? sortingBy : "Filter By..."}
+                        {sortingBy.length > 0 ? sortingBy : "Sort By..."}
                     </button>
                     <ul className="dropdown-menu">
                         <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'flashcardCount')}>Flashcard count</a></li>
