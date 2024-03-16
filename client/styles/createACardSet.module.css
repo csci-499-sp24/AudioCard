@@ -1,3 +1,8 @@
+#createCardset {
+    background-color: white;
+    border-radius: 10px;
+}
+
 .formContainer{
     background-color: #87b2d8;
     display: flex;

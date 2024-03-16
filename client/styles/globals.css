@@ -1,31 +1,38 @@
 @import url('https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css');
 
 :root {
-  --bs-primary: #007bff;        
-  --bs-secondary: #37505C; 
+  --bs-primary:  black;        
+  --bs-secondary:#1980DF;
+  --ts-primary: black; 
+  --ts-secondary: #abafb3;
+  --ts-tertiary: #abafb3;
   ;  
 }
 
 body {
-    background-color: white;
+    background-color: #F2F5F6;
     font-family: 'Roboto',  'Open Sans';
 }
 
 .btn-secondary {
     color: #ffffff;
     background-color: var(--bs-secondary);
-  }
-  
-button {
-    background-color:#69A2B0; 
-    border: 1px purple;
-}
+    border: none;
+}  
 
 .btn-secondary:hover {
-    background-color: #507d8a;
-    border-color: #507d8a; 
+    background-color: #1765B4;
 }
 
 .smallButton{
     width: 150px;
+}
+
+.form-check-input:checked {
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+}
+
+.wrapper {
+    background: radial-gradient(ellipse at 50% 0%, rgba(29, 98, 180, 0.73) 0%, rgba(242, 245, 246, 1) 40%);
 }
