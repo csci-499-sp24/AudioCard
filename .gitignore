@@ -49,3 +49,13 @@ next-env.d.ts
 
 #sens info
 /server/config.js
+
+
+# Next.js cache files
+client/.next/cache/
+client/.next/server/middleware-build-manifest.js
+client/.next/server/pages-manifest.json
+client/.next/server/vendor-chunks/next.js
+client/.next/static/chunks/webpack.js
+client/.next/static/development/_buildManifest.js
+client/.next/trace
