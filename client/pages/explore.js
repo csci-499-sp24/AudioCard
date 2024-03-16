@@ -1,20 +1,69 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-
 const Explore = () => {
     const [cardsets, setCardsets] = useState([]);
-    const [searchInput, setSearchInput] = useState();
+    const [searchInput, setSearchInput] = useState('');
+    const [sortingBy, setSortingBy] = useState('');
     const [filteredCardsets, setFilteredCardsets] = useState([]);
 
     useEffect(() => {
         fetchCardsets();
     }, []);
 
+    useEffect(() => {
+        filterCardsets();
+    }, [searchInput]);
+
     const onSearchChange = (e) =>{
         e.preventDefault();
-        setFilteredCardsets(cardsets.filter(cardset => cardset.title.toLowerCase().includes(e.target.value) || cardset.subject.toLowerCase().includes(e.target.value)))
-        //setSearchInput(e.target.value);
+        setSearchInput(e.target.value);
+    }
+
+    const filterCardsets = () => {
+        setFilteredCardsets([...cardsets.filter(cardset => 
+            cardset.title.toLowerCase().includes(searchInput.toLowerCase()) || cardset.subject.toLowerCase().includes(searchInput.toLowerCase()))]);
+    }
+
+    const onSortChangeClicked = (e, sortBy) =>{
+        e.preventDefault();
+        let sortedCardsets;
+        switch(sortBy){
+            case 'flashcardCount':
+                sortedCardsets = sortByFlashcards();
+                break;
+            case 'creationNewest':
+                sortedCardsets = sortByCreation();
+                break;
+            case 'creationOldest':
+                sortedCardsets = sortByCreation();
+                sortedCardsets.reverse();
+                break;
+            case 'alphabeticalOrder':
+                sortedCardsets = sortByAlphabet();
+                break;
+            default: 
+                sortedCardsets = cardsets;
+                break;   
+        }
+        setCardsets([...sortedCardsets]);
+        filterCardsets();
+
+    }
+
+    const sortByFlashcards = () => {
+        setSortingBy('Flashcard Count');
+        return cardsets.sort((a,b) => b.flashcardCount - a.flashcardCount);
+    }
+
+    const sortByCreation = () => {
+        setSortingBy('Creation Date');
+        return cardsets.sort((a,b) => a.createdAt.localeCompare(b.createdAt));
+    }
+
+    const sortByAlphabet = () => {
+        setSortingBy("Alphabetically");
+        return cardsets.sort((a,b) => a.title.localeCompare(b.title));
     }
 
     const fetchCardsets = async () => {
@@ -35,14 +84,26 @@ const Explore = () => {
     return (
         <div className="container mt-4">
             <h1 className="mb-4">Explore Cardsets</h1>
-            <div className='row'>
-                <form class="form-inline" onSubmit={((e) => e.preventDefault())}>
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" onChange={(e) => onSearchChange(e)}/>
+            <div className='d-flex mt-4'>
+                <form className="form-inline" onSubmit={((e) => e.preventDefault())}>
+                    <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" onInput={(e) => onSearchChange(e)}/>
                 </form>
+                <div className="dropdown">
+                    <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {sortingBy.length > 0 ? sortingBy : "Filter By..."}
+                    </button>
+                    <ul className="dropdown-menu">
+                        <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'flashcardCount')}>Flashcard count</a></li>
+                        <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'creationNewest')}>Newest first</a></li>
+                        <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'creationOldest')}>Oldest first</a></li>
+                        <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'alphabeticalOrder')}>Alphabetical order</a></li>
+                    </ul>
+                </div>
             </div>
 
             <div className="row">
-                {filteredCardsets.length > 0 ? filteredCardsets.map((cardset) => (
+                {filteredCardsets.length == 0 && searchInput.length > 0 && <div>No cardsets matching this term</div>}
+                {filteredCardsets.length > 0 || searchInput.length > 0 ? filteredCardsets.map((cardset) => (
                     <div key={cardset.id} className="col-sm-6 col-md-4 col-lg-3 mb-4">
                         <div className="card h-100">
                             <div className="card-body">
