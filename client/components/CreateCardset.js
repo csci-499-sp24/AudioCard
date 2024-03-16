@@ -5,6 +5,7 @@ import styles from '../styles/createACardSet.module.css';
 export const CreateCardset = ({userId, onCreateCardset}) => {
     
     const onSubmit = async (event) =>{
+        console.log("User id: ", userId);
         event.preventDefault();
         if (userId){
             const newSetData = {
