@@ -111,7 +111,7 @@ const Dashboard = () => {
 
                     <div className="col-12 my-3">
                         <div className="d-flex justify-content-between">
-                            {showCreateCardsetForm && <CreateCardset userId={user?.uid} onCreateCardset={handleCreateCardset}/>}
+                            {showCreateCardsetForm && <CreateCardset userId={userData.id} onCreateCardset={handleCreateCardset}/>}
                             {selectedCardset && <CardsetView cardset={selectedCardset}/>}   
                         </div>
                     </div>
