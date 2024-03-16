@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { CardsetView } from "@/components/DetailedCardsetView";
 import Navbar from '@/components/Navbar/Navbar';
 
 const Explore = () => {
     const [cardsets, setCardsets] = useState([]);
+    const [selectedCardset, setSelectedCardset] = useState(null);
+    const [isDetailedViewOpen, setIsDetailedViewOpen] = useState(false);
 
     useEffect(() => {
         fetchCardsets();
@@ -23,6 +26,15 @@ const Explore = () => {
             console.error("Error fetching card sets:", error);
         }
     };
+
+    const handleCardsetClick = (cardset) => {
+        setSelectedCardset(cardset);
+        setIsDetailedViewOpen(true);
+      };
+
+    const handleCloseDetailedView = () => {
+        setIsDetailedViewOpen(false);
+      };
 
     return (
         <div className="wrapper">
@@ -51,6 +63,54 @@ const Explore = () => {
                     }
                 `}</style>
             </div>
+            {isDetailedViewOpen && (
+        <div className="detailed-cardset-view">
+          <div className="detailed-cardset-content">
+            <button className="close-btn" onClick={handleCloseDetailedView}>
+              &times;
+            </button>
+            {selectedCardset && (
+              <CardsetView cardset={selectedCardset}
+              />
+            )}
+          </div>
+        </div>
+      )}
+            <style jsx>{`
+                .container {
+                    margin-right: ${isDetailedViewOpen ? "50%" : "auto"};
+                    transition: margin-right 0.3s ease;
+                  }
+                .card:hover {
+                    transform: scale(1.03); 
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+                    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+                }
+                .detailed-cardset-view {
+                    position: fixed;
+                    top: 0;
+                    right: 0;
+                    width: 50%; /* Adjust as needed */
+                    height: 100%;
+                    background-color: #ADD8E6;
+                    z-index: 999;
+                    overflow-y: auto;
+                    transition: transform 0.3s ease;
+                    transform: translateX(${isDetailedViewOpen ? "0" : "100%"});
+                  }
+                  .detailed-cardset-content {
+                    padding: 20px;
+                  }
+                  .close-btn {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    font-size: 24px;
+                    cursor: pointer;
+                    background: none;
+                    border: none;
+                  }
+            `}</style>
         </div>
     );
 }
