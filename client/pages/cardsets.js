@@ -9,52 +9,58 @@ const Cardset_Page = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedCardset, setSelectedCardset] = useState(null);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
+    const [user, setUser] = useState(null);
     const [userData, setUserData] = useState(null);
     const [isEditPageOpen, setIsEditPageOpen] = useState(false);
 
     const pageSize = 4;
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const user = auth.currentUser || JSON.parse(sessionStorage.getItem('currentUser'));
-                if (user) {
-                    const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+'/api/users/getuser',  {params: { firebaseId: user.uid}});
-                    const userData = response.data.user;
-                    setUserData(userData);
-                    sessionStorage.setItem('currentUser', JSON.stringify(user));
-                }
-            } catch (error) {
-                console.error('Error fetching user', error);
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                setUser(user);
+            } else {
+                setUser(null);
             }
-        };
-
-        fetchUserData();
-    }, []);
+        });
+        if(!userData){
+            fetchUserData();
+        }
+        return () => unsubscribe();
+    }, [user, userData]);
 
     useEffect(() => {
-        if (userData) {
-            fetchCardsets();
+        fetchCardsets();
+    }) 
+
+    const fetchUserData = async () => {
+        if (!user || !user.uid) {
+            return;
         }
-    }, [userData]);
+        try{
+            const firebaseId = user?.uid
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+'/api/users/getuser',  {params: { firebaseId: firebaseId}});
+            const userData = response.data.user;
+            setUserData(userData);
+        } catch (error) {
+            console.error('Error fetching user: ', error);
+        }
+    }
 
     const fetchCardsets = async () => {
-        try {
-            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets`, { params: { userId: userData.id } });
+        if (!userData || !userData.id) {
+            fetchUserData();
+            return;
+        }
+        try{
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userData.id}/cardsets`,  {params: { userId: userData.id}});
             const cardsetsData = response.data.cardsets;
             setAllCardsets(cardsetsData);
-            setCurrentPage(1);
+            updateDisplayedCardsets();
         } catch (error) {
             console.error('Error fetching card sets:', error);
         }
     }
-
-
-
-    useEffect(() => {
-        updateDisplayedCardsets();
-    }, [allCardsets, currentPage]);
-
     const updateDisplayedCardsets =  async () => {
         const startIndex = (currentPage - 1) * pageSize;
         const endIndex = startIndex + pageSize;
