@@ -3,7 +3,7 @@ import style from '../styles/flashcard.module.css';
 import { EditFlashcard } from './EditFlashcard';
 import axios from 'axios';
 
-export const Flashcard = ({ cardData }) => {
+export const Flashcard = ({ cardData, userId, cardsetId }) => {
   const [isFlipped, setFlipped] = useState(false);
   const [index, setIndex] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
@@ -47,21 +47,23 @@ export const Flashcard = ({ cardData }) => {
 
   const fetchFlashCards = async () => {
     try {
-      const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/getflashcards', { params: { cardsetId: cardset.id } });
+      const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userId}/cardsets/${cardsetId}/flashcards`);
       const flashcards = response.data.flashcards;
-      setFlashcards(flashcards); // Update flashcards state with new data
+      setFlashcards(flashcards);
     } catch (error) {
       console.error('Error fetching flashcards:', error);
     }
-  };
+  }
 
   return (
     <div className="container">
       {/* Render flashcards based on flashcards state */}
       <div className="row align-items-center">
-        <div className="col d-flex justify-content-end">
-          <button className="btn btn-secondary" onClick={() => handleChange(-1)}>Previous</button>
-        </div>
+        {isEditing ? null : (
+          <div className="col d-flex justify-content-end">
+            <button className="btn btn-secondary" onClick={() => handleChange(-1)}>Previous</button>
+          </div>
+        )}
         <div className="col">
           {isEditing && editingCard ? (
             <EditFlashcard flashcard={editingCard} onEditFlashcard={handleEditComplete} onCancel={handleEditCancel} />
@@ -76,9 +78,11 @@ export const Flashcard = ({ cardData }) => {
             </div>
           )}
         </div>
-        <div className="col d-flex justify-content-start">
-          <button className="btn btn-secondary" onClick={() => handleChange(1)}>Next</button>
-        </div>
+        {isEditing ? null : (
+          <div className="col d-flex justify-content-start">
+            <button className="btn btn-secondary" onClick={() => handleChange(1)}>Next</button>
+          </div>
+        )}
         <div className="col">
           {!isEditing && (
             <button className="btn btn-primary" onClick={() => handleEdit(flashcards[index])}>Edit</button>

@@ -11,7 +11,7 @@ export const EditFlashcard = ({ flashcard, onEditFlashcard }) => {
             term: question,
             definition: answer
         };
-        await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/updateflashcard/${flashcard.id}`, updatedFlashcard);
+        await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/flashcards/updateflashcard/${flashcard.id}`, updatedFlashcard);
         onEditFlashcard();
     };
 
