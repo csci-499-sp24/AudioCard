@@ -94,13 +94,13 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="wrapper">
+        <div className="wrapper">   
             <Navbar/>
             
             <div className="container">
                 <div className="row px-2">
                     <div className="col-12 mt-5" id={styles.greeting}>
-                        <h1 className="" id={styles.welcome}>Welcome, <span className="font-weight-bold text-dark">{user?.email}</span></h1> 
+                        <h1 className="" id={styles.welcome}>Welcome, <span className="font-weight-bold text-dark">{userData?.username}</span></h1> 
                     </div>
                     <div className="col-12 my-3">
                         <div className="d-flex justify-content-between">
