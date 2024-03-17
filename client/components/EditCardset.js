@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { CreateFlashcard } from '@/components/CreateFlashcard';
+import { EditFlashcard } from '@/components/EditFlashcard'; 
 
 export const EditView = ({ cardset, userId}) => {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -11,6 +12,7 @@ export const EditView = ({ cardset, userId}) => {
     const [newSubject, setNewSubject] = useState(cardset.subject);
     const [newPublicStatus, setNewPublicStatus] = useState(cardset.isPublic);
     const [isAddingCard, setIsAddingCard] = useState(false);
+    const [isEditingCard, setIsEditingCard] = useState(false); 
 
     useEffect(() => {
         fetchFlashCards();
@@ -74,8 +76,20 @@ export const EditView = ({ cardset, userId}) => {
     
     const toggleIsAddingCard = () => {
         setIsAddingCard(!isAddingCard);
+        setSelectedFlashcard(null);
     }
     
+    const handleEditCard = (flashcard) => {
+        setSelectedFlashcard(flashcard);
+        setIsEditingCard(true);
+    }
+
+    const handleEditFlashcard = () => {
+        setSelectedFlashcard(null);
+        setIsEditingCard(false);
+        fetchFlashCards();
+    }
+
     return (
         <div className="container">
             <div className="setInfoContainer">
@@ -134,38 +148,48 @@ export const EditView = ({ cardset, userId}) => {
 
 
             <div className="flashcardContainer">
-                    {currentCardsetData.map(flashcard => (
-                        <div key={flashcard.id} className="flashcard">
+                {currentCardsetData.map(flashcard => (
+                    <div key={flashcard.id} className="flashcard">
                         <div className='row'>
-                            <div className='col'>
-                                <div>Question: {flashcard.term}</div>
-                                <div>Answer: {flashcard.definition}</div>
-                            </div>
-                            <div className='col d-flex justify-content-end'>
-                            {selectedFlashcard === flashcard ? (
-                                showDeleteConfirmation ? (
-                                    <div className="delete-confirmation">
-                                        <p>Are you sure you want to delete this flashcard?</p>
-                                        <div className="d-flex justify-content-center">
-                                            <button onClick={() => confirmDelete(flashcard)} className="btn btn-danger">Yes</button>
-                                            <button onClick={() => setShowDeleteConfirmation(false)} className="btn btn-secondary">No</button>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <button className="btn deleteButton" onClick={() => handleDelete(flashcard)}>
-                                        <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
-                                    </button>
-                                )
+                            {selectedFlashcard === flashcard && isEditingCard && !showDeleteConfirmation ? (                                        
+                                    <EditFlashcard flashcard={selectedFlashcard} onEditFlashcard={handleEditFlashcard}/>
                             ) : (
-                                <button className="btn deleteButton" onClick={() => handleDelete(flashcard)}>
-                                    <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
-                                </button>
+                                <>
+                                    <div className='col'>
+                                        <div>Question: {flashcard.term}</div>
+                                        <div>Answer: {flashcard.definition}</div>
+                                    </div>
+                                    <div className='col d-flex justify-content-end'>
+                                        {selectedFlashcard === flashcard ? (
+                                            showDeleteConfirmation ? (
+                                                <div className="delete-confirmation">
+                                                    <p>Are you sure you want to delete this flashcard?</p>
+                                                    <div className="d-flex justify-content-center">
+                                                        <button onClick={() => confirmDelete(flashcard)} className="btn btn-danger">Yes</button>
+                                                        <button onClick={() => {setShowDeleteConfirmation(false); setSelectedFlashcard(null);}} className="btn btn-secondary">No</button>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="cardbuttons"> 
+                                                    <button className='btn' onClick={() => handleEditCard(flashcard)}><i className="bi bi-pencil-fill"></i></button>
+                                                    <button className="btn deleteButton" onClick={() => handleDelete(flashcard)}>
+                                                        <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
+                                                    </button>
+                                                </div>
+                                            )
+                                        ) : 
+                                        (<div className="cardbuttons"> 
+                                            <button className='btn' onClick={() => handleEditCard(flashcard)}><i className="bi bi-pencil-fill"></i></button>
+                                            <button className="btn deleteButton" onClick={() => handleDelete(flashcard)}>
+                                                <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
+                                            </button>
+                                    </div>)}
+                                    </div>
+                                </>
                             )}
-                            </div>
                         </div>
-                        </div>
-                    ))}
-                
+                    </div>
+                ))}
             </div>
             <div className='addingContainer'>
                     {isAddingCard && (
