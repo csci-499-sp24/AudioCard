@@ -14,6 +14,7 @@ const Cardset_Page = () => {
     const [user, setUser] = useState(null);
     const [userData, setUserData] = useState(null);
     const [isEditPageOpen, setIsEditPageOpen] = useState(false);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
     const pageSize = 4;
 
@@ -91,6 +92,7 @@ const Cardset_Page = () => {
     const selectCardset = async(cardset) => {
         setSelectedCardset(cardset);
         fetchFlashCards(cardset);
+        setShowDeleteConfirmation(false);
     }
 
     const handleCloseEditPage = () => {
@@ -106,6 +108,27 @@ const Cardset_Page = () => {
     // Function to toggle the visibility of the CreateCardset form
     const toggleCreateCardsetForm = () => {
       setShowCreateCardsetForm(!showCreateCardsetForm);
+    };
+
+    const deleteCardSet = async (cardset) => {
+        try {
+            fetchCardsets();
+            await axios.delete(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardset.id}`);
+            setCurrentCardsetData([]);
+            setSelectedCardset(null);
+            setShowDeleteConfirmation(false);
+        } catch (error) {
+            console.error('Error deleting cardset:', error);
+        }
+    };
+    
+    const handleDelete = (cardset) => {
+        setSelectedCardset(cardset);
+        setShowDeleteConfirmation(true); 
+    };
+
+    const confirmDelete = () => {
+        deleteCardSet(selectedCardset);
     };
 
     return (
@@ -153,10 +176,26 @@ const Cardset_Page = () => {
                         )}
                     </div>
                     <div className='col d-flex justify-content-end align-items-center'>
-                        {selectedCardset && (
+                    {selectedCardset && (
+                        <div className="d-flex align-items-center">
                             <button className="btn btn-secondary editButton" onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
-                        )}
+                            <button className="btn deleteButton" onClick={() => handleDelete(selectedCardset)}><i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i></button>
+                        </div>
+                    )}
+                </div>
+                {showDeleteConfirmation && (
+                    <div className="row">
+                        <div className="col d-flex justify-content-end">
+                            <div className="delete-confirmation">
+                                <p>Are you sure you want to delete this set: {selectedCardset.title}?</p>
+                                <div className="d-flex justify-content-center">
+                                <button onClick={confirmDelete} className="btn btn-danger">Yes</button>
+                                <button onClick={() => setShowDeleteConfirmation(false)} className="btn btn-secondary">No</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                )}
                 </div>
                 <div className="flashcardContainer">
                     {currentCardsetData.map(flashcard => (
@@ -229,6 +268,25 @@ const Cardset_Page = () => {
                     overflow-y: auto;
                     transition: transform 0.3s ease;
                     transform: translateX(${isEditPageOpen ? "0" : "100%"});
+                }
+
+                .editButton{
+                    marin-right:5px;
+                }
+                .deleteButton {
+                    background-color: #DC3545;
+                    margin-left: 5px;
+                    box-shadow: none;
+                    padding-top: 3px;
+                    padding-bottom: 3px;
+                    padding-left: 20px;
+                    padding-right: 20px;
+                }
+                .btn-danger{
+                    margin-right: 10px;
+                }
+                .delete-confirmation {
+                    margin-bottom: 10px; 
                 }
             `}</style>
         </div>

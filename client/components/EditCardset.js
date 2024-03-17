@@ -20,7 +20,32 @@ export const EditView = ({ cardset, userId}) => {
     
     return (
         <div className="container">
-            <h1>Set Name: {cardset.title} </h1>
+            <div className="setInfoContainer">
+                <h2>Set Name: {cardset.title} </h2>
+                <h2>Subject: {cardset.subject} </h2>
+            </div>
+
+
+            <div className="flashcardContainer">
+                    {currentCardsetData.map(flashcard => (
+                        <div key={flashcard.id} className="flashcard">
+                            <div>Question: {flashcard.term}</div>
+                            <div>Answer: {flashcard.definition}</div>
+                        </div>
+                    ))}
+            </div>
+            <style jsx>{`         
+                .flashcardContainer {
+                    display: grid;
+                    grid-gap: 20px; 
+                }
+
+                .flashcard {
+                    background-color: #f0f0f0; 
+                    padding: 20px; 
+                    border: 1px solid black;
+                }`}   
+            </style>
         </div>
     );
 }
