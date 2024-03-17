@@ -9,17 +9,23 @@ router.route('/')
     try {
         const publicSets = await Cardset.findAll({
             where: { isPublic: true },
-            include: [{
-                model: Flashcard,
-                attributes: [],
-                duplicating: false,
-            }],
+            include: [
+                {
+                    model: Flashcard,
+                    attributes: [],
+                    duplicating: false,
+                },
+                {
+                    model: User,
+                    attributes: ['username'] 
+                }
+            ],
             attributes: {
                 include: [
                     [Sequelize.fn("COUNT", Sequelize.col("flashcards.id")), "flashcardCount"]
                 ]
             },
-            group: ['cardset.id'],
+            group: ['cardset.id', 'user.id'],
         });
         res.status(200).json({ publicSets: publicSets.map(set => set.get({ plain: true })) });
     } catch (error) {

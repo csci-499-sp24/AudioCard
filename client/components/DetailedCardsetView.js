@@ -79,6 +79,7 @@ export const CardsetView = ({cardset}) => {
                     <h1>Flashcard Set: {cardset.title}</h1>
                     <div> Subject: {cardset.subject} </div>
                     <div> {cardset.flashcardCount} flashcards </div>
+                    <div>Created by: {cardset.user?.username}</div>
                 </div>
             </div>
             <div className='col d-flex justify-content-end align-items-center'>
