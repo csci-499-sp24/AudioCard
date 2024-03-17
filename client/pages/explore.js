@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { CardsetView } from "@/components/DetailedCardsetView";
+import { ExploreCard } from '@/components/Cards/ExploreCard';
 import Navbar from '@/components/Navbar/Navbar';
 
 const Explore = () => {
@@ -121,49 +122,30 @@ const Explore = () => {
                 </div>
             </div>
 
-                <div className="row">
-                    {filteredCardsets.length == 0 && searchInput.length > 0 && <div>No cardsets matching this term</div>}
-                {filteredCardsets.length > 0 || searchInput.length > 0 ? filteredCardsets.map((cardset) => (
-                    <div key={cardset.id} className="col-sm-6 col-md-4 col-lg-3 mb-4">
-                        <div className="card h-100" onClick={() => handleCardsetClick(cardset)}>
-                            <div className="card-body">
-                                <h5 className="card-title">{cardset.title}</h5>
-                                <p className="card-subject">Subject: {cardset.subject}</p>
-                                <p className="card-count">{cardset.flashcardCount} flashcard</p>
-                                <p classname="card-creator">Created by: {cardset.user?.username}</p>
-                                <p className="card-createdTime"><small className="text-muted">Created at: {new Date(cardset.createdAt).toLocaleDateString()}</small></p>
-                            </div>
-                        </div>
-                    </div>
-                )):
-                cardsets.map((cardset) => (
-                        <div key={cardset.id} className="col-sm-6 col-md-4 col-lg-3 mb-4">
-                            <div className="card h-100" onClick={() => handleCardsetClick(cardset)}>
-                                <div className="card-body">
-                                    <h5 className="card-title">{cardset.title}</h5>
-                                    <p className="card-subject">Subject: {cardset.subject}</p>
-                                    <p className="card-count">{cardset.flashcardCount} flashcard</p>
-                                    <p classname="card-creator">Created by: {cardset.user?.username}</p>
-                                    <p className="card-createdTime"><small className="text-muted">Created at: {new Date(cardset.createdAt).toLocaleDateString()}</small></p>
-                                </div>
-                            </div>
-                        </div>
+            <div className="row">
+                { filteredCardsets.length == 0 && searchInput.length > 0 && <div>No cardsets matching this term</div> }
+                {filteredCardsets.length > 0 || searchInput.length > 0 ? filteredCardsets.map((cardset) => (                
+                        <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} />
+                    )):
+                    cardsets.map((cardset) => (
+                        <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} />
                     )) }
                 </div>
+
                 {isDetailedViewOpen && (
-        <div className="detailed-cardset-view">
-          <div className="detailed-cardset-content">
-            <button className="close-btn" onClick={handleCloseDetailedView}>
-              &times;
-            </button>
-            {selectedCardset && (
-              <CardsetView cardset={selectedCardset}
-              />
-            )}
-          </div>
-        </div>
-      )}
-      </div>
+                    <div className="detailed-cardset-view">
+                        <div className="detailed-cardset-content">
+                            <button className="close-btn" onClick={handleCloseDetailedView}>
+                                &times;
+                            </button>
+                            {selectedCardset && (
+                                <CardsetView cardset={selectedCardset}
+                                />
+                            )}
+                        </div>
+                    </div>
+                )}  
+            </div>
             <style jsx>{`
                     .container {
                     margin-right: ${isDetailedViewOpen ? "50%" : "auto"};
@@ -199,7 +181,7 @@ const Explore = () => {
                     border: none;
                   }
                 `}</style>
-            </div>
+        </div>
     );
 }
 
