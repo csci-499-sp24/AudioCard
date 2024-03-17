@@ -2,7 +2,10 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios'; 
 
 export const EditView = ({ cardset, userId}) => {
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
+    const [selectedFlashcard, setSelectedFlashcard] = useState(null);
+
     useEffect(() => {
         fetchFlashCards();
     }, [cardset]);
@@ -15,7 +18,29 @@ export const EditView = ({ cardset, userId}) => {
         } catch(error) {
             console.error('Error fetching flashcards:', error);
         }
-    }   
+    }
+    
+    const deleteFlashcard = async (flashcard) => {
+        try {
+            await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/cardsets/${cardset.id}/flashcards/${flashcard.id}`)
+            fetchFlashCards();
+        } catch (error) {
+            console.error('Error deleting flashcard:', error);
+        }
+    };
+    
+    const handleDelete = (flashcard) => {
+        setShowDeleteConfirmation(true);
+        setSelectedFlashcard(flashcard);
+    };
+
+    const confirmDelete = () => {
+        if (selectedFlashcard) {
+            deleteFlashcard(selectedFlashcard);
+            setSelectedFlashcard(null);
+        }
+    };
+
     
     
     return (
@@ -29,10 +54,36 @@ export const EditView = ({ cardset, userId}) => {
             <div className="flashcardContainer">
                     {currentCardsetData.map(flashcard => (
                         <div key={flashcard.id} className="flashcard">
-                            <div>Question: {flashcard.term}</div>
-                            <div>Answer: {flashcard.definition}</div>
+                        <div className='row'>
+                            <div className='col'>
+                                <div>Question: {flashcard.term}</div>
+                                <div>Answer: {flashcard.definition}</div>
+                            </div>
+                            <div className='col d-flex justify-content-end'>
+                            {selectedFlashcard === flashcard ? (
+                                showDeleteConfirmation ? (
+                                    <div className="delete-confirmation">
+                                        <p>Are you sure you want to delete this flashcard?</p>
+                                        <div className="d-flex justify-content-center">
+                                            <button onClick={() => confirmDelete(flashcard)} className="btn btn-danger">Yes</button>
+                                            <button onClick={() => setShowDeleteConfirmation(false)} className="btn btn-secondary">No</button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <button className="btn deleteButton" onClick={() => handleDelete(flashcard)}>
+                                        <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
+                                    </button>
+                                )
+                            ) : (
+                                <button className="btn deleteButton" onClick={() => handleDelete(flashcard)}>
+                                    <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
+                                </button>
+                            )}
+                            </div>
+                        </div>
                         </div>
                     ))}
+                
             </div>
             <style jsx>{`         
                 .flashcardContainer {
