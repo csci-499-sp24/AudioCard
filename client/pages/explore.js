@@ -25,9 +25,14 @@ const Explore = () => {
     }
 
     const filterCardsets = () => {
+        const searchLower = searchInput.toLowerCase();
         setFilteredCardsets([...cardsets.filter(cardset => 
-            cardset.title.toLowerCase().includes(searchInput.toLowerCase()) || cardset.subject.toLowerCase().includes(searchInput.toLowerCase()))]);
-    }
+            cardset.title.toLowerCase().includes(searchLower) || 
+            cardset.subject.toLowerCase().includes(searchLower) ||
+            (cardset.user?.username && cardset.user.username.toLowerCase().includes(searchLower))
+        )]);
+    };
+    
 
     const onSortChangeClicked = (e, sortBy) =>{
         e.preventDefault();
@@ -125,6 +130,7 @@ const Explore = () => {
                                 <h5 className="card-title">{cardset.title}</h5>
                                 <p className="card-subject">Subject: {cardset.subject}</p>
                                 <p className="card-count">{cardset.flashcardCount} flashcard</p>
+                                <p classname="card-creator">Created by: {cardset.user?.username}</p>
                                 <p className="card-createdTime"><small className="text-muted">Created at: {new Date(cardset.createdAt).toLocaleDateString()}</small></p>
                             </div>
                         </div>
@@ -137,6 +143,7 @@ const Explore = () => {
                                     <h5 className="card-title">{cardset.title}</h5>
                                     <p className="card-subject">Subject: {cardset.subject}</p>
                                     <p className="card-count">{cardset.flashcardCount} flashcard</p>
+                                    <p classname="card-creator">Created by: {cardset.user?.username}</p>
                                     <p className="card-createdTime"><small className="text-muted">Created at: {new Date(cardset.createdAt).toLocaleDateString()}</small></p>
                                 </div>
                             </div>

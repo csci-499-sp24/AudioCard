@@ -240,17 +240,17 @@ const Cardset_Page = () => {
                     border: 1px solid black;
                 }
 
-                .pagination {
-                    margin-top: 20px;
-                }
+                    .pagination {
+                        margin-top: 20px;
+                    }
 
-                .pagination button {
-                    margin-right: 10px;
-                }
-                .flashcardContainer {
-                    display: grid;
-                    grid-gap: 20px; 
-                }
+                    .pagination button {
+                        margin-right: 10px;
+                    }
+                    .flashcardContainer {
+                        display: grid;
+                        grid-gap: 20px; 
+                    }
 
                 .flashcard {
                     background-color: #f0f0f0; 
