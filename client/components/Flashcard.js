@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import style from '../styles/flashcard.module.css';
 import { EditFlashcard } from './EditFlashcard';
+import { RotatingCard } from '../components/Cards/RotatingCard';
 import axios from 'axios';
 
 export const Flashcard = ({ cardData, userId, cardsetId }) => {
@@ -57,37 +58,38 @@ export const Flashcard = ({ cardData, userId, cardsetId }) => {
 
   return (
     <div className="container">
-      {/* Render flashcards based on flashcards state */}
-      <div className="row align-items-center">
-        {isEditing ? null : (
-          <div className="col d-flex justify-content-end">
-            <button className="btn btn-secondary" onClick={() => handleChange(-1)}>Previous</button>
-          </div>
-        )}
-        <div className="col">
+      <div class="row mb-5">
+        <div className='d-flex justify-content-between mb-3'>
+          {isEditing ? null : (
+            <div class="align-self-center mx-auto" id={style.Previous}>
+              <button className="btn btn-secondary" onClick={() => handleChange(-1)}>Prev</button>
+            </div>
+          )}
+
           {isEditing && editingCard ? (
             <EditFlashcard flashcard={editingCard} onEditFlashcard={handleEditComplete} onCancel={handleEditCancel} />
           ) : (
-            <div className={style.flashcardContainer} onClick={() => setFlipped(!isFlipped)}>
-              <div>
-                {isFlipped ?
-                  <div>{flashcards[index] ? flashcards[index].definition : "Loading"}</div> :
-                  <div>Question: {flashcards[index] ? flashcards[index].term : "Loading"}</div>
-                }
-              </div>
+            <RotatingCard flashcards={flashcards} index={index}/>
+          )}
+
+          {isEditing ? null : (
+            <div class="align-self-center mx-auto" id={style.Next}>
+              <button className="btn btn-secondary" onClick={() => handleChange(1)}>Next</button>
             </div>
           )}
         </div>
-        {isEditing ? null : (
-          <div className="col d-flex justify-content-start">
-            <button className="btn btn-secondary" onClick={() => handleChange(1)}>Next</button>
-          </div>
-        )}
-        <div className="col">
+  
+        <div class="d-flex flex-row justify-content-around" id={style.ButtonsSmallScreen}>
+          <div class="p-2"><button className="btn btn-secondary" onClick={() => handleChange(-1)}>Previous</button></div>
+          <div class="p-2"><button className="btn btn-secondary" onClick={() => handleChange(1)}>Next</button></div>
+        </div>
+
+        <div class="d-flex flex-row justify-content-around">
           {!isEditing && (
-            <button className="btn btn-primary" onClick={() => handleEdit(flashcards[index])}>Edit</button>
+            <button className="btn btn-outline-dark" onClick={() => handleEdit(flashcards[index])}>Edit</button>
           )}
         </div>
+
       </div>
     </div>
   );

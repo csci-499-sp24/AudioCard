@@ -1,9 +1,19 @@
-.flashcardContainer {
-    display: flex;
-    justify-content: center;
-    background-color:#c3d5da;
-    width: 450px;
-    height: 300px;
-    border: 2px solid white;
-    align-items: center;
+#ButtonsSmallScreen  {
+    display: none !important;
+}
+
+#Previous,
+#Next {
+    display: block !important;
+}
+
+@media (max-width: 991px) { 
+    #ButtonsSmallScreen {
+        display: flex !important;
+    }
+
+    #Previous,
+    #Next  {
+        display: none !important;
+    }
 }

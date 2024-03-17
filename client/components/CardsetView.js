@@ -45,28 +45,32 @@ export const CardsetView = ({ userId, cardset }) => {
         <div className={styles.setContainer}>
             {/*Form for changing currently viewed cardset */}
             <div className="container">
+                <hr />
                 <div className="row">
-                    <div className="col">
+                    <div className="col mb-2">
                         <h1 className={styles.setTitle}>Current cardset: {cardset.title}</h1>
                     </div>
                 </div>
                 {/*Pass all the cards of the cardset to the flashcard component*/}
                 <div className="row">
-                    <div className='col'>
+                    <div className='col mb-2'>
                         <Flashcard cardData={currentCardsetData} userId = {userId} cardsetId = {cardset.id} />
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col">
+                    <div className="col mb-2">
                         {/* Form for creating new flashcards */}
                         <CreateFlashcard cardset={cardset} onCreateFlashcard={handleCreateFlashcard} />
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col">
-                        <button onClick={handleDeleteFlashcard}>Delete Flashcard</button>
+                    <div className="col mb-2">
+                        <div className="d-flex justify-content-end">
+                            <button className="btn btn-outline-danger" onClick={handleDeleteFlashcard}>Delete Flashcard</button>
+                        </div>
                     </div>
                 </div>
+                <hr />
             </div>
         </div>
     )
