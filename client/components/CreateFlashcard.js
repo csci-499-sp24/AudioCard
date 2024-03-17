@@ -28,7 +28,7 @@ export const CreateFlashcard = ({userId, cardset, onCreateFlashcard}) => {
                     <label htmlFor="answer" className="basis-1/2">Answer: </label>
                     <input type="text" id="answer" name="answer"/>
                 </div>
-                <button className="btn btn-secondary btn-large" type="submit">Submit</button>
+                <button className="btn btn-secondary btn-large" type="submit">Add</button>
             </form>
         </div>
     

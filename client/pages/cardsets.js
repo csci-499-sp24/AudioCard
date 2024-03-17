@@ -97,6 +97,7 @@ const Cardset_Page = () => {
 
     const handleCloseEditPage = () => {
         setIsEditPageOpen(false);
+        fetchFlashCards(selectedCardset);
     }
 
     const handleCreateCardset = () => {

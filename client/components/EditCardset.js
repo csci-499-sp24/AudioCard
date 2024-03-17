@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import axios from 'axios'; 
+import axios from 'axios';
+import { CreateFlashcard } from '@/components/CreateFlashcard';
 
 export const EditView = ({ cardset, userId}) => {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -9,6 +10,7 @@ export const EditView = ({ cardset, userId}) => {
     const [newTitle, setNewTitle] = useState(cardset.title);
     const [newSubject, setNewSubject] = useState(cardset.subject);
     const [newPublicStatus, setNewPublicStatus] = useState(cardset.isPublic);
+    const [isAddingCard, setIsAddingCard] = useState(false);
 
     useEffect(() => {
         fetchFlashCards();
@@ -65,7 +67,14 @@ export const EditView = ({ cardset, userId}) => {
         }
     };
 
+    const handleCreateFlashcard = () => {
+        fetchFlashCards();
+        setIsAddingCard(false);
+    }
     
+    const toggleIsAddingCard = () => {
+        setIsAddingCard(!isAddingCard);
+    }
     
     return (
         <div className="container">
@@ -158,6 +167,18 @@ export const EditView = ({ cardset, userId}) => {
                     ))}
                 
             </div>
+            <div className='addingContainer'>
+                    {isAddingCard && (
+                    <div className=" row flashcard">
+                        <CreateFlashcard userId={userId} cardset={cardset} onCreateFlashcard={handleCreateFlashcard} />
+                    </div>
+            )}
+                <div className='row d-flex justify-content-center'>
+                        <button className='btn' onClick={() => toggleIsAddingCard()}>
+                            <i className="bi bi-plus-square" style={{ fontSize: '2em' }}></i>
+                        </button>
+                </div>
+            </div>
             <style jsx>{`         
                 .flashcardContainer {
                     display: grid;
@@ -171,7 +192,11 @@ export const EditView = ({ cardset, userId}) => {
                 }
                 .btn-danger{
                     margin-right: 10px;
-                }`}   
+                }
+                
+                .addingContainer{
+                    padding: 20px; 
+                }`}
             </style>
         </div>
     );
