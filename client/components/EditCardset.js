@@ -5,6 +5,10 @@ export const EditView = ({ cardset, userId}) => {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [selectedFlashcard, setSelectedFlashcard] = useState(null);
+    const [isEditingSet, setisEditingSet] = useState(false);
+    const [newTitle, setNewTitle] = useState(cardset.title);
+    const [newSubject, setNewSubject] = useState(cardset.subject);
+    const [newPublicStatus, setNewPublicStatus] = useState(cardset.isPublic);
 
     useEffect(() => {
         fetchFlashCards();
@@ -18,6 +22,26 @@ export const EditView = ({ cardset, userId}) => {
         } catch(error) {
             console.error('Error fetching flashcards:', error);
         }
+    }
+
+    const onSubmitCardset = async (event) => {
+        event.preventDefault();
+        const updatedData = {
+            title: newTitle,
+            subject: newSubject,
+            isPublic: newPublicStatus
+        }
+        try{
+            await axios.put(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardset.id}`, {updatedData});
+        } catch (error) {
+            console.error('Error editing cardset:', error);
+        }
+        setisEditingSet(false);
+    };
+
+    const handleEdit = () => {
+        setisEditingSet(true);
+
     }
     
     const deleteFlashcard = async (flashcard) => {
@@ -46,8 +70,57 @@ export const EditView = ({ cardset, userId}) => {
     return (
         <div className="container">
             <div className="setInfoContainer">
-                <h2>Set Name: {cardset.title} </h2>
-                <h2>Subject: {cardset.subject} </h2>
+                <div className='row d-flex align-items-center'>
+                        {isEditingSet ? (
+                                <>
+                                <form className="display flex flex-col" onSubmit={(e) => onSubmitCardset(e)}>
+                                    <div className="flex flex-row">
+                                        <label htmlFor="question">Title: </label>
+                                        <input
+                                            type="text"
+                                            id="title"
+                                            name="title"
+                                            value={newTitle}
+                                            onChange={(e) => setNewTitle(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="flex flex-row">
+                                        <label htmlFor="answer" className="basis-1/2">Subject: </label>
+                                        <input
+                                            type="text"
+                                            id="subject"
+                                            name="subject"
+                                            value={newSubject}
+                                            onChange={(e) => setNewSubject(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="flex flex-row">
+                                        <input
+                                            className="form-check-input"
+                                            type="checkbox"
+                                            id="isPublic"
+                                            checked={newPublicStatus}
+                                            onChange={(e) => setNewPublicStatus(e.target.checked)}
+                                        />
+                                        <label className="form-check-label" htmlFor="isPublic">
+                                            Make publicly viewable?
+                                        </label>
+                                    </div>
+                                    <button className="btn btn-secondary btn-large" type="submit">Save</button>
+                                </form>
+                                </>
+                            ) : ( 
+                                <>
+                                <div className='col'>
+                                    <h2>Set Name: {newTitle} </h2>
+                                    <h2>Subject: {newSubject} </h2>
+                                </div>
+                                <div className='col d-flex justify-content-end'>
+                                    <button className='btn' onClick={handleEdit}><i className="bi bi-pencil-fill"></i></button>
+                                </div>
+                                </>
+                            )}
+                </div>
             </div>
 
 
@@ -95,6 +168,9 @@ export const EditView = ({ cardset, userId}) => {
                     background-color: #f0f0f0; 
                     padding: 20px; 
                     border: 1px solid black;
+                }
+                .btn-danger{
+                    margin-right: 10px;
                 }`}   
             </style>
         </div>
