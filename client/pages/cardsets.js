@@ -63,6 +63,7 @@ const Cardset_Page = () => {
             console.error('Error fetching card sets:', error);
         }
     }
+
     const updateDisplayedCardsets =  async () => {
         const startIndex = (currentPage - 1) * pageSize;
         const endIndex = startIndex + pageSize;
@@ -88,6 +89,7 @@ const Cardset_Page = () => {
             console.error('Error fetching flashcards:', error);
         }
     }
+    
     const selectCardset = async(cardset) => {
         setSelectedCardset(cardset);
         fetchFlashCards(cardset);
@@ -183,11 +185,11 @@ const Cardset_Page = () => {
                     .pagination button {
                         margin-right: 10px;
                     }
+
                     .flashcardContainer {
                         display: grid;
                         grid-gap: 20px; 
                     }
-
 
                     .edit-page-view {
                         position: fixed;
