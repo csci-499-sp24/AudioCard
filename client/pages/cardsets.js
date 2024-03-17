@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { auth } from '../utils/firebase';
 import { EditView } from "@/components/EditCardset";
+import Navbar from '@/components/Navbar/Navbar';
+import { CreateCardset } from '@/components/CreateCardset';
 
 const Cardset_Page = () => {
     const [allCardsets, setAllCardsets] = useState([]);
@@ -95,13 +97,33 @@ const Cardset_Page = () => {
         setIsEditPageOpen(false);
     }
 
+    const handleCreateCardset = () => {
+        fetchCardsets();
+    }
+
+    const [showCreateCardsetForm, setShowCreateCardsetForm] = useState(false);
+
+    // Function to toggle the visibility of the CreateCardset form
+    const toggleCreateCardsetForm = () => {
+      setShowCreateCardsetForm(!showCreateCardsetForm);
+    };
+
     return (
+    <div className='wrapper'>
+        <Navbar/>
         <div className="container">
             <div className="cardsetsContainer">
-                <h2 className="heading">Your Cardsets</h2>
-                <div className="row">
+                <div className='row align-items-center mb-5'>
+                    <div className='col-8 d-flex justify-content-center'>
+                        <h2 className="heading">Your Cardsets</h2>
+                    </div>
+                    <div className="col-4 d-flex justify-content-end">
+                        <button className="btn btn-secondary btn-large" onClick={toggleCreateCardsetForm}>Make Card Set</button>
+                    </div>
+                </div>
+                <div className="row mb-5">
                     <div className="col-2 d-flex justify-content-center">
-                        <button onClick={handlePrevPage} disabled={currentPage === 1}><span>&#8592;</span></button>
+                        <button className="btn btn-secondary" onClick={handlePrevPage} disabled={currentPage === 1}><span>&#8592;</span></button>
                     </div>
                     <div className="col-8">
                             <div className='cardsetRow'>
@@ -111,9 +133,12 @@ const Cardset_Page = () => {
                             </div>
                         </div>
                     <div className="col-2 d-flex justify-content-center">
-                        <button onClick={handleNextPage} disabled={currentPage === Math.ceil(allCardsets.length / pageSize)}><span>&#8594;</span></button>
+                        <button className="btn btn-secondary" onClick={handleNextPage} disabled={currentPage === Math.ceil(allCardsets.length / pageSize)}><span>&#8594;</span></button>
                     </div>
                 </div>
+            </div>
+            <div className="row mb-2">
+                {showCreateCardsetForm && <CreateCardset userId={userData.id} onCreateCardset={handleCreateCardset}/>}
             </div>
             
             <div className='setViewContainer'>
@@ -170,9 +195,9 @@ const Cardset_Page = () => {
                     display: flex; 
                     justify-content: center;
                     margin-bottom: 10px;
-                    background-color: #f0f0f0;
+                    background-color: #fDfDfD;
                     padding: 50px;
-                    border-radius: 5px;
+                    border: 1px solid black;
                 }
 
                 .pagination {
@@ -190,7 +215,7 @@ const Cardset_Page = () => {
                 .flashcard {
                     background-color: #f0f0f0; 
                     padding: 20px; 
-                    border-radius: 8px; 
+                    border: 1px solid black;
                 }
 
                 .edit-page-view {
@@ -207,6 +232,7 @@ const Cardset_Page = () => {
                 }
             `}</style>
         </div>
+    </div>
     );
 };
 

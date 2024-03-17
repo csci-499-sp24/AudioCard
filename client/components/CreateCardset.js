@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
 import styles from '../styles/createACardSet.module.css';
 
 export const CreateCardset = ({userId, onCreateCardset}) => {
+    const [isSubmitted, setIsSubmitted] = useState(false);
     
     const onSubmit = async (event) =>{
-        console.log("User id: ", userId);
         event.preventDefault();
+        setIsSubmitted(true);
         if (userId){
             const newSetData = {
                 title: event.target.title.value,
@@ -47,7 +48,9 @@ export const CreateCardset = ({userId, onCreateCardset}) => {
                 </div>
 
                 <div className="col-12">
-                    <button type="submit" className="btn btn-secondary">Create</button>
+                    <button type="submit" className="btn btn-secondary" disabled={isSubmitted}>
+                        {isSubmitted ? "Set Created" : "Create"}
+                    </button>
                 </div>
             </form>
         </div>
