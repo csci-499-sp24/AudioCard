@@ -5,6 +5,7 @@ import axios from 'axios';
 import styles from '../styles/dashboard.module.css';
 import { CreateCardset } from '@/components/CreateCardset';
 import { CardsetView } from '@/components/CardsetView';
+import { DashboardCard } from '@/components/Cards/DashboardCard';
 import Navbar from '@/components/Navbar/Navbar';
 
 const menuItems = [
@@ -117,11 +118,9 @@ const Dashboard = () => {
                     </div>
 
                     <div className="container">
-                        <div className="row px-2">
+                        <div className="row row-cols-1 row-cols-md-3 g-4 mb-4">
                             { cardsets.map((cardset, index) => { 
-                                return <div key={index} className={styles.cardset} onClick={()=> selectCardset(cardset)}>
-                                    { cardset.title }
-                                </div>
+                                return <DashboardCard key={index} cardset={cardset} onClick={() => selectCardset(cardset)}/>
                             })}
                         </div>
                     </div>
