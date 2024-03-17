@@ -80,7 +80,7 @@ export const Flashcard = ({ cardData, userId, cardsetId }) => {
         </div>
   
         <div class="d-flex flex-row justify-content-around" id={style.ButtonsSmallScreen}>
-          <div class="p-2"><button className="btn btn-secondary" onClick={() => handleChange(-1)}>Previous</button></div>
+          <div class="p-2"><button className="btn btn-secondary" onClick={() => handleChange(-1)}>Prev</button></div>
           <div class="p-2"><button className="btn btn-secondary" onClick={() => handleChange(1)}>Next</button></div>
         </div>
 
