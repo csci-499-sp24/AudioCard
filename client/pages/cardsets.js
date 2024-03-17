@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { auth } from '../utils/firebase';
 import { EditView } from "@/components/EditCardset";
+import Navbar from '@/components/Navbar/Navbar';
 
 const Cardset_Page = () => {
     const [allCardsets, setAllCardsets] = useState([]);
@@ -96,116 +97,119 @@ const Cardset_Page = () => {
     }
 
     return (
-        <div className="container">
-            <div className="cardsetsContainer">
-                <h2 className="heading">Your Cardsets</h2>
-                <div className="row">
-                    <div className="col-2 d-flex justify-content-center">
-                        <button onClick={handlePrevPage} disabled={currentPage === 1}><span>&#8592;</span></button>
-                    </div>
-                    <div className="col-8">
-                            <div className='cardsetRow'>
-                                {displayedCardsets.map((cardset, index) => (
-                                    <div key={index} className="cardsetItem"  onClick={()=> selectCardset(cardset)}>{cardset.title}</div>
-                                ))}
-                            </div>
+        <div className= "wrapper">
+            <Navbar />
+            <div className="container">
+                <div className="cardsetsContainer">
+                    <h2 className="heading">Your Cardsets</h2>
+                    <div className="row">
+                        <div className="col-2 d-flex justify-content-center">
+                            <button onClick={handlePrevPage} disabled={currentPage === 1}><span>&#8592;</span></button>
                         </div>
-                    <div className="col-2 d-flex justify-content-center">
-                        <button onClick={handleNextPage} disabled={currentPage === Math.ceil(allCardsets.length / pageSize)}><span>&#8594;</span></button>
-                    </div>
-                </div>
-            </div>
-            
-            <div className='setViewContainer'>
-                <div className='row'>
-                    <div className='col'>
-                        {selectedCardset && (
-                            <div className="cardsetTitleContainer">
-                                <h1>Flashcard Set: {selectedCardset.title}</h1>
-                                <div> Subject: {selectedCardset.subject} </div>
-                                <div> {currentCardsetData.length} flashcards </div>
+                        <div className="col-8">
+                                <div className='cardsetRow'>
+                                    {displayedCardsets.map((cardset, index) => (
+                                        <div key={index} className="cardsetItem"  onClick={()=> selectCardset(cardset)}>{cardset.title}</div>
+                                    ))}
+                                </div>
                             </div>
-                        )}
-                    </div>
-                    <div className='col d-flex justify-content-end align-items-center'>
-                        {selectedCardset && (
-                            <button className="btn btn-secondary editButton" onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
-                        )}
-                    </div>
-                </div>
-                <div className="flashcardContainer">
-                    {currentCardsetData.map(flashcard => (
-                        <div key={flashcard.id} className="flashcard">
-                            <div>Question: {flashcard.term}</div>
-                            <div>Answer: {flashcard.definition}</div>
+                        <div className="col-2 d-flex justify-content-center">
+                            <button onClick={handleNextPage} disabled={currentPage === Math.ceil(allCardsets.length / pageSize)}><span>&#8594;</span></button>
                         </div>
-                    ))}
+                    </div>
                 </div>
-            </div>
-            {isEditPageOpen && (
-            <div className="edit-page-view">
-            <div className="edit-page-content">
-                <button className="close-btn" onClick={handleCloseEditPage}>
-                &times;
-                </button>
-                {selectedCardset && (
-                    <EditView cardset={selectedCardset} userId={userData.id} />
-                )}
-            </div>
-            </div>
-        )}
                 
-            <style jsx>{`
-                .heading{
-                    margin-top: 20px;
-                }
-                .cardsetRow {
-                    display: flex;
-                    flex-wrap: wrap;
-                    justify-content: space-between;
-                }
+                <div className='setViewContainer'>
+                    <div className='row'>
+                        <div className='col'>
+                            {selectedCardset && (
+                                <div className="cardsetTitleContainer">
+                                    <h1>Flashcard Set: {selectedCardset.title}</h1>
+                                    <div> Subject: {selectedCardset.subject} </div>
+                                    <div> {currentCardsetData.length} flashcards </div>
+                                </div>
+                            )}
+                        </div>
+                        <div className='col d-flex justify-content-end align-items-center'>
+                            {selectedCardset && (
+                                <button className="btn btn-secondary editButton" onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
+                            )}
+                        </div>
+                    </div>
+                    <div className="flashcardContainer">
+                        {currentCardsetData.map(flashcard => (
+                            <div key={flashcard.id} className="flashcard">
+                                <div>Question: {flashcard.term}</div>
+                                <div>Answer: {flashcard.definition}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                {isEditPageOpen && (
+                <div className="edit-page-view">
+                <div className="edit-page-content">
+                    <button className="close-btn" onClick={handleCloseEditPage}>
+                    &times;
+                    </button>
+                    {selectedCardset && (
+                        <EditView cardset={selectedCardset} userId={userData.id} />
+                    )}
+                </div>
+                </div>
+            )}
+                    
+                <style jsx>{`
+                    .heading{
+                        margin-top: 20px;
+                    }
+                    .cardsetRow {
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: space-between;
+                    }
 
-                .cardsetItem {
-                    width: calc(25% - 10px); /* Adjust the width as needed */
-                    display: flex; 
-                    justify-content: center;
-                    margin-bottom: 10px;
-                    background-color: #f0f0f0;
-                    padding: 50px;
-                    border-radius: 5px;
-                }
+                    .cardsetItem {
+                        width: calc(25% - 10px); /* Adjust the width as needed */
+                        display: flex; 
+                        justify-content: center;
+                        margin-bottom: 10px;
+                        background-color: #f0f0f0;
+                        padding: 50px;
+                        border-radius: 5px;
+                    }
 
-                .pagination {
-                    margin-top: 20px;
-                }
+                    .pagination {
+                        margin-top: 20px;
+                    }
 
-                .pagination button {
-                    margin-right: 10px;
-                }
-                .flashcardContainer {
-                    display: grid;
-                    grid-gap: 20px; 
-                }
+                    .pagination button {
+                        margin-right: 10px;
+                    }
+                    .flashcardContainer {
+                        display: grid;
+                        grid-gap: 20px; 
+                    }
 
-                .flashcard {
-                    background-color: #f0f0f0; 
-                    padding: 20px; 
-                    border-radius: 8px; 
-                }
+                    .flashcard {
+                        background-color: #f0f0f0; 
+                        padding: 20px; 
+                        border-radius: 8px; 
+                    }
 
-                .edit-page-view {
-                    position: fixed;
-                    top: 0;
-                    left: 0; 
-                    width: 100%; 
-                    height: 100%;
-                    background-color: #ADD8E6;
-                    z-index: 999;
-                    overflow-y: auto;
-                    transition: transform 0.3s ease;
-                    transform: translateX(${isEditPageOpen ? "0" : "100%"});
-                }
-            `}</style>
+                    .edit-page-view {
+                        position: fixed;
+                        top: 0;
+                        left: 0; 
+                        width: 100%; 
+                        height: 100%;
+                        background-color: #ADD8E6;
+                        z-index: 999;
+                        overflow-y: auto;
+                        transition: transform 0.3s ease;
+                        transform: translateX(${isEditPageOpen ? "0" : "100%"});
+                    }
+                `}</style>
+            </div>
         </div>
     );
 };
