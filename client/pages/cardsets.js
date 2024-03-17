@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { auth } from '../utils/firebase';
 import { EditView } from "@/components/EditCardset";
+import { TermCard } from '../components/Cards/TermCard';
 import Navbar from '@/components/Navbar/Navbar';
 
 const Cardset_Page = () => {
@@ -138,10 +139,7 @@ const Cardset_Page = () => {
                     </div>
                     <div className="flashcardContainer">
                         {currentCardsetData.map(flashcard => (
-                            <div key={flashcard.id} className="flashcard">
-                                <div>Question: {flashcard.term}</div>
-                                <div>Answer: {flashcard.definition}</div>
-                            </div>
+                            <TermCard flashcard={flashcard}/>
                         ))}
                     </div>
                 </div>
@@ -190,11 +188,6 @@ const Cardset_Page = () => {
                         grid-gap: 20px; 
                     }
 
-                    .flashcard {
-                        background-color: #f0f0f0; 
-                        padding: 20px; 
-                        border-radius: 8px; 
-                    }
 
                     .edit-page-view {
                         position: fixed;
