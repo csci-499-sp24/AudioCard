@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { User, Cardset } = require('../models/modelRelations');
+const { Cardset, User, Flashcard } = require('../models/modelRelations');
 const flashcards = require ('./flashcards');
+const { Sequelize } = require('sequelize');
 
 router.route('/signup')
 .post(async (req, res) => {
@@ -42,9 +43,23 @@ router.route('/:userid/cardsets')
         res.status(500).json({ error: 'Error creating a cardset' });
     }
 })
+
 .get(async(req, res) => {
     try{
-        const cardsets = await Cardset.findAll({ where: { userId: req.params.userid }})
+        const cardsets = await Cardset.findAll({ 
+            where: { userId: req.params.userid },
+            include: [{
+                model: Flashcard,
+                attributes: [],
+                duplicating: false,
+            }],
+            attributes: {
+                include: [
+                    [Sequelize.fn("COUNT", Sequelize.col("flashcards.id")), "flashcardCount"]
+                ]
+            },
+            group: ['cardset.id']
+        })
         res.status(200).json({ cardsets });
     } catch (error) {
         console.error('Error fetching card sets:', error);
