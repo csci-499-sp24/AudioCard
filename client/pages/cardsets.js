@@ -165,7 +165,7 @@ const Cardset_Page = () => {
                 </div>
             </div>
             <div className="row mb-2">
-                {showCreateCardsetForm && <CreateCardset userId={userData.id} onCreateCardset={handleCreateCardset}/>}
+                {showCreateCardsetForm && <CreateCardset userId={userData.id} onCreateCardset={handleCreateCardset} onClickToggle={toggleCreateCardsetForm}/>}
             </div>
             
             <div className='setViewContainer'>
