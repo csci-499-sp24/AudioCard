@@ -6,7 +6,6 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
     
     const onSubmit = async (event) =>{
         event.preventDefault();
-        setIsSubmitted(true);
         if (userId){
             const newSetData = {
                 title: event.target.title.value,
