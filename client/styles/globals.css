@@ -2,7 +2,7 @@
 
 :root {
   --bs-primary:  black;        
-  --bs-secondary:#1980DF;
+  --bs-secondary:#6996bf;
   --ts-primary: black; 
   --ts-secondary: #abafb3;
   --ts-tertiary: #abafb3;
@@ -16,7 +16,6 @@ body {
 }
 
 .btn-secondary {
-    color: #ffffff;
     background-color: var(--bs-secondary);
     border: none;
 }  
