@@ -34,5 +34,6 @@ body {
 }
 
 .wrapper {
+    height: 100vh;
     background: radial-gradient(ellipse at 50% 0%, rgba(29, 98, 180, 0.73) 0%, rgba(242, 245, 246, 1) 40%);
 }

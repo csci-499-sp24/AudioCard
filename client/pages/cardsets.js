@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { auth } from '../utils/firebase';
 import { EditView } from "@/components/EditCardset";
+import { TermCard } from '../components/Cards/TermCard';
 import Navbar from '@/components/Navbar/Navbar';
 import { CreateCardset } from '@/components/CreateCardset';
 
@@ -64,6 +65,7 @@ const Cardset_Page = () => {
             console.error('Error fetching card sets:', error);
         }
     }
+
     const updateDisplayedCardsets =  async () => {
         const startIndex = (currentPage - 1) * pageSize;
         const endIndex = startIndex + pageSize;
@@ -89,6 +91,7 @@ const Cardset_Page = () => {
             console.error('Error fetching flashcards:', error);
         }
     }
+    
     const selectCardset = async(cardset) => {
         setSelectedCardset(cardset);
         fetchFlashCards(cardset);
@@ -247,6 +250,7 @@ const Cardset_Page = () => {
                     .pagination button {
                         margin-right: 10px;
                     }
+
                     .flashcardContainer {
                         display: grid;
                         grid-gap: 20px; 

@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import styles from '../styles/createACardSet.module.css';
 
-export const CreateCardset = ({userId, onCreateCardset}) => {
-    const [isSubmitted, setIsSubmitted] = useState(false);
+export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
     
     const onSubmit = async (event) =>{
         event.preventDefault();
@@ -16,11 +15,15 @@ export const CreateCardset = ({userId, onCreateCardset}) => {
             }
             await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets`, { newSetData });
             onCreateCardset();
+            onClickToggle();
         }
     }
 
     return (
         <div className="mb-5 p-4" id={styles.createCardset}>
+            <div className="d-flex justify-content-end">
+                <button className="btn" onClick={onClickToggle}>X</button>
+            </div>
             <h5>Create a new cardset</h5>
 
             <form className="row row-cols-lg-auto g-3 align-items-center" onSubmit={(e) => onSubmit(e)}>
@@ -48,8 +51,8 @@ export const CreateCardset = ({userId, onCreateCardset}) => {
                 </div>
 
                 <div className="col-12">
-                    <button type="submit" className="btn btn-secondary" disabled={isSubmitted}>
-                        {isSubmitted ? "Set Created" : "Create"}
+                    <button type="submit" className="btn btn-secondary">
+                        Create
                     </button>
                 </div>
             </form>
