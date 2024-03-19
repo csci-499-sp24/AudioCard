@@ -31,6 +31,18 @@ router.route('/usernameCheck')
     }
 })
 
+//Get all Users
+router.route('/')
+.get(async(req, res) => {
+    try{
+        const users = await User.findAll();
+        res.status(200).json( users );
+    } catch (error) {
+        console.error('Error fetching users from database:', error);
+        res.status(500).json({ error: 'Error fetching users from database' });
+    }
+});
+
 //Get user's database entry using their firebaseId
 router.route('/getuser')
 .get(async(req, res) => {
@@ -42,7 +54,7 @@ router.route('/getuser')
         console.error('Error fetching database user:', error);
         res.status(500).json({ error: 'Error fetching database user' });
     }
-})
+});
 
 //Users cardsets 
 router.route('/:userid/cardsets')
@@ -58,7 +70,6 @@ router.route('/:userid/cardsets')
         res.status(500).json({ error: 'Error creating a cardset' });
     }
 })
-
 .get(async(req, res) => {
     try{
         const cardsets = await Cardset.findAll({ 
@@ -80,7 +91,7 @@ router.route('/:userid/cardsets')
         console.error('Error fetching card sets:', error);
         res.status(500).json({ error: 'Error fetching card sets' });
     }
-})
+});
 
 //Update specific cardset
 router.route('/:userid/cardsets/:cardsetid')
@@ -110,12 +121,7 @@ router.route('/:userid/cardsets/:cardsetid')
         console.error('Error deleting cardset:', error);
         res.status(500).json({ error: 'Error deleting a cardset' });
     }
-}
-
-
-
-
-)
+});
 
 
 router.use('/:userid/cardsets', flashcards);
