@@ -5,6 +5,7 @@ import { EditView } from "@/components/EditCardset";
 import { TermCard } from '../components/Cards/TermCard';
 import Navbar from '@/components/Navbar/Navbar';
 import { CreateCardset } from '@/components/CreateCardset';
+import { useRouter } from 'next/router';
 
 const Cardset_Page = () => {
     const [allCardsets, setAllCardsets] = useState([]);
@@ -16,6 +17,8 @@ const Cardset_Page = () => {
     const [userData, setUserData] = useState(null);
     const [isEditPageOpen, setIsEditPageOpen] = useState(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const router = useRouter();
+
 
     const pageSize = 4;
 
@@ -135,6 +138,12 @@ const Cardset_Page = () => {
         deleteCardSet(selectedCardset);
     };
 
+    const navigateToTestPage = () => {
+        if (selectedCardset) {
+          router.push(`/test/${selectedCardset.id}`);
+        }
+    };
+    
     return (
     <div className='wrapper'>
         <Navbar/>
@@ -182,6 +191,7 @@ const Cardset_Page = () => {
                     <div className='col d-flex justify-content-end align-items-center'>
                     {selectedCardset && (
                         <div className="d-flex align-items-center">
+                            <button className="btn btn-secondary" onClick={navigateToTestPage}>Test</button>
                             <button className="btn btn-secondary editButton" onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
                             <button className="btn deleteButton" onClick={() => handleDelete(selectedCardset)}><i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i></button>
                         </div>
