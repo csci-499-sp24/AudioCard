@@ -2,7 +2,11 @@ const express = require('express');
 const router = express.Router();
 const { Cardset, User, Flashcard } = require('../models/modelRelations');
 const flashcards = require ('./flashcards');
+const sharedCardsets = require ('./sharedCardsets');
 const { Sequelize } = require('sequelize');
+
+//router.use('/:userid/cardsets', flashcards);
+router.use('/:userid/cardsets', sharedCardsets);
 
 router.route('/signup')
 .post(async (req, res) => {
@@ -107,8 +111,5 @@ router.route('/:userid/cardsets/:cardsetid')
         res.status(500).json({ error: 'Error deleting a cardset' });
     }
 });
-
-
-router.use('/:userid/cardsets', flashcards);
 
 module.exports = router;
