@@ -94,6 +94,18 @@ const Dashboard = () => {
       setShowCreateCardsetForm(!showCreateCardsetForm);
     };
 
+    const testASR = async () => {
+        try {
+            const audioresponse = await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+'/api/recorder');
+            const audioData = audioresponse.data.audioData;
+            const transcriptionResponse = await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+'/api/speechIncoming', { audioData });
+    
+            console.log('Transcription:', transcriptionResponse.data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     return (
         <div className="wrapper">   
             <Navbar/>
@@ -101,6 +113,7 @@ const Dashboard = () => {
             <div className="container">
                 <div className="row px-2">
                     <div className="col-12 mt-5" id={styles.greeting}>
+                        <button onClick={testASR}>Test ASR</button>
                         <h1 className="" id={styles.welcome}>Welcome, <span className="font-weight-bold text-dark">{userData?.username}</span></h1> 
                     </div>
                     <div className="col-12 my-3">
