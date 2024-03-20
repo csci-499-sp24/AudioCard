@@ -1,18 +1,70 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { CardViewTestMode } from '@/components/CardViewTestMode';
+import axios from 'axios';
+import { auth } from '@/utils/firebase';
 
 const TestPage = () => {
-  const router = useRouter();
-  const { id } = router.query; // This is the ID of the cardset
+    const router = useRouter();
+    const { id } = router.query; // This is the ID of the cardset
+    const [user, setUser] = useState(null);
+    const [userData, setUserData] = useState(null);
+    const [cardsetData, setCardsetData] = useState(null);
 
 
-  return (
-    <div>
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                setUser(user);
+            } else {
+                setUser(null);
+            }
+        });
+        if (!userData) {
+            fetchUserData();
+        }
+        return () => unsubscribe();
+    }, [user, userData]);
 
-      <h1>Test Mode for Cardset ID: {id}</h1>
-      
-    </div>
-  );
+    useEffect(() => {
+        if (id) {
+            fetchCardset(id);
+        }
+    }, [id]);
+
+
+    const fetchUserData = async () => {
+        if (!user || !user.uid) {
+            return;
+        }
+        try {
+            const firebaseId = user?.uid
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/users/getuser', { params: { firebaseId: firebaseId } });
+            const userData = response.data.user;
+            setUserData(userData);
+        } catch (error) {
+            console.error('Error fetching user: ', error);
+        }
+    }
+
+    const fetchCardset = async (cardsetId) => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/cardsets/${cardsetId}`);
+            setCardsetData(response.data); 
+        } catch (error) {
+            console.error('Error fetching cardset:', error);
+        }
+    };
+
+
+
+    return (
+        <div>
+            <h1>Test Mode</h1>
+            {cardsetData && <CardViewTestMode userId={userData?.id} cardset={cardsetData} />}
+
+        </div>
+    );
 };
 
 export default TestPage;
