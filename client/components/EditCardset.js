@@ -3,14 +3,14 @@ import axios from 'axios';
 import { CreateFlashcard } from '@/components/CreateFlashcard';
 import { EditFlashcard } from '@/components/EditFlashcard'; 
 
-export const EditView = ({ cardset, userId}) => {
+export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubject, cardsetIsPublic }) => {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [selectedFlashcard, setSelectedFlashcard] = useState(null);
     const [isEditingSet, setisEditingSet] = useState(false);
-    const [newTitle, setNewTitle] = useState(cardset.title);
-    const [newSubject, setNewSubject] = useState(cardset.subject);
-    const [newPublicStatus, setNewPublicStatus] = useState(cardset.isPublic);
+    const [newTitle, setNewTitle] = useState(cardsetTitle);
+    const [newSubject, setNewSubject] = useState(cardsetSubject);
+    const [newPublicStatus, setNewPublicStatus] = useState(cardsetIsPublic);
     const [isAddingCard, setIsAddingCard] = useState(false);
     const [isEditingCard, setIsEditingCard] = useState(false); 
 
@@ -20,7 +20,7 @@ export const EditView = ({ cardset, userId}) => {
 
     const fetchFlashCards = async () => {
         try{
-            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardset.id}/flashcards`);
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardsetId}/flashcards`);
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
         } catch(error) {
@@ -36,7 +36,7 @@ export const EditView = ({ cardset, userId}) => {
             isPublic: newPublicStatus
         }
         try{
-            await axios.put(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardset.id}`, {updatedData});
+            await axios.put(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardsetId}`, {updatedData});
         } catch (error) {
             console.error('Error editing cardset:', error);
         }
@@ -50,7 +50,7 @@ export const EditView = ({ cardset, userId}) => {
     
     const deleteFlashcard = async (flashcard) => {
         try {
-            await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/cardsets/${cardset.id}/flashcards/${flashcard.id}`)
+            await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/cardsets/${cardsetId}/flashcards/${flashcard.id}`)
             fetchFlashCards();
         } catch (error) {
             console.error('Error deleting flashcard:', error);
@@ -191,16 +191,18 @@ export const EditView = ({ cardset, userId}) => {
                     </div>
                 ))}
             </div>
+
             <div className='addingContainer'>
-                    {isAddingCard && (
+                {isAddingCard && (
                     <div className=" row flashcard">
-                        <CreateFlashcard userId={userId} cardset={cardset} onCreateFlashcard={handleCreateFlashcard} />
+                        <CreateFlashcard userId={userId} cardsetId={cardsetId} onCreateFlashcard={handleCreateFlashcard} />
                     </div>
-            )}
+                )}
+
                 <div className='row d-flex justify-content-center'>
-                        <button className='btn' onClick={() => toggleIsAddingCard()}>
-                            <i className="bi bi-plus-square" style={{ fontSize: '2em' }}></i>
-                        </button>
+                    <button className='btn' onClick={() => toggleIsAddingCard()}>
+                        <i className="bi bi-plus-square" style={{ fontSize: '2em' }}></i>
+                    </button>
                 </div>
             </div>
             <style jsx>{`         
@@ -225,4 +227,3 @@ export const EditView = ({ cardset, userId}) => {
         </div>
     );
 }
-

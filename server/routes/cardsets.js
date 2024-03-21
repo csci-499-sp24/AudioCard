@@ -46,6 +46,35 @@ router.route('/')
     }
 })
 
+router.route('/:cardsetId')
+.get(async (req, res) => {
+    try {
+        const { cardsetId } = req.params;
+        const cardset = await Cardset.findByPk(cardsetId, {
+            include: [
+                {
+                    model: Flashcard,
+                    attributes: ['id', 'term', 'definition'], // Add other attributes you need
+                    duplicating: false,
+                },
+                {
+                    model: User,
+                    attributes: ['id', 'username'] // Add other attributes you need
+                }
+            ]
+        });
+
+        if (!cardset) {
+            return res.status(404).json({ error: 'Cardset not found' });
+        }
+
+        res.status(200).json(cardset);
+    } catch (error) {
+        console.error('Error fetching cardset:', error);
+        res.status(500).json({ error: 'Error fetching cardset' });
+    }
+});
+
 router.use('/', flashcards);
 
 module.exports = router;

@@ -38,11 +38,6 @@ const Navbar = () => {
                             </Link>
                         </li>
                         <li className="nav-item text-center">
-                            <Link href="/cardsets" className='nav-link text-light' id={styles.navLink}>
-                                Your cardsets
-                            </Link>
-                        </li>
-                        <li className="nav-item text-center">
                             <a className="nav-link text-dark" id={styles.navLink} href="#">Dark</a>
                         </li>
                         <li className="nav-item text-center">
