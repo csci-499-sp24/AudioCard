@@ -1,53 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import style from '../styles/flashcard.module.css';
-import { RotatingCard } from '../components/Cards/RotatingCard';
+import { RotatingCardTest } from './Cards/RotatingCardTest';
 
 export const FlashcardTestMode = ({ cardData, userId, cardsetId }) => {
-    const [isFlipped, setFlipped] = useState(false);
     const [index, setIndex] = useState(0);
-    const [flashcards, setFlashcards] = useState([]); // State to hold flashcards data
+    const [flashcards, setFlashcards] = useState([]);
+    const [answer, setAnswer] = useState('');
+    const [isFlipped, setIsFlipped] = useState(false);
 
     useEffect(() => {
-        setFlipped(false);
-        setIndex(0);
-        // Set the initial flashcards data
         setFlashcards(cardData);
     }, [cardData]);
+
+    
+    useEffect(() => {
+        setIsFlipped(false);
+    }, [index]);
+
 
     if (flashcards.length === 0) {
         return <div>No Flashcards Yet!</div>;
     }
 
-    const handleChange = (change) => {
-        if (index === flashcards.length - 1 && change === 1) {
-            setIndex(0);
-        } else if (index === 0 && change === -1) {
-            setIndex(flashcards.length - 1);
-        } else {
-            setIndex(index + change);
-        }
+    const handleAnswerChange = (e) => {
+        setAnswer(e.target.value);
+    };
+
+    const handleSubmitAnswer = (e) => {
+        e.preventDefault();
+        setIsFlipped(true);
+        setTimeout(() => {
+            setIsFlipped(false);
+            setTimeout(() => {
+                setIndex((currentIndex) => (currentIndex + 1) % flashcards.length);
+                setAnswer(''); 
+            }, 150);
+        }, 1500);
     };
 
     return (
         <div className="container">
-            <div className="row mb-5">
-                <div className='d-flex justify-content-between mb-3'>
-                    <div className="align-self-center mx-auto" id={style.Previous}>
-                        <button className="btn btn-secondary" onClick={() => handleChange(-1)}>Prev</button>
-                    </div>
-
-                    <RotatingCard flashcards={flashcards} index={index} />
-
-                    <div className="align-self-center mx-auto" id={style.Next}>
-                        <button className="btn btn-secondary" onClick={() => handleChange(1)}>Next</button>
-                    </div>
-                </div>
-
-                <div className="d-flex flex-row justify-content-around" id={style.ButtonsSmallScreen}>
-                    <div className="p-2"><button className="btn btn-secondary" onClick={() => handleChange(-1)}>Prev</button></div>
-                    <div className="p-2"><button className="btn btn-secondary" onClick={() => handleChange(1)}>Next</button></div>
-                </div>
+            <div className={style.flashcard}>
+                <RotatingCardTest
+                    flashcards={flashcards}
+                    index={index}
+                    isFlipped={isFlipped}
+                />
             </div>
+
+            {!isFlipped && (
+                <form onSubmit={handleSubmitAnswer} className="mt-4">
+                    <div className="form-group">
+                        <
+                            input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter your answer here"
+                            value={answer}
+                            onChange={handleAnswerChange}
+                        />
+                    </div>
+                    <button type="submit" className="btn btn-primary">Submit Answer</button>
+                </form>
+            )}
         </div>
     );
 };
