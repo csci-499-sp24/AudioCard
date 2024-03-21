@@ -1,41 +1,7 @@
 const express = require('express');
 const router = express.Router({mergeParams: true});
 const { Cardset, User, SharedCardset } = require('../models/modelRelations');
-
-async function checkUserAuthority(userid, cardsetid) {
-    try{ 
-        const sharedCardset = await SharedCardset.findOne({
-            where: {
-                userId: userid,
-                cardsetId: cardsetid
-            }
-        });
-        const cardset = await Cardset.findOne({
-            where: {
-                userId: userid,
-                id: cardsetid
-            }
-        });
-        switch (true) {
-            case cardset != null:
-                return 'owner';
-            case sharedCardset === null:
-                return 'no-access';
-            case sharedCardset.authority === 'read-only':
-                return 'read-only';
-            case sharedCardset.authority === 'edit':
-                return 'edit';
-            case sharedCardset.authority === 'admin':
-                return 'admin';
-            default:
-                return 'no-access';
-        }
-    } catch (error) {
-        console.error('Error checking user authority:', error);
-        res.status(500).json({ error: 'Internal server error' });
-        return false;
-    }
-}
+const{ checkCardsetAuthority } = require('./functions');
 
 //Cardsets shared with user
 router.route('/shared')
@@ -55,9 +21,9 @@ router.route('/shared')
 //takes userid(user making the request) and cardsetid in url params
 //and takes query params userid(user to be granted access) and authority ('read-only', 'edit', 'admin')
 router.route('/:cardsetid/share')
-.post(async(req,res) => {
+.post(async(req,res) => { //Grant a user access to cardset
     try{
-        const authLevel = await checkUserAuthority(req.params.userid, req.params.cardsetid);
+        const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
         console.log(authLevel);
         if (authLevel == 'admin' || authLevel == 'edit' || authLevel == 'owner'){
             if (authLevel == 'edit' && req.params.authority == 'admin'){
@@ -87,7 +53,7 @@ router.route('/:cardsetid/share')
 })
 .delete(async(req,res) => { //Remove user access to cardset
     try{
-        const authLevel = await checkUserAuthority(req.params.userid, req.params.cardsetid);
+        const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
         if (authLevel == 'admin'|| authLevel == 'owner'){
             const user = await User.findOne({where: { id: req.query.userid }});
             const cardset = await Cardset.findOne({where: { id: req.params.cardsetid }});
@@ -113,8 +79,8 @@ router.route('/:cardsetid/share')
 })
 .put(async(req,res) => { //Update user access level. Takes userid and authority in query params
     try{
-        const authLevelofRequest = await checkUserAuthority(req.params.userid, req.params.cardsetid);
-        const authLevelofTarget = await checkUserAuthority(req.query.userid, req.params.cardsetid);
+        const authLevelofRequest = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
+        const authLevelofTarget = await checkCardsetAuthority(req.query.userid, req.params.cardsetid);
         if(authLevelofTarget == 'owner' || (authLevelofRequest == 'admin' && authLevelofTarget == 'admin')){
             res.status(403).send(`User is authorization is too low to make this request`);
             return;
