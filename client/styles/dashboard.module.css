@@ -51,3 +51,11 @@
 #welcome {
     color: #C2C3C4;
 }
+
+#dashboardCardLink,
+#dashboardCardLink:link,
+#dashboardCardLink:visited,
+#dashboardCardLink:hover,
+#dashboardCardLink:active { 
+    text-decoration: none !important; 
+} 
