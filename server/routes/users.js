@@ -5,7 +5,7 @@ const flashcards = require ('./flashcards');
 const sharedCardsets = require ('./sharedCardsets');
 const { Sequelize } = require('sequelize');
 
-//router.use('/:userid/cardsets', flashcards);
+router.use('/:userid/cardsets', flashcards);
 router.use('/:userid/cardsets', sharedCardsets);
 
 router.route('/signup')
