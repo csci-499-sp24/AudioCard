@@ -106,6 +106,26 @@ const Dashboard = () => {
         }
     };
 
+    const testTTS = async () => {
+        try {
+            const input = 'text to speech is working';
+            const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_URL + '/api/textToSpeech', { input }, { responseType: 'arraybuffer' });
+    
+            const audioData = Buffer.from(response.data).toString('base64');
+            const audioSrc = `data:audio/mp3;base64,${audioData}`;
+    
+            const sound = new Howl({
+                src: [audioSrc], 
+                format: ['mp3'],
+                onload: () => {
+                    sound.play();
+                }
+            });
+        } catch (error) {
+            console.error('Error: ', error);
+        }
+    }
+
     return (
         <div className="wrapper">   
             <Navbar/>
@@ -114,6 +134,7 @@ const Dashboard = () => {
                 <div className="row px-2">
                     <div className="col-12 mt-5" id={styles.greeting}>
                         <button onClick={testASR}>Test ASR</button>
+                        <button onClick={testTTS}>Test TTS</button>
                         <h1 className="" id={styles.welcome}>Welcome, <span className="font-weight-bold text-dark">{userData?.username}</span></h1> 
                     </div>
                     <div className="col-12 my-3">

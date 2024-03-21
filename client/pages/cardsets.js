@@ -203,9 +203,8 @@ const Cardset_Page = () => {
                 </div>
                 <div className="flashcardContainer">
                     {currentCardsetData.map(flashcard => (
-                        <div key={flashcard.id} className="flashcard">
-                            <div>Question: {flashcard.term}</div>
-                            <div>Answer: {flashcard.definition}</div>
+                        <div className='flashcard'>
+                            <TermCard flashcard={flashcard}/>
                         </div>
                     ))}
                 </div>
@@ -258,7 +257,6 @@ const Cardset_Page = () => {
 
                 .flashcard {
                     background-color: #f0f0f0; 
-                    padding: 20px; 
                     border: 1px solid black;
                 }
 

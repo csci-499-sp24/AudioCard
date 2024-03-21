@@ -5,6 +5,7 @@ export default function Document() {
     <Html lang="en">
       <Head>
       <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
       </Head>
       <body>
         <Main />
