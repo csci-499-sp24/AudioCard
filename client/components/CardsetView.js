@@ -10,21 +10,17 @@ export const CardsetView = ({ userId, cardset, cardsetId }) => {
 
     useEffect(() => {
         fetchFlashCards();
-    }, [cardset]); // <--delete
+    }, [cardset]);
 
     const handleCreateFlashcard = () => {
-        console.log("what get for adding new  cardset: ", cardset);
-        console.log("what get for adding new  cardset caddd: ", cardsetId);
         fetchFlashCards();
     }
 
     const fetchFlashCards = async () => {
         try {
-            console.log("what get for adding new  caddd: ", cardsetId);
             const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userId}/cardsets/${cardsetId}/flashcards`);
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
-            console.log('flashcards currentCardsetData:', currentCardsetData);
         } catch (error) {
             console.error('Error fetching flashcards:', error);
         }
@@ -53,44 +49,47 @@ export const CardsetView = ({ userId, cardset, cardsetId }) => {
     return (
         <div className={styles.setContainer}>
             {/*Form for changing currently viewed cardset */}
-
             <div className="container">
-                <hr />
-
+                {/*Study mode with rorating flashcard */}
                 <div className="row">
                     <div className='col mb-2'>
                         <Flashcard cardData={currentCardsetData} userId={userId} cardsetId={cardsetId} />
                     </div>
                 </div>
 
+                {/* Add new flashcard button */}
                 { showCreateFlashcardForm ? 
                     null
-                    : <button className="btn btn-secondary btn-large" onClick={toggleCreateFlashcardForm}>Add Flashcard</button>
+                    : 
+                    <div className="d-flex justify-content-end">
+                        <button className="btn btn-secondary btn-large" onClick={toggleCreateFlashcardForm}>Add Flashcard</button>
+                    </div>
                 }
 
+                {/* Add or delete a flashcard section  */}
                 { showCreateFlashcardForm ?
-                    <div>
-                        <div className="d-flex justify-content-end">
-                            <button className="btn" onClick={toggleCreateFlashcardForm}>X</button>
+                    <div className='row'>
+                        <hr />
+                        <div className="col-12 mb-2" id={styles.greeting}>
+                            <div className="d-flex justify-content-end">
+                                <button className="btn" onClick={toggleCreateFlashcardForm}>X</button>
+                            </div>
                         </div>
-                        <div className="row">
-                            <div className="col mb-2">
-                                {/* Form for creating new flashcards */}
+
+                        <div className="col-12 my-2">
+                            <div className="d-flex justify-content-center">
                                 <CreateFlashcard cardsetId={cardsetId} onCreateFlashcard={handleCreateFlashcard} />
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col mb-2">
-                                <div className="d-flex justify-content-end">
-                                    <button className="btn btn-outline-danger" onClick={handleDeleteFlashcard}>Delete Flashcard</button>
-                                </div>
+
+                        <div className="col-12 mt-2" id={styles.greeting}>
+                            <div className="d-flex justify-content-end">
+                                <button className="btn btn-outline-danger" onClick={handleDeleteFlashcard}>Delete Flashcard</button>
                             </div>
                         </div>
                     </div>
-                : null
+                    : null
                 }
-
-       
 
                 <hr />
             </div>

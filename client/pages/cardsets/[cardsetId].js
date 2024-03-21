@@ -56,16 +56,18 @@ export default function CardsetPage () {
         }
     }
 
-    
-
     // Render flashcard data
     return (
-        <div>
+        <div className='wrapper'>
             <Navbar />
-            <h1>Flashcard Details:</h1>
-            <p>Title: {cardsetTitle}</p>
-            <p>ID: {cardsetId}</p>
-                        
+            <div className="container">
+                <div className="row">
+                    <div className="col mt-5 mb-2">
+                        <h1 className="text-center">{cardsetTitle}</h1>
+                    </div>
+                </div>       
+            </div>
+
             <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} />
         </div>
     );
