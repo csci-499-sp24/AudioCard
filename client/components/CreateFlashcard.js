@@ -1,17 +1,16 @@
 import React from 'react';
 import axios from 'axios';
 
-export const CreateFlashcard = ({userId, cardset, onCreateFlashcard}) => {
+export const CreateFlashcard = ({userId, cardsetId, onCreateFlashcard}) => {
     
     const onSubmit = async (event) =>{
         event.preventDefault();
-        if (cardset){
-            const cardsetId = cardset.id
+        if (cardsetId){
             const newCardData = {
                 term: event.target.question.value,
                 definition: event.target.answer.value
             }
-            await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardset.id}/flashcards`, {cardsetId, newCardData});
+            await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardsetId}/flashcards`, {cardsetId, newCardData});
             onCreateFlashcard();
         }
     }
