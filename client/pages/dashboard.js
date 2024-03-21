@@ -127,7 +127,8 @@ const Dashboard = () => {
                                     pathname: `/cardsets/${cardset.id}`, 
                                     query: { 
                                         cardsetTitle: cardset.title,
-                                        cardsetSubject: cardset.subject 
+                                        cardsetSubject: cardset.subject,
+                                        cardsetIsPublic: cardset.isPublic  
                                     } 
                                 }}
                             >
