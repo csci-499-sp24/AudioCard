@@ -3,6 +3,7 @@
     width: 702px;
     height: 433px;
     margin: 0 auto;
+    border: 10px solid transparent;
 }
   
 #card {
@@ -46,10 +47,20 @@
     color: black;
 }
 
-.correct {
-    border: 2px solid green;
+@keyframes flash-green {
+    0%, 100% { border-color: transparent; }
+    50% { border-color: green; }
+  }
+  
+  @keyframes flash-red {
+    0%, 100% { border-color: transparent; }
+    50% { border-color: red; }
+  }
+  
+  .correct {
+    animation: flash-green 2s ease-out;
   }
   
   .incorrect {
-    border: 2px solid red;
+    animation: flash-red 2s ease-out;
   }

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { CardViewTestMode } from '@/components/CardViewTestMode';
 import axios from 'axios';
 import { auth } from '@/utils/firebase';
+import styles from '../../styles/testmode.module.css';
 
 const TestPage = () => {
     const router = useRouter();
@@ -60,7 +61,10 @@ const TestPage = () => {
 
     return (
         <div>
-            <h1>Test Mode</h1>
+            <h1 className={styles.testModeHeading}>Test Mode</h1>
+            <button className={styles.exitButton} onClick={() => router.back()}>
+                X
+            </button>
             {cardsetData && <CardViewTestMode userId={userData?.id} cardset={cardsetData} />}
 
         </div>
