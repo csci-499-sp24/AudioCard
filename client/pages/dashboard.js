@@ -133,6 +133,7 @@ const Dashboard = () => {
                                         cardsetIsPublic: cardset.isPublic  
                                     } 
                                 }}
+                                key={index}
                             >
                                 <DashboardCard key={index} cardset={cardset} onClick={() => selectCardset(cardset)}/>
                             </Link>
