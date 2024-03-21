@@ -11,6 +11,10 @@ export default function FlashcardPage() {
     const [userData, setUserData] = useState(null);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
 
+    const cardsetsId = router.query.cardsetsId; // get current cardset Id from route
+    const cardsetTitle = router.query.cardsetTitle; // get current cardset title from route's query prop
+    const cardsetSubject = router.query.cardsetSubject; // get current cardset subject route's query prop
+
     useEffect(() => {
         fetchFlashCards();
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -42,9 +46,10 @@ export default function FlashcardPage() {
 
     const fetchFlashCards = async () => {
         try {
-            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/flashcards/${router.query.id}/flashcards`);
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/flashcards/${cardsetsId}/flashcards`);
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
+            console.log('flashcards:', flashcards);
         } catch (error) {
             console.error('Error fetching flashcards:', error);
         }
@@ -54,9 +59,9 @@ export default function FlashcardPage() {
     return (
         <div>
             <Navbar />
-            <h1>Flashcard Details</h1>
-            <p>ID: {router.query.id}</p>
-            <Flashcard cardData={currentCardsetData} userId={userData?.id} cardsetId={router.query.id} />
+            <h1>Flashcard Details:</h1>
+            <p>Title: {cardsetTitle}</p>
+            <Flashcard cardData={currentCardsetData} userId={userData?.id} cardsetId={cardsetsId} />
         </div>
     );
 }
