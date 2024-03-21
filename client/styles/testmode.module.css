@@ -1,0 +1,18 @@
+.testModeHeading {
+    font-size: 2rem; 
+    font-family: 'Arial', sans-serif; 
+    text-align: center; 
+    margin-top: 1rem; 
+}
+
+.exitButton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border: none;
+    background-color: #1d62b4ba; 
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+}
