@@ -8,14 +8,16 @@ const { Cardset, Flashcard } = require('../models/modelRelations');
 router.route('/:cardsetid/flashcards')
   .post(async (req, res) => {
     try {
-      const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
-      if (authLevel === 'read-only' || authLevel === 'no-access'){
-        res.status(403).send('User is not authorized to make this request');
-        return;
+      const cardset = await Cardset.findOne({ where: { id } });
+      if (cardset.isPublic === false){ // Only check authority if not a public set
+        const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
+        if (authLevel === 'read-only' || authLevel === 'no-access'){
+          res.status(403).send('User is not authorized to make this request');
+          return;
+        }
       }
       const { cardsetId, newCardData } = req.body;
       const id = cardsetId;
-      const cardset = await Cardset.findOne({ where: { id } });
       const flashcard = await Flashcard.create(newCardData);
       await cardset.addFlashcard(flashcard);
       res.status(201).json({ flashcard });

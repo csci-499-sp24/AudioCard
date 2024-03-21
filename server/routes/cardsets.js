@@ -4,6 +4,8 @@ const { Cardset, User, Flashcard, SharedCardset } = require('../models/modelRela
 const flashcards = require ('./flashcards');
 const { Sequelize } = require('sequelize');
 
+router.use('/cardsets', flashcards);
+
 router.route('/')
 .get(async (req, res) => {
     try {
@@ -46,28 +48,6 @@ router.route('/')
     }
 });
 
-//Get specific card set and users with access
-router.route('/:cardsetid')
-.get(async(req,res) => {
-    try{
-        const cardset = await Cardset.findOne({
-            where: { id: req.params.cardsetid }, 
-            include: [{
-                model: User,
-                as: 'sharedWithUser',
-                attributes: ['id', 'username', 'email'],
-                through: {
-                    attributes: ['authority']
-                }
-            }],
-        });
-        res.status(200).json(cardset);
-    } catch(error) {
-        console.error('Error getting cardset:', error);
-        res.status(500).json({ error: 'Error getting cardset' });
-    }
-});
-
 router.route('/:cardsetId')
 .get(async (req, res) => {
     try {
@@ -96,7 +76,5 @@ router.route('/:cardsetId')
         res.status(500).json({ error: 'Error fetching cardset' });
     }
 });
-
-router.use('/', flashcards);
 
 module.exports = router;

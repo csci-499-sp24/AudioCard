@@ -19,6 +19,10 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
 
     const fetchFlashCards = async () => {
         try {
+            if (!userId){
+                console.error("User id not found");
+                return;
+            }
             const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userId}/cardsets/${cardsetId}/flashcards`);
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
@@ -88,7 +92,7 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
 
                         <div className="col-12 my-2">
                             <div className="d-flex justify-content-center">
-                                <CreateFlashcard cardsetId={cardsetId} onCreateFlashcard={handleCreateFlashcard} />
+                                <CreateFlashcard userId={userId} cardsetId={cardsetId} onCreateFlashcard={handleCreateFlashcard} />
                             </div>
                         </div>
 

@@ -23,7 +23,6 @@ export default function CardsetPage () {
     const cardsetIsPublic = router.query.cardsetIsPublic; // get current cardset public route's query prop
 
     useEffect(() => {
-        fetchFlashCards();
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
                 setUser(user);
@@ -37,6 +36,10 @@ export default function CardsetPage () {
         return () => unsubscribe();
     }, [user, userData]);
 
+    useEffect(() => {
+        fetchFlashCards();
+    }, [userData]);
+
     const fetchUserData = async () => {
         if (!user || !user.uid) {
             return;
@@ -44,7 +47,7 @@ export default function CardsetPage () {
         try {
             const firebaseId = user?.uid;
             const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/users/getuser', { params: { firebaseId: firebaseId } });
-            const userData = response.data.user;
+            const userData = await response.data.user;
             setUserData(userData);
         } catch (error) {
             console.error('Error fetching card sets:', error);
@@ -53,7 +56,7 @@ export default function CardsetPage () {
 
     const fetchFlashCards = async () => {
         try {
-            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/flashcards/${cardsetId}/flashcards`);
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}/flashcards`);
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
         } catch (error) {
