@@ -7,6 +7,8 @@ import { CreateCardset } from '@/components/CreateCardset';
 import { CardsetView } from '@/components/CardsetView';
 import { DashboardCard } from '@/components/Cards/DashboardCard';
 import Navbar from '@/components/Navbar/Navbar';
+import {TTS} from '@/components/ASR/textToSpeech';
+import {STT} from '@/components/ASR/speechToText';
 
 const menuItems = [
     { name: 'Dashboard', path: '/dashboard' },
@@ -95,35 +97,12 @@ const Dashboard = () => {
     };
 
     const testASR = async () => {
-        try {
-            const audioresponse = await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+'/api/recorder');
-            const audioData = audioresponse.data.audioData;
-            const transcriptionResponse = await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+'/api/speechIncoming', { audioData });
-    
-            console.log('Transcription:', transcriptionResponse.data);
-        } catch (error) {
-            console.error('Error:', error);
-        }
+        STT();
     };
 
     const testTTS = async () => {
-        try {
-            const input = 'text to speech is working';
-            const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_URL + '/api/textToSpeech', { input }, { responseType: 'arraybuffer' });
-    
-            const audioData = Buffer.from(response.data).toString('base64');
-            const audioSrc = `data:audio/mp3;base64,${audioData}`;
-    
-            const sound = new Howl({
-                src: [audioSrc], 
-                format: ['mp3'],
-                onload: () => {
-                    sound.play();
-                }
-            });
-        } catch (error) {
-            console.error('Error: ', error);
-        }
+        const input = "Text to speech component working."
+        TTS(input);
     }
 
     return (
