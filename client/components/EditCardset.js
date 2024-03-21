@@ -3,14 +3,14 @@ import axios from 'axios';
 import { CreateFlashcard } from '@/components/CreateFlashcard';
 import { EditFlashcard } from '@/components/EditFlashcard'; 
 
-export const EditView = ({ cardset, userId, cardsetId }) => {
+export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubject, cardsetIsPublic }) => {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [selectedFlashcard, setSelectedFlashcard] = useState(null);
     const [isEditingSet, setisEditingSet] = useState(false);
-    const [newTitle, setNewTitle] = useState(cardset.title);
-    const [newSubject, setNewSubject] = useState(cardset.subject);
-    const [newPublicStatus, setNewPublicStatus] = useState(cardset.isPublic);
+    const [newTitle, setNewTitle] = useState(cardsetTitle);
+    const [newSubject, setNewSubject] = useState(cardsetSubject);
+    const [newPublicStatus, setNewPublicStatus] = useState(cardsetIsPublic);
     const [isAddingCard, setIsAddingCard] = useState(false);
     const [isEditingCard, setIsEditingCard] = useState(false); 
 

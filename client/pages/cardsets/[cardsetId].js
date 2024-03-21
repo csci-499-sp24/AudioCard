@@ -20,6 +20,7 @@ export default function CardsetPage () {
     const cardsetId = router.query.cardsetId; // get current cardset Id from route
     const cardsetTitle = router.query.cardsetTitle; // get current cardset title from route's query prop
     const cardsetSubject = router.query.cardsetSubject; // get current cardset subject route's query prop
+    const cardsetIsPublic = router.query.cardsetIsPublic; // get current cardset public route's query prop
 
     useEffect(() => {
         fetchFlashCards();
@@ -153,7 +154,14 @@ export default function CardsetPage () {
                                 &times;
                                 </button>
                                 { currentCardsetData && (
-                                    <EditView cardset={currentCardsetData} userId={userData.id} cardsetId={cardsetId} />
+                                    <EditView 
+                                        cardset={currentCardsetData} 
+                                        userId={userData.id} 
+                                        cardsetId={cardsetId} 
+                                        cardsetTitle={cardsetTitle} 
+                                        cardsetSubject={cardsetSubject}
+                                        cardsetIsPublic={cardsetIsPublic}
+                                        />
                                 )}
                             </div>
                         </div>
