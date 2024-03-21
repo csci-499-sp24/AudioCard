@@ -4,8 +4,9 @@ import { Flashcard } from './Flashcard';
 import { CreateFlashcard } from './CreateFlashcard';
 import styles from '../styles/CardSet.module.css';
 
-export const CardsetView = ({ userId, cardset }) => {
+export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) => {
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
+    const [showCreateFlashcardForm, setShowCreateFlashcardForm] = useState(false);
 
     useEffect(() => {
         fetchFlashCards();
@@ -13,11 +14,12 @@ export const CardsetView = ({ userId, cardset }) => {
 
     const handleCreateFlashcard = () => {
         fetchFlashCards();
+        fetchFlachcardPage();
     }
 
     const fetchFlashCards = async () => {
         try {
-            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userId}/cardsets/${cardset.id}/flashcards`);
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userId}/cardsets/${cardsetId}/flashcards`);
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
         } catch (error) {
@@ -33,43 +35,64 @@ export const CardsetView = ({ userId, cardset }) => {
 
         const flashcardIdToDelete = currentCardsetData[currentCardsetData.length - 1].id; // Get the ID of the last flashcard
         try {
-            await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/cardsets/${cardset.id}/flashcards/${flashcardIdToDelete}`);
+            await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/cardsets/${cardsetId}/flashcards/${flashcardIdToDelete}`);
             // Refresh the list of flashcards after deletion
             fetchFlashCards();
+            fetchFlachcardPage();
         } catch (error) {
             console.error('Error deleting flashcard:', error);
         }
     }
 
+    const toggleCreateFlashcardForm = () => {
+        setShowCreateFlashcardForm(!showCreateFlashcardForm);
+    };
+
     return (
         <div className={styles.setContainer}>
             {/*Form for changing currently viewed cardset */}
             <div className="container">
-                <hr />
-                <div className="row">
-                    <div className="col mb-2">
-                        <h1 className={styles.setTitle}>Current cardset: {cardset.title}</h1>
-                    </div>
-                </div>
-                {/*Pass all the cards of the cardset to the flashcard component*/}
+                {/*Study mode with rorating flashcard */}
                 <div className="row">
                     <div className='col mb-2'>
-                        <Flashcard cardData={currentCardsetData} userId = {userId} cardsetId = {cardset.id} />
+                        <Flashcard cardData={currentCardsetData} userId={userId} cardsetId={cardsetId} />
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col mb-2">
-                        {/* Form for creating new flashcards */}
-                        <CreateFlashcard cardset={cardset} onCreateFlashcard={handleCreateFlashcard} />
+
+                {/* Add new flashcard button */}
+                { showCreateFlashcardForm ? 
+                    null
+                    : 
+                    <div className="d-flex justify-content-end">
+                        <button className="btn btn-secondary btn-large" onClick={toggleCreateFlashcardForm}>Add Flashcard</button>
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col mb-2">
-                        <div className="d-flex justify-content-end">
-                            <button className="btn btn-outline-danger" onClick={handleDeleteFlashcard}>Delete Flashcard</button>
+                }
+
+                {/* Add or delete a flashcard section  */}
+                { showCreateFlashcardForm ?
+                    <div className='row'>
+                        <hr />
+                        <div className="col-12 mb-2" id={styles.greeting}>
+                            <div className="d-flex justify-content-end">
+                                <button className="btn" onClick={toggleCreateFlashcardForm}>X</button>
+                            </div>
+                        </div>
+
+                        <div className="col-12 my-2">
+                            <div className="d-flex justify-content-center">
+                                <CreateFlashcard cardsetId={cardsetId} onCreateFlashcard={handleCreateFlashcard} />
+                            </div>
+                        </div>
+
+                        <div className="col-12 mt-2" id={styles.greeting}>
+                            <div className="d-flex justify-content-end">
+                                <button className="btn btn-outline-danger" onClick={handleDeleteFlashcard}>Delete Flashcard</button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    : null
+                }
+
                 <hr />
             </div>
         </div>

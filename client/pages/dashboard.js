@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { auth } from '../utils/firebase';
 import axios from 'axios';
+import Link from 'next/link';
 import styles from '../styles/dashboard.module.css';
 import { CreateCardset } from '@/components/CreateCardset';
 import { CardsetView } from '@/components/CardsetView';
@@ -119,9 +120,22 @@ const Dashboard = () => {
 
                     <div className="container">
                         <div className="row row-cols-1 row-cols-md-3 g-4 mb-4">
-                            { cardsets.map((cardset, index) => { 
-                                return <DashboardCard key={index} cardset={cardset} onClick={() => selectCardset(cardset)}/>
-                            })}
+                        { cardsets.map((cardset, index) => (
+                            <Link 
+                                id={styles.dashboardCardLink}
+                                href={{ 
+                                    pathname: `/cardsets/${cardset.id}`, 
+                                    query: { 
+                                        cardsetTitle: cardset.title,
+                                        cardsetSubject: cardset.subject,
+                                        cardsetIsPublic: cardset.isPublic  
+                                    } 
+                                }}
+                            >
+                                <DashboardCard key={index} cardset={cardset} onClick={() => selectCardset(cardset)}/>
+                            </Link>
+                            ) 
+                        )}
                         </div>
                     </div>
                 </div>
