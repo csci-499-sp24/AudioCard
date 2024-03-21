@@ -4,7 +4,7 @@ import { Flashcard } from './Flashcard';
 import { CreateFlashcard } from './CreateFlashcard';
 import styles from '../styles/CardSet.module.css';
 
-export const CardsetView = ({ userId, cardset, cardsetId }) => {
+export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) => {
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [showCreateFlashcardForm, setShowCreateFlashcardForm] = useState(false);
 
@@ -14,6 +14,7 @@ export const CardsetView = ({ userId, cardset, cardsetId }) => {
 
     const handleCreateFlashcard = () => {
         fetchFlashCards();
+        fetchFlachcardPage();
     }
 
     const fetchFlashCards = async () => {
@@ -37,6 +38,7 @@ export const CardsetView = ({ userId, cardset, cardsetId }) => {
             await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/cardsets/${cardsetId}/flashcards/${flashcardIdToDelete}`);
             // Refresh the list of flashcards after deletion
             fetchFlashCards();
+            fetchFlachcardPage();
         } catch (error) {
             console.error('Error deleting flashcard:', error);
         }
