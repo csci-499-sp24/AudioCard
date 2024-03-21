@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { auth } from '../utils/firebase';
 import axios from 'axios';
+import Link from 'next/link';
 import styles from '../styles/dashboard.module.css';
 import { CreateCardset } from '@/components/CreateCardset';
 import { CardsetView } from '@/components/CardsetView';
