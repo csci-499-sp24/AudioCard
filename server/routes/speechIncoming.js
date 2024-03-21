@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { SpeechClient } = require('@google-cloud/speech');
-const fs = require('fs');
-
 
 const client = new SpeechClient();
 
@@ -15,7 +13,7 @@ const config = {
 router.route('/')
 .post(async (req, res) => {
   try {
-    const audioData = req.body.audio;
+    const audioData = req.body.audioData;
     const request = {
         audio: {
             content: audioData

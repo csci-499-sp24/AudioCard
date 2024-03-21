@@ -97,9 +97,16 @@ const Dashboard = () => {
     };
 
     const testASR = async () => {
-        STT();
+        const answer = 'bacon';
+        const isCorrect = await STT(answer);
+        if (isCorrect) {
+            console.log('Correct!');
+        } else {
+            console.log('Sorry. Try again.');
+        }
     };
-
+    
+    
     const testTTS = async () => {
         const input = "Text to speech component working."
         TTS(input);

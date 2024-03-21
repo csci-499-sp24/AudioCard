@@ -1,34 +1,39 @@
-import axios from 'axios';
+export const STT = (answer) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const recognition = new webkitSpeechRecognition(); 
+            recognition.lang = 'en-US'; 
+            recognition.continuous = true; 
+            recognition.interimResults = true; 
+            let fullTranscript = '';
 
-export const STT = async () => {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const recorder = new MediaRecorder(stream);
-        const audioChunks = [];
+            recognition.onresult = (event) => {
+                const interimTranscript = event.results[event.results.length - 1][0].transcript; 
+                console.log('Interim Transcription:', interimTranscript);
+                fullTranscript += interimTranscript; 
+                if (fullTranscript.toLowerCase().includes(answer.toLowerCase()) || interimTranscript.toLowerCase().includes(answer.toLowerCase())) {
+                    recognition.stop();
+                    resolve(true);
+                }
+            };
 
-        recorder.addEventListener('dataavailable', event => {
-            audioChunks.push(event.data);
-        });
+            recognition.onerror = (event) => {
+                console.error('Recognition Error:', event.error);
+                reject(event.error);
+            };
 
-        recorder.addEventListener('stop', async () => {
-            const audioData = new Blob(audioChunks, { type: 'audio/webm' }).arrayBuffer(); // Convert to ArrayBuffer
-            const formData = new FormData();
-            formData.append('audioData', audioData); // Send raw audio data to server
+            recognition.start();
 
-            try {
-                // Send the audio data to the server for transcription
-                const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_URL + '/api/speechIncoming', {audio: audioData});
-                console.log('Transcription:', response.data.transcription);
-            } catch (error) {
-                console.error('Error transcribing audio:', error);
-            }
-        });
+            const timeout = setTimeout(() => {
+                recognition.stop(); 
+                resolve(false);
+            }, 5000);
 
-        recorder.start();
-        setTimeout(() => {
-            recorder.stop();
-        }, 5000); // Stop recording after 5 seconds
-    } catch (error) {
-        console.error('Error capturing audio:', error);
-    }
+            recognition.addEventListener('end', () => clearTimeout(timeout));
+        } catch (error) {
+            console.error('Error capturing audio:', error);
+            reject(error);
+        }
+    });
 };
