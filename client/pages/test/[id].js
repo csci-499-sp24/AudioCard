@@ -12,7 +12,6 @@ const TestPage = () => {
     const [userData, setUserData] = useState(null);
     const [cardsetData, setCardsetData] = useState(null);
 
-
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
@@ -32,7 +31,6 @@ const TestPage = () => {
             fetchCardset(id);
         }
     }, [id]);
-
 
     const fetchUserData = async () => {
         if (!user || !user.uid) {
@@ -56,8 +54,6 @@ const TestPage = () => {
             console.error('Error fetching cardset:', error);
         }
     };
-
-
 
     return (
         <div>

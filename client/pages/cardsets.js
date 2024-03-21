@@ -191,7 +191,7 @@ const Cardset_Page = () => {
                     <div className='col d-flex justify-content-end align-items-center'>
                     {selectedCardset && (
                         <div className="d-flex align-items-center">
-                            <button className="btn btn-secondary" onClick={navigateToTestPage}>Test</button>
+                            <button className="btn btn-secondary testButton" onClick={navigateToTestPage}>Test Mode</button>
                             <button className="btn btn-secondary editButton" onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
                             <button className="btn deleteButton" onClick={() => handleDelete(selectedCardset)}><i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i></button>
                         </div>
@@ -302,6 +302,9 @@ const Cardset_Page = () => {
                 }
                 .delete-confirmation {
                     margin-bottom: 10px; 
+                }
+                .testButton {
+                    margin-right: 7px;
                 }
             `}</style>
         </div>

@@ -5,12 +5,12 @@
     margin: 0 auto;
     border: 10px solid transparent;
 }
-  
+
 #card {
     position: absolute;
     width: 100%;
     height: 100%;
-    transition: all 0.60s ease;
+    transition: all 0.5s ease;
     transform-style: preserve-3d;
 }
 
@@ -18,9 +18,10 @@
     transform: rotateX(180deg);
 }
 
-#front, #back {
+#front,
+#back {
     backface-visibility: hidden;
-    
+
     position: absolute;
     width: 100%;
     height: 100%;
@@ -32,35 +33,49 @@
     padding: 30px;
     font-size: 2em;
     border-radius: 10px;
-    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.1);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.1);
 }
-  
+
 #front {
     background-color: white;
     color: black;
 }
-  
+
 #back {
     transform: rotateX(180deg);
-  
-    background-color: white; 
+
+    background-color: white;
     color: black;
 }
 
 @keyframes flash-green {
-    0%, 100% { border-color: transparent; }
-    50% { border-color: green; }
-  }
-  
-  @keyframes flash-red {
-    0%, 100% { border-color: transparent; }
-    50% { border-color: red; }
-  }
-  
-  .correct {
+
+    0%,
+    100% {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: green;
+    }
+}
+
+@keyframes flash-red {
+
+    0%,
+    100% {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: red;
+    }
+}
+
+.correct {
     animation: flash-green 2s ease-out;
-  }
-  
-  .incorrect {
+}
+
+.incorrect {
     animation: flash-red 2s ease-out;
-  }
+}
