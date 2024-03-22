@@ -8,7 +8,7 @@ export const ExploreCard = ({ cardset, onCreateCardset }) => {
             <div className="card-body">
                 <h5 className="card-title">{cardset.title}</h5>
                 <p className="card-subject">Subject: {cardset.subject}</p>
-                <p className="card-count">{cardset.flashcardCount} terms</p>
+                <p className="card-count">{cardset.flashcardCount} flashcards</p>
                 <p classname="card-creator">Created by: {cardset.user?.username}</p>
                 <p className="card-createdTime"><small className="text-muted">Created at: {new Date(cardset.createdAt).toLocaleDateString()}</small></p>
             </div>

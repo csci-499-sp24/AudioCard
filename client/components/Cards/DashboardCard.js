@@ -58,8 +58,8 @@ export const DashboardCard = ({ cardset, onClick }) => {
     }
 
     return (
-        <div key={cardset.id} class="col" onClick={onClick}>
-            <div class="card h-100">
+        <div key={cardset.id} className="col" onClick={onClick}>
+            <div className="card h-100">
                 <div className="card-body">
                     <h2 className="card-title">{cardset.title}</h2>
                     <div className="mt-3">
@@ -68,11 +68,11 @@ export const DashboardCard = ({ cardset, onClick }) => {
                         </span>
                     </div>
                     <div className="my-4">
-                        <span className="card-count">{cardset.flashcardCount} terms</span>
+                        <span className="card-count">{cardset.flashcardCount} flashcards</span>
                     </div>
                 </div>
                 <div className="card-footer d-flex justify-content-end p-3" id={styles.cardFooter}>
-                    <a href="#" class="btn btn-outline-dark">Edit</a>
+                    <a href="#" className="btn btn-outline-dark">Edit</a>
                 </div>
             </div>
         </div>
