@@ -49,7 +49,7 @@ export const CardsetView = ({cardset}) => {
             const newSetData = {
                 title: cardset.title,
                 subject: cardset.subject,
-                isPublic: false,
+                isPublic: cardset.isPublic,
             };
             const newCardsetResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userData.id}/cardsets`, { newSetData });
 
