@@ -3,6 +3,7 @@ const router = express.Router();
 const { Cardset, User, Flashcard } = require('../models/modelRelations');
 const flashcards = require ('./flashcards');
 const sharedCardsets = require ('./sharedCardsets');
+
 const { Sequelize } = require('sequelize');
 const {checkCardsetAuthority} = require('./functions');
 
@@ -47,6 +48,7 @@ router.route('/')
         res.status(500).json({ error: 'Error fetching users from database' });
     }
 });
+
 
 //Get user's database entry using their firebaseId
 router.route('/getuser')
