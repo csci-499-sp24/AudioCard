@@ -16,11 +16,11 @@ export default function CardsetPage () {
     const [isEditPageOpen, setIsEditPageOpen] = useState(false);
     const [showCreateFlashcardForm, setShowCreateFlashcardForm] = useState(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [cardset, setCardset] = useState([]);
+
+    const [loading, setLoading] = useState(false);
 
     const cardsetId = router.query.cardsetId; // get current cardset Id from route
-    const cardsetTitle = router.query.cardsetTitle; // get current cardset title from route's query prop
-    const cardsetSubject = router.query.cardsetSubject; // get current cardset subject route's query prop
-    const cardsetIsPublic = router.query.cardsetIsPublic; // get current cardset public route's query prop
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -56,9 +56,16 @@ export default function CardsetPage () {
 
     const fetchFlashCards = async () => {
         try {
+            setLoading(true);
+            // get current cardset's flashcards
             const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}/flashcards`);
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
+            // get current cardset's info - for edits
+            const resp = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userData.id}/cardsets/${cardsetId}`);
+            const cardsetData = resp.data;
+            setCardset(cardsetData);
+            setLoading(false);
         } catch (error) {
             console.error('Error fetching flashcards:', error);
         }
@@ -98,12 +105,12 @@ export default function CardsetPage () {
             <div className="container">
                 <div className="row">
                     <div className="col mt-5 mb-2">
-                        <h1 className="text-center">{cardsetTitle}</h1>
+                        <h1 className="text-center">{cardset.title}</h1>
                     </div>
 
                     <div className="row d-flex align-items-center">
                         <div className='col'>
-                            <button className="btn btn-secondary editButton" onClick={() => router.back()}>Back</button>
+                            <button className="btn btn-outline-dark" onClick={() => router.back()}>Back</button>
                         </div>
                         <div className='col d-flex justify-content-end mb-4'>
                             <button className="btn btn-secondary testButton" onClick={navigateToTestPage}>Test Mode</button>
@@ -113,24 +120,31 @@ export default function CardsetPage () {
             </div>
 
             {/* Main Flashcard  */}
-            <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards}/>
+            {
+                loading ? 
+                    <div className='text-center'><h5>Loading...</h5></div>
+                :   <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards}/>
+            }
 
             {/* All Flashcards in the set  */}
             <div className="container">
                 <div className="row">
                     {/* Flashcard Info */}
-                    <div className="col mt-5 mb-2">
-                        <div className="">
-                            <h3>Flashcard Set: {cardsetTitle}</h3>
-                            <div> Subject: {cardsetSubject} </div>
-                            <div> {currentCardsetData.length} flashcards </div>
-                        </div>
-                    </div>
+                    { loading ? 
+                            null
+                        :   <div className="col mt-5 mb-2">
+                                <div className="">
+                                    <h3>Flashcard Set: {cardset.title}</h3>
+                                    <div> Subject: {cardset.subject} </div>
+                                    <div> {currentCardsetData.length} flashcards </div>
+                                </div>
+                            </div>
+                    }
                     
                     {/*Edit/Delete Flashcard set */}
                     <div className='col d-flex justify-content-end align-items-center'>
                         <div className="d-flex align-items-center">
-                            <button className="btn btn-secondary editButton" onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
+                            <button className="btn btn-outline-dark" onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
                             <button className="btn deleteButton" onClick={() => handleDelete()}><i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i></button>
                         </div>
                     </div>   
@@ -140,7 +154,7 @@ export default function CardsetPage () {
                         <div className="row">
                             <div className="col d-flex justify-content-end">
                                 <div className="delete-confirmation">
-                                    <p>Are you sure you want to delete this set: {cardsetTitle}?</p>
+                                    <p>Are you sure you want to delete this set: {cardset.title}?</p>
                                     <div className="d-flex justify-content-center">
                                         <button onClick={confirmDelete} className="btn btn-danger">Yes</button>
                                         <button onClick={() => setShowDeleteConfirmation(false)} className="btn btn-secondary">No</button>
@@ -169,9 +183,9 @@ export default function CardsetPage () {
                                         cardset={currentCardsetData} 
                                         userId={userData.id} 
                                         cardsetId={cardsetId} 
-                                        cardsetTitle={cardsetTitle} 
-                                        cardsetSubject={cardsetSubject}
-                                        cardsetIsPublic={cardsetIsPublic}
+                                        cardsetTitle={cardset.title} 
+                                        cardsetSubject={cardset.subject}
+                                        cardsetIsPublic={cardset.isPublic}
                                     />
                                 )}
                             </div>
