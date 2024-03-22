@@ -8,6 +8,10 @@ router.route('/signup')
 .post(async (req, res) => {
     try {
         const { firebaseId, username, email } = req.body;
+        const existingUser = await User.findOne({ where: { username } });
+        if (existingUser) {
+            return res.status(400).json({ error: 'Username already exists' });
+        }
         const user = await User.create({ firebaseId, username, email });
         res.status(201).json({ user });
     } catch (error) {
@@ -15,6 +19,17 @@ router.route('/signup')
         res.status(500).json({ error: 'Error signing up user' });
     }
 });
+
+router.route('/usernameCheck')
+.get(async(req,res) => {
+    const { username } = req.query;
+    const existingUser = await User.findOne({ where: { username } });
+    if (existingUser) {
+        return res.status(200).json({ exists: true });
+    } else {
+        return res.status(200).json({ exists: false });
+    }
+})
 
 //Get user's database entry using their firebaseId
 router.route('/getuser')
