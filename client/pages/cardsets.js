@@ -213,7 +213,7 @@ const Cardset_Page = () => {
                 </div>
                 <div className="flashcardContainer">
                     {currentCardsetData.map(flashcard => (
-                        <div className='flashcard'>
+                        <div className='flashcard' key={flashcard.id}>
                             <TermCard flashcard={flashcard}/>
                         </div>
                     ))}
