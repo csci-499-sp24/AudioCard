@@ -1,4 +1,4 @@
-export const STT = (answer) => {
+export const checkAnswerSTT = (answer) => {
     return new Promise(async (resolve, reject) => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -7,12 +7,12 @@ export const STT = (answer) => {
             recognition.continuous = true; 
             recognition.interimResults = true; 
             let fullTranscript = '';
-            answer.replace(/[^\w\s]|_/g, '').replace(/\s+/g, ' ');
-
+            let timeout;
+            
             recognition.onresult = (event) => {
                 const interimTranscript = event.results[event.results.length - 1][0].transcript; 
                 console.log('Interim Transcription:', interimTranscript);
-                fullTranscript += interimTranscript; 
+                fullTranscript += interimTranscript;
                 if (fullTranscript.toLowerCase().includes(answer.toLowerCase()) || interimTranscript.toLowerCase().includes(answer.toLowerCase())) {
                     recognition.stop();
                     resolve(true);
@@ -26,12 +26,14 @@ export const STT = (answer) => {
 
             recognition.start();
 
-            const timeout = setTimeout(() => {
-                recognition.stop(); 
+            timeout = setTimeout(() => {
+                recognition.stop();
                 resolve(false);
-            }, 5000);
+            }, 7000);
 
-            recognition.addEventListener('end', () => clearTimeout(timeout));
+            recognition.addEventListener('end', () => {
+                clearTimeout(timeout);
+            });
         } catch (error) {
             console.error('Error capturing audio:', error);
             reject(error);

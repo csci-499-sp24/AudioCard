@@ -97,22 +97,6 @@ const Dashboard = () => {
       setShowCreateCardsetForm(!showCreateCardsetForm);
     };
 
-    const testASR = async () => {
-        const answer = 'bacon';
-        const isCorrect = await STT(answer);
-        if (isCorrect) {
-            console.log('Correct!');
-        } else {
-            console.log('Sorry. Try again.');
-        }
-    };
-    
-    
-    const testTTS = async () => {
-        const input = "Text to speech component working."
-        TTS(input);
-    }
-
     return (
         <div className="wrapper">   
             <Navbar/>
@@ -120,8 +104,6 @@ const Dashboard = () => {
             <div className="container">
                 <div className="row px-2">
                     <div className="col-12 mt-5" id={styles.greeting}>
-                        <button onClick={testASR}>Test ASR</button>
-                        <button onClick={testTTS}>Test TTS</button>
                         <h1 className="" id={styles.welcome}>Welcome, <span className="font-weight-bold text-dark">{userData?.username}</span></h1> 
                     </div>
                     <div className="col-12 my-3">

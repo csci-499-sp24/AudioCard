@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {Howl} from 'howler';
 
 export const TTS = async (input) => {
     const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_URL + '/api/textToSpeech', { input }, { responseType: 'arraybuffer' });

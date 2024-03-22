@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import style from '../../styles/flashcardtestmode.module.css';
 import { RotatingCardTest } from '../Cards/RotatingCardTest';
-import {STT} from './speechToText';
+import {checkAnswerSTT} from './speechToText';
 import {TTS} from './textToSpeech';
 
 export const ASRTestMode = ({ cardData}) => {
     const [index, setIndex] = useState(0);
     const [flashcards, setFlashcards] = useState([]);
-    const [answer, setAnswer] = useState('');
     const [isFlipped, setIsFlipped] = useState(false);
     const [borderClass, setBorderClass] = useState('');
     const [progress, setProgress] = useState(0);
@@ -16,27 +15,22 @@ export const ASRTestMode = ({ cardData}) => {
     const [testStarted, setTestStarted] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
     
-    const speakCard = () => {
+    const speakCard = async () => {
         if (!showTestResult){
             TTS(flashcards[index].term);
         }
     }
+
+
     const handleAnswer = async (answer) => {
-        let attempt = 0; 
-        let providedCorrectAnswer = false;
-        while (attempt < 3) {
-            console.log(attempt);
-            providedCorrectAnswer = await STT(answer);
-            if (providedCorrectAnswer) {
-                break; 
-            }
-            attempt++;
-        }
+        let providedCorrectAnswer = await checkAnswerSTT(answer);
         const isCorrect = providedCorrectAnswer;
         setBorderClass(isCorrect ? 'correct' : 'incorrect');
         if (isCorrect) {
             setScore((currentScore) => currentScore + 1);
             TTS('correct');
+        } else {
+            TTS(`the correct answer is ${flashcards[index].definition}`)
         }
         setIsFlipped(true);
         setTestStarted(true);
@@ -47,7 +41,6 @@ export const ASRTestMode = ({ cardData}) => {
                 setIsFlipped(false);
                 setTimeout(() => {
                     setIndex((currentIndex) => currentIndex + 1);
-                    setAnswer('');
                     setBorderClass('');
                 }, 150);
             }
@@ -59,11 +52,14 @@ export const ASRTestMode = ({ cardData}) => {
     }, [cardData]);
 
     useEffect(() => {
-        if (flashcards.length > 0) {
-            speakCard();
-            handleAnswer(flashcards[index].definition);
-        }
-    }, [flashcards, index]);
+        const fetchData = async () => {
+            if (flashcards.length > 0) {
+                await speakCard();
+                await handleAnswer(flashcards[index].definition);
+            }
+        };
+        fetchData();
+    }, [flashcards, index]);    
 
     useEffect(() => {
         setIsFlipped(false);
@@ -93,7 +89,6 @@ export const ASRTestMode = ({ cardData}) => {
         setIsFlipped(false);
         setTestStarted(false);
         setBorderClass('');
-        setAnswer('');
     };
 
     const shuffleCards = () => {
