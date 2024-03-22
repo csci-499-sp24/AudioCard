@@ -18,22 +18,9 @@ const SignUp = () => {
     const handleSignUp = async (e) => {
         e.preventDefault();
         try {
-            if (username === '') {
-                setError('Username is required');
-                return;
-            }
             // first checks if user password field matches the confirm password field
             if (password === confirmPassword) {
                 // Create user account with Firebase Authentication
-
-                const usernameExistsResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/usernameCheck?username=${username}`);
-                const { exists } = usernameExistsResponse.data;
-                
-                if (exists) {
-                    setError('Username already exists');
-                    return;
-                }
-
                 await createUserWithEmailAndPassword(auth, email, password).then((userCred) => {
                     const firebaseId = userCred.user.uid;
                     axios.post(process.env.NEXT_PUBLIC_SERVER_URL+'/api/users/signup', { firebaseId, username, email });
@@ -64,7 +51,7 @@ const SignUp = () => {
                 userErrorMessage = 'Password should be at least 6 characters';
             }
             else {
-                userErrorMessage = 'Account creation was unsuccessful';
+                userErrorMessage = 'Wrong User Credentials';
             }
 
             setError(userErrorMessage);

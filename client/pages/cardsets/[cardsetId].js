@@ -87,9 +87,6 @@ export default function CardsetPage () {
             console.error('Error deleting cardset:', error);
         }
     };
-    const navigateToTestPage = () => {
-        router.push(`/test/${cardsetId}`);
-    };
 
     // Render flashcard data
     return (
@@ -101,13 +98,8 @@ export default function CardsetPage () {
                         <h1 className="text-center">{cardsetTitle}</h1>
                     </div>
 
-                    <div className="row d-flex align-items-center">
-                        <div className='col'>
-                            <button className="btn btn-secondary editButton" onClick={() => router.back()}>Back</button>
-                        </div>
-                        <div className='col d-flex justify-content-end mb-4'>
-                            <button className="btn btn-secondary testButton" onClick={navigateToTestPage}>Test Mode</button>
-                        </div>
+                    <div className="d-flex">
+                        <button className="btn btn-secondary editButton" onClick={() => router.back()}>Back</button>
                     </div>
                 </div>       
             </div>

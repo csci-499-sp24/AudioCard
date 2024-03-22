@@ -76,6 +76,11 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
                             </div>
                         </div>
 
+                        <div className="col-12 mt-2" id={styles.greeting}>
+                            <div className="d-flex justify-content-end">
+                                <button className="btn btn-outline-danger" onClick={handleDeleteFlashcard}>Delete Flashcard</button>
+                            </div>
+                        </div>
                     </div>
                     : null
                 }
