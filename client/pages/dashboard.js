@@ -52,6 +52,7 @@ const Dashboard = () => {
             const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userData.id}/cardsets`,  {params: { userId: userData.id}});
             const cardsetsData = response.data.cardsets;
             setCardsets(cardsetsData);
+            
         } catch (error) {
             console.error('Error fetching card sets:', error);
         }
