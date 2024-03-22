@@ -60,6 +60,7 @@ router.route('/:userid/cardsets')
         res.status(500).json({ error: 'Error creating a cardset' });
     }
 })
+
 .get(async(req, res) => {
     try{
         const cardsets = await Cardset.findAll({ 

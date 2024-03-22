@@ -164,7 +164,7 @@ export default function CardsetPage () {
                                         cardsetTitle={cardsetTitle} 
                                         cardsetSubject={cardsetSubject}
                                         cardsetIsPublic={cardsetIsPublic}
-                                        />
+                                    />
                                 )}
                             </div>
                         </div>

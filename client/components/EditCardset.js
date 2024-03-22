@@ -128,6 +128,20 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                                             value={newSubject}
                                             onChange={(e) => setNewSubject(e.target.value)}
                                         />
+                                        {/* <select class="form-select" aria-label="Default select example"id="subject"  onChange={(e) => setNewSubject(e.target.value)}>
+                                            <option selected>Subject</option>
+                                            <option value="History">History</option>
+                                            <option value="Math">Math</option>
+                                            <option value="Science">Science</option>
+                                            <option value="English">English</option>
+                                            <option value="Programming">Programming</option>
+                                            <option value="Fine Arts">Fine Arts</option>
+                                            <option value="Foreign Languages">Foreign Languages</option>
+                                            <option value="Nature">Nature</option>
+                                            <option value="Humanities">Humanities</option>
+                                            <option value="Health">Health</option>
+                                            <option value="Other">Other</option>
+                                        </select> */}
                                     </div>
                                     <div className="flex flex-row">
                                         <input
