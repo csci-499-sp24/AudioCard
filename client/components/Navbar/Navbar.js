@@ -51,12 +51,11 @@ const Navbar = ({ userId }) => {
                             Logout
                         </button>
                         <li className="nav-item">
-                            <div className={styles.navUserAvatar} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                                <img src="/userAvatarSmall.jpg" alt="User Avatar" className={styles.avatarImage} />
+                            <div className={styles.profileCircle} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
                             </div>
                             {isDropdownOpen && (
                                 <div className={styles.dropdownMenu}>
-                                <Link href={{ pathname: `/profile/${userId}` }}className={styles.dropdownItem}>
+                                    <Link href={`/profile/${userId}`} className={styles.dropdownItem}>
                                         Profile
                                     </Link>
                                     <Link href="/settings" className={styles.dropdownItem}>
