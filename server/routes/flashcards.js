@@ -5,19 +5,17 @@ const {checkCardsetAuthority} = require('./functions');
 const { Cardset, Flashcard } = require('../models/modelRelations');
 
 // Route for flashcards of a set (uses api/users/:userid/cardsets/:cardsetid)
-router.route('/:cardsetid/flashcards')
+router.route('/')
   .post(async (req, res) => {
     try {
-      const cardset = await Cardset.findOne({ where: { id } });
-      if (cardset.isPublic === false){ // Only check authority if not a public set
-        const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
-        if (authLevel === 'read-only' || authLevel === 'no-access'){
-          res.status(403).send('User is not authorized to make this request');
-          return;
-        }
+      const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
+      if (authLevel === 'read-only' || authLevel === 'no-access'){
+        res.status(403).send('User is not authorized to make this request');
+        return;
       }
       const { cardsetId, newCardData } = req.body;
       const id = cardsetId;
+      const cardset = await Cardset.findOne({ where: { id } });
       const flashcard = await Flashcard.create(newCardData);
       await cardset.addFlashcard(flashcard);
       res.status(201).json({ flashcard });
@@ -28,10 +26,13 @@ router.route('/:cardsetid/flashcards')
   })
   .get(async (req, res) => {
     try {
-      const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
-      if (authLevel === 'no-access'){
-        res.status(403).send('User is not authorized to make this request');
-        return;
+      const cardset = await Cardset.findOne({ where: { id: req.params.cardsetid } });
+      if (cardset.isPublic === false){  // Check authority if cardset isn't public
+        const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
+        if (authLevel === 'no-access'){
+          res.status(403).send('User is not authorized to make this request');
+          return;
+        }
       }
       const flashcards = await Flashcard.findAll({ where: { cardsetid: req.params.cardsetid } });
       res.status(200).json({ flashcards });
@@ -41,7 +42,7 @@ router.route('/:cardsetid/flashcards')
     }
   });
 
-router.route('/:cardsetid/flashcards/:flashcardid')
+router.route('/:flashcardid')
   .put(async (req, res) => {
     try {
       const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
@@ -49,8 +50,8 @@ router.route('/:cardsetid/flashcards/:flashcardid')
         res.status(403).send('User is not authorized to make this request');
         return;
       }
-      const { updatedData } = req.body;
-      const flashcard = await Flashcard.update(updatedData, { where: { id: req.params.flashcardid } });
+      const { updatedFlashcard } = req.body;
+      const flashcard = await Flashcard.update(updatedFlashcard, { where: { id: req.params.flashcardid } });
       res.status(200).json(flashcard);
     } catch (error) {
       console.error('Error updating flashcard:', error);
@@ -99,6 +100,11 @@ router.delete('/:cardsetid/flashcards/:flashcardid', async (req, res) => {
 
 router.post('/updateflashcard/:flashcardId', async (req, res) => {
   try {
+      const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
+      if (authLevel === 'read-only' || authLevel === 'no-access'){
+        res.status(403).send('User is not authorized to make this request');
+        return;
+      }
       const { flashcardId } = req.params;
       const { term, definition } = req.body; // Separate term (question) and definition (answer)
 

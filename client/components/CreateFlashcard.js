@@ -14,8 +14,16 @@ export const CreateFlashcard = ({userId, cardsetId, onCreateFlashcard}) => {
                 term: event.target.question.value,
                 definition: event.target.answer.value
             }
-            const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardsetId}/flashcards`, {cardsetId, newCardData});
-            onCreateFlashcard();
+            try{
+                await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardsetId}/flashcards`, {cardsetId, newCardData});
+                onCreateFlashcard();
+            } catch (error) {
+                if (error.response.status === 403) {
+                    console.error('User doesnt have permission to edit the cardset');
+                } else {
+                    console.error('Error creating flashcard: ', error.message);
+                }
+            }
         }
     }
 

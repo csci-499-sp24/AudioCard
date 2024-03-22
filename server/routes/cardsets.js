@@ -4,11 +4,12 @@ const { Cardset, User, Flashcard, SharedCardset } = require('../models/modelRela
 const flashcards = require ('./flashcards');
 const { Sequelize } = require('sequelize');
 
-router.use('/cardsets', flashcards);
+router.use('/:cardsetid/flashcards', flashcards);
 
 router.route('/')
 .get(async (req, res) => {
     try {
+        
         const publicSets = await Cardset.findAll({
             where: { isPublic: true },
             include: [
