@@ -67,7 +67,7 @@ export const Flashcard = ({ cardData, userId, cardsetId }) => {
           )}
 
           {isEditing && editingCard ? (
-            <EditFlashcard flashcard={editingCard} onEditFlashcard={handleEditComplete} onCancel={handleEditCancel} />
+            <EditFlashcard userId={userId} cardsetId={cardsetId} flashcard={editingCard} onEditFlashcard={handleEditComplete} onCancel={handleEditCancel} />
           ) : (
             <RotatingCard flashcards={flashcards} index={index}/>
           )}

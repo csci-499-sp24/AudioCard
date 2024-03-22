@@ -6,7 +6,7 @@ const sharedCardsets = require ('./sharedCardsets');
 const { Sequelize } = require('sequelize');
 const {checkCardsetAuthority} = require('./functions');
 
-router.use('/:userid/cardsets', flashcards);
+router.use('/:userid/cardsets/:cardsetid/flashcards', flashcards);
 router.use('/:userid/cardsets', sharedCardsets);
 
 router.route('/signup')

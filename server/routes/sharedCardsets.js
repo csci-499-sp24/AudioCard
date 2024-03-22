@@ -7,7 +7,6 @@ const{ checkCardsetAuthority } = require('./functions');
 router.route('/shared')
 .get(async(req,res) => {
     try{
-        console.log(req.params.userid);
         const user = await User.findOne({where: { id: req.params.userid }});
         const sharedCardsets = await user.getSharedCardsets();
         res.status(200).json(sharedCardsets);
@@ -24,7 +23,6 @@ router.route('/:cardsetid/share')
 .post(async(req,res) => { //Grant a user access to cardset
     try{
         const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
-        console.log(authLevel);
         if (authLevel == 'admin' || authLevel == 'edit' || authLevel == 'owner'){
             if (authLevel == 'edit' && req.params.authority == 'admin'){
                 res.status(403).json('User is not authorized to assign this authority level');

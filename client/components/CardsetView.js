@@ -27,7 +27,11 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
         } catch (error) {
-            console.error('Error fetching flashcards:', error);
+            if (error.response.status === 403) {
+                console.error('User doesnt have permission to see this cardset');
+            } else {
+                console.error('Error fetching flashcards: ', error.message);
+            }
         }
     }
 
@@ -44,7 +48,11 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
             fetchFlashCards();
             fetchFlachcardPage();
         } catch (error) {
-            console.error('Error deleting flashcard:', error);
+            if (error.response.status === 403) {
+                console.error('User doesnt have permission to edit the cardset');
+            } else {
+                console.error('Error deleting flashcards: ', error.message);
+            }
         }
     }
 
