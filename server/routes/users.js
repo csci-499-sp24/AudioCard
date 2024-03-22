@@ -123,6 +123,32 @@ router.route('/:userid/cardsets/:cardsetid')
     }
 });
 
-
+//Get all public cardset of a specific user
+router.get('/:userid/public-cardsets', async (req, res) => {
+    try {
+        const userId = req.params.userid;
+        const publicCardsets = await Cardset.findAll({
+            where: { 
+                userId: userId,
+                isPublic: true 
+            },
+            include: [{
+                model: Flashcard,
+                attributes: [],
+                duplicating: false,
+            }],
+            attributes: {
+                include: [
+                    [Sequelize.fn("COUNT", Sequelize.col("flashcards.id")), "flashcardCount"]
+                ]
+            },
+            group: ['Cardset.id']
+        });
+        res.status(200).json({ cardsets: publicCardsets });
+    } catch (error) {
+        console.error('Error fetching user public card sets:', error);
+        res.status(500).json({ error: 'Error fetching user public card sets' });
+    }
+});
 
 module.exports = router;
