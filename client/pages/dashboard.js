@@ -8,6 +8,8 @@ import { CreateCardset } from '@/components/CreateCardset';
 import { CardsetView } from '@/components/CardsetView';
 import { DashboardCard } from '@/components/Cards/DashboardCard';
 import Navbar from '@/components/Navbar/Navbar';
+import {TTS} from '@/components/ASR/textToSpeech';
+import {STT} from '@/components/ASR/speechToText';
 
 const menuItems = [
     { name: 'Dashboard', path: '/dashboard' },

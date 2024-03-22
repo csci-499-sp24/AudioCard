@@ -70,7 +70,13 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
                         <Flashcard cardData={currentCardsetData} userId={userId} cardsetId={cardsetId} />
                     </div>
                 </div>
-
+            <div className='row col d-flex justify-content-between align-items-center'>
+                <div className='col d-flex justify-content-begin'>
+                    <div className="col-12 mt-2" id={styles.greeting}>
+                                <button className="btn btn-outline-danger" onClick={handleDeleteFlashcard}>Delete Flashcard</button>
+                    </div>
+                </div>
+                <div className='col'>
                 {/* Add new flashcard button */}
                 { showCreateFlashcardForm ? 
                     null
@@ -79,6 +85,8 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
                         <button className="btn btn-secondary btn-large" onClick={toggleCreateFlashcardForm}>Add Flashcard</button>
                     </div>
                 }
+                </div>
+            </div>
 
                 {/* Add or delete a flashcard section  */}
                 { showCreateFlashcardForm ?
@@ -96,11 +104,6 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
                             </div>
                         </div>
 
-                        <div className="col-12 mt-2" id={styles.greeting}>
-                            <div className="d-flex justify-content-end">
-                                <button className="btn btn-outline-danger" onClick={handleDeleteFlashcard}>Delete Flashcard</button>
-                            </div>
-                        </div>
                     </div>
                     : null
                 }
