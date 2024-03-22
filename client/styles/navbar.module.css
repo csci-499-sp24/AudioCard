@@ -28,3 +28,34 @@
         display: inline-block !important;
     }
 }
+
+.profileCircle {
+    /* Style your circle profile icon here */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #333; /* Replace with user's image or preferred style */
+    cursor: pointer;
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: 100%;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    width: 200px;
+    z-index: 1000;
+}
+
+.dropdownItem {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+    white-space: nowrap;
+}
+
+.dropdownItem:hover {
+    background-color: #f8f8f8;
+}

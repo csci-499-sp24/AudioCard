@@ -3,6 +3,7 @@ import axios from "axios";
 import { CardsetView } from "@/components/DetailedCardsetView";
 import { ExploreCard } from '@/components/Cards/ExploreCard';
 import Navbar from '@/components/Navbar/Navbar';
+import { auth } from "@/utils/firebase";
 
 const Explore = () => {
     const [cardsets, setCardsets] = useState([]);
@@ -11,6 +12,23 @@ const Explore = () => {
     const [searchInput, setSearchInput] = useState('');
     const [sortingBy, setSortingBy] = useState('');
     const [filteredCardsets, setFilteredCardsets] = useState([]);
+    const [user, setUser] = useState(null);
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                setUser(user);
+            } else {
+                setUser(null);
+            }
+        });
+        if (!userData) {
+            fetchUserData();
+        }
+        return () => unsubscribe();
+    }, [user, userData]);
+
 
     useEffect(() => {
         fetchCardsets();
@@ -20,25 +38,40 @@ const Explore = () => {
         filterCardsets();
     }, [searchInput]);
 
-    const onSearchChange = (e) =>{
+    const fetchUserData = async () => {
+        if (!user || !user.uid) {
+            return;
+        }
+        try {
+            const firebaseId = user?.uid
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/users/getuser', { params: { firebaseId: firebaseId } });
+            const userData = response.data.user;
+            setUserData(userData);
+        } catch (error) {
+            console.error('Error fetching card sets:', error);
+        }
+    }
+
+
+    const onSearchChange = (e) => {
         e.preventDefault();
         setSearchInput(e.target.value);
     }
 
     const filterCardsets = () => {
         const searchLower = searchInput.toLowerCase();
-        setFilteredCardsets([...cardsets.filter(cardset => 
-            cardset.title.toLowerCase().includes(searchLower) || 
+        setFilteredCardsets([...cardsets.filter(cardset =>
+            cardset.title.toLowerCase().includes(searchLower) ||
             cardset.subject.toLowerCase().includes(searchLower) ||
             (cardset.user?.username && cardset.user.username.toLowerCase().includes(searchLower))
         )]);
     };
-    
 
-    const onSortChangeClicked = (e, sortBy) =>{
+
+    const onSortChangeClicked = (e, sortBy) => {
         e.preventDefault();
         let sortedCardsets;
-        switch(sortBy){
+        switch (sortBy) {
             case 'flashcardCount':
                 sortedCardsets = sortByFlashcards();
                 break;
@@ -52,9 +85,9 @@ const Explore = () => {
             case 'alphabeticalOrder':
                 sortedCardsets = sortByAlphabet();
                 break;
-            default: 
+            default:
                 sortedCardsets = cardsets;
-                break;   
+                break;
         }
         setCardsets([...sortedCardsets]);
         filterCardsets();
@@ -63,29 +96,29 @@ const Explore = () => {
 
     const sortByFlashcards = () => {
         setSortingBy('Flashcard Count');
-        return cardsets.sort((a,b) => b.flashcardCount - a.flashcardCount);
+        return cardsets.sort((a, b) => b.flashcardCount - a.flashcardCount);
     }
 
     const sortByCreation = () => {
         setSortingBy('Creation Date');
-        return cardsets.sort((a,b) => a.createdAt.localeCompare(b.createdAt));
+        return cardsets.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
     }
 
     const sortByAlphabet = () => {
         setSortingBy("Alphabetically");
-        return cardsets.sort((a,b) => a.title.localeCompare(b.title));
+        return cardsets.sort((a, b) => a.title.localeCompare(b.title));
     }
 
     const fetchCardsets = async () => {
         try {
             const response = await axios.get(
                 process.env.NEXT_PUBLIC_SERVER_URL + "/api/cardsets"
-              );
-              const cardsetsData = response.data.publicSets;
-              for (let cardset of cardsetsData) {
+            );
+            const cardsetsData = response.data.publicSets;
+            for (let cardset of cardsetsData) {
                 cardset.title = cardset.title.charAt(0).toUpperCase() + cardset.title.slice(1);
-              }
-              setCardsets(cardsetsData);
+            }
+            setCardsets(cardsetsData);
         } catch (error) {
             console.error("Error fetching public card sets:", error);
         }
@@ -94,42 +127,42 @@ const Explore = () => {
     const handleCardsetClick = (cardset) => {
         setSelectedCardset(cardset);
         setIsDetailedViewOpen(true);
-      };
+    };
 
     const handleCloseDetailedView = () => {
         setIsDetailedViewOpen(false);
-      };
+    };
 
     return (
         <div className="wrapper">
-            <Navbar/>
+            <Navbar userId={userData?.id} />
             <div className="container mt-5">
                 <h1 className="mb-4">Explore Cardsets</h1>
-            <div className='d-flex mb-5'>
-                <form className="form-inline" onSubmit={((e) => e.preventDefault())}>
-                    <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" onInput={(e) => onSearchChange(e)}/>
-                </form>
-                <div className="dropdown">
-                    <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {sortingBy.length > 0 ? sortingBy : "Sort By..."}
-                    </button>
-                    <ul className="dropdown-menu">
-                        <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'flashcardCount')}>Flashcard count</a></li>
-                        <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'creationNewest')}>Newest first</a></li>
-                        <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'creationOldest')}>Oldest first</a></li>
-                        <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'alphabeticalOrder')}>Alphabetical order</a></li>
-                    </ul>
+                <div className='d-flex mb-5'>
+                    <form className="form-inline" onSubmit={((e) => e.preventDefault())}>
+                        <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" onInput={(e) => onSearchChange(e)} />
+                    </form>
+                    <div className="dropdown">
+                        <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {sortingBy.length > 0 ? sortingBy : "Sort By..."}
+                        </button>
+                        <ul className="dropdown-menu">
+                            <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'flashcardCount')}>Flashcard count</a></li>
+                            <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'creationNewest')}>Newest first</a></li>
+                            <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'creationOldest')}>Oldest first</a></li>
+                            <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'alphabeticalOrder')}>Alphabetical order</a></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div className="row">
-                { filteredCardsets.length == 0 && searchInput.length > 0 && <div>No cardsets matching this term</div> }
-                {filteredCardsets.length > 0 || searchInput.length > 0 ? filteredCardsets.map((cardset) => (                
+                <div className="row">
+                    {filteredCardsets.length == 0 && searchInput.length > 0 && <div>No cardsets matching this term</div>}
+                    {filteredCardsets.length > 0 || searchInput.length > 0 ? filteredCardsets.map((cardset) => (
                         <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} />
-                    )):
-                    cardsets.map((cardset) => (
-                        <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} />
-                    )) }
+                    )) :
+                        cardsets.map((cardset) => (
+                            <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} />
+                        ))}
                 </div>
 
                 {isDetailedViewOpen && (
@@ -144,7 +177,7 @@ const Explore = () => {
                             )}
                         </div>
                     </div>
-                )}  
+                )}
             </div>
             <style jsx>{`
                     .container {

@@ -97,7 +97,7 @@ const Dashboard = () => {
 
     return (
         <div className="wrapper">   
-            <Navbar/>
+            <Navbar userId={userData?.id} />
             
             <div className="container">
                 <div className="row px-2">
