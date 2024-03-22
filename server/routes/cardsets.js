@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { Cardset, User, Flashcard } = require('../models/modelRelations');
+const { Cardset, User, Flashcard, SharedCardset } = require('../models/modelRelations');
 const flashcards = require ('./flashcards');
 const { Sequelize } = require('sequelize');
+
+router.use('/:cardsetid/flashcards', flashcards);
 
 router.route('/')
 .get(async (req, res) => {
     try {
+        
         const publicSets = await Cardset.findAll({
             where: { isPublic: true },
             include: [
@@ -44,7 +47,7 @@ router.route('/')
         console.error('Error creating cardset:', error);
         res.status(500).json({ error: 'Error creating a cardset' });
     }
-})
+});
 
 router.route('/:cardsetId')
 .get(async (req, res) => {
@@ -74,7 +77,5 @@ router.route('/:cardsetId')
         res.status(500).json({ error: 'Error fetching cardset' });
     }
 });
-
-router.use('/', flashcards);
 
 module.exports = router;

@@ -23,8 +23,12 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
             const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardsetId}/flashcards`);
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
-        } catch(error) {
-            console.error('Error fetching flashcards:', error);
+        } catch (error) {
+            if (error.response.status === 403) {
+                console.error('User doesnt have permission to see the cardset');
+            } else {
+                console.error('Error fetching flashcards: ', error.message);
+            }
         }
     }
 
@@ -38,7 +42,11 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
         try{
             await axios.put(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardsetId}`, {updatedData});
         } catch (error) {
-            console.error('Error editing cardset:', error);
+            if (error.response.status === 403) {
+                console.error('User doesnt have permission to edit the cardset');
+            } else {
+                console.error('Error editing cardset: ', error.message);
+            }
         }
         setisEditingSet(false);
     };
@@ -53,7 +61,11 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
             await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/cardsets/${cardsetId}/flashcards/${flashcard.id}`)
             fetchFlashCards();
         } catch (error) {
-            console.error('Error deleting flashcard:', error);
+            if (error.response.status === 403) {
+                console.error('User doesnt have permission to edit the cardset');
+            } else {
+                console.error('Error deleting flashcard: ', error.message);
+            }
         }
     };
     
@@ -152,7 +164,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                     <div key={flashcard.id} className="flashcard">
                         <div className='row'>
                             {selectedFlashcard === flashcard && isEditingCard && !showDeleteConfirmation ? (                                        
-                                    <EditFlashcard flashcard={selectedFlashcard} onEditFlashcard={handleEditFlashcard}/>
+                                    <EditFlashcard userId={userId} cardsetId={cardsetId} flashcard={selectedFlashcard} onEditFlashcard={handleEditFlashcard}/>
                             ) : (
                                 <>
                                     <div className='col'>

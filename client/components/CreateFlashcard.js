@@ -6,12 +6,24 @@ export const CreateFlashcard = ({userId, cardsetId, onCreateFlashcard}) => {
     const onSubmit = async (event) =>{
         event.preventDefault();
         if (cardsetId){
+            if (!userId) {
+                console.error("User id not found");
+                return;
+            }
             const newCardData = {
                 term: event.target.question.value,
                 definition: event.target.answer.value
             }
-            await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardsetId}/flashcards`, {cardsetId, newCardData});
-            onCreateFlashcard();
+            try{
+                await axios.post(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardsetId}/flashcards`, {cardsetId, newCardData});
+                onCreateFlashcard();
+            } catch (error) {
+                if (error.response.status === 403) {
+                    console.error('User doesnt have permission to edit the cardset');
+                } else {
+                    console.error('Error creating flashcard: ', error.message);
+                }
+            }
         }
     }
 

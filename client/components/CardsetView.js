@@ -19,11 +19,19 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
 
     const fetchFlashCards = async () => {
         try {
+            if (!userId){
+                console.error("User id not found");
+                return;
+            }
             const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userId}/cardsets/${cardsetId}/flashcards`);
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
         } catch (error) {
-            console.error('Error fetching flashcards:', error);
+            if (error.response.status === 403) {
+                console.error('User doesnt have permission to see this cardset');
+            } else {
+                console.error('Error fetching flashcards: ', error.message);
+            }
         }
     }
 
@@ -40,7 +48,11 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
             fetchFlashCards();
             fetchFlachcardPage();
         } catch (error) {
-            console.error('Error deleting flashcard:', error);
+            if (error.response.status === 403) {
+                console.error('User doesnt have permission to edit the cardset');
+            } else {
+                console.error('Error deleting flashcards: ', error.message);
+            }
         }
     }
 
@@ -80,7 +92,7 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
 
                         <div className="col-12 my-2">
                             <div className="d-flex justify-content-center">
-                                <CreateFlashcard cardsetId={cardsetId} onCreateFlashcard={handleCreateFlashcard} />
+                                <CreateFlashcard userId={userId} cardsetId={cardsetId} onCreateFlashcard={handleCreateFlashcard} />
                             </div>
                         </div>
 

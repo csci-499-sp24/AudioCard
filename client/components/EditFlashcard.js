@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-export const EditFlashcard = ({ flashcard, onEditFlashcard }) => {
+export const EditFlashcard = ({ userId, cardsetId, flashcard, onEditFlashcard }) => {
     const [question, setQuestion] = useState(flashcard.term);
     const [answer, setAnswer] = useState(flashcard.definition);
 
@@ -11,7 +11,15 @@ export const EditFlashcard = ({ flashcard, onEditFlashcard }) => {
             term: question,
             definition: answer
         };
-        await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/flashcards/updateflashcard/${flashcard.id}`, updatedFlashcard);
+        try{
+            await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/cardsets/${cardsetId}/flashcards/${flashcard.id}`, {updatedFlashcard} );
+        } catch (error) {
+            if (error.response.status === 403) {
+                console.error('User doesnt have permission to edit the cardset');
+            } else {
+                console.error('Error: ', error.message);
+            }
+        }
         onEditFlashcard();
     };
 

@@ -16,7 +16,11 @@ export const CardViewTestMode = ({ userId, cardset }) => {
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
         } catch (error) {
-            console.error('Error fetching flashcards:', error);
+            if (error.response.status === 403) {
+                console.error('User doesnt have permission to see the cardset');
+            } else {
+                console.error('Error fetching flashcards: ', error.message);
+            }
         }
     }
 

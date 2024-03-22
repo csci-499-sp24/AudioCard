@@ -87,7 +87,7 @@ const Explore = () => {
               }
               setCardsets(cardsetsData);
         } catch (error) {
-            console.error("Error fetching card sets:", error);
+            console.error("Error fetching public card sets:", error);
         }
     };
 

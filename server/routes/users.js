@@ -2,7 +2,12 @@ const express = require('express');
 const router = express.Router();
 const { Cardset, User, Flashcard } = require('../models/modelRelations');
 const flashcards = require ('./flashcards');
+const sharedCardsets = require ('./sharedCardsets');
 const { Sequelize } = require('sequelize');
+const {checkCardsetAuthority} = require('./functions');
+
+router.use('/:userid/cardsets/:cardsetid/flashcards', flashcards);
+router.use('/:userid/cardsets', sharedCardsets);
 
 router.route('/signup')
 .post(async (req, res) => {
@@ -13,6 +18,18 @@ router.route('/signup')
     } catch (error) {
         console.error('Error signing up user:', error);
         res.status(500).json({ error: 'Error signing up user' });
+    }
+});
+
+//Get all Users
+router.route('/')
+.get(async(req, res) => {
+    try{
+        const users = await User.findAll();
+        res.status(200).json( users );
+    } catch (error) {
+        console.error('Error fetching users from database:', error);
+        res.status(500).json({ error: 'Error fetching users from database' });
     }
 });
 
@@ -27,7 +44,7 @@ router.route('/getuser')
         console.error('Error fetching database user:', error);
         res.status(500).json({ error: 'Error fetching database user' });
     }
-})
+});
 
 //Users cardsets 
 router.route('/:userid/cardsets')
@@ -43,7 +60,6 @@ router.route('/:userid/cardsets')
         res.status(500).json({ error: 'Error creating a cardset' });
     }
 })
-
 .get(async(req, res) => {
     try{
         const cardsets = await Cardset.findAll({ 
@@ -65,12 +81,17 @@ router.route('/:userid/cardsets')
         console.error('Error fetching card sets:', error);
         res.status(500).json({ error: 'Error fetching card sets' });
     }
-})
+});
 
 //Update specific cardset
 router.route('/:userid/cardsets/:cardsetid')
 .put(async(req,res)=> {
     try{
+        const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
+        if (authLevel === 'read-only' || authLevel === 'no-access' ){
+            res.status(403).send('User is not authorized to make this request');
+            return;
+        }
         const { updatedData } = req.body;
         const cardset = await Cardset.update(updatedData, {where: { id: req.params.cardsetid }});
         res.status(200).json(cardset);
@@ -81,6 +102,11 @@ router.route('/:userid/cardsets/:cardsetid')
 })
 .delete(async(req,res) => {
     try{
+        const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
+        if (authLevel !== 'owner'){//Only cardset owner is able to delete the cardset
+            res.status(403).send(`User is not authorized to make this request with auth level: '${authLevel}'`);
+            return;
+        }
         const cardset = await Cardset.findOne({where: { id: req.params.cardsetid }});
         if (!cardset) {
             return res.status(404).json({ error: 'Cardset not found' });
@@ -95,14 +121,8 @@ router.route('/:userid/cardsets/:cardsetid')
         console.error('Error deleting cardset:', error);
         res.status(500).json({ error: 'Error deleting a cardset' });
     }
-}
+});
 
 
-
-
-)
-
-
-router.use('/:userid/cardsets', flashcards);
 
 module.exports = router;
