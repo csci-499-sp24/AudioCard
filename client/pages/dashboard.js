@@ -85,7 +85,7 @@ const Dashboard = ({ isDarkMode, toggleDarkMode }) => {
 
     return (
         <div className="wrapper">   
-        <Navbar isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
+        <Navbar userId={userData?.id}  isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
             <div className="container">
                 <div className="row px-2">
                     <div className="col-12 mt-5" id={styles.greeting}>

@@ -4,9 +4,10 @@ import { auth } from '../../utils/firebase';
 import Link from 'next/link';
 import styles from '../../styles/navbar.module.css';
 
-const Navbar = ({ isDarkMode, toggleDarkMode }) => {
+const Navbar = ({ userId, isDarkMode, toggleDarkMode }) => {
 
     const router = useRouter();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary" id={styles.navbar}>
@@ -51,6 +52,20 @@ const Navbar = ({ isDarkMode, toggleDarkMode }) => {
                         >
                             Logout
                         </button>
+                        <li className="nav-item">
+                            <div className={styles.profileCircle} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                            </div>
+                            {isDropdownOpen && (
+                                <div className={styles.dropdownMenu}>
+                                    <Link href={`/profile/${userId}`} className={styles.dropdownItem}>
+                                        Profile
+                                    </Link>
+                                    <Link href="/settings" className={styles.dropdownItem}>
+                                        Settings
+                                    </Link>
+                                </div>
+                            )}
+                        </li>
                     </ul>
                 </div>
             </div>
