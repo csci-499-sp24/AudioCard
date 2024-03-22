@@ -48,23 +48,50 @@ router.route('/getuser')
 
 //Users cardsets 
 router.route('/:userid/cardsets')
-.post(async(req, res) => {
-    try{
-        const { newSetData } = req.body;
-        const user = await User.findOne({where: { id: req.params.userid }});
-        const cardset = await Cardset.create(newSetData);
-        await user.addCardset(cardset);
-        res.status(201).json({ cardset });
-    } catch (error) {
-        console.error('Error creating cardset:', error);
-        res.status(500).json({ error: 'Error creating a cardset' });
-    }
-})
-.get(async(req, res) => {
-    try{
-        const cardsets = await Cardset.findAll({ 
-            where: { userId: req.params.userid },
-            include: [{
+    .post(async(req, res) => {
+            try{
+                const { newSetData } = req.body;
+                const user = await User.findOne({where: { id: req.params.userid }});
+                const cardset = await Cardset.create(newSetData);
+                await user.addCardset(cardset);
+                res.status(201).json({ cardset });
+            } catch (error) {
+                console.error('Error creating cardset:', error);
+                res.status(500).json({ error: 'Error creating a cardset' });
+        }
+    })
+
+    .get(async(req, res) => {
+        try{
+            const cardsets = await Cardset.findAll({ 
+                where: { userId: req.params.userid },
+                include: [{
+                    model: Flashcard,
+                    attributes: [],
+                    duplicating: false,
+                }],
+                attributes: {
+                    include: [
+                        [Sequelize.fn("COUNT", Sequelize.col("flashcards.id")), "flashcardCount"]
+                    ]
+                },
+                group: ['cardset.id']
+            })
+            res.status(200).json({ cardsets });
+        } catch (error) {
+            console.error('Error fetching card sets:', error);
+            res.status(500).json({ error: 'Error fetching card sets' });
+        }
+});
+
+//Get user's single cardset using a cardset Id
+router.route('/:userid/cardsets/:cardsetid')
+    .get(async(req,res)=> {
+        try{
+            const { updatedData } = req.body;
+            const cardset = await Cardset.findOne({
+            where: { id: req.params.cardsetid },
+                include: [{
                 model: Flashcard,
                 attributes: [],
                 duplicating: false,
@@ -75,13 +102,13 @@ router.route('/:userid/cardsets')
                 ]
             },
             group: ['cardset.id']
-        })
-        res.status(200).json({ cardsets });
-    } catch (error) {
-        console.error('Error fetching card sets:', error);
-        res.status(500).json({ error: 'Error fetching card sets' });
+            });
+            res.status(200).json(cardset);
+        } catch (error) {
+        console.error('Error fetching a cardset:', error);
+        res.status(500).json({ error: 'Error fetching a cardset' });
     }
-});
+})
 
 //Update specific cardset
 router.route('/:userid/cardsets/:cardsetid')

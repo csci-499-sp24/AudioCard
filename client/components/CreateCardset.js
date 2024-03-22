@@ -35,9 +35,20 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
 
                 <div className="col-12">
                     <label className="visually-hidden" htmlFor="subject">Subject</label>
-                    <div className="input-group">
-                        <input type="text" className="form-control" id="subject" placeholder="Subject"/>
-                    </div>
+                    <select class="form-select" aria-label="Default select example"id="subject">
+                        <option selected>Subject</option>
+                        <option value="History">History</option>
+                        <option value="Math">Math</option>
+                        <option value="Science">Science</option>
+                        <option value="English">English</option>
+                        <option value="Programming">Programming</option>
+                        <option value="Fine Arts">Fine Arts</option>
+                        <option value="Foreign Languages">Foreign Languages</option>
+                        <option value="Nature">Nature</option>
+                        <option value="Humanities">Humanities</option>
+                        <option value="Health">Health</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
 
                 <div className="col-12">
