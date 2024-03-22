@@ -35,27 +35,6 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
         }
     }
 
-    const handleDeleteFlashcard = async () => {
-        if (currentCardsetData.length === 0) {
-            // No flashcards to delete
-            return;
-        }
-
-        const flashcardIdToDelete = currentCardsetData[currentCardsetData.length - 1].id; // Get the ID of the last flashcard
-        try {
-            await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/cardsets/${cardsetId}/flashcards/${flashcardIdToDelete}`);
-            // Refresh the list of flashcards after deletion
-            fetchFlashCards();
-            fetchFlachcardPage();
-        } catch (error) {
-            if (error.response.status === 403) {
-                console.error('User doesnt have permission to edit the cardset');
-            } else {
-                console.error('Error deleting flashcards: ', error.message);
-            }
-        }
-    }
-
     const toggleCreateFlashcardForm = () => {
         setShowCreateFlashcardForm(!showCreateFlashcardForm);
     };
@@ -71,12 +50,6 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
                     </div>
                 </div>
             <div className='row col d-flex justify-content-between align-items-center'>
-                <div className='col d-flex justify-content-begin'>
-                    <div className="col-12 mt-2" id={styles.greeting}>
-                                <button className="btn btn-outline-danger" onClick={handleDeleteFlashcard}>Delete Flashcard</button>
-                    </div>
-                </div>
-                <div className='col'>
                 {/* Add new flashcard button */}
                 { showCreateFlashcardForm ? 
                     null
@@ -85,7 +58,6 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
                         <button className="btn btn-secondary btn-large" onClick={toggleCreateFlashcardForm}>Add Flashcard</button>
                     </div>
                 }
-                </div>
             </div>
 
                 {/* Add or delete a flashcard section  */}
