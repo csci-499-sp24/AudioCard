@@ -8,11 +8,14 @@ export const checkAnswerSTT = (answer) => {
             recognition.interimResults = true; 
             let fullTranscript = '';
             let timeout;
+            answer = answer.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, '');
             
             recognition.onresult = (event) => {
-                const interimTranscript = event.results[event.results.length - 1][0].transcript; 
+                let interimTranscript = event.results[event.results.length - 1][0].transcript; 
                 console.log('Interim Transcription:', interimTranscript);
                 fullTranscript += interimTranscript;
+                fullTranscript = fullTranscript.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, '');
+                interimTranscript = interimTranscript.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, '');
                 if (fullTranscript.toLowerCase().includes(answer.toLowerCase()) || interimTranscript.toLowerCase().includes(answer.toLowerCase())) {
                     recognition.stop();
                     resolve(true);
