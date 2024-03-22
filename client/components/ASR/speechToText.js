@@ -7,6 +7,7 @@ export const STT = (answer) => {
             recognition.continuous = true; 
             recognition.interimResults = true; 
             let fullTranscript = '';
+            answer.replace(/[^\w\s]|_/g, '').replace(/\s+/g, ' ');
 
             recognition.onresult = (event) => {
                 const interimTranscript = event.results[event.results.length - 1][0].transcript; 

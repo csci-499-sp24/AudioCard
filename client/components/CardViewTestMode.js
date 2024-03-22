@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FlashcardTestMode } from './FlashcardTestMode';
+import { ASRTestMode } from './ASR/ASRTestMode';
 import styles from '../styles/CardSet.module.css';
 
 export const CardViewTestMode = ({ userId, cardset }) => {
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
+    const [selectedMode, setSelectedMode] = useState(null); 
 
     useEffect(() => {
         fetchFlashCards();
@@ -20,6 +22,10 @@ export const CardViewTestMode = ({ userId, cardset }) => {
         }
     }
 
+    const handleModeSelection = (mode) => {
+        setSelectedMode(mode);
+    };
+
     return (
         <div className={styles.setContainer}>
             {/*Form for changing currently viewed cardset */}
@@ -31,12 +37,18 @@ export const CardViewTestMode = ({ userId, cardset }) => {
                     </div>
                 </div>
                 {/*Pass all the cards of the cardset to the flashcard component*/}
-                <div className="row">
-                    <div className='col mb-2'>
-                        <FlashcardTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} />
-                    </div>
+                <div className="row mb-2 d-flex justify-content-center align-items-center'">
+                <div className='col d-flex justify-content-end'>
+                    <button className="btn btn-secondary" onClick={() => handleModeSelection('speak')}>Speak Mode</button>
+                </div>
+                <div className='col'>
+                    <button className="btn btn-secondary" onClick={() => handleModeSelection('type')}>Type Mode</button>
+                </div>
                 </div>
                 <hr />
+                {/* Conditionally render mode based on selectedMode */}
+                {selectedMode === 'speak' && <ASRTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} />}
+                {selectedMode === 'type' && <FlashcardTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} />}
             </div>
         </div>
     )
