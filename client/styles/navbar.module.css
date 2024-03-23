@@ -2,11 +2,11 @@
     background: transparent !important;
 }
 
-#navLink:hover{
+#navLink:hover {
     color: #1d62b4ba !important;
 }
 
-#navLinkLogo:hover{
+#navLinkLogo:hover {
     color: black !important;
 }
 
@@ -15,7 +15,7 @@
 }
 
 
-@media (max-width: 991px) { 
+@media (max-width: 991px) {
     #navbar {
         background: white !important;
     }
@@ -29,13 +29,11 @@
     }
 }
 
-.profileCircle {
-    /* Style your circle profile icon here */
+.navUserAvatar {
+    overflow: hidden;
+    border-radius: 50%;
     width: 40px;
     height: 40px;
-    border-radius: 50%;
-    background: #333; /* Replace with user's image or preferred style */
-    cursor: pointer;
 }
 
 .dropdownMenu {
@@ -43,7 +41,7 @@
     top: 100%;
     background: white;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     width: 200px;
     z-index: 1000;
 }
