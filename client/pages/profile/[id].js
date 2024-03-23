@@ -9,32 +9,49 @@ import { CardProfile } from '@/components/Cards/CardProfile';
 const Profile = () => {
     const router = useRouter();
     const { id } = router.query;
-    const [user, setUser] = useState(null);
-    const [userData, setUserData] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [profileUser, setProfileUser] = useState(null);
     const [publicCardsets, setPublicCardsets] = useState([]);
 
     useEffect(() => {
-        auth.onAuthStateChanged((user) => {
+        auth.onAuthStateChanged(async (user) => {
             if (user) {
-                setUser(user);
-                fetchUserData(user.uid);
+                await fetchCurrentUserData(user.uid);
             } else {
-                setUser(null);
+                setCurrentUser(null);
             }
         });
     }, []);
 
-
-    const fetchUserData = async (firebaseId) => {
-        try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/getuser`, { params: { firebaseId } });
-            const userData = response.data.user;
-            setUserData(userData);
-            fetchPublicCardsets(userData.id);
-        } catch (error) {
-            console.error('Error fetching user data:', error);
+    useEffect(() => {
+        if (id) {
+            fetchUserProfile(id);
+            fetchPublicCardsets(id);
         }
-    }
+    }, [id]);
+
+    const fetchCurrentUserData = async (firebaseId) => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/getuser`, {
+                params: { firebaseId }
+            });
+            if (response.data && response.data.user) {
+                setCurrentUser(response.data.user);
+            }
+        } catch (error) {
+            console.error('Error fetching current user data:', error);
+        }
+    };
+
+    const fetchUserProfile = async (profileUserId) => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${profileUserId}`);
+            const profileData = response.data.user;
+            setProfileUser(profileData);
+        } catch (error) {
+            console.error('Error fetching profile user data:', error);
+        }
+    };
 
     const fetchPublicCardsets = async (userId) => {
         try {
@@ -44,29 +61,29 @@ const Profile = () => {
         } catch (error) {
             console.error('Error fetching public cardsets:', error);
         }
-    }
+    };
+
+    const shouldShowAddFriendButton = currentUser && profileUser && currentUser.id !== Number(profileUser.id);
 
     return (
         <div className='wrapper'>
-            <Navbar userId={userData?.id} />
+            <Navbar userId={currentUser?.id} />
             <div className="mt-4">
                 <div className={styles.profileContainer}>
                     <div className={styles.profileSidebar}>
                         <div className={styles.userAvatar}>
                             <img src="/userAvatar.jpg" alt="User Avatar" className={styles.avatarImage} />
                         </div>
-                        <button className={styles.addButton}>Add Friend</button>
+                        {shouldShowAddFriendButton && <button className={styles.addButton}>Add Friend</button>}
                         <div className={styles.friendList}>
                             <h2>Friends</h2>
                             <ul>
-                                <li>Friend 1</li>
-                                <li>Friend 2</li>
-                                <li>Friend 3</li>
+
                             </ul>
                         </div>
                     </div>
                     <div className="container">
-                        <h1 className={styles.cardSetTitle}>{`${userData?.username}'s Card Sets`}</h1>
+                        <h1 className={styles.cardSetTitle}>{`${profileUser?.username}'s Card Sets`}</h1>
                         <div className="row">
                             {publicCardsets.map(cardset => (
                                 <CardProfile key={cardset.id} cardset={cardset} />
@@ -77,7 +94,6 @@ const Profile = () => {
             </div>
         </div>
     );
-
-}
+};
 
 export default Profile;
