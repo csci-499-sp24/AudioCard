@@ -4,9 +4,10 @@ import { auth } from '../../utils/firebase';
 import Link from 'next/link';
 import styles from '../../styles/navbar.module.css';
 
-const Navbar = () => {
+const Navbar = ({ userId }) => {
 
     const router = useRouter();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary" id={styles.navbar}>
@@ -43,12 +44,26 @@ const Navbar = () => {
                         <li className="nav-item text-center">
                             <a className="nav-link text-dark" id={styles.navLink} href="#">Settings</a>
                         </li>
-
                         <button className="btn" id={styles.navLink}
                             onClick={() => { auth.signOut(); router.push('/login'); }}
                         >
                             Logout
                         </button>
+                        <li className="nav-item">
+                            <div className={styles.navUserAvatar} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                                <img src="/userAvatarSmall.jpg" alt="User Avatar" className={styles.avatarImage} />
+                            </div>
+                            {isDropdownOpen && (
+                                <div className={styles.dropdownMenu}>
+                                    <Link href={`/profile/${userId}`} className={styles.dropdownItem}>
+                                        Profile
+                                    </Link>
+                                    <Link href="/settings" className={styles.dropdownItem}>
+                                        Settings
+                                    </Link>
+                                </div>
+                            )}
+                        </li>
                     </ul>
                 </div>
             </div>
