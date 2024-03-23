@@ -156,6 +156,22 @@ const Explore = () => {
                         </ul>
                     </div>
                 </div>
+                <div className='d-flex mb-5'>
+                    <form className="form-inline" onSubmit={((e) => e.preventDefault())}>
+                        <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" onInput={(e) => onSearchChange(e)} />
+                    </form>
+                    <div className="dropdown">
+                        <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {sortingBy.length > 0 ? sortingBy : "Sort By..."}
+                        </button>
+                        <ul className="dropdown-menu">
+                            <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'flashcardCount')}>Flashcard count</a></li>
+                            <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'creationNewest')}>Newest first</a></li>
+                            <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'creationOldest')}>Oldest first</a></li>
+                            <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'alphabeticalOrder')}>Alphabetical order</a></li>
+                        </ul>
+                    </div>
+                </div>
 
             <div className="row">
                 { filteredCardsets.length == 0 && searchInput.length > 0 && <div>No cardsets matching this term</div> }

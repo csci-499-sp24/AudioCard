@@ -6,7 +6,6 @@ import styles from '../../styles/navbar.module.css';
 import { useDarkMode } from '../../utils/darkModeContext'
 
 const Navbar = ({ userId }) => {
-    const { isDarkMode, toggleDarkMode } = useDarkMode();
 
     const router = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
