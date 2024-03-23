@@ -1,30 +1,48 @@
-#navbar {
+/* Navbar.module.css */
+
+/* Add a local class to the root selector */
+.navbarRoot {
+    --text-color: #333; /* Default text color */
+    --background-color: #fff; /* Default background color */
+  }
+  
+  /* Use the local class in your component */
+  .navbarRoot.dark-mode {
+    --text-color: #eee; /* Text color for dark mode */
+    --background-color: #333; /* Background color for dark mode */
+  }
+  
+  /* Rest of your styles */
+  #navbar {
     background: transparent !important;
-}
-
-#navLink:hover{
+  }
+  
+  #navLink:hover {
     color: #1d62b4ba !important;
-}
-
-#navLinkLogo:hover{
-    color: black !important;
-}
-
-#mobileExploreLink {
+  }
+  
+  #navLinkLogo:hover {
+    color: var(--text-color) !important;
+  }
+  
+  #mobileExploreLink {
     display: none !important;
-}
-
-
-@media (max-width: 991px) { 
+  }
+  
+  @media (max-width: 991px) {
     #navbar {
-        background: white !important;
+      background: var(--background-color) !important;
     }
-
+  
     #navLinkLogo {
-        color: #1d62b4ba !important;
+      color: #1d62b4ba !important;
     }
-
+  
     #mobileExploreLink {
-        display: inline-block !important;
+      display: inline-block !important;
     }
-}
+  }
+  
+ 
+
+

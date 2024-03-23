@@ -1,0 +1,16 @@
+LightDarkMode.module.css
+
+.toggleButton {
+    background-color: transparent;
+    color: #333;
+    border: none;
+    cursor: pointer;
+    /* Add margin and padding to align the button */
+    margin: 0;
+    padding: 0;
+}
+
+.toggleButton:hover {
+    color: #0015ffba;
+}
+
