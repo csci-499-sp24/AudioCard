@@ -4,7 +4,7 @@ import { EditFlashcard } from './EditFlashcard';
 import { RotatingCard } from '../components/Cards/RotatingCard';
 import axios from 'axios';
 
-export const Flashcard = ({ cardData, userId, cardsetId }) => {
+export const Flashcard = ({ cardData, userId, cardsetId, isDarkMode}) => {
   const [isFlipped, setFlipped] = useState(false);
   const [index, setIndex] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
@@ -71,7 +71,7 @@ export const Flashcard = ({ cardData, userId, cardsetId }) => {
           {isEditing && editingCard ? (
             <EditFlashcard userId={userId} cardsetId={cardsetId} flashcard={editingCard} onEditFlashcard={handleEditComplete} onCancel={handleEditCancel} />
           ) : (
-            <RotatingCard flashcards={flashcards} index={index}/>
+            <RotatingCard flashcards={flashcards} index={index} isDarkMode={isDarkMode}/>
           )}
 
           {isEditing ? null : (
@@ -88,7 +88,7 @@ export const Flashcard = ({ cardData, userId, cardsetId }) => {
 
         <div className="d-flex flex-row justify-content-around">
           {!isEditing && (
-            <button className="btn btn-outline-dark" onClick={() => handleEdit(flashcards[index])}>Edit</button>
+            <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => handleEdit(flashcards[index])}>Edit</button>
           )}
         </div>
 

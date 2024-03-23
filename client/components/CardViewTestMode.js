@@ -4,7 +4,7 @@ import { FlashcardTestMode } from './FlashcardTestMode';
 import { ASRTestMode } from './ASR/ASRTestMode';
 import styles from '../styles/CardSet.module.css';
 
-export const CardViewTestMode = ({ userId, cardset }) => {
+export const CardViewTestMode = ({ userId, cardset, isDarkMode }) => {
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [selectedMode, setSelectedMode] = useState(null); 
 
@@ -51,8 +51,8 @@ export const CardViewTestMode = ({ userId, cardset }) => {
                 </div>
                 <hr />
                 {/* Conditionally render mode based on selectedMode */}
-                {selectedMode === 'speak' && <ASRTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} />}
-                {selectedMode === 'type' && <FlashcardTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} />}
+                {selectedMode === 'speak' && <ASRTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} isDarkMode={isDarkMode} />}
+                {selectedMode === 'type' && <FlashcardTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} isDarkMode={isDarkMode} />}
             </div>
         </div>
     )

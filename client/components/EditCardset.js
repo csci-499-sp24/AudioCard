@@ -3,7 +3,7 @@ import axios from 'axios';
 import { CreateFlashcard } from '@/components/CreateFlashcard';
 import { EditFlashcard } from '@/components/EditFlashcard'; 
 
-export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubject, cardsetIsPublic }) => {
+export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubject, cardsetIsPublic, isDarkMode }) => {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [selectedFlashcard, setSelectedFlashcard] = useState(null);
@@ -157,7 +157,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                                 <h2>Subject: {newSubject} </h2>
                             </div>
                             <div className='col d-flex justify-content-end'>
-                                <button className='btn' onClick={handleEdit}><i className="bi bi-pencil-fill"></i></button>
+                                <button className={`btn ${isDarkMode ? 'light-btn' : ''}`} onClick={handleEdit}><i className="bi bi-pencil-fill"></i></button>
                             </div>
                             </>
                         )}
@@ -166,7 +166,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
 
             <div className="flashcardContainer">
                 {currentCardsetData.map(flashcard => (
-                    <div key={flashcard.id} className="flashcard">
+                    <div key={flashcard.id} className="flashcard" style={{ backgroundColor: isDarkMode ? '#2e3956' : '#FFFFFF' }}>
                         <div className='row'>
                             {selectedFlashcard === flashcard && isEditingCard && !showDeleteConfirmation ? (                                        
                                     <EditFlashcard userId={userId} cardsetId={cardsetId} flashcard={selectedFlashcard} onEditFlashcard={handleEditFlashcard}/>
@@ -188,16 +188,16 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                                                 </div>
                                             ) : (
                                                 <div className="cardbuttons"> 
-                                                    <button className='btn' onClick={() => handleEditCard(flashcard)}><i className="bi bi-pencil-fill"></i></button>
-                                                    <button className="btn deleteButton" onClick={() => handleDelete(flashcard)}>
+                                                    <button className={`btn ${isDarkMode ? 'light-btn' : ''}`} onClick={() => handleEditCard(flashcard)}><i className="bi bi-pencil-fill"></i></button>
+                                                    <button className={`btn deleteButton ${isDarkMode ? 'light-btn' : ''}`} onClick={() => handleDelete(flashcard)}>
                                                         <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
                                                     </button>
                                                 </div>
                                             )
                                         ) : 
                                         (<div className="cardbuttons"> 
-                                            <button className='btn' onClick={() => handleEditCard(flashcard)}><i className="bi bi-pencil-fill"></i></button>
-                                            <button className="btn deleteButton" onClick={() => handleDelete(flashcard)}>
+                                            <button className={`btn ${isDarkMode ? 'light-btn' : ''}`} onClick={() => handleEditCard(flashcard)}><i className="bi bi-pencil-fill"></i></button>
+                                            <button className={`btn deleteButton ${isDarkMode ? 'light-btn' : ''}`} onClick={() => handleDelete(flashcard)}>
                                                 <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
                                             </button>
                                     </div>)}
@@ -217,7 +217,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                 )}
 
                 <div className='row d-flex justify-content-center'>
-                    <button className='btn' onClick={() => toggleIsAddingCard()}>
+                    <button className={`btn ${isDarkMode ? 'light-btn' : ''}`} onClick={() => toggleIsAddingCard()}>
                         <i className="bi bi-plus-square" style={{ fontSize: '2em' }}></i>
                     </button>
                 </div>
@@ -229,7 +229,6 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                 }
 
                 .flashcard {
-                    background-color: #f0f0f0; 
                     padding: 20px; 
                     border: 1px solid black;
                 }
@@ -239,6 +238,9 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                 
                 .addingContainer{
                     padding: 20px; 
+                }
+                .light-btn {
+                    color: #FFFFFF;
                 }`}
             </style>
         </div>

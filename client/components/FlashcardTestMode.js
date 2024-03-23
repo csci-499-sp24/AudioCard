@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import style from '../styles/flashcardtestmode.module.css';
 import { RotatingCardTest } from './Cards/RotatingCardTest';
 
-export const FlashcardTestMode = ({ cardData, userId }) => {
+export const FlashcardTestMode = ({ cardData, userId, isDarkMode }) => {
     const [index, setIndex] = useState(0);
     const [flashcards, setFlashcards] = useState([]);
     const [answer, setAnswer] = useState('');
@@ -120,6 +120,7 @@ export const FlashcardTestMode = ({ cardData, userId }) => {
                             index={index}
                             isFlipped={isFlipped}
                             borderClass={borderClass}
+                            isDarkMode={isDarkMode}
                         />
                     </div>
                     {!isFlipped && (

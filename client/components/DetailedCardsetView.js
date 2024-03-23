@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { auth } from '../utils/firebase';
 
-export const CardsetView = ({cardset}) => {
+export const CardsetView = ({cardset, isDarkMode}) => {
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const firebaseId = auth.currentUser.uid;
     const [userData, setUserData] = useState(null);
@@ -89,7 +89,7 @@ export const CardsetView = ({cardset}) => {
         </div>
             <div className="flashcardContainer">
                 {currentCardsetData.map(flashcard => (
-                    <div key={flashcard.id} className="flashcard">
+                    <div key={flashcard.id} className="flashcard" style={{ backgroundColor: isDarkMode ? '#2e3956' : '#FFFFFF' }}>
                         <div>Question: {flashcard.term}</div>
                         <div>Answer: {flashcard.definition}</div>
                     </div>
@@ -102,7 +102,6 @@ export const CardsetView = ({cardset}) => {
                 }
 
                 .flashcard {
-                    background-color: #FFFFFF; 
                     padding: 20px; 
                     border-radius: 8px; 
                 }

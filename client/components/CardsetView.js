@@ -4,7 +4,7 @@ import { Flashcard } from './Flashcard';
 import { CreateFlashcard } from './CreateFlashcard';
 import styles from '../styles/CardSet.module.css';
 
-export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) => {
+export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage, isDarkMode}) => {
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [showCreateFlashcardForm, setShowCreateFlashcardForm] = useState(false);
 
@@ -46,7 +46,7 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
                 {/*Study mode with rorating flashcard */}
                 <div className="row">
                     <div className='col mb-2'>
-                        <Flashcard cardData={currentCardsetData} userId={userId} cardsetId={cardsetId} />
+                        <Flashcard cardData={currentCardsetData} userId={userId} cardsetId={cardsetId} isDarkMode={isDarkMode}/>
                     </div>
                 </div>
             <div className='row col d-flex justify-content-between align-items-center'>
@@ -66,7 +66,7 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage }) 
                         <hr />
                         <div className="col-12 mb-2" id={styles.greeting}>
                             <div className="d-flex justify-content-end">
-                                <button className="btn" onClick={toggleCreateFlashcardForm}>X</button>
+                                <button className="btn" style={{color: isDarkMode ? 'white' : 'gray' }} onClick={toggleCreateFlashcardForm}>X</button>
                             </div>
                         </div>
 

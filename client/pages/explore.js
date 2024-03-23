@@ -125,21 +125,21 @@ const Explore = ({ isDarkMode, toggleDarkMode }) => {
             <div className="row">
                 { filteredCardsets.length == 0 && searchInput.length > 0 && <div>No cardsets matching this term</div> }
                 {filteredCardsets.length > 0 || searchInput.length > 0 ? filteredCardsets.map((cardset) => (                
-                        <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} />
+                        <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} isDarkMode={isDarkMode}/>
                     )):
                     cardsets.map((cardset) => (
-                        <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} />
+                        <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} isDarkMode={isDarkMode}/>
                     )) }
                 </div>
 
                 {isDetailedViewOpen && (
-                    <div className="detailed-cardset-view">
+                    <div className="detailed-cardset-view" style={{ backgroundColor: isDarkMode ? '#0a092d' : '#ADD8E6' }}>
                         <div className="detailed-cardset-content">
-                            <button className="close-btn" onClick={handleCloseDetailedView}>
+                            <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }}onClick={handleCloseDetailedView}>
                                 &times;
                             </button>
                             {selectedCardset && (
-                                <CardsetView cardset={selectedCardset}
+                                <CardsetView cardset={selectedCardset} isDarkMode={isDarkMode}
                                 />
                             )}
                         </div>
@@ -162,7 +162,6 @@ const Explore = ({ isDarkMode, toggleDarkMode }) => {
                     right: 0;
                     width: 50%; /* Adjust as needed */
                     height: 100%;
-                    background-color: #ADD8E6;
                     z-index: 999;
                     overflow-y: auto;
                     transition: transform 0.3s ease;

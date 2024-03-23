@@ -4,7 +4,7 @@ import { RotatingCardTest } from '../Cards/RotatingCardTest';
 import {checkAnswerSTT} from './speechToText';
 import {TTS} from './textToSpeech';
 
-export const ASRTestMode = ({ cardData}) => {
+export const ASRTestMode = ({ cardData, isDarkMode}) => {
     const [index, setIndex] = useState(0);
     const [flashcards, setFlashcards] = useState([]);
     const [isFlipped, setIsFlipped] = useState(false);
@@ -134,6 +134,7 @@ export const ASRTestMode = ({ cardData}) => {
                             index={index}
                             isFlipped={isFlipped}
                             borderClass={borderClass}
+                            isDarkMode={isDarkMode}
                         />
                     </div>
                 </>

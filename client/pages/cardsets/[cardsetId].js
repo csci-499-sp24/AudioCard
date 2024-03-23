@@ -95,7 +95,8 @@ export default function CardsetPage ({ isDarkMode, toggleDarkMode }) {
         }
     };
     const navigateToTestPage = () => {
-        router.push(`/test/${cardsetId}`);
+        const darkModeParam = isDarkMode ? '?darkMode=true' : '?darkMode=false';
+        router.push(`/test/${cardsetId}${darkModeParam}`);
     };
 
     // Render flashcard data
@@ -110,7 +111,7 @@ export default function CardsetPage ({ isDarkMode, toggleDarkMode }) {
 
                     <div className="row d-flex align-items-center">
                         <div className='col'>
-                            <button className="btn btn-outline-dark" onClick={() => router.back()}>Back</button>
+                            <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>
                         </div>
                         <div className='col d-flex justify-content-end mb-4'>
                             <button className="btn btn-secondary testButton" onClick={navigateToTestPage}>Test Mode</button>
@@ -123,7 +124,7 @@ export default function CardsetPage ({ isDarkMode, toggleDarkMode }) {
             {
                 loading ? 
                     <div className='text-center'><h5>Loading...</h5></div>
-                :   <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards}/>
+                :   <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards} isDarkMode={isDarkMode}/>
             }
 
             {/* All Flashcards in the set  */}
@@ -173,9 +174,9 @@ export default function CardsetPage ({ isDarkMode, toggleDarkMode }) {
                     
                     {/* Edit Flashcards set */}
                     { isEditPageOpen && (
-                        <div className="edit-page-view">
+                        <div className="edit-page-view" style={{ backgroundColor: isDarkMode ? '#0a092d' : '#ADD8E6' }}>
                             <div className="edit-page-content">
-                                <button className="close-btn" onClick={handleCloseEditPage}>
+                                <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseEditPage}>
                                 &times;
                                 </button>
                                 { currentCardsetData && (
@@ -186,6 +187,7 @@ export default function CardsetPage ({ isDarkMode, toggleDarkMode }) {
                                         cardsetTitle={cardset.title} 
                                         cardsetSubject={cardset.subject}
                                         cardsetIsPublic={cardset.isPublic}
+                                        isDarkMode={isDarkMode}
                                     />
                                 )}
                             </div>
@@ -231,7 +233,6 @@ export default function CardsetPage ({ isDarkMode, toggleDarkMode }) {
                         left: 0; 
                         width: 100%; 
                         height: 100%;
-                        background-color: #ADD8E6;
                         z-index: 999;
                         overflow-y: auto;
                         transition: transform 0.3s ease;
@@ -258,6 +259,14 @@ export default function CardsetPage ({ isDarkMode, toggleDarkMode }) {
                     .delete-confirmation {
                         margin-bottom: 10px; 
                     }
+                    .close-btn {
+                        top: 10px;
+                        right: 10px;
+                        font-size: 24px;
+                        cursor: pointer;
+                        background: none;
+                        border: none;
+                      }
             `}</style>     
             </div>
         </div>
