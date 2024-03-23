@@ -19,7 +19,7 @@
 }
 
 #front,
-#back {
+#back, #frontDark, #backDark {
     backface-visibility: hidden;
 
     position: absolute;
@@ -41,11 +41,23 @@
     color: black;
 }
 
+#frontDark {
+    background-color: #2e3956;
+    color: white;
+}
+
 #back {
     transform: rotateX(180deg);
 
     background-color: white;
     color: black;
+}
+
+#backDark {
+    transform: rotateX(180deg);
+
+    background-color: #2e3956;
+    color: white;
 }
 
 @keyframes flash-green {

@@ -3,8 +3,10 @@ import style from '../../styles/flashcardtestmode.module.css';
 import { RotatingCardTest } from '../Cards/RotatingCardTest';
 import {checkAnswerSTT} from './speechToText';
 import {TTS} from './textToSpeech';
+import { useDarkMode } from '../../utils/darkModeContext';
 
 export const ASRTestMode = ({ cardData}) => {
+    const {isDarkMode} = useDarkMode();
     const [index, setIndex] = useState(0);
     const [flashcards, setFlashcards] = useState([]);
     const [isFlipped, setIsFlipped] = useState(false);
@@ -134,6 +136,7 @@ export const ASRTestMode = ({ cardData}) => {
                             index={index}
                             isFlipped={isFlipped}
                             borderClass={borderClass}
+                            isDarkMode={isDarkMode}
                         />
                     </div>
                 </>

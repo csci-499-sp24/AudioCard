@@ -1,11 +1,12 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { auth } from '../../utils/firebase';
 import Link from 'next/link';
 import styles from '../../styles/navbar.module.css';
+import { useDarkMode } from '../../utils/darkModeContext';
 
 const Navbar = ({ userId }) => {
-
+    const {isDarkMode, toggleDarkMode} = useDarkMode();
     const router = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -33,18 +34,17 @@ const Navbar = ({ userId }) => {
 
                 <div className="navbar-collapse collapse w-100 order-3 dual-collapse2" id="navbarScroll">
                     <ul className="navbar-nav ms-auto">
-                        <li className="nav-item text-center" id={styles.mobileExploreLink}>
-                            <Link href="/explore" className='nav-link text-dark' id={styles.navLink}>
-                                Explore
-                            </Link>
-                        </li>
+                    <li className={isDarkMode ? 'text-white' : 'text-dark'} id={styles.mobileExploreLink}>
+                    <Link href="/explore" className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'}>
+                            Explore
+                        </Link>
+                    </li>
                         <li className="nav-item text-center">
-                            <a className="nav-link text-dark" id={styles.navLink} href="#">Dark</a>
+                        <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink} onClick={toggleDarkMode}>
+                            {isDarkMode ? 'Light' : 'Dark'}
+                        </button>
                         </li>
-                        <li className="nav-item text-center">
-                            <a className="nav-link text-dark" id={styles.navLink} href="#">Settings</a>
-                        </li>
-                        <button className="btn" id={styles.navLink}
+                        <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink}
                             onClick={() => { auth.signOut(); router.push('/login'); }}
                         >
                             Logout

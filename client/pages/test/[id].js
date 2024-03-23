@@ -5,7 +5,8 @@ import axios from 'axios';
 import { auth } from '@/utils/firebase';
 import styles from '../../styles/testmode.module.css';
 
-const TestPage = () => {
+const TestPage = (isDarkMode) => {
+    console.log(isDarkMode);
     const router = useRouter();
     const { id } = router.query; // This is the ID of the cardset
     const [user, setUser] = useState(null);
@@ -61,7 +62,7 @@ const TestPage = () => {
             <button className={styles.exitButton} onClick={() => router.back()}>
                 X
             </button>
-            {cardsetData && <CardViewTestMode userId={userData?.id} cardset={cardsetData} />}
+            {cardsetData && <CardViewTestMode userId={userData?.id} cardset={cardsetData} isDarkMode={isDarkMode} />}
 
         </div>
     );

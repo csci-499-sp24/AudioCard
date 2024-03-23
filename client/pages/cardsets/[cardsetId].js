@@ -7,8 +7,10 @@ import { TermCard } from '../../components/Cards/TermCard';
 import { CardsetView } from '../../components/CardsetView';
 import { EditView } from "@/components/EditCardset";
 import { auth } from '../../utils/firebase';
+import {useDarkMode} from '../../utils/darkModeContext';
 
 export default function CardsetPage () {
+    const { isDarkMode, toggleDarkMode } = useDarkMode();
     const [user, setUser] = useState(null);
     const router = useRouter();
     const [userData, setUserData] = useState(null);
@@ -95,13 +97,14 @@ export default function CardsetPage () {
         }
     };
     const navigateToTestPage = () => {
-        router.push(`/test/${cardsetId}`);
+        const darkModeParam = isDarkMode ? '?darkMode=true' : '?darkMode=false';
+        router.push(`/test/${cardsetId}${darkModeParam}`);
     };
 
     // Render flashcard data
     return (
         <div className='wrapper'>
-            <Navbar />
+            <Navbar userId={userData?.id}/>
             <div className="container">
                 <div className="row">
                     <div className="col mt-5 mb-2">
@@ -110,7 +113,7 @@ export default function CardsetPage () {
 
                     <div className="row d-flex align-items-center">
                         <div className='col'>
-                            <button className="btn btn-outline-dark" onClick={() => router.back()}>Back</button>
+                            <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>
                         </div>
                         <div className='col d-flex justify-content-end mb-4'>
                             <button className="btn btn-secondary testButton" onClick={navigateToTestPage}>Test Mode</button>
@@ -144,7 +147,7 @@ export default function CardsetPage () {
                     {/*Edit/Delete Flashcard set */}
                     <div className='col d-flex justify-content-end align-items-center'>
                         <div className="d-flex align-items-center">
-                            <button className="btn btn-outline-dark" onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
+                            <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
                             <button className="btn deleteButton" onClick={() => handleDelete()}><i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i></button>
                         </div>
                     </div>   
@@ -167,15 +170,15 @@ export default function CardsetPage () {
                     {/* All Flashcards in the set */}
                     <div className="flashcardContainer mb-5">
                         {currentCardsetData.map(flashcard => (
-                            <TermCard key={flashcard.id} flashcard={flashcard}/>
+                            <TermCard key={flashcard.id} flashcard={flashcard} isDarkMode={isDarkMode}/>
                         ))}
                     </div>
                     
                     {/* Edit Flashcards set */}
                     { isEditPageOpen && (
-                        <div className="edit-page-view">
+                        <div className="edit-page-view" style={{ backgroundColor: isDarkMode ? '#0a092d' : '#ADD8E6' }}>
                             <div className="edit-page-content">
-                                <button className="close-btn" onClick={handleCloseEditPage}>
+                                <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseEditPage}>
                                 &times;
                                 </button>
                                 { currentCardsetData && (
@@ -186,6 +189,7 @@ export default function CardsetPage () {
                                         cardsetTitle={cardset.title} 
                                         cardsetSubject={cardset.subject}
                                         cardsetIsPublic={cardset.isPublic}
+                                        isDarkMode={isDarkMode}
                                     />
                                 )}
                             </div>
@@ -222,7 +226,7 @@ export default function CardsetPage () {
 
                     .flashcardContainer {
                         display: grid;
-                        grid-gap: 20px; 
+                        grid-gap: 20px;
                     }
 
                     .edit-page-view {
@@ -231,7 +235,6 @@ export default function CardsetPage () {
                         left: 0; 
                         width: 100%; 
                         height: 100%;
-                        background-color: #ADD8E6;
                         z-index: 999;
                         overflow-y: auto;
                         transition: transform 0.3s ease;
@@ -258,6 +261,14 @@ export default function CardsetPage () {
                     .delete-confirmation {
                         margin-bottom: 10px; 
                     }
+                    .close-btn {
+                        top: 10px;
+                        right: 10px;
+                        font-size: 24px;
+                        cursor: pointer;
+                        background: none;
+                        border: none;
+                      }
             `}</style>     
             </div>
         </div>

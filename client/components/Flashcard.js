@@ -3,8 +3,10 @@ import style from '../styles/flashcard.module.css';
 import { EditFlashcard } from './EditFlashcard';
 import { RotatingCard } from '../components/Cards/RotatingCard';
 import axios from 'axios';
+import { useDarkMode } from '@/utils/darkModeContext';
 
-export const Flashcard = ({ cardData, userId, cardsetId }) => {
+export const Flashcard = ({ cardData, userId, cardsetId}) => {
+  const {isDarkMode} = useDarkMode();
   const [isFlipped, setFlipped] = useState(false);
   const [index, setIndex] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
@@ -88,7 +90,7 @@ export const Flashcard = ({ cardData, userId, cardsetId }) => {
 
         <div className="d-flex flex-row justify-content-around">
           {!isEditing && (
-            <button className="btn btn-outline-dark" onClick={() => handleEdit(flashcards[index])}>Edit</button>
+            <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => handleEdit(flashcards[index])}>Edit</button>
           )}
         </div>
 

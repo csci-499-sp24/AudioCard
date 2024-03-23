@@ -1,3 +1,4 @@
+
 .cardsetHeader {
     display: flex;
     justify-content: space-between;
@@ -8,6 +9,14 @@
     font-size: 25px;
     font-weight: bold;
     margin-top: 15px;
+    color: black;
+}
+
+.cardsetTitleDark{
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 15px;
+    color: white;
 }
 
 .createCardsetButton {
@@ -25,7 +34,6 @@
 
 
 .cardsetsContainer {
-    background-color: #edf2fb;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -34,7 +42,6 @@
 }
 
 .cardset {
-    background-color: #a7cad4;
     flex: 0 0 300px;
     height: 100px;
     width: 50px;
@@ -50,6 +57,10 @@
 
 #welcome {
     color: #C2C3C4;
+}
+
+#welcomeDark{
+    color: #868789;
 }
 
 #dashboardCardLink,
