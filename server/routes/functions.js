@@ -30,9 +30,9 @@ async function checkCardsetAuthority(userid, cardsetid) {
         }
     } catch (error) {
         console.error('Error checking user authority:', error);
-        res.status(500).json({ error: 'Internal server error' });
-        return false;
+        // You should handle the error appropriately here
+        throw error;
     }
 }
 
-module.exports = {checkCardsetAuthority}
+module.exports = { checkCardsetAuthority };

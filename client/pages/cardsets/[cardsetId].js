@@ -1,14 +1,15 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar/Navbar';
 import { Flashcard } from '../../components/Flashcard';
 import { TermCard } from '../../components/Cards/TermCard';
 import { CardsetView } from '../../components/CardsetView';
 import { EditView } from "@/components/EditCardset";
+import ShareFunction from "@/components/share";
 import { auth } from '../../utils/firebase';
 
-export default function CardsetPage () {
+export default function CardsetPage() {
     const [user, setUser] = useState(null);
     const router = useRouter();
     const [userData, setUserData] = useState(null);
@@ -17,8 +18,11 @@ export default function CardsetPage () {
     const [showCreateFlashcardForm, setShowCreateFlashcardForm] = useState(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [cardset, setCardset] = useState([]);
-
+    const [access, setAccess] = useState(true);
     const [loading, setLoading] = useState(false);
+    const [isadmin, setadmin] = useState(false);
+    const [showSharePopup, setShowSharePopup] = useState(false);
+    const [canEdit, setCanEdit] = useState(false);
 
     const cardsetId = router.query.cardsetId; // get current cardset Id from route
 
@@ -38,6 +42,7 @@ export default function CardsetPage () {
 
     useEffect(() => {
         fetchFlashCards();
+        checkaccess();
     }, [userData]);
 
     const fetchUserData = async () => {
@@ -54,6 +59,10 @@ export default function CardsetPage () {
         }
     };
 
+    const toggleSharePopup = () => {
+        setShowSharePopup(!showSharePopup);
+    };
+
     const fetchFlashCards = async () => {
         try {
             setLoading(true);
@@ -62,11 +71,53 @@ export default function CardsetPage () {
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
             // get current cardset's info - for edits
-            const resp = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userData.id}/cardsets/${cardsetId}`);
+            const resp = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}`);
             const cardsetData = resp.data;
             setCardset(cardsetData);
             setLoading(false);
         } catch (error) {
+            console.error('Error fetching flashcards:', error);
+        }
+    }
+
+    const checkaccess = async () => {
+        try {
+            const resp = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}`);
+            const cardsetData = resp.data;
+            const id = cardsetData.userId;
+            const ispublic = cardsetData.isPublic
+            if (!ispublic) {
+                setAccess(false)
+            }
+            if (id == userData.id) {
+                setAccess(true);
+                setadmin(true);
+                setCanEdit(true);
+            }
+
+            try {
+                // Make a GET request to fetch shared cardsets for the user
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${userData.id}/cardsets/${cardsetId}/shared`);
+                // Handle successful response
+                console.log(response)
+                const role = response.data[0].authority;
+                setAccess(true)
+                if (role == 'admin') {
+                    setadmin(true)
+                    setCanEdit(true)
+                }
+                if (role == 'edit') {
+                    setCanEdit(true)
+                }
+
+                
+            } catch (error) {
+                // Handle error
+                console.error('Error fetching shared cardsets:', error);
+            }
+
+        }
+        catch (error) {
             console.error('Error fetching flashcards:', error);
         }
     }
@@ -77,12 +128,15 @@ export default function CardsetPage () {
     }
 
     const handleDelete = () => {
-        setShowDeleteConfirmation(true); 
+        setShowDeleteConfirmation(true);
     };
 
     const confirmDelete = () => {
         deleteCardSet(cardsetId);
     };
+
+
+
 
     const deleteCardSet = async (cardsetId) => {
         try {
@@ -102,52 +156,71 @@ export default function CardsetPage () {
     return (
         <div className='wrapper'>
             <Navbar />
-            <div className="container">
-                <div className="row">
-                    <div className="col mt-5 mb-2">
-                        <h1 className="text-center">{cardset.title}</h1>
-                    </div>
+            {!access ? (
+                <div>
+                    It's NOT PUBLIC
+                </div>
+            ) : null}
 
-                    <div className="row d-flex align-items-center">
-                        <div className='col'>
-                            <button className="btn btn-outline-dark" onClick={() => router.back()}>Back</button>
+
+            {access ? (
+                <div className="container">
+                    <div className="row">
+                        <div className="col mt-5 mb-2">
+                            <h1 className="text-center">{cardset.title}</h1>
                         </div>
-                        <div className='col d-flex justify-content-end mb-4'>
-                            <button className="btn btn-secondary testButton" onClick={navigateToTestPage}>Test Mode</button>
+
+                        <div className="row d-flex align-items-center">
+                            <div className='col'>
+                                <button className="btn btn-outline-dark" onClick={() => router.back()}>Back</button>
+                            </div>
+                            <div className='col d-flex justify-content-end mb-4'>
+                                <button className="btn btn-secondary testButton" onClick={navigateToTestPage}>Test Mode</button>
+                            </div>
                         </div>
                     </div>
-                </div>       
-            </div>
+                </div>
+
+
+            ) : null}
 
             {/* Main Flashcard  */}
             {
-                loading ? 
+                !access || loading ?
                     <div className='text-center'><h5>Loading...</h5></div>
-                :   <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards}/>
+                    : <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards} canEdit={canEdit}/>
             }
 
             {/* All Flashcards in the set  */}
             <div className="container">
                 <div className="row">
                     {/* Flashcard Info */}
-                    { loading ? 
-                            null
-                        :   <div className="col mt-5 mb-2">
-                                <div className="">
-                                    <h3>Flashcard Set: {cardset.title}</h3>
-                                    <div> Subject: {cardset.subject} </div>
-                                    <div> {currentCardsetData.length} flashcards </div>
-                                </div>
+                    {access && !loading ?
+                        <div className="col mt-5 mb-2">
+                            <div className="">
+                                <h3>Flashcard Set: {cardset.title}</h3>
+                                <div> Subject: {cardset.subject} </div>
+                                <div> {currentCardsetData.length} flashcards </div>
                             </div>
-                    }
-                    
-                    {/*Edit/Delete Flashcard set */}
-                    <div className='col d-flex justify-content-end align-items-center'>
-                        <div className="d-flex align-items-center">
-                            <button className="btn btn-outline-dark" onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
-                            <button className="btn deleteButton" onClick={() => handleDelete()}><i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i></button>
                         </div>
-                    </div>   
+                        : null
+                    }
+
+                    {/*Edit/Delete Flashcard set */}
+                    {canEdit ?
+                        <div className='col d-flex justify-content-end align-items-center'>
+                            <div className="d-flex align-items-center">
+                                {isadmin && (
+                                    <div>
+                                        <button className='btn' onClick={toggleSharePopup}>Share</button>
+                                        {showSharePopup && <ShareFunction userid={userData?.id} cardsetId={cardsetId} />}
+                                    </div>
+                                )}
+                                <button className="btn btn-outline-dark" onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
+                                <button className="btn deleteButton" onClick={() => handleDelete()}><i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i></button>
+                            </div>
+                        </div>
+                        : null}
 
                     {/* Delete message */}
                     {showDeleteConfirmation && (
@@ -167,23 +240,23 @@ export default function CardsetPage () {
                     {/* All Flashcards in the set */}
                     <div className="flashcardContainer mb-5">
                         {currentCardsetData.map(flashcard => (
-                            <TermCard key={flashcard.id} flashcard={flashcard}/>
+                            <TermCard key={flashcard.id} flashcard={flashcard} />
                         ))}
                     </div>
-                    
+
                     {/* Edit Flashcards set */}
-                    { isEditPageOpen && (
+                    {isEditPageOpen && (
                         <div className="edit-page-view">
                             <div className="edit-page-content">
                                 <button className="close-btn" onClick={handleCloseEditPage}>
-                                &times;
+                                    &times;
                                 </button>
-                                { currentCardsetData && (
-                                    <EditView 
-                                        cardset={currentCardsetData} 
-                                        userId={userData.id} 
-                                        cardsetId={cardsetId} 
-                                        cardsetTitle={cardset.title} 
+                                {currentCardsetData && (
+                                    <EditView
+                                        cardset={currentCardsetData}
+                                        userId={userData.id}
+                                        cardsetId={cardsetId}
+                                        cardsetTitle={cardset.title}
                                         cardsetSubject={cardset.subject}
                                         cardsetIsPublic={cardset.isPublic}
                                     />
@@ -191,7 +264,7 @@ export default function CardsetPage () {
                             </div>
                         </div>
                     )}
-                </div>  
+                </div>
                 <style jsx>{`
                     .heading{
                         margin-top: 20px;
@@ -258,7 +331,7 @@ export default function CardsetPage () {
                     .delete-confirmation {
                         margin-bottom: 10px; 
                     }
-            `}</style>     
+            `}</style>
             </div>
         </div>
     );
