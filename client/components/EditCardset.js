@@ -2,8 +2,10 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { CreateFlashcard } from '@/components/CreateFlashcard';
 import { EditFlashcard } from '@/components/EditFlashcard'; 
+import { useDarkMode } from '@/utils/darkModeContext';
 
-export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubject, cardsetIsPublic, isDarkMode }) => {
+export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubject, cardsetIsPublic}) => {
+    const {isDarkMode} = useDarkMode();
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [selectedFlashcard, setSelectedFlashcard] = useState(null);

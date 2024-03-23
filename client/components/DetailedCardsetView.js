@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { auth } from '../utils/firebase';
 import { useRouter } from 'next/router';
+import {useDarkMode} from '../utils/darkModeContext';
 
-export const CardsetView = ({cardset, isDarkMode}) => {
+export const CardsetView = ({cardset}) => {
+    const {isDarkMode} = useDarkMode();
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const firebaseId = auth.currentUser.uid;
     const [userData, setUserData] = useState(null);
