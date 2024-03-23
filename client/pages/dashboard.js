@@ -9,17 +9,9 @@ import { CardsetView } from '@/components/CardsetView';
 import { DashboardCard } from '@/components/Cards/DashboardCard';
 import Navbar from '@/components/Navbar/Navbar';
 
-const menuItems = [
-    { name: 'Dashboard', path: '/dashboard' },
-    { name: 'Cardsets', path: '/' },
-    { name: 'Search', path: '/' },
-    { name: 'Settings', path: '/' },
-];
-
-const Dashboard = () => {
+const Dashboard = ({ isDarkMode, toggleDarkMode }) => {
     const [user, setUser] = useState(null);
     const [userData, setUserData] = useState(null);
-    const [menuOpen, setMenuOpen] = useState(false);
     const [cardsets, setCardsets] = useState([]);
     const [selectedCardset, setSelectedCardset] = useState(null);
 
@@ -84,10 +76,6 @@ const Dashboard = () => {
         router.push(path);
     };
 
-    const toggleMenu = () => {
-        setMenuOpen(prevState => !prevState);
-    };
-
     const [showCreateCardsetForm, setShowCreateCardsetForm] = useState(false);
 
     // Function to toggle the visibility of the CreateCardset form
@@ -97,23 +85,22 @@ const Dashboard = () => {
 
     return (
         <div className="wrapper">   
-            <Navbar/>
-            
+        <Navbar isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
             <div className="container">
                 <div className="row px-2">
                     <div className="col-12 mt-5" id={styles.greeting}>
-                        <h1 className="" id={styles.welcome}>Welcome, <span className="font-weight-bold text-dark">{userData?.username}</span></h1> 
+                        <h1 className="" id={`${isDarkMode ? styles.welcomeDark : styles.welcome}`}>Welcome, <span className={`font-weight-bold ${isDarkMode ? 'text-light' : 'text-dark'}`}>{userData?.username}</span></h1> 
                     </div>
                     <div className="col-12 my-3">
                         <div className="d-flex justify-content-between">
-                            <h4 className={styles.cardsetTitle}>Your Flashcard Sets</h4>
+                            <h4 className={`${isDarkMode ? styles.cardsetTitleDark : styles.cardsetTitle}`}>Your Flashcard Sets</h4>
                             <button className="btn btn-secondary btn-large" onClick={toggleCreateCardsetForm}>Make Card Set</button>
                         </div>
                     </div>
 
                     <div className="col-12 my-3">
                         <div className="d-flex justify-content-between">
-                            {showCreateCardsetForm && <CreateCardset userId={userData.id} onCreateCardset={handleCreateCardset} onClickToggle={toggleCreateCardsetForm}/>}
+                            {showCreateCardsetForm && <CreateCardset userId={userData.id} onCreateCardset={handleCreateCardset} onClickToggle={toggleCreateCardsetForm} isDarkMode={isDarkMode}/>}
                         </div>
                         {selectedCardset && <CardsetView cardset={selectedCardset}/>}
                     </div>
@@ -133,7 +120,7 @@ const Dashboard = () => {
                                 }}
                                 key={index}
                             >
-                                <DashboardCard key={index} cardset={cardset} onClick={() => selectCardset(cardset)}/>
+                                <DashboardCard key={index} cardset={cardset} onClick={() => selectCardset(cardset)} isDarkMode={isDarkMode}/>
                             </Link>
                             ) 
                         )}

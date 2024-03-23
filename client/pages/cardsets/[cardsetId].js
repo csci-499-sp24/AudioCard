@@ -8,7 +8,7 @@ import { CardsetView } from '../../components/CardsetView';
 import { EditView } from "@/components/EditCardset";
 import { auth } from '../../utils/firebase';
 
-export default function CardsetPage () {
+export default function CardsetPage ({ isDarkMode, toggleDarkMode }) {
     const [user, setUser] = useState(null);
     const router = useRouter();
     const [userData, setUserData] = useState(null);
@@ -101,7 +101,7 @@ export default function CardsetPage () {
     // Render flashcard data
     return (
         <div className='wrapper'>
-            <Navbar />
+            <Navbar isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
             <div className="container">
                 <div className="row">
                     <div className="col mt-5 mb-2">
@@ -144,7 +144,7 @@ export default function CardsetPage () {
                     {/*Edit/Delete Flashcard set */}
                     <div className='col d-flex justify-content-end align-items-center'>
                         <div className="d-flex align-items-center">
-                            <button className="btn btn-outline-dark" onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
+                            <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
                             <button className="btn deleteButton" onClick={() => handleDelete()}><i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i></button>
                         </div>
                     </div>   
@@ -167,7 +167,7 @@ export default function CardsetPage () {
                     {/* All Flashcards in the set */}
                     <div className="flashcardContainer mb-5">
                         {currentCardsetData.map(flashcard => (
-                            <TermCard key={flashcard.id} flashcard={flashcard}/>
+                            <TermCard key={flashcard.id} flashcard={flashcard} isDarkMode={isDarkMode}/>
                         ))}
                     </div>
                     
@@ -222,7 +222,7 @@ export default function CardsetPage () {
 
                     .flashcardContainer {
                         display: grid;
-                        grid-gap: 20px; 
+                        grid-gap: 20px;
                     }
 
                     .edit-page-view {

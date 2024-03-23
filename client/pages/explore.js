@@ -4,7 +4,7 @@ import { CardsetView } from "@/components/DetailedCardsetView";
 import { ExploreCard } from '@/components/Cards/ExploreCard';
 import Navbar from '@/components/Navbar/Navbar';
 
-const Explore = () => {
+const Explore = ({ isDarkMode, toggleDarkMode }) => {
     const [cardsets, setCardsets] = useState([]);
     const [selectedCardset, setSelectedCardset] = useState(null);
     const [isDetailedViewOpen, setIsDetailedViewOpen] = useState(false);
@@ -102,7 +102,7 @@ const Explore = () => {
 
     return (
         <div className="wrapper">
-            <Navbar/>
+            <Navbar isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
             <div className="container mt-5">
                 <h1 className="mb-4">Explore Cardsets</h1>
             <div className='d-flex mb-5'>

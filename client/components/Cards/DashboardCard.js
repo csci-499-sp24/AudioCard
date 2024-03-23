@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styles from '../../styles/dashboardCard.module.css';
 
-export const DashboardCard = ({ cardset, onClick }) => {
+export const DashboardCard = ({ cardset, onClick, isDarkMode }) => {
     console.log('cardset ', cardset);
 
     let bgColor = '';
@@ -59,8 +59,8 @@ export const DashboardCard = ({ cardset, onClick }) => {
 
     return (
         <div key={cardset.id} className="col" onClick={onClick}>
-            <div className="card h-100">
-                <div className="card-body">
+            <div className="card h-100" style={{backgroundColor: isDarkMode?'#2e3956':'white', color: isDarkMode ? 'white' : 'black'}}>
+                <div className="card-body" style={{backgroundColor: isDarkMode? '#2e3956':'white'}}>
                     <h2 className="card-title">{cardset.title}</h2>
                     <div className="mt-3">
                         <span className={styles.cardSubject} style={{ backgroundColor: `${bgColor}`, color: `${txtColor}` }}>
@@ -71,8 +71,8 @@ export const DashboardCard = ({ cardset, onClick }) => {
                         <span className="card-count">{cardset.flashcardCount} flashcards</span>
                     </div>
                 </div>
-                <div className="card-footer d-flex justify-content-end p-3" id={styles.cardFooter}>
-                    <a href="#" className="btn btn-outline-dark">Edit</a>
+                <div className="card-footer d-flex justify-content-end p-3"id={styles.cardFooter}>
+                    <a href="#" className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`}>Edit</a>
                 </div>
             </div>
         </div>

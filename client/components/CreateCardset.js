@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import styles from '../styles/createACardSet.module.css';
 
-export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
+export const CreateCardset = ({userId, onCreateCardset, onClickToggle, isDarkMode}) => {
     
     const onSubmit = async (event) =>{
         event.preventDefault();
@@ -19,7 +18,7 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
     }
 
     return (
-        <div className="mb-5 p-4" id={styles.createCardset}>
+        <div className="mb-5 p-4" style={{ backgroundColor: isDarkMode ? '#2e3956':'white', color: isDarkMode? 'white':'black'}}>
             <div className="d-flex justify-content-end">
                 <button className="btn" onClick={onClickToggle}>X</button>
             </div>
