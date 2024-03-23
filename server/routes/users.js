@@ -8,7 +8,7 @@ const { Sequelize } = require('sequelize');
 const {checkCardsetAuthority} = require('./functions');
 
 router.use('/:userid/cardsets/:cardsetid/flashcards', flashcards);
-router.use('/:userid/cardsets/:cardsetid', sharedCardsets);
+router.use('/:userid/cardsets/:cardsetid/shared', sharedCardsets);
 
 router.route('/signup')
 .post(async (req, res) => {

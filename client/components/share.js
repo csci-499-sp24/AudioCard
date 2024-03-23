@@ -12,7 +12,7 @@ const ShareFunction = ({ userid, cardsetId }) => {
         // Reset the form after sharing
         try {
             // Send a PUT request to update user access level
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userid}/cardsets/${cardsetId}/share?userid=${email}&authority=${role}`);
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userid}/cardsets/${cardsetId}/shared/${cardsetId}/share?userid=${email}&authority=${role}`);
             return response.data;
         } catch (error) {
             console.error('Error updating card set access:', error);
