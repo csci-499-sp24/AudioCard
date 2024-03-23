@@ -158,7 +158,7 @@ export default function CardsetPage() {
             <Navbar />
             {!access ? (
                 <div>
-                    It's NOT PUBLIC
+                    Its NOT PUBLIC
                 </div>
             ) : null}
 
