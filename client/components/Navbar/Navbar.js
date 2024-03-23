@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 import { auth } from '../../utils/firebase';
 import Link from 'next/link';
 import styles from '../../styles/navbar.module.css';
-import { useDarkMode } from '../../utils/darkModeContext'
+import { useDarkMode } from '../../utils/darkModeContext';
 
 const Navbar = ({ userId }) => {
-
+    const {isDarkMode, toggleDarkMode} = useDarkMode();
     const router = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
