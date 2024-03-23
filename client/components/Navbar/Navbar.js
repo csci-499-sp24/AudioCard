@@ -51,7 +51,8 @@ const Navbar = ({ userId }) => {
                             Logout
                         </button>
                         <li className="nav-item">
-                            <div className={styles.profileCircle} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                            <div className={styles.navUserAvatar} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                                <img src="/userAvatarSmall.jpg" alt="User Avatar" className={styles.avatarImage} />
                             </div>
                             {isDropdownOpen && (
                                 <div className={styles.dropdownMenu}>

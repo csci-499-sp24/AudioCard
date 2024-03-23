@@ -16,9 +16,10 @@ const Profile = () => {
     const [publicCardsets, setPublicCardsets] = useState([]);
 
     useEffect(() => {
-        auth.onAuthStateChanged(async (user) => {
+        auth.onAuthStateChanged((user) => {
             if (user) {
-                await fetchCurrentUserData(user.uid);
+                setUser(user);
+                fetchUserData(user.uid);
             } else {
                 setCurrentUser(null);
             }
