@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-
-export const CreateCardset = ({userId, onCreateCardset, onClickToggle, isDarkMode}) => {
-    
+import {useDarkMode} from '../utils/darkModeContext'
+export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
+    const {isDarkMode} = useDarkMode();
     const onSubmit = async (event) =>{
         event.preventDefault();
         if (userId){

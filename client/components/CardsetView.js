@@ -3,8 +3,10 @@ import axios from 'axios';
 import { Flashcard } from './Flashcard';
 import { CreateFlashcard } from './CreateFlashcard';
 import styles from '../styles/CardSet.module.css';
+import {useDarkMode} from '../utils/darkModeContext';
 
-export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage, isDarkMode}) => {
+export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage}) => {
+    const {isDarkMode} = useDarkMode();
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [showCreateFlashcardForm, setShowCreateFlashcardForm] = useState(false);
 
@@ -46,7 +48,7 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage, is
                 {/*Study mode with rorating flashcard */}
                 <div className="row">
                     <div className='col mb-2'>
-                        <Flashcard cardData={currentCardsetData} userId={userId} cardsetId={cardsetId} isDarkMode={isDarkMode}/>
+                        <Flashcard cardData={currentCardsetData} userId={userId} cardsetId={cardsetId}/>
                     </div>
                 </div>
             <div className='row col d-flex justify-content-between align-items-center'>

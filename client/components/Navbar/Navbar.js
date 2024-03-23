@@ -3,8 +3,10 @@ import { useRouter } from 'next/router';
 import { auth } from '../../utils/firebase';
 import Link from 'next/link';
 import styles from '../../styles/navbar.module.css';
+import { useDarkMode } from '../../utils/darkModeContext'
 
-const Navbar = ({ userId, isDarkMode, toggleDarkMode }) => {
+const Navbar = ({ userId }) => {
+    const { isDarkMode, toggleDarkMode } = useDarkMode();
 
     const router = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -43,10 +45,6 @@ const Navbar = ({ userId, isDarkMode, toggleDarkMode }) => {
                             {isDarkMode ? 'Light' : 'Dark'}
                         </button>
                         </li>
-                        <li className="nav-item text-center">
-                            <a className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink} href="#">Settings</a>
-                        </li>
-
                         <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink}
                             onClick={() => { auth.signOut(); router.push('/login'); }}
                         >
@@ -58,7 +56,7 @@ const Navbar = ({ userId, isDarkMode, toggleDarkMode }) => {
                             </div>
                             {isDropdownOpen && (
                                 <div className={styles.dropdownMenu}>
-                                    <Link href={`/profile/${userId}`} className={styles.dropdownItem}>
+                                <Link href={{ pathname: `/profile/${userId}` }}className={styles.dropdownItem}>
                                         Profile
                                     </Link>
                                     <Link href="/settings" className={styles.dropdownItem}>

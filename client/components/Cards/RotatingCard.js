@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import style from '../../styles/rotatingcard.module.css';
+import {useDarkMode} from '../../utils/darkModeContext';
 
-export const RotatingCard = ({ flashcards, index, isDarkMode }) => {
+export const RotatingCard = ({ flashcards, index}) => {
+    const {isDarkMode} = useDarkMode();
     return (
         <div className="d-flex justify-content-center" id={style.container}>
             <div id={style.card}>

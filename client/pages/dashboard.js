@@ -8,8 +8,10 @@ import { CreateCardset } from '@/components/CreateCardset';
 import { CardsetView } from '@/components/CardsetView';
 import { DashboardCard } from '@/components/Cards/DashboardCard';
 import Navbar from '@/components/Navbar/Navbar';
+import {useDarkMode} from '../utils/darkModeContext';
 
-const Dashboard = ({ isDarkMode, toggleDarkMode }) => {
+const Dashboard = () => {
+    const { isDarkMode, toggleDarkMode } = useDarkMode();
     const [user, setUser] = useState(null);
     const [userData, setUserData] = useState(null);
     const [cardsets, setCardsets] = useState([]);
@@ -85,7 +87,7 @@ const Dashboard = ({ isDarkMode, toggleDarkMode }) => {
 
     return (
         <div className="wrapper">   
-        <Navbar userId={userData?.id}  isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
+        <Navbar userId={userData?.id}/>
             <div className="container">
                 <div className="row px-2">
                     <div className="col-12 mt-5" id={styles.greeting}>

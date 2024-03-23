@@ -3,8 +3,10 @@ import style from '../styles/flashcard.module.css';
 import { EditFlashcard } from './EditFlashcard';
 import { RotatingCard } from '../components/Cards/RotatingCard';
 import axios from 'axios';
+import { useDarkMode } from '@/utils/darkModeContext';
 
-export const Flashcard = ({ cardData, userId, cardsetId, isDarkMode}) => {
+export const Flashcard = ({ cardData, userId, cardsetId}) => {
+  const {isDarkMode} = useDarkMode();
   const [isFlipped, setFlipped] = useState(false);
   const [index, setIndex] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
@@ -71,7 +73,7 @@ export const Flashcard = ({ cardData, userId, cardsetId, isDarkMode}) => {
           {isEditing && editingCard ? (
             <EditFlashcard userId={userId} cardsetId={cardsetId} flashcard={editingCard} onEditFlashcard={handleEditComplete} onCancel={handleEditCancel} />
           ) : (
-            <RotatingCard flashcards={flashcards} index={index} isDarkMode={isDarkMode}/>
+            <RotatingCard flashcards={flashcards} index={index}/>
           )}
 
           {isEditing ? null : (

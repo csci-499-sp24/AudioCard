@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import style from '../styles/flashcardtestmode.module.css';
 import { RotatingCardTest } from './Cards/RotatingCardTest';
+import { useDarkMode } from '../utils/darkModeContext'
 
-export const FlashcardTestMode = ({ cardData, userId, isDarkMode }) => {
+export const FlashcardTestMode = ({ cardData, userId}) => {
+    const {isDarkMode} = useDarkMode();
     const [index, setIndex] = useState(0);
     const [flashcards, setFlashcards] = useState([]);
     const [answer, setAnswer] = useState('');

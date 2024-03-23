@@ -7,8 +7,10 @@ import { TermCard } from '../../components/Cards/TermCard';
 import { CardsetView } from '../../components/CardsetView';
 import { EditView } from "@/components/EditCardset";
 import { auth } from '../../utils/firebase';
+import {useDarkMode} from '../../utils/darkModeContext';
 
-export default function CardsetPage ({ isDarkMode, toggleDarkMode }) {
+export default function CardsetPage () {
+    const { isDarkMode, toggleDarkMode } = useDarkMode();
     const [user, setUser] = useState(null);
     const router = useRouter();
     const [userData, setUserData] = useState(null);
@@ -102,7 +104,7 @@ export default function CardsetPage ({ isDarkMode, toggleDarkMode }) {
     // Render flashcard data
     return (
         <div className='wrapper'>
-            <Navbar isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
+            <Navbar userId={userData?.id}/>
             <div className="container">
                 <div className="row">
                     <div className="col mt-5 mb-2">
@@ -124,7 +126,7 @@ export default function CardsetPage ({ isDarkMode, toggleDarkMode }) {
             {
                 loading ? 
                     <div className='text-center'><h5>Loading...</h5></div>
-                :   <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards} isDarkMode={isDarkMode}/>
+                :   <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards}/>
             }
 
             {/* All Flashcards in the set  */}

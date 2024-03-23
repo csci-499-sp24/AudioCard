@@ -11,7 +11,6 @@ export const RotatingCardTest = ({ flashcards, index, isFlipped, borderClass, is
                     {flashcards[index] ? flashcards[index].term : "Loading"}
                 </div>
                 <div id={`${isDarkMode ? style.backDark : style.back}`}>{flashcards[index] ? flashcards[index].definition : "Loading"}
-                    {flashcards[index] ? flashcards[index].definition : "Loading"}
                 </div>
             </div>
         </div>
