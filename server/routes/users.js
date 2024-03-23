@@ -63,6 +63,24 @@ router.route('/getuser')
     }
 });
 
+//Get user by ID
+router.route('/:userid')
+.get(async (req, res) => {
+    try {
+        const { userid } = req.params;
+        const user = await User.findOne({ where: { id: userid }});
+        if (user) {
+            res.status(200).json({ user });
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching user by ID:', error);
+        res.status(500).json({ error: 'Error fetching user by ID' });
+    }
+});
+
+
 //Users cardsets 
 router.route('/:userid/cardsets')
     .post(async(req, res) => {
