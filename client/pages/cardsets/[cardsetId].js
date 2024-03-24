@@ -171,9 +171,6 @@ export default function CardsetPage () {
                     ) : (
                         <div className="container">
                             <div className="row">
-                                <div className="col mt-5 mb-2">
-                                    <h1 className="text-center">{cardset.title}</h1>
-                                </div>
                                 <div className="row d-flex align-items-center">
                                     <div className='col'>
                                         <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>

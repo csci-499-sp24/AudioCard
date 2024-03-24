@@ -16,13 +16,12 @@ const Navbar = ({ userId }) => {
                 <div className="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <Link href="/explore" className='nav-link text-dark' id={styles.navLink}>
+                            <Link href="/explore" className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink}>
                                 Explore
                             </Link>
                         </li>
                     </ul>
                 </div>
-
                 <div className="mx-auto order-0">
                     <Link href="/dashboard" className='navbar-brand text-white font-weight-bold' id={styles.navLinkLogo}>
                         AudioCard
