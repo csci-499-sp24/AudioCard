@@ -3,6 +3,7 @@ import axios from 'axios';
 import { CreateFlashcard } from '@/components/CreateFlashcard';
 import { EditFlashcard } from '@/components/EditFlashcard'; 
 import { useDarkMode } from '@/utils/darkModeContext';
+import { getSubjectStyle } from '@/utils/getSubjectStyles';
 
 export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubject, cardsetIsPublic}) => {
     const {isDarkMode} = useDarkMode();
@@ -15,10 +16,16 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
     const [newPublicStatus, setNewPublicStatus] = useState(cardsetIsPublic);
     const [isAddingCard, setIsAddingCard] = useState(false);
     const [isEditingCard, setIsEditingCard] = useState(false); 
+    const [txtColor, setTxtColor] = useState('');
 
     useEffect(() => {
         fetchFlashCards();
     }, [cardset]);
+
+    useEffect(() => {
+        const { bgColor, txtColor } = getSubjectStyle(newSubject);
+        setTxtColor(txtColor);
+    }, [newSubject]);
 
     const fetchFlashCards = async () => {
         try{
@@ -156,7 +163,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                             <>
                             <div className='col'>
                                 <h2>Set Name: {newTitle} </h2>
-                                <h2>Subject: {newSubject} </h2>
+                                <h2 style={{ color: `${txtColor}` }}>Subject: {newSubject} </h2>
                             </div>
                             <div className='col d-flex justify-content-end'>
                                 <button className={`btn ${isDarkMode ? 'light-btn' : ''}`} onClick={handleEdit}><i className="bi bi-pencil-fill"></i></button>
@@ -213,7 +220,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
 
             <div className='addingContainer'>
                 {isAddingCard && (
-                    <div className=" row flashcard">
+                    <div className=" row flashcard" style={{backgroundColor: isDarkMode?'#2e3956':'white', color: isDarkMode ? 'white' : 'black'}}>
                         <CreateFlashcard userId={userId} cardsetId={cardsetId} onCreateFlashcard={handleCreateFlashcard} />
                     </div>
                 )}
