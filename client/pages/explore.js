@@ -13,7 +13,6 @@ const Explore = () => {
     const [selectedCardset, setSelectedCardset] = useState(null);
     const [isDetailedViewOpen, setIsDetailedViewOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
-    const [sortingBy, setSortingBy] = useState('');
     const [filteredCardsets, setFilteredCardsets] = useState([]);
     const [user, setUser] = useState(null);
     const [userData, setUserData] = useState(null);
@@ -32,13 +31,27 @@ const Explore = () => {
         return () => unsubscribe();
     }, [user, userData]);
 
-
     useEffect(() => {
         fetchCardsets();
     }, []);
 
-    const onSearchUpdate = (sortedSets) => {
+    const onSearchUpdate = (sortedSets, input) => {
         setFilteredCardsets(sortedSets);
+        setSearchInput(input)
+    }
+
+    const fetchUserData = async () => {
+        if (!user || !user.uid) {
+            return;
+        }
+        try {
+            const firebaseId = user?.uid
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/users/getuser', { params: { firebaseId: firebaseId } });
+            const userData = response.data.user;
+            setUserData(userData);
+        } catch (error) {
+            console.error('Error fetching card sets:', error);
+        }
     }
 
     const fetchCardsets = async () => {
@@ -73,7 +86,7 @@ const Explore = () => {
                 <SearchBar cardsets={cardsets} onSearchUpdate={onSearchUpdate}/>
 
             <div className="row">
-                { filteredCardsets.length == 0 && searchInput.length > 0 && <div>No cardsets matching this term</div> }
+                {filteredCardsets.length === 0 && searchInput.length > 0 && <div>No cardsets matching this search</div> }
                 {filteredCardsets.length > 0 || searchInput.length > 0 ? filteredCardsets.map((cardset) => (                
                         <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} isDarkMode={isDarkMode}/>
                     )):
