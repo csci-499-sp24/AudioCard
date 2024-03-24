@@ -4,7 +4,6 @@ import { auth } from '../../utils/firebase';
 import Link from 'next/link';
 import styles from '../../styles/navbar.module.css';
 import { useDarkMode } from '../../utils/darkModeContext';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const Navbar = ({ userId }) => {
     const {isDarkMode, toggleDarkMode} = useDarkMode();
