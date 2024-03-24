@@ -160,10 +160,10 @@ const Explore = () => {
             <div className="row">
                 { filteredCardsets.length == 0 && searchInput.length > 0 && <div>No cardsets matching this term</div> }
                 {filteredCardsets.length > 0 || searchInput.length > 0 ? filteredCardsets.map((cardset) => (                
-                        <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} isDarkMode={isDarkMode}/>
+                        <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick}/>
                     )):
                     cardsets.map((cardset) => (
-                        <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} isDarkMode={isDarkMode}/>
+                        <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick}/>
                     )) }
                 </div>
 

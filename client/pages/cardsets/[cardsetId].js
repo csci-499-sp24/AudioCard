@@ -9,9 +9,10 @@ import { EditView } from "@/components/EditCardset";
 import ShareFunction from "@/components/share";
 import { auth } from '../../utils/firebase';
 import {useDarkMode} from '../../utils/darkModeContext';
+import { getSubjectStyle } from '@/utils/getSubjectStyles';
 
 export default function CardsetPage () {
-    const { isDarkMode, toggleDarkMode } = useDarkMode();
+    const { isDarkMode} = useDarkMode();
     const [user, setUser] = useState(null);
     const router = useRouter();
     const [userData, setUserData] = useState(null);
@@ -25,9 +26,15 @@ export default function CardsetPage () {
     const [isadmin, setadmin] = useState(false);
     const [showSharePopup, setShowSharePopup] = useState(false);
     const [canEdit, setCanEdit] = useState(false);
+    const [txtColor, setTxtColor] = useState('');
 
     const cardsetId = router.query.cardsetId; // get current cardset Id from route
-
+    useEffect(() => {
+        if (cardset.subject) {
+            const {bgColor, txtColor} = getSubjectStyle(cardset.subject);
+            setTxtColor(txtColor);
+        }
+    }, [cardset]);
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
@@ -151,8 +158,7 @@ export default function CardsetPage () {
         }
     };
     const navigateToTestPage = () => {
-        const darkModeParam = isDarkMode ? '?darkMode=true' : '?darkMode=false';
-        router.push(`/test/${cardsetId}${darkModeParam}`);
+        router.push(`/test/${cardsetId}`);
     };
 
     // Render flashcard data
@@ -196,7 +202,7 @@ export default function CardsetPage () {
                                 <div className="col mt-5 mb-2">
                                     <div className="">
                                         <h3>Flashcard Set: {cardset.title}</h3>
-                                        <div> Subject: {cardset.subject} </div>
+                                        <div style={{ color: `${txtColor}` }}> Subject: {cardset.subject} </div>
                                         <div> {currentCardsetData.length} flashcards </div>
                                         {cardset.isPublic ? 
                                         <div>
