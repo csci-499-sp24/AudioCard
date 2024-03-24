@@ -3,9 +3,11 @@ import axios from 'axios';
 import { Flashcard } from './Flashcard';
 import { CreateFlashcard } from './CreateFlashcard';
 import styles from '../styles/CardSet.module.css';
+import {useDarkMode} from '../utils/darkModeContext';
 
-export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage, canEdit }) => {
-    console.log(canEdit)
+export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage, canEdit}) => {
+    const {isDarkMode} = useDarkMode();
+    console.log('can edit:', canEdit)
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [showCreateFlashcardForm, setShowCreateFlashcardForm] = useState(false);
 
@@ -47,7 +49,7 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage, ca
                 {/*Study mode with rorating flashcard */}
                 <div className="row">
                     <div className='col mb-2'>
-                        <Flashcard cardData={currentCardsetData} userId={userId} cardsetId={cardsetId} />
+                        <Flashcard cardData={currentCardsetData} userId={userId} cardsetId={cardsetId}/>
                     </div>
                 </div>
                 { canEdit ?
@@ -69,7 +71,7 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage, ca
                         <hr />
                         <div className="col-12 mb-2" id={styles.greeting}>
                             <div className="d-flex justify-content-end">
-                                <button className="btn" onClick={toggleCreateFlashcardForm}>X</button>
+                                <button className="btn" style={{color: isDarkMode ? 'white' : 'gray' }} onClick={toggleCreateFlashcardForm}>X</button>
                             </div>
                         </div>
 
