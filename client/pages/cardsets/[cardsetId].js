@@ -216,20 +216,20 @@ export default function CardsetPage () {
                                 </div>
                             ) : null}
                             {/*Edit/Delete Flashcard set */}
-                            {canEdit ? (
-                                <div className='col d-flex justify-content-end align-items-center'>
+                            {canEdit && (
+                            <>
+                                <div className='col d-flex justify-content-end'>
                                     <div className="d-flex align-items-center">
-                                        {isadmin && (
-                                            <div>
-                                                <button className='btn' onClick={toggleSharePopup}>Share</button>
-                                                {showSharePopup && <ShareFunction userid={userData?.id} cardsetId={cardsetId} />}
-                                            </div>
-                                        )}
-                                        <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
-                                        <button className="btn deleteButton" onClick={() => handleDelete()}><i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i></button>
+                                    <button className='btn' style={{color: isDarkMode ? 'white' : 'gray' }} onClick={toggleSharePopup}>Share</button>
+                                        <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
+                                        <button className="btn deleteButton" onClick={() => handleDelete()}>
+                                            <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
+                                        </button>
                                     </div>
                                 </div>
-                            ) : null}
+                            </>
+                        )}
+
                             {/* Delete message */}
                             {showDeleteConfirmation && (
                                 <div className="row">
@@ -244,6 +244,25 @@ export default function CardsetPage () {
                                     </div>
                                 </div>
                             )}
+
+                            {isadmin && (
+                                    <div>
+                                        {showSharePopup && (
+                                                <div className="modal-content " style={{backgroundColor: isDarkMode ? '#2e3956' : 'white', color: isDarkMode ? 'white' : 'black'}}>
+                                                    <div className='row'>
+                                                    <div className='col d-flex justify-content-end'>
+                                                        <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }} onClick={toggleSharePopup}>
+                                                            &times;
+                                                        </button>
+                                                    </div>
+                                                    </div>
+                                                    <div className='row'>
+                                                        <ShareFunction userid={userData?.id} cardsetId={cardsetId}/>
+                                                    </div>
+                                                </div>
+                                        )}
+                                    </div>
+                                )}
                             {/* All Flashcards in the set */}
                             <div className="flashcardContainer mb-5">
                                 {currentCardsetData.map(flashcard => (
@@ -273,8 +292,45 @@ export default function CardsetPage () {
                             )}
                         </div>
                     </div>
+                    {showSharePopup && <div className="backdrop"></div>}
                     <style jsx>{`
-                        
+                    
+                    .backdrop {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        backdrop-filter: blur(5px);
+                        z-index: 999;
+                    }
+    
+    
+                    .modal-content {
+                        padding: 20px;
+                        border-radius: 10px;
+                        box-shadow: ${isDarkMode ? '0 0 10px rgba(255, 255, 255, 0.5)' : '0 0 10px rgba(0, 0, 0, 0.3)'};
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 80%; 
+                        max-width: 500px; 
+                        z-index: 1000; 
+                    }
+    
+                    .close-btn {
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        font-size: 24px;
+                        cursor: pointer;
+                        background: none;
+                        border: none;
+                        color: #fff; 
+                    } 
+
                     .heading{
                         margin-top: 20px;
                     }
