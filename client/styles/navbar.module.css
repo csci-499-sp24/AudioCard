@@ -16,17 +16,11 @@
 
 
 @media (max-width: 991px) {
-    #navbar {
-        background: white !important;
-    }
-
-    #navLinkLogo {
-        color: #1d62b4ba !important;
-    }
 
     #mobileExploreLink {
         display: inline-block !important;
     }
+
 }
 
 .navUserAvatar {

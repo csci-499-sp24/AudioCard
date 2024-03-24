@@ -18,19 +18,19 @@ const ShareFunction = ({ userid, cardsetId }) => {
             console.error('Error updating card set access:', error);
             throw error;
         }
-        setEmail('');
-        setRole('');
     };
 
     return (
         <div>
-            <button onClick={() => handleShare()}>Share</button>
-            <div>
-                <label>Email:</label>
+            <div> 
+                <h2>Share your cardset</h2>
+            </div>
+            <div style={{ marginBottom: '20px' }}>
+                <label>Email: </label>
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
-            <div>
-                <label>Role:</label>
+            <div style={{ marginBottom: '20px' }}>
+                <label>Role: </label>
                 <select value={role} onChange={(e) => setRole(e.target.value)}>
                     <option value="">Select Role</option>
                     <option value="read-only">Viewer</option>
@@ -38,6 +38,7 @@ const ShareFunction = ({ userid, cardsetId }) => {
                     <option value="admin">Admin</option>
                 </select>
             </div>
+            <button className='btn btn-secondary' onClick={() => handleShare()}>Share</button>
         </div>
     );
 };

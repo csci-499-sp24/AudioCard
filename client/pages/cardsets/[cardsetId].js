@@ -9,9 +9,10 @@ import { EditView } from "@/components/EditCardset";
 import ShareFunction from "@/components/share";
 import { auth } from '../../utils/firebase';
 import {useDarkMode} from '../../utils/darkModeContext';
+import { getSubjectStyle } from '@/utils/getSubjectStyles';
 
 export default function CardsetPage () {
-    const { isDarkMode, toggleDarkMode } = useDarkMode();
+    const { isDarkMode} = useDarkMode();
     const [user, setUser] = useState(null);
     const router = useRouter();
     const [userData, setUserData] = useState(null);
@@ -25,9 +26,15 @@ export default function CardsetPage () {
     const [isadmin, setadmin] = useState(false);
     const [showSharePopup, setShowSharePopup] = useState(false);
     const [canEdit, setCanEdit] = useState(false);
+    const [txtColor, setTxtColor] = useState('');
 
     const cardsetId = router.query.cardsetId; // get current cardset Id from route
-
+    useEffect(() => {
+        if (cardset.subject) {
+            const {bgColor, txtColor} = getSubjectStyle(cardset.subject);
+            setTxtColor(txtColor);
+        }
+    }, [cardset]);
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
@@ -151,8 +158,7 @@ export default function CardsetPage () {
         }
     };
     const navigateToTestPage = () => {
-        const darkModeParam = isDarkMode ? '?darkMode=true' : '?darkMode=false';
-        router.push(`/test/${cardsetId}${darkModeParam}`);
+        router.push(`/test/${cardsetId}`);
     };
 
     // Render flashcard data
@@ -171,9 +177,6 @@ export default function CardsetPage () {
                     ) : (
                         <div className="container">
                             <div className="row">
-                                <div className="col mt-5 mb-2">
-                                    <h1 className="text-center">{cardset.title}</h1>
-                                </div>
                                 <div className="row d-flex align-items-center">
                                     <div className='col'>
                                         <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>
@@ -199,26 +202,34 @@ export default function CardsetPage () {
                                 <div className="col mt-5 mb-2">
                                     <div className="">
                                         <h3>Flashcard Set: {cardset.title}</h3>
-                                        <div> Subject: {cardset.subject} </div>
+                                        <div style={{ color: `${txtColor}` }}> Subject: {cardset.subject} </div>
                                         <div> {currentCardsetData.length} flashcards </div>
+                                        {cardset.isPublic ? 
+                                        <div>
+                                            <span className="bi bi-globe" title="public"></span>
+                                        </div>
+                                            : 
+                                        <div>
+                                            <span className="bi bi-lock" title="restricted"></span>
+                                        </div>}
                                     </div>
                                 </div>
                             ) : null}
                             {/*Edit/Delete Flashcard set */}
-                            {canEdit ? (
-                                <div className='col d-flex justify-content-end align-items-center'>
+                            {canEdit && (
+                            <>
+                                <div className='col d-flex justify-content-end'>
                                     <div className="d-flex align-items-center">
-                                        {isadmin && (
-                                            <div>
-                                                <button className='btn' onClick={toggleSharePopup}>Share</button>
-                                                {showSharePopup && <ShareFunction userid={userData?.id} cardsetId={cardsetId} />}
-                                            </div>
-                                        )}
-                                        <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
-                                        <button className="btn deleteButton" onClick={() => handleDelete()}><i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i></button>
+                                    <button className='btn' style={{color: isDarkMode ? 'white' : 'gray' }} onClick={toggleSharePopup}>Share</button>
+                                        <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
+                                        <button className="btn deleteButton" onClick={() => handleDelete()}>
+                                            <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
+                                        </button>
                                     </div>
                                 </div>
-                            ) : null}
+                            </>
+                        )}
+
                             {/* Delete message */}
                             {showDeleteConfirmation && (
                                 <div className="row">
@@ -233,6 +244,25 @@ export default function CardsetPage () {
                                     </div>
                                 </div>
                             )}
+
+                            {isadmin && (
+                                    <div>
+                                        {showSharePopup && (
+                                                <div className="modal-content " style={{backgroundColor: isDarkMode ? '#2e3956' : 'white', color: isDarkMode ? 'white' : 'black'}}>
+                                                    <div className='row'>
+                                                    <div className='col d-flex justify-content-end'>
+                                                        <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }} onClick={toggleSharePopup}>
+                                                            &times;
+                                                        </button>
+                                                    </div>
+                                                    </div>
+                                                    <div className='row'>
+                                                        <ShareFunction userid={userData?.id} cardsetId={cardsetId}/>
+                                                    </div>
+                                                </div>
+                                        )}
+                                    </div>
+                                )}
                             {/* All Flashcards in the set */}
                             <div className="flashcardContainer mb-5">
                                 {currentCardsetData.map(flashcard => (
@@ -262,8 +292,45 @@ export default function CardsetPage () {
                             )}
                         </div>
                     </div>
+                    {showSharePopup && <div className="backdrop"></div>}
                     <style jsx>{`
-                        
+                    
+                    .backdrop {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        backdrop-filter: blur(5px);
+                        z-index: 999;
+                    }
+    
+    
+                    .modal-content {
+                        padding: 20px;
+                        border-radius: 10px;
+                        box-shadow: ${isDarkMode ? '0 0 10px rgba(255, 255, 255, 0.5)' : '0 0 10px rgba(0, 0, 0, 0.3)'};
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 80%; 
+                        max-width: 500px; 
+                        z-index: 1000; 
+                    }
+    
+                    .close-btn {
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        font-size: 24px;
+                        cursor: pointer;
+                        background: none;
+                        border: none;
+                        color: #fff; 
+                    } 
+
                     .heading{
                         margin-top: 20px;
                     }

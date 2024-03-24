@@ -20,7 +20,7 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
     return (
         <div className="mb-5 p-4" style={{ backgroundColor: isDarkMode ? '#2e3956':'white', color: isDarkMode? 'white':'black'}}>
             <div className="d-flex justify-content-end">
-                <button className="btn" onClick={onClickToggle}>X</button>
+                <button className="btn" style={{color: isDarkMode ? 'white' : 'gray' }} onClick={onClickToggle}>X</button>
             </div>
             <h5>Create a new cardset</h5>
 

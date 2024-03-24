@@ -85,7 +85,7 @@ const Profile = () => {
                         </div>
                     </div>
                     <div className="container">
-                        <h1 className={styles.cardSetTitle}>{`${profileUser?.username}'s Card Sets`}</h1>
+                        <h1 className={styles.cardSetTitle}>{`${profileUser?.username}'s Public Card Sets`}</h1>
                         <div className="row">
                             {publicCardsets.map(cardset => (
                                 <CardProfile key={cardset.id} cardset={cardset} />
