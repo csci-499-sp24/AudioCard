@@ -77,10 +77,10 @@ export const DashboardCard = ({ cardset, onClick }) => {
                     <div className='row d-flex align-items-center'>
                         {cardset.isPublic ? 
                         <div className='col d-flex justify-content-begin'>
-                            <span class="bi bi-globe" title="public"></span>
+                            <span className="bi bi-globe" title="public"></span>
                             </div> 
                             : <div className='col'> 
-                            <span class="bi bi-lock" title="restricted"></span> </div> }
+                            <span className="bi bi-lock" title="restricted"></span> </div> }
                         <div className='col d-flex justify-content-end'>
                             <a href="#" className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`}>Edit</a>
                         </div>
