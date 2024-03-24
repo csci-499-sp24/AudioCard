@@ -5,8 +5,9 @@ import { CreateFlashcard } from './CreateFlashcard';
 import styles from '../styles/CardSet.module.css';
 import {useDarkMode} from '../utils/darkModeContext';
 
-export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage}) => {
+export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage, canEdit}) => {
     const {isDarkMode} = useDarkMode();
+    console.log('can edit:', canEdit)
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [showCreateFlashcardForm, setShowCreateFlashcardForm] = useState(false);
 
@@ -21,7 +22,7 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage}) =
 
     const fetchFlashCards = async () => {
         try {
-            if (!userId){
+            if (!userId) {
                 console.error("User id not found");
                 return;
             }
@@ -51,19 +52,21 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage}) =
                         <Flashcard cardData={currentCardsetData} userId={userId} cardsetId={cardsetId}/>
                     </div>
                 </div>
-            <div className='row col d-flex justify-content-between align-items-center'>
-                {/* Add new flashcard button */}
-                { showCreateFlashcardForm ? 
-                    null
-                    : 
-                    <div className="d-flex justify-content-end">
-                        <button className="btn btn-secondary btn-large" onClick={toggleCreateFlashcardForm}>Add Flashcard</button>
+                { canEdit ?
+                    <div className='row col d-flex justify-content-between align-items-center'>
+                        {/* Add new flashcard button */}
+                        {showCreateFlashcardForm ?
+                            null
+                            :
+                            <div className="d-flex justify-content-end">
+                                <button className="btn btn-secondary btn-large" onClick={toggleCreateFlashcardForm}>Add Flashcard</button>
+                            </div>
+                        }
                     </div>
-                }
-            </div>
+                :null }
 
                 {/* Add or delete a flashcard section  */}
-                { showCreateFlashcardForm ?
+                {showCreateFlashcardForm ?
                     <div className='row'>
                         <hr />
                         <div className="col-12 mb-2" id={styles.greeting}>
