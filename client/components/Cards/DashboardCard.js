@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import styles from '../../styles/dashboardCard.module.css';
+import { useDarkMode } from '@/utils/darkModeContext';
 
-export const DashboardCard = ({ cardset, onClick, isDarkMode }) => {
+export const DashboardCard = ({ cardset, onClick }) => {
+    const {isDarkMode} = useDarkMode();
     console.log('cardset ', cardset);
 
     let bgColor = '';
@@ -71,8 +73,18 @@ export const DashboardCard = ({ cardset, onClick, isDarkMode }) => {
                         <span className="card-count">{cardset.flashcardCount} flashcards</span>
                     </div>
                 </div>
-                <div className="card-footer d-flex justify-content-end p-3"id={styles.cardFooter}>
-                    <a href="#" className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`}>Edit</a>
+                <div className="card-footer p-3"id={styles.cardFooter}>
+                    <div className='row d-flex align-items-center'>
+                        {cardset.isPublic ? 
+                        <div className='col d-flex justify-content-begin'>
+                            <span class="bi bi-globe" title="public"></span>
+                            </div> 
+                            : <div className='col'> 
+                            <span class="bi bi-lock" title="restricted"></span> </div> }
+                        <div className='col d-flex justify-content-end'>
+                            <a href="#" className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`}>Edit</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
