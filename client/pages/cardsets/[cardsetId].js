@@ -164,118 +164,106 @@ export default function CardsetPage () {
                     <div className="col mt-5 mb-2">
                         <h1 className="text-center">{cardset.title}</h1>
                     </div>
-            <Navbar />
-            {!access ? (
-                <div>
-                    This card set is NOT PUBLIC.
-                </div>
-            ) : null}
-
-
-            {access ? (
-                <div className="container">
-                    <div className="row">
-                        <div className="col mt-5 mb-2">
-                            <h1 className="text-center">{cardset.title}</h1>
+                    {!access ? (
+                        <div>
+                            This card set is NOT PUBLIC.
                         </div>
-
-                    <div className="row d-flex align-items-center">
-                        <div className='col'>
-                            <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>
-                        </div>
-                        <div className='col d-flex justify-content-end mb-4'>
-                            <button className="btn btn-secondary testButton" onClick={navigateToTestPage}>Test Mode</button>
-                        </div>
-                    </div>
-                </div>       
-            </div>
-
-
-            ) : null}
-
-            {/* Main Flashcard  */}
-            {
-                !access || loading ?
-                    <div className='text-center'><h5>Loading...</h5></div>
-                    : <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards} canEdit={canEdit}/>
-            }
-
-            {/* All Flashcards in the set  */}
-            <div className="container">
-                <div className="row">
-                    {/* Flashcard Info */}
-                    {access && !loading ?
-                        <div className="col mt-5 mb-2">
-                            <div className="">
-                                <h3>Flashcard Set: {cardset.title}</h3>
-                                <div> Subject: {cardset.subject} </div>
-                                <div> {currentCardsetData.length} flashcards </div>
-                            </div>
-                        </div>
-                        : null
-                    }
-
-                    {/*Edit/Delete Flashcard set */}
-                    {canEdit ?
-                        <div className='col d-flex justify-content-end align-items-center'>
-                            <div className="d-flex align-items-center">
-                                {isadmin && (
-                                    <div>
-                                        <button className='btn' onClick={toggleSharePopup}>Share</button>
-                                        {showSharePopup && <ShareFunction userid={userData?.id} cardsetId={cardsetId} />}
+                    ) : (
+                        <div className="container">
+                            <div className="row">
+                                <div className="col mt-5 mb-2">
+                                    <h1 className="text-center">{cardset.title}</h1>
+                                </div>
+                                <div className="row d-flex align-items-center">
+                                    <div className='col'>
+                                        <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>
                                     </div>
-                                )}
-                                <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
-                                <button className="btn deleteButton" onClick={() => handleDelete()}><i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i></button>
-                            </div>
-                        </div>
-                        : null}
-
-                    {/* Delete message */}
-                    {showDeleteConfirmation && (
-                        <div className="row">
-                            <div className="col d-flex justify-content-end">
-                                <div className="delete-confirmation">
-                                    <p>Are you sure you want to delete this set: {cardset.title}?</p>
-                                    <div className="d-flex justify-content-center">
-                                        <button onClick={confirmDelete} className="btn btn-danger">Yes</button>
-                                        <button onClick={() => setShowDeleteConfirmation(false)} className="btn btn-secondary">No</button>
+                                    <div className='col d-flex justify-content-end mb-4'>
+                                        <button className="btn btn-secondary testButton" onClick={navigateToTestPage}>Test Mode</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     )}
-
-                    {/* All Flashcards in the set */}
-                    <div className="flashcardContainer mb-5">
-                        {currentCardsetData.map(flashcard => (
-                            <TermCard key={flashcard.id} flashcard={flashcard} />
-                        ))}
-                    </div>
-
-                    {/* Edit Flashcards set */}
-                    { isEditPageOpen && (
-                        <div className="edit-page-view" style={{ backgroundColor: isDarkMode ? '#0a092d' : '#ADD8E6' }}>
-                            <div className="edit-page-content">
-                                <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseEditPage}>
-                                &times;
-                                </button>
-                                {currentCardsetData && (
-                                    <EditView
-                                        cardset={currentCardsetData}
-                                        userId={userData.id}
-                                        cardsetId={cardsetId}
-                                        cardsetTitle={cardset.title}
-                                        cardsetSubject={cardset.subject}
-                                        cardsetIsPublic={cardset.isPublic}
-                                        isDarkMode={isDarkMode}
-                                    />
-                                )}
-                            </div>
-                        </div>
+                    {/* Main Flashcard  */}
+                    {!access || loading ? (
+                        <div className='text-center'><h5>Loading...</h5></div>
+                    ) : (
+                        <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards} canEdit={canEdit}/>
                     )}
-                </div>
-                <style jsx>{`
+                    {/* All Flashcards in the set  */}
+                    <div className="container">
+                        <div className="row">
+                            {/* Flashcard Info */}
+                            {access && !loading ? (
+                                <div className="col mt-5 mb-2">
+                                    <div className="">
+                                        <h3>Flashcard Set: {cardset.title}</h3>
+                                        <div> Subject: {cardset.subject} </div>
+                                        <div> {currentCardsetData.length} flashcards </div>
+                                    </div>
+                                </div>
+                            ) : null}
+                            {/*Edit/Delete Flashcard set */}
+                            {canEdit ? (
+                                <div className='col d-flex justify-content-end align-items-center'>
+                                    <div className="d-flex align-items-center">
+                                        {isadmin && (
+                                            <div>
+                                                <button className='btn' onClick={toggleSharePopup}>Share</button>
+                                                {showSharePopup && <ShareFunction userid={userData?.id} cardsetId={cardsetId} />}
+                                            </div>
+                                        )}
+                                        <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
+                                        <button className="btn deleteButton" onClick={() => handleDelete()}><i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i></button>
+                                    </div>
+                                </div>
+                            ) : null}
+                            {/* Delete message */}
+                            {showDeleteConfirmation && (
+                                <div className="row">
+                                    <div className="col d-flex justify-content-end">
+                                        <div className="delete-confirmation">
+                                            <p>Are you sure you want to delete this set: {cardset.title}?</p>
+                                            <div className="d-flex justify-content-center">
+                                                <button onClick={confirmDelete} className="btn btn-danger">Yes</button>
+                                                <button onClick={() => setShowDeleteConfirmation(false)} className="btn btn-secondary">No</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            {/* All Flashcards in the set */}
+                            <div className="flashcardContainer mb-5">
+                                {currentCardsetData.map(flashcard => (
+                                    <TermCard key={flashcard.id} flashcard={flashcard} />
+                                ))}
+                            </div>
+                            {/* Edit Flashcards set */}
+                            { isEditPageOpen && (
+                                <div className="edit-page-view" style={{ backgroundColor: isDarkMode ? '#0a092d' : '#ADD8E6' }}>
+                                    <div className="edit-page-content">
+                                        <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseEditPage}>
+                                        &times;
+                                        </button>
+                                        {currentCardsetData && (
+                                            <EditView
+                                                cardset={currentCardsetData}
+                                                userId={userData.id}
+                                                cardsetId={cardsetId}
+                                                cardsetTitle={cardset.title}
+                                                cardsetSubject={cardset.subject}
+                                                cardsetIsPublic={cardset.isPublic}
+                                                isDarkMode={isDarkMode}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <style jsx>{`
+                        
                     .heading{
                         margin-top: 20px;
                     }
@@ -348,8 +336,10 @@ export default function CardsetPage () {
                         background: none;
                         border: none;
                       }
-            `}</style>     
+                    `}</style>
+                </div>
             </div>
         </div>
     );
-}
+    
+    }
