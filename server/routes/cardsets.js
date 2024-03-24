@@ -20,7 +20,7 @@ router.route('/')
                 },
                 {
                     model: User,
-                    attributes: ['username'] 
+                    attributes: ['id', 'username'] 
                 }
             ],
             attributes: {
@@ -57,12 +57,12 @@ router.route('/:cardsetId')
             include: [
                 {
                     model: Flashcard,
-                    attributes: ['id', 'term', 'definition'], // Add other attributes you need
+                    attributes: ['id', 'term', 'definition'], 
                     duplicating: false,
                 },
                 {
                     model: User,
-                    attributes: ['id', 'username'] // Add other attributes you need
+                    attributes: ['id', 'username'] 
                 }
             ]
         });

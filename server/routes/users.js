@@ -8,7 +8,7 @@ const { Sequelize } = require('sequelize');
 const {checkCardsetAuthority} = require('./functions');
 
 router.use('/:userid/cardsets/:cardsetid/flashcards', flashcards);
-router.use('/:userid/cardsets', sharedCardsets);
+router.use('/:userid/cardsets/:cardsetid/shared', sharedCardsets);
 
 router.route('/signup')
 .post(async (req, res) => {
@@ -62,6 +62,24 @@ router.route('/getuser')
         res.status(500).json({ error: 'Error fetching database user' });
     }
 });
+
+//Get user by ID
+router.route('/:userid')
+.get(async (req, res) => {
+    try {
+        const { userid } = req.params;
+        const user = await User.findOne({ where: { id: userid }});
+        if (user) {
+            res.status(200).json({ user });
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching user by ID:', error);
+        res.status(500).json({ error: 'Error fetching user by ID' });
+    }
+});
+
 
 //Users cardsets 
 router.route('/:userid/cardsets')
@@ -167,6 +185,32 @@ router.route('/:userid/cardsets/:cardsetid')
     }
 });
 
-
+//Get all public cardset of a specific user
+router.get('/:userid/public-cardsets', async (req, res) => {
+    try {
+        const userId = req.params.userid;
+        const publicCardsets = await Cardset.findAll({
+            where: { 
+                userId: userId,
+                isPublic: true 
+            },
+            include: [{
+                model: Flashcard,
+                attributes: [],
+                duplicating: false,
+            }],
+            attributes: {
+                include: [
+                    [Sequelize.fn("COUNT", Sequelize.col("flashcards.id")), "flashcardCount"]
+                ]
+            },
+            group: ['Cardset.id']
+        });
+        res.status(200).json({ cardsets: publicCardsets });
+    } catch (error) {
+        console.error('Error fetching user public card sets:', error);
+        res.status(500).json({ error: 'Error fetching user public card sets' });
+    }
+});
 
 module.exports = router;

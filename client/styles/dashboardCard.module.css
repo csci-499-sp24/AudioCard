@@ -11,3 +11,12 @@
     background: none !important;
     border-top: none !important;
 }
+
+.cardSubjectDark {
+    background-clip: padding-box;
+    border-radius: 20px;
+    background-color: #faf5cb;
+    color: #ffffff;
+    padding: 5px 10px;
+    display: inline;
+}
