@@ -1,3 +1,4 @@
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import "/styles/globals.css";
 import { DarkModeProvider } from '../utils/darkModeContext';
 

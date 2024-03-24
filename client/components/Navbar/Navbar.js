@@ -11,7 +11,7 @@ const Navbar = ({ userId }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     return (
-        <nav className="navbar navbar-expand-lg bg-body-tertiary" id={styles.navbar}>
+        <nav className={`navbar navbar-expand-lg ${isDarkMode ? 'bg-dark' : 'bg-body-tertiary'}`} id={styles.navbar}>
             <div className="container">
                 <div className="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                     <ul className="navbar-nav">
@@ -23,10 +23,10 @@ const Navbar = ({ userId }) => {
                     </ul>
                 </div>
                 <div className="mx-auto order-0">
-                    <Link href="/dashboard" className='navbar-brand text-white font-weight-bold' id={styles.navLinkLogo}>
+                    <Link href="/dashboard" className={`navbar-brand text-white font-weight-bold ${isDarkMode && 'text-light'}`} id={styles.navLinkLogo}>
                         AudioCard
                     </Link>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                    <button className={`navbar-toggler ${isDarkMode && 'navbar-dark'}`} type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
                 </div>
