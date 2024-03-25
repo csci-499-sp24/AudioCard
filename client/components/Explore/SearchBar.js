@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-
+import { useDarkMode } from '@/utils/darkModeContext';
 export const SearchBar = ({ cardsets, onSearchUpdate }) => {
+    const {isDarkMode} = useDarkMode();
     const [searchInput, setSearchInput] = useState('');
     const [sortingBy, setSortingBy] = useState('');
     const [sortedCardsets, setSortedCardsets] = useState([...cardsets]);
@@ -38,11 +39,6 @@ export const SearchBar = ({ cardsets, onSearchUpdate }) => {
                 case 'creator':
                     setFilteredCardsets([...subjectFilter.filter(cardset => 
                         cardset.user?.username.toLowerCase().includes(searchLower)
-                    )]);
-                    break;
-                case 'date':
-                    setFilteredCardsets([...subjectFilter.filter(cardset => 
-                        new Date(cardset.createdAt).toLocaleDateString().includes(searchLower)
                     )]);
                     break;
                 default:
@@ -95,13 +91,15 @@ export const SearchBar = ({ cardsets, onSearchUpdate }) => {
     }
 
   return (
+    <div className='container'>
+    <div className='row d-flex align-items-center'>
     <div className="col-sm-6 col-md-4 col-lg-10 mb-2">
         <div className='d-flex mb-4'>
             <form className="d-flex form-inline col-lg-4" onSubmit={((e) => e.preventDefault())}>
-                <input className="form-control mr-sm-2 me-2" type="search" placeholder="Search" aria-label="Search" onInput={(e) => onInputChange(e)}/>
+                <input className="form-control mr-sm-2 me-2" type="search" placeholder="Search"  aria-label="Search" onInput={(e) => onInputChange(e)}/>
             </form>
             <div className="dropdown me-2 flex-grow-1">
-                <button className="btn bg-white flex-grow-1 dropdown-toggle col-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button className="btn  flex-grow-1 dropdown-toggle col-4" style={{ backgroundColor: isDarkMode ? '#222222' : 'white', color: isDarkMode? 'white': 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {subject ? subject: "Any Subject"}
                 </button>
                 <ul className="dropdown-menu">
@@ -126,23 +124,28 @@ export const SearchBar = ({ cardsets, onSearchUpdate }) => {
                 : <button type="button" className="btn btn-secondary me-2" onClick={() => setSearchBy('title')}>Title</button>}
                 {searchBy ===  'creator' ? <button type="button" className="btn btn-primary me-2" onClick={() => setSearchBy('title')}>Creator</button>
                 : <button type="button" className="btn btn-secondary me-2" onClick={() => setSearchBy('creator')}>Creator</button>}
-                {searchBy ===  'date' ? <button type="button" className="btn btn-primary me-2" onClick={() => setSearchBy('title')}>Date</button>
-                : <button type="button" className="btn btn-secondary me-2" onClick={() => setSearchBy('date')}>Date</button>}
-            </div>
-
-            <div className="dropdown d-flex flex-grow-1">
-                <button className="btn btn-primary dropdown-toggle col-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    {sortingBy.length > 0 ? sortingBy : "Sort By..."}
-                </button>
-                <ul className="dropdown-menu">
-                    <li><a className="dropdown-item" onClick={(e) => onSortChange(e, 'flashcardCount')}>Flashcard count</a></li>
-                    <li><a className="dropdown-item" onClick={(e) => onSortChange(e, 'creationNewest')}>Newest first</a></li>
-                    <li><a className="dropdown-item" onClick={(e) => onSortChange(e, 'creationOldest')}>Oldest first</a></li>
-                    <li><a className="dropdown-item" onClick={(e) => onSortChange(e, 'alphabeticalOrder')}>Alphabetical order</a></li>
-                </ul>
             </div>
         </div>
 
+    </div>
+    <div className="col d-flex justify-content-end align-self-begin">
+            <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {sortingBy.length > 0 ? sortingBy : "Sort By..."}
+            </button>
+            <ul className="dropdown-menu">
+                <li><a className="dropdown-item" onClick={(e) => onSortChange(e, 'flashcardCount')}>Flashcard count</a></li>
+                <li><a className="dropdown-item" onClick={(e) => onSortChange(e, 'creationNewest')}>Newest first</a></li>
+                <li><a className="dropdown-item" onClick={(e) => onSortChange(e, 'creationOldest')}>Oldest first</a></li>
+                <li><a className="dropdown-item" onClick={(e) => onSortChange(e, 'alphabeticalOrder')}>Alphabetical order</a></li>
+            </ul>
+            </div>
+
+        </div>
+    <style jsx>{`
+    .custom-btn {
+        padding: 0.5rem 1rem;
+      }
+    `}</style>
     </div>
     )
 }
