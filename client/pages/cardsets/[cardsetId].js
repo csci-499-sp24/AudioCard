@@ -158,7 +158,8 @@ export default function CardsetPage () {
         }
     };
     const navigateToTestPage = () => {
-        router.push(`/test/${cardsetId}`);
+        const darkModeParam = isDarkMode ? '?darkMode=true' : '?darkMode=false';
+        router.push(`/test/${cardsetId}${darkModeParam}`);
     };
 
     // Render flashcard data
