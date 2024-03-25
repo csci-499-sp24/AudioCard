@@ -97,7 +97,7 @@ export const SearchBar = ({ cardsets, onSearchUpdate }) => {
   return (
     <div className="col-sm-6 col-md-4 col-lg-10 mb-2">
         <div className='d-flex mb-4'>
-            <form className="d-flex form-inline col-lg-6" onSubmit={((e) => e.preventDefault())}>
+            <form className="d-flex form-inline col-lg-4" onSubmit={((e) => e.preventDefault())}>
                 <input className="form-control mr-sm-2 me-2" type="search" placeholder="Search" aria-label="Search" onInput={(e) => onInputChange(e)}/>
             </form>
             <div className="dropdown me-2 flex-grow-1">
@@ -121,7 +121,7 @@ export const SearchBar = ({ cardsets, onSearchUpdate }) => {
             </div>
         </div>
         <div className='d-flex mb-4'>
-            <div className='d-flex form-inline col-lg-6'>
+            <div className='d-flex form-inline col-lg-4'>
                 {searchBy ===  'title' ? <button type="button" className="btn btn-primary me-2" onClick={() => setSearchBy('title')}>Title</button>
                 : <button type="button" className="btn btn-secondary me-2" onClick={() => setSearchBy('title')}>Title</button>}
                 {searchBy ===  'creator' ? <button type="button" className="btn btn-primary me-2" onClick={() => setSearchBy('title')}>Creator</button>

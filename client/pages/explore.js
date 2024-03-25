@@ -5,10 +5,7 @@ import { ExploreCard } from '@/components/Cards/ExploreCard';
 import Navbar from '@/components/Navbar/Navbar';
 import { auth } from "@/utils/firebase";
 import {useDarkMode} from '../utils/darkModeContext';
-<<<<<<< HEAD
 import { SearchBar } from "@/components/Explore/SearchBar";
-=======
->>>>>>> origin/main
 
 const Explore = () => {
     const { isDarkMode} = useDarkMode();
@@ -33,16 +30,11 @@ const Explore = () => {
         }
         return () => unsubscribe();
     }, [user, userData]);
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/main
 
     useEffect(() => {
         fetchCardsets();
     }, []);
 
-<<<<<<< HEAD
     const onSearchUpdate = (sortedSets, input) => {
         setFilteredCardsets(sortedSets);
         setSearchInput(input)
@@ -60,81 +52,6 @@ const Explore = () => {
         } catch (error) {
             console.error('Error fetching card sets:', error);
         }
-=======
-    useEffect(() => {
-        filterCardsets();
-    }, [searchInput]);
-
-    const fetchUserData = async () => {
-        if (!user || !user.uid) {
-            return;
-        }
-        try {
-            const firebaseId = user?.uid
-            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/users/getuser', { params: { firebaseId: firebaseId } });
-            const userData = response.data.user;
-            setUserData(userData);
-        } catch (error) {
-            console.error('Error fetching card sets:', error);
-        }
-    }
-
-
-    const onSearchChange = (e) => {
-        e.preventDefault();
-        setSearchInput(e.target.value);
-    }
-
-    const filterCardsets = () => {
-        const searchLower = searchInput.toLowerCase();
-        setFilteredCardsets([...cardsets.filter(cardset =>
-            cardset.title.toLowerCase().includes(searchLower) ||
-            cardset.subject.toLowerCase().includes(searchLower) ||
-            (cardset.user?.username && cardset.user.username.toLowerCase().includes(searchLower))
-        )]);
-    };
-
-
-    const onSortChangeClicked = (e, sortBy) => {
-        e.preventDefault();
-        let sortedCardsets;
-        switch (sortBy) {
-            case 'flashcardCount':
-                sortedCardsets = sortByFlashcards();
-                break;
-            case 'creationNewest':
-                sortedCardsets = sortByCreation();
-                sortedCardsets.reverse();
-                break;
-            case 'creationOldest':
-                sortedCardsets = sortByCreation();
-                break;
-            case 'alphabeticalOrder':
-                sortedCardsets = sortByAlphabet();
-                break;
-            default:
-                sortedCardsets = cardsets;
-                break;
-        }
-        setCardsets([...sortedCardsets]);
-        filterCardsets();
-
-    }
-
-    const sortByFlashcards = () => {
-        setSortingBy('Flashcard Count');
-        return cardsets.sort((a, b) => b.flashcardCount - a.flashcardCount);
-    }
-
-    const sortByCreation = () => {
-        setSortingBy('Creation Date');
-        return cardsets.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
-    }
-
-    const sortByAlphabet = () => {
-        setSortingBy("Alphabetically");
-        return cardsets.sort((a, b) => a.title.localeCompare(b.title));
->>>>>>> origin/main
     }
 
     const fetchCardsets = async () => {
@@ -166,41 +83,15 @@ const Explore = () => {
             <Navbar userId={userData?.id}/>
             <div className="container mt-5">
                 <h1 className="mb-4">Explore Cardsets</h1>
-<<<<<<< HEAD
                 <SearchBar cardsets={cardsets} onSearchUpdate={onSearchUpdate}/>
-=======
-                <div className='d-flex mb-5'>
-                    <form className="form-inline" onSubmit={((e) => e.preventDefault())}>
-                        <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" onInput={(e) => onSearchChange(e)} />
-                    </form>
-                    <div className="dropdown">
-                        <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {sortingBy.length > 0 ? sortingBy : "Sort By..."}
-                        </button>
-                        <ul className="dropdown-menu">
-                            <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'flashcardCount')}>Flashcard count</a></li>
-                            <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'creationNewest')}>Newest first</a></li>
-                            <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'creationOldest')}>Oldest first</a></li>
-                            <li><a className="dropdown-item" onClick={(e) => onSortChangeClicked(e, 'alphabeticalOrder')}>Alphabetical order</a></li>
-                        </ul>
-                    </div>
-                </div>
->>>>>>> origin/main
 
             <div className="row">
                 {filteredCardsets.length === 0 && searchInput.length > 0 && <div>No cardsets matching this search</div> }
                 {filteredCardsets.length > 0 || searchInput.length > 0 ? filteredCardsets.map((cardset) => (                
-<<<<<<< HEAD
                         <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} isDarkMode={isDarkMode}/>
                     )):
                     cardsets.map((cardset) => (
                         <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} isDarkMode={isDarkMode}/>
-=======
-                        <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick}/>
-                    )):
-                    cardsets.map((cardset) => (
-                        <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick}/>
->>>>>>> origin/main
                     )) }
                 </div>
 
