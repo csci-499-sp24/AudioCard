@@ -77,7 +77,7 @@ const Login = () => {
                         </div>
 
                         <div className='text-end mt-3'>
-                            <Link href="" className='link-secondary link-underline-opacity-0'>
+                            <Link href="/forgot-password" className='link-secondary link-underline-opacity-0'>
                                 Forgot Password?
                             </Link>
                         </div>

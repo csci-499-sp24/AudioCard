@@ -65,6 +65,19 @@ router.route('/getuser')
     }
 });
 
+//Get user's database entry using their email
+router.route('/getuserbyemail')
+.get(async(req, res) => {
+    try{
+        const { email } = req.query;
+        const user = await User.findOne({ where: { email }});
+        res.status(200).json({ user });
+    } catch (error) {
+        console.error('Error fetching database user:', error);
+        res.status(500).json({ error: 'Error fetching database user' });
+    }
+});
+
 //Get user by ID
 router.route('/:userid')
 .get(async (req, res) => {
