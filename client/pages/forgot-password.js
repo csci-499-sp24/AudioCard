@@ -27,6 +27,14 @@ const ForgotPassword = () => {
                     console.log('Email was sent');
                     setError('');
                 }
+                else {
+                    userErrorMessage = "Sorry, we couldn't find anyone with this email"; 
+                    setError(userErrorMessage);
+                }
+            }
+            else {
+                userErrorMessage = "Please enter an email"; 
+                setError(userErrorMessage);
             }
         } catch (error) {
             userErrorMessage = "Couldn't send reset email"; 
@@ -47,7 +55,7 @@ const ForgotPassword = () => {
                     { error && 
                         <p className='text-center text-danger'>{error}</p>
                     }
-                   
+                    
                     <form onSubmit={handleReset}>
                         <div className="form-group mb-3">
                             <label className="mb-1" htmlFor="exampleInputEmail1">Email address</label>
