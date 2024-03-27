@@ -17,9 +17,16 @@ const ForgotPassword = () => {
         let userErrorMessage;
 
         try {
-            if (email) {              
-                await sendPasswordResetEmail(auth, email);
-                console.log('Email was sent');
+            if (email) {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/getuserbyemail`, {
+                    params: { email }
+                });
+
+                if (response.data && response.data.user) {
+                    await sendPasswordResetEmail(auth, email);
+                    console.log('Email was sent');
+                    setError('');
+                }
             }
         } catch (error) {
             userErrorMessage = "Couldn't send reset email"; 
