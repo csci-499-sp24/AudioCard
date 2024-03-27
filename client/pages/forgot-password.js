@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router'; // Import the useRouter hook
+import { useRouter } from 'next/router';
 import { auth } from '../utils/firebase';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import axios from 'axios';
@@ -10,6 +10,8 @@ import logo from '../assets/images/logo.png';
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [error, setError] = useState(null);
+    const [alert, setAlert] = useState('');
+    const [isAlertVisible, setIsAlertVisible] = useState(false);
     const router = useRouter();
 
     const handleReset = async (e) => {
@@ -26,6 +28,7 @@ const ForgotPassword = () => {
                     await sendPasswordResetEmail(auth, email);
                     console.log('Email was sent');
                     setError('');
+                    showSuccsesfulResetMessage();
                 }
                 else {
                     userErrorMessage = "Sorry, we couldn't find anyone with this email"; 
@@ -42,6 +45,18 @@ const ForgotPassword = () => {
         }
     }
 
+    // a function for showing an alert that a reset link was send to user's email
+    const showSuccsesfulResetMessage = () => {
+        setAlert('An email with a link to rest password has just been sent to your email');
+        setIsAlertVisible(true);
+
+        setTimeout(() => {
+            // stop the showin the alert and send user back to login page
+            setIsAlertVisible(false);
+            router.push('/login');
+        }, 3000);
+    }
+
     return (
         <div className="container">
             <div className="row mt-5 justify-content-md-center">
@@ -54,6 +69,12 @@ const ForgotPassword = () => {
 
                     { error && 
                         <p className='text-center text-danger'>{error}</p>
+                    }
+
+                    { isAlertVisible &&  
+                        <div className="alert alert-success text-center" role="alert">
+                           { alert }
+                        </div>
                     }
                     
                     <form onSubmit={handleReset}>
