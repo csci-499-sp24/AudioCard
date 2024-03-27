@@ -3,12 +3,14 @@ const router = express.Router();
 const { Cardset, User, Flashcard } = require('../models/modelRelations');
 const flashcards = require ('./flashcards');
 const sharedCardsets = require ('./sharedCardsets');
+const friends = require ('./friends');
 
 const { Sequelize } = require('sequelize');
 const {checkCardsetAuthority} = require('./functions');
 
 router.use('/:userid/cardsets/:cardsetid/flashcards', flashcards);
 router.use('/:userid/cardsets/:cardsetid/shared', sharedCardsets);
+router.use('/:userid/friends', friends)
 
 router.route('/signup')
 .post(async (req, res) => {
