@@ -7,6 +7,7 @@ import styles from '../styles/dashboard.module.css';
 import { CreateCardset } from '@/components/CreateCardset';
 import { CardsetView } from '@/components/CardsetView';
 import { DashboardCard } from '@/components/Cards/DashboardCard';
+import  SharedCardset from '@/components/SharedCardset';
 import Navbar from '@/components/Navbar/Navbar';
 import {useDarkMode} from '../utils/darkModeContext';
 
@@ -128,6 +129,14 @@ const Dashboard = () => {
                         )}
                         </div>
                     </div>
+                </div>
+
+                <div>
+                    <h1>
+                        Shared With You
+                    </h1>
+
+                    <SharedCardset userid={userData?.id}/>
                 </div>
             </div>
         </div>
