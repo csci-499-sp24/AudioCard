@@ -40,7 +40,7 @@ const Navbar = ({ userId }) => {
                     </li>
                         <li className="nav-item text-center">
                         <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink} onClick={toggleDarkMode}>
-                            {isDarkMode ? 'Light' : 'Dark'}
+                            {isDarkMode ? <i class="bi bi-sun"></i> : <i class="bi bi-moon"></i>}
                         </button>
                         </li>
                         <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink}

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import style from '../../styles/flashcardtestmode.module.css';
 import { RotatingCardTest } from '../Cards/RotatingCardTest';
-import {checkAnswerSTT} from './speechToText';
-import {TTS} from './textToSpeech';
+import {checkAnswerSTT} from '../ASR/speechToText';
+import {TTS} from '../ASR/textToSpeech';
 import { useDarkMode } from '../../utils/darkModeContext';
 
 export const ASRTestMode = ({ cardData}) => {
@@ -112,7 +112,6 @@ export const ASRTestMode = ({ cardData}) => {
                 <div className={style.optionsOverlay}>
                     <div className={style.optionsModal}>
                         <h2>Options</h2>
-                        <button className={style.shuffleButton} onClick={shuffleCards}>Shuffle Cards</button>
                         <div className={style.closeButtonContainer}>
                             <button className={style.closeButton} onClick={() => setShowOptions(false)}>Close</button>
                         </div>
@@ -138,6 +137,9 @@ export const ASRTestMode = ({ cardData}) => {
                             borderClass={borderClass}
                             isDarkMode={isDarkMode}
                         />
+                    <div className='d-flex justify-content-center align-items-center mt-3'>
+                     <button className='btn btn-secondary' onClick={shuffleCards}><i class="fas fa-random"></i></button>
+                     </div>
                     </div>
                 </>
             )}

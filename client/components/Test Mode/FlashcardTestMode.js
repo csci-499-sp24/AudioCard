@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import style from '../styles/flashcardtestmode.module.css';
-import { RotatingCardTest } from './Cards/RotatingCardTest';
-import { useDarkMode } from '../utils/darkModeContext'
+import style from '../../styles/flashcardtestmode.module.css';
+import { RotatingCardTest } from '../Cards/RotatingCardTest';
+import { useDarkMode } from '../../utils/darkModeContext'
+import { TestOptions } from './testOptions';
 
 export const FlashcardTestMode = ({ cardData, userId}) => {
     const {isDarkMode} = useDarkMode();
@@ -15,6 +16,8 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     const [showTestResult, setShowTestResult] = useState(false);
     const [testStarted, setTestStarted] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
+    const [attempts, setAttempts] = useState(0);
+    const [maxAttempts, setMaxAttempts] = useState(0);
 
     useEffect(() => {
         setFlashcards(cardData);
@@ -35,6 +38,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         console.log('Progress:', progress);
     }, [index, flashcards.length]);
 
+
     if (flashcards.length === 0) {
         return <div>No Flashcards Yet!</div>;
     }
@@ -45,11 +49,19 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
 
     const handleSubmitAnswer = (e) => {
         e.preventDefault();
+        setTimeout(() => {
+            setBorderClass('');
+        }, 2000)
         const isCorrect = answer.trim().toLowerCase() === flashcards[index].definition.toLowerCase();
         setBorderClass(isCorrect ? 'correct' : 'incorrect');
-        if (isCorrect) {
-            setScore((currentScore) => currentScore + 1);
+        setAttempts((prevAttempts) => prevAttempts - 1);
+        if (!isCorrect && attempts > 0) {
+            return;
         }
+        if (isCorrect) {
+                setScore((currentScore) => currentScore + 1);
+        }
+
         setIsFlipped(true);
         setTestStarted(true);
         setTimeout(() => {
@@ -61,6 +73,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                     setIndex((currentIndex) => currentIndex + 1);
                     setAnswer('');
                     setBorderClass('');
+                    setAttempts(maxAttempts);
                 }, 150);
             }
         }, 2000);
@@ -76,6 +89,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         setTestStarted(false);
         setBorderClass('');
         setAnswer('');
+        setAttempts(maxAttempts);
     };
 
     const shuffleCards = () => {
@@ -89,6 +103,11 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         setShowOptions(false);
     };
 
+    const handleAttemptChange = (attemptNum) => {
+        setAttempts(attemptNum - 1); 
+        setMaxAttempts(attemptNum - 1);
+    }
+
     return (
         <div className="container">
             <div className={style.topRightButtons}>
@@ -96,12 +115,11 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
             </div>
             {showOptions && (
                 <div className={style.optionsOverlay}>
-                    <div className={style.optionsModal}>
-                        <h2>Options</h2>
-                        <button className={style.shuffleButton} onClick={shuffleCards}>Shuffle Cards</button>
-                        <div className={style.closeButtonContainer}>
-                            <button className={style.closeButton} onClick={() => setShowOptions(false)}>Close</button>
-                        </div>
+                    <div className={style.optionsModal} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white' }}>
+                    <TestOptions testMode={'type'} attempts={attempts} handleAttemptChange={handleAttemptChange}/>
+                    <div className={style.closeButtonContainer}>
+                        <button className={style.closeButton} onClick={() => setShowOptions(false)}>Close</button>
+                    </div>
                     </div>
                 </div>
             )}
@@ -122,11 +140,10 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                             index={index}
                             isFlipped={isFlipped}
                             borderClass={borderClass}
-                            isDarkMode={isDarkMode}
                         />
                     </div>
                     {!isFlipped && (
-                        <form onSubmit={handleSubmitAnswer} className="mt-4">
+                        <form onSubmit={(event) => { handleSubmitAnswer(event) }} className="mt-4">
                             <div className={style.formGroup}>
                                 <input
                                     type="text"
@@ -139,6 +156,9 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                             <button type="submit" className={`btn btn-primary ${style.centeredButton}`}>Submit Answer</button>
                         </form>
                     )}
+                     <div className='d-flex justify-content-center align-items-center mt-3'>
+                     <button className='btn btn-secondary' onClick={shuffleCards}><i class="fas fa-random"></i></button>
+                     </div>
                 </>
             )}
         </div>

@@ -1,12 +1,13 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { CardViewTestMode } from '@/components/CardViewTestMode';
+import { CardViewTestMode } from '@/components/Test Mode/CardViewTestMode';
 import axios from 'axios';
 import { auth } from '@/utils/firebase';
 import styles from '../../styles/testmode.module.css';
+import { useDarkMode } from '@/utils/darkModeContext';
 
-const TestPage = (isDarkMode) => {
-    console.log(isDarkMode);
+const TestPage = () => {
+    const {isDarkMode} = useDarkMode;
     const router = useRouter();
     const { id } = router.query; // This is the ID of the cardset
     const [user, setUser] = useState(null);
@@ -62,7 +63,7 @@ const TestPage = (isDarkMode) => {
             <button className={styles.exitButton} onClick={() => router.back()}>
                 X
             </button>
-            {cardsetData && <CardViewTestMode userId={userData?.id} cardset={cardsetData} isDarkMode={isDarkMode} />}
+            {cardsetData && <CardViewTestMode userId={userData?.id} cardset={cardsetData} />}
 
         </div>
     );
