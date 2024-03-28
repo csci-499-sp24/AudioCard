@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDarkMode } from '@/utils/darkModeContext';
 
-export const TestOptions = ({testMode, attempts, handleAttemptChange}) => {
+export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange}) => {
     const {isDarkMode} = useDarkMode();
-    const [isSpeakMode, setIsSpeakMode] = useState(false); 
-    if (testMode == 'speak'){
-        setIsSpeakMode(true);
-    }
     const visualAttempt = attempts + 1 ;
 
     return (
@@ -29,6 +25,10 @@ export const TestOptions = ({testMode, attempts, handleAttemptChange}) => {
                     </div>
                 </div>
             </div>
+            {isSpeakMode && (<div className='row'>
+
+            </div>) 
+            }
         </div>
     );
 }

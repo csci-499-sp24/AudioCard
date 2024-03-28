@@ -116,7 +116,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
             {showOptions && (
                 <div className={style.optionsOverlay}>
                     <div className={style.optionsModal} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white' }}>
-                    <TestOptions testMode={'type'} attempts={attempts} handleAttemptChange={handleAttemptChange}/>
+                    <TestOptions isSpeakMode={false} attempts={attempts} handleAttemptChange={handleAttemptChange}/>
                     <div className={style.closeButtonContainer}>
                         <button className={style.closeButton} onClick={() => setShowOptions(false)}>Close</button>
                     </div>

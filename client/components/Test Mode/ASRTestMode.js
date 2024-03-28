@@ -4,6 +4,7 @@ import { RotatingCardTest } from '../Cards/RotatingCardTest';
 import {checkAnswerSTT} from '../ASR/speechToText';
 import {TTS} from '../ASR/textToSpeech';
 import { useDarkMode } from '../../utils/darkModeContext';
+import { TestOptions } from './testOptions';
 
 export const ASRTestMode = ({ cardData}) => {
     const {isDarkMode} = useDarkMode();
@@ -16,38 +17,7 @@ export const ASRTestMode = ({ cardData}) => {
     const [showTestResult, setShowTestResult] = useState(false);
     const [testStarted, setTestStarted] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
-    
-    const speakCard = async () => {
-        if (!showTestResult){
-            TTS(flashcards[index].term);
-        }
-    }
-
-
-    const handleAnswer = async (answer) => {
-        let providedCorrectAnswer = await checkAnswerSTT(answer);
-        const isCorrect = providedCorrectAnswer;
-        setBorderClass(isCorrect ? 'correct' : 'incorrect');
-        if (isCorrect) {
-            setScore((currentScore) => currentScore + 1);
-            TTS('correct');
-        } else {
-            TTS(`the correct answer is ${flashcards[index].definition}`)
-        }
-        setIsFlipped(true);
-        setTestStarted(true);
-        setTimeout(() => {
-            if (index === flashcards.length - 1) {
-                setShowTestResult(true);
-            } else {
-                setIsFlipped(false);
-                setTimeout(() => {
-                    setIndex((currentIndex) => currentIndex + 1);
-                    setBorderClass('');
-                }, 150);
-            }
-        }, 2000);
-    };
+    const [maxAttempts, setMaxAttempts] = useState(0);
 
     useEffect(() => {
         setFlashcards(cardData);
@@ -61,7 +31,7 @@ export const ASRTestMode = ({ cardData}) => {
             }
         };
         fetchData();
-    }, [flashcards, index]);    
+    }, [flashcards, index]);   
 
     useEffect(() => {
         setIsFlipped(false);
@@ -81,6 +51,60 @@ export const ASRTestMode = ({ cardData}) => {
     if (flashcards.length === 0) {
         return <div>No Flashcards Yet!</div>;
     }
+    
+    const speakCard = async () => {
+        if (!showTestResult){
+            TTS(flashcards[index].term);
+        }
+    }
+
+
+    const handleAnswer = async (answer) => {
+        setTimeout(() => {
+            setBorderClass('');
+        }, 2000);
+    
+      let isCorrect = await checkAnswerSTT(answer);
+    
+        if (isCorrect) {
+            setBorderClass('correct');
+            setScore((currentScore) => currentScore + 1);
+            TTS('Correct');
+        } else {
+                setBorderClass('incorrect');
+            for (let attempt = maxAttempts; attempt > 0; attempt--) {
+                TTS('Try again.');
+                setTimeout(() => {
+                    setBorderClass('');
+                }, 2000)
+                isCorrect = await checkAnswerSTT(answer);
+                setBorderClass(isCorrect ? 'correct' : 'incorrect');
+                if (isCorrect) {
+                    setScore((currentScore) => currentScore + 1);
+                    TTS('Correct');
+                    break; 
+                }
+            }
+            if (!isCorrect) {
+                setBorderClass('incorrect');
+                TTS(`The correct answer is ${flashcards[index].definition}`);
+            }
+        }   
+        setIsFlipped(true);
+        setTestStarted(true);
+        setTimeout(() => {
+            if (index === flashcards.length - 1) {
+                setShowTestResult(true);
+            } else {
+                setIsFlipped(false);
+                setTimeout(() => {
+                    setIndex((currentIndex) => currentIndex + 1);
+                    setBorderClass('');
+                }, 150);
+            }
+        }, 2000);
+    };
+
 
     const handleRestartTest = () => {
         setIndex(0);
@@ -103,6 +127,9 @@ export const ASRTestMode = ({ cardData}) => {
         handleRestartTest();
         setShowOptions(false);
     };
+    const handleAttemptChange = (attemptNum) => {
+        setMaxAttempts(attemptNum - 1);
+    }
     return (
         <div className="container">
             <div className={style.topRightButtons}>
@@ -110,11 +137,14 @@ export const ASRTestMode = ({ cardData}) => {
             </div>
             {showOptions && (
                 <div className={style.optionsOverlay}>
-                    <div className={style.optionsModal}>
-                        <h2>Options</h2>
-                        <div className={style.closeButtonContainer}>
-                            <button className={style.closeButton} onClick={() => setShowOptions(false)}>Close</button>
-                        </div>
+                    <div className={style.optionsModal} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white' }}>
+                    <TestOptions isSpeakMode={true} attempts={maxAttempts} handleAttemptChange={handleAttemptChange}/>
+                    <div className={style.closeButtonContainer}>
+                        <button className={style.closeButton} onClick={() => {
+                        setShowOptions(false);
+                    }}
+                    >Close</button>
+                    </div>
                     </div>
                 </div>
             )}
@@ -135,7 +165,6 @@ export const ASRTestMode = ({ cardData}) => {
                             index={index}
                             isFlipped={isFlipped}
                             borderClass={borderClass}
-                            isDarkMode={isDarkMode}
                         />
                     <div className='d-flex justify-content-center align-items-center mt-3'>
                      <button className='btn btn-secondary' onClick={shuffleCards}><i class="fas fa-random"></i></button>
