@@ -134,6 +134,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                     </div>
                 </div>
             )}
+            
             {showTestResult ? (
                 <div className={style.testCompleteContainer}>
                     <h2>Your Test Result</h2>
@@ -145,6 +146,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                     <div className={style.progressBarContainer}>
                         <div className={style.progressBar} style={{ width: `${progress}%` }}></div>
                     </div>
+
                     <div className={style.flashcard}>
                         <RotatingCardTest
                             flashcards={flashcards}
@@ -154,7 +156,8 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                             isDarkMode={isDarkMode}
                         />
                     </div>
-                    {!isFlipped && (
+
+                    {   !isFlipped && (
                         <form onSubmit={handleSubmitAnswer} className="mt-4">
                             <div className={style.formGroup}>
                                 <input
