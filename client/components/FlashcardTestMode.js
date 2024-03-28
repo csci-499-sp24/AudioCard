@@ -31,6 +31,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
 
     useEffect(() => {
         const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
+        console.log('Progress newProgress:', newProgress);
         setProgress(newProgress);
         console.log('Progress:', progress);
     }, [index, flashcards.length]);
@@ -45,7 +46,24 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
 
     const handleSubmitAnswer = (e) => {
         e.preventDefault();
-        const isCorrect = answer.trim().toLowerCase() === flashcards[index].definition.toLowerCase();
+
+        // if definition starts with aticle
+        let defitinition = flashcards[index].definition.toLowerCase();
+        let defitinitionFirstWord = defitinition.slice(0, defitinition.indexOf(" ")); // article
+        let restOfDefitinition = defitinition.slice(defitinition.indexOf(" ")+1); //rest of the word/phrase
+        let isCorrect;
+
+        console.log('defitinitionFirstWord:', defitinitionFirstWord);
+        
+        if (defitinitionFirstWord === 'the' || defitinitionFirstWord === 'a' || defitinitionFirstWord === 'an') {
+            isCorrect = answer.trim().toLowerCase() === restOfDefitinition;
+        }
+        else {
+            isCorrect = answer.trim().toLowerCase() === defitinition.toLowerCase();
+        }
+        
+        // const isCorrect = answer.trim().toLowerCase() === flashcards[index].definition.toLowerCase();
+
         setBorderClass(isCorrect ? 'correct' : 'incorrect');
         if (isCorrect) {
             setScore((currentScore) => currentScore + 1);
@@ -90,7 +108,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     };
 
     return (
-        <div className="container">
+        <div className="container mb-5">
             <div className={style.topRightButtons}>
                 <button className={style.optionButton} onClick={() => setShowOptions(true)}>Options</button>
             </div>
