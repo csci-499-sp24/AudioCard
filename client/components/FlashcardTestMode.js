@@ -50,7 +50,24 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
             isCorrect = answer.trim().toLowerCase() === restOfDefitinition;
         }
         else {
-            isCorrect = answer.trim().toLowerCase() === defitinition.toLowerCase();
+            let userAnswer = answer.trim().toLowerCase();
+
+            // "deaccent" the definition string before comparing
+            let defitinitionStringNorm = defitinition.normalize('NFD').replace(/\p{Diacritic}/gu, ''); 
+
+            // check if definition and answer contain dashes
+            let defitinitionContainsDash = /[,\-]/.test(defitinitionStringNorm);
+            let answerContainsDash = /[,\-]/.test(userAnswer);
+            
+            // replace defitition with space if it contains a dash, but the answer doesn't
+            if (defitinitionContainsDash) {
+                if (!answerContainsDash) { 
+                    defitinitionStringNorm = defitinitionStringNorm.replace(/-/g, " ");
+                }
+            }
+
+            // compares final strings ignoring accents and dashes
+            isCorrect = userAnswer.toLowerCase() === defitinitionStringNorm.toLowerCase();
         }
         
         setBorderClass(isCorrect ? 'correct' : 'incorrect');
