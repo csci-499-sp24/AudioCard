@@ -1,0 +1,39 @@
+
+.bellIcon {
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.notificationDropdown {
+    position: absolute;
+    top: 100%; 
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 400px; 
+    max-height: 300px; 
+    overflow-y: auto; 
+    z-index: 1000;
+}
+
+.notificationList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.notificationItem {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.notificationItem:last-child {
+    border-bottom: none;
+}
+
+.noNotifications {
+    padding: 10px;
+    text-align: center;
+    color: #666;
+}
