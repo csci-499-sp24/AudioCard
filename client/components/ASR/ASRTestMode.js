@@ -23,13 +23,18 @@ export const ASRTestMode = ({ cardData}) => {
         }
     }
 
-
     const handleAnswer = async (answer) => {
         let providedCorrectAnswer = await checkAnswerSTT(answer);
         const isCorrect = providedCorrectAnswer;
         setBorderClass(isCorrect ? 'correct' : 'incorrect');
+
         if (isCorrect) {
+            // update the score
             setScore((currentScore) => currentScore + 1);
+            // update the progress bar
+            const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
+            setProgress(newProgress);
+
             TTS('correct');
         } else {
             TTS(`the correct answer is ${flashcards[index].definition}`)
@@ -72,11 +77,11 @@ export const ASRTestMode = ({ cardData}) => {
         }
     }, [index, flashcards.length, isFlipped, testStarted]);
 
-    useEffect(() => {
-        const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
-        setProgress(newProgress);
-        console.log('Progress:', progress);
-    }, [index, flashcards.length]);
+    // useEffect(() => {
+    //     const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
+    //     setProgress(newProgress);
+    //     console.log('Progress:', progress);
+    // }, [index, flashcards.length]);
 
     if (flashcards.length === 0) {
         return <div>No Flashcards Yet!</div>;
@@ -85,8 +90,9 @@ export const ASRTestMode = ({ cardData}) => {
     const handleRestartTest = () => {
         setIndex(0);
         setScore(0);
-        const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
-        setProgress(newProgress);
+        // const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
+        // setProgress(newProgress);
+        setProgress(0);
         setShowTestResult(false);
         setIsFlipped(false);
         setTestStarted(false);

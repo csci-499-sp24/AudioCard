@@ -29,13 +29,6 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         }
     }, [index, flashcards.length, isFlipped, testStarted]);
 
-    useEffect(() => {
-        const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
-        console.log('Progress newProgress:', newProgress);
-        setProgress(newProgress);
-        console.log('Progress:', progress);
-    }, [index, flashcards.length]);
-
     if (flashcards.length === 0) {
         return <div>No Flashcards Yet!</div>;
     }
@@ -47,13 +40,11 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     const handleSubmitAnswer = (e) => {
         e.preventDefault();
 
-        // if definition starts with aticle
+        // if definition starts with article - ignore it
         let defitinition = flashcards[index].definition.toLowerCase();
         let defitinitionFirstWord = defitinition.slice(0, defitinition.indexOf(" ")); // article
         let restOfDefitinition = defitinition.slice(defitinition.indexOf(" ")+1); //rest of the word/phrase
         let isCorrect;
-
-        console.log('defitinitionFirstWord:', defitinitionFirstWord);
         
         if (defitinitionFirstWord === 'the' || defitinitionFirstWord === 'a' || defitinitionFirstWord === 'an') {
             isCorrect = answer.trim().toLowerCase() === restOfDefitinition;
@@ -62,11 +53,14 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
             isCorrect = answer.trim().toLowerCase() === defitinition.toLowerCase();
         }
         
-        // const isCorrect = answer.trim().toLowerCase() === flashcards[index].definition.toLowerCase();
-
         setBorderClass(isCorrect ? 'correct' : 'incorrect');
         if (isCorrect) {
+            // update the score
             setScore((currentScore) => currentScore + 1);
+
+            // update the progress bar
+            const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
+            setProgress(newProgress);
         }
         setIsFlipped(true);
         setTestStarted(true);
@@ -87,8 +81,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     const handleRestartTest = () => {
         setIndex(0);
         setScore(0);
-        const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
-        setProgress(newProgress);
+        setProgress(0);
         setShowTestResult(false);
         setIsFlipped(false);
         setTestStarted(false);
