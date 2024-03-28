@@ -50,7 +50,8 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
             isCorrect = answer.trim().toLowerCase() === restOfDefitinition;
         }
         else {
-            let userAnswer = answer.trim().toLowerCase();
+            // remove 2+ whitespaces from user's answer
+            let userAnswer = answer.replace(/\s+/g, ' ').trim().toLowerCase();
 
             // "deaccent" the definition string before comparing
             let defitinitionStringNorm = defitinition.normalize('NFD').replace(/\p{Diacritic}/gu, ''); 
