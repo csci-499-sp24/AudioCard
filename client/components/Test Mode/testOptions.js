@@ -11,29 +11,24 @@ export const TestOptions = ({testMode, attempts, handleAttemptChange}) => {
 
     return (
         <div className='container'>
-                    <h2>Options</h2>
-                    <div className='row d-flex'>
-                        <div className='col'>
-                            <div>Attempts per card: </div>
-                            <div className="dropdown me-2 flex-grow-1 col">
-                                <button className="btn  flex-grow-1 dropdown-toggle" style={{ backgroundColor: isDarkMode ? '#222222' : 'white', color: isDarkMode? 'white': 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    {visualAttempt ? visualAttempt: "1"}
-                                </button>
-                                <ul className="dropdown-menu">
-                                    <li><a className="dropdown-item" onClick={(e) => handleAttemptChange(1)}>1</a></li>
-                                    <li><a className="dropdown-item" onClick={(e) => handleAttemptChange(2)}>2</a></li>
-                                    <li><a className="dropdown-item" onClick={(e) => handleAttemptChange(3)}>3</a></li>
-                                    <li><a className="dropdown-item" onClick={(e) => handleAttemptChange(4)}>4</a></li>
-                                    <li><a className="dropdown-item" onClick={(e) => handleAttemptChange(5)}>5</a></li>
-                                    <li><a className="dropdown-item" onClick={(e) => handleAttemptChange(6)}>6</a></li>
-                                    <li><a className="dropdown-item" onClick={(e) => handleAttemptChange(7)}>7</a></li>
-                                    <li><a className="dropdown-item" onClick={(e) => handleAttemptChange(8)}>8</a></li>
-                                    <li><a className="dropdown-item" onClick={(e) => handleAttemptChange(9)}>9</a></li>
-                                    <li><a className="dropdown-item" onClick={(e) => handleAttemptChange(10)}>10</a></li>
-                                </ul>
-                            </div>
+            <h2>Options</h2>
+            <div className='row d-flex align-items-center justify-content-center'>
+                <div className='col d-flex justify-content-center'>
+                    <div className="d-flex align-items-center">
+                        <div className="me-2">Attempts per card:</div> 
+                        <div className="dropdown">
+                            <button className="btn dropdown-toggle" style={{ backgroundColor: isDarkMode ? '#222222' : 'white', color: isDarkMode ? 'white' : 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {visualAttempt ? visualAttempt : "1"}
+                            </button>
+                            <ul className="dropdown-menu">
+                                {[...Array(10)].map((_, index) => (
+                                    <li key={index}><a className="dropdown-item" onClick={(e) => handleAttemptChange(index + 1)}>{index + 1}</a></li>
+                                ))}
+                            </ul>
                         </div>
+                    </div>
                 </div>
+            </div>
         </div>
     );
 }
