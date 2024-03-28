@@ -1,48 +1,48 @@
 
 :root {
-  --bs-primary:  black;        
-  --bs-secondary:#6996bf;
-  --ts-primary: black; 
-  --ts-secondary: #abafb3;
-  --ts-tertiary: #abafb3;
-  --background-color: #F2F5F6;
-  --gradient-color: rgba(29, 98, 180, 0.73);
-  --color: black;
-}
-
-.dark-mode{
-    --bs-secondary: #153f67;
-    --background-color: #0a092d;
-    --gradient-color: #4255ff;
-    --color: white;
-}
-
-body {
-    background-color: var(--background-color);
-    font-family: 'Roboto',  'Open Sans';
-    color: var(--color);
-    overflow-y: scroll;
-}
-
-.btn-secondary {
-    background-color: var(--bs-secondary);
-    border: none;
-}  
-
-.btn-secondary:hover {
-    background-color: #1765B4;
-}
-
-.smallButton{
-    width: 150px;
-}
-
-.form-check-input:checked {
-    background-color: var(--bs-secondary);
-    border-color: var(--bs-secondary);
-}
-
-.wrapper {
-    height: 100vh;
-    background: radial-gradient(ellipse at 50% 0%, var(--gradient-color) 0%, var(--background-color) 40%);
-}
+    --bs-primary:  black;        
+    --bs-secondary:#6996bf;
+    --ts-primary: black; 
+    --ts-secondary: #abafb3;
+    --ts-tertiary: #abafb3;
+    --background-color: #F2F5F6;
+    --gradient-color: rgba(50, 88, 135, 0.73);
+    --color: black;
+  }
+  
+  .dark-mode{
+      --bs-secondary: #153f67;
+      --background-color: #0d0c28;
+      --gradient-color: #30355e;
+      --color: white;
+  }
+  
+  body {
+      background-color: var(--background-color);
+      font-family: 'Roboto',  'Open Sans';
+      color: var(--color);
+      overflow-y: scroll;
+  }
+  
+  .btn-secondary {
+      background-color: var(--bs-secondary);
+      border: none;
+  }  
+  
+  .btn-secondary:hover {
+      background-color: #1765B4;
+  }
+  
+  .smallButton{
+      width: 150px;
+  }
+  
+  .form-check-input:checked {
+      background-color: var(--bs-secondary);
+      border-color: var(--bs-secondary);
+  }
+  
+  .wrapper {
+      height: 100vh;
+      background: radial-gradient(ellipse at 50% 0%, var(--gradient-color) 0%, var(--background-color) 40%);
+  }
