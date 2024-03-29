@@ -56,12 +56,31 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
             // "deaccent" the definition string before comparing
             let defitinitionStringNorm = defitinition.normalize('NFD').replace(/\p{Diacritic}/gu, ''); 
 
+            // check if definition and answer contain commas
+            let defitinitionContainsCommas = /[,\,]/.test(defitinitionStringNorm);
+            console.log("defitinitionContainsCommas: ", defitinitionContainsCommas);
+            
+            // replace defitition with space if it contains a commas, but the answer doesn't
+            if (defitinitionContainsCommas) {
+                let answerContainsDash = /[,\,]/.test(userAnswer);
+                console.log("answerContainsDash: ", answerContainsDash);
+                if (!answerContainsDash) { 
+                    defitinitionStringNorm = defitinitionStringNorm.replace(/,/g, "");
+                    console.log("defitinitionStringNorm: ", defitinitionStringNorm);
+                }
+                else {
+                    defitinitionStringNorm = defitinitionStringNorm.replace(/,/g, "");
+                    userAnswer = userAnswer.replace(/,/g, "");
+                    console.log("userAnswer: ", userAnswer);
+                }
+            }
+
             // check if definition and answer contain dashes
             let defitinitionContainsDash = /[,\-]/.test(defitinitionStringNorm);
-            let answerContainsDash = /[,\-]/.test(userAnswer);
             
             // replace defitition with space if it contains a dash, but the answer doesn't
             if (defitinitionContainsDash) {
+                let answerContainsDash = /[,\-]/.test(userAnswer);
                 if (!answerContainsDash) { 
                     defitinitionStringNorm = defitinitionStringNorm.replace(/-/g, " ");
                 }
@@ -134,7 +153,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                     </div>
                 </div>
             )}
-            
+
             {showTestResult ? (
                 <div className={style.testCompleteContainer}>
                     <h2>Your Test Result</h2>
