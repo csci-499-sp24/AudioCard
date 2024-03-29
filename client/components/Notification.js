@@ -1,14 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styles from '../styles/notification.module.css';
 import axios from 'axios';
+import { useDarkMode } from '@/utils/darkModeContext';
 
 const Notification = ({ userId }) => {
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
     const [friendRequests, setFriendRequests] = useState([])
+    const { isDarkMode } = useDarkMode();
+
+    const notificationRef = useRef(null);
+    const toggleNotification = () => setIsNotificationOpen(!isNotificationOpen);
 
     useEffect(() => {
         fetchFriendRequests();
     }, [userId]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+                setIsNotificationOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     const fetchFriendRequests = async () => {
         try {
@@ -41,8 +58,6 @@ const Notification = ({ userId }) => {
         }
     };
 
-    const toggleNotification = () => setIsNotificationOpen(!isNotificationOpen);
-
     return (
         <div>
             <div className={styles.bellWrapper} onClick={toggleNotification}>
@@ -51,29 +66,32 @@ const Notification = ({ userId }) => {
                     <span className={styles.notificationBadge}>{friendRequests.length}</span>
                 )}
             </div>
-            {isNotificationOpen && (
-                <div className={styles.notificationDropdown}>
-                    {friendRequests.length > 0 ? (
-                        <ul className={styles.notificationList}>
-                            {friendRequests.map((request) => (
-                                <li key={request.id} className={styles.notificationItem}>
-                                    <span className={styles.notificationText}>{`${request.username} wants to be your friend`}</span>
-                                    <div className={styles.buttonGroup}>
-                                        <button onClick={() => acceptFriendRequest(request.id)} className={styles.acceptButton}>
-                                            <i className="bi bi-check"></i>
-                                        </button>
-                                        <button onClick={() => declineFriendRequest(request.id)} className={styles.declineButton}>
-                                            <i className="bi bi-x"></i>
-                                        </button>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <div className={styles.noNotifications}>No new notifications</div>
-                    )}
-                </div>
-            )}
+            <div ref={notificationRef}>
+                {isNotificationOpen && (
+                    <div className={styles.notificationDropdown} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white' }}>
+                        {friendRequests.length > 0 ? (
+                            <ul className={styles.notificationList}>
+                                {friendRequests.map((request) => (
+                                    <li key={request.id} className={styles.notificationItem}>
+                                        <span className={styles.notificationText}>{`${request.username} wants to be your friend`}</span>
+                                        <div className={styles.buttonGroup}>
+                                            <button onClick={() => acceptFriendRequest(request.id)} className={styles.acceptButton}>
+                                                <i className="bi bi-check"></i>
+                                            </button>
+                                            <button onClick={() => declineFriendRequest(request.id)} className={styles.declineButton}>
+                                                <i className="bi bi-x"></i>
+                                            </button>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <div className={styles.noNotifications} style={{ color: isDarkMode ? 'white' : '#666' }}>No new notifications</div>
+                        )}
+                    </div>
+                )}
+            </div>
+
         </div>
     );
 };

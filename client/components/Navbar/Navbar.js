@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { auth } from '../../utils/firebase';
 import Link from 'next/link';
@@ -10,6 +10,20 @@ const Navbar = ({ userId }) => {
     const { isDarkMode, toggleDarkMode } = useDarkMode();
     const router = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <nav className={`navbar navbar-expand-lg ${isDarkMode ? 'bg-dark' : 'bg-body-tertiary'}`} id={styles.navbar}>
@@ -56,16 +70,18 @@ const Navbar = ({ userId }) => {
                             <div className={styles.navUserAvatar} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
                                 <img src="/userAvatarSmall.jpg" alt="User Avatar" className={styles.avatarImage} />
                             </div>
-                            {isDropdownOpen && (
-                                <div className={styles.dropdownMenu}>
-                                    <Link href={`/profile/${userId}`} className={styles.dropdownItem}>
-                                        Profile
-                                    </Link>
-                                    <Link href="/settings" className={styles.dropdownItem}>
-                                        Settings
-                                    </Link>
-                                </div>
-                            )}
+                            <div ref={dropdownRef}>
+                                {isDropdownOpen && (
+                                    <div className={styles.dropdownMenu} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white' }}>
+                                        <Link href={`/profile/${userId}`} className={isDarkMode ? styles.darkDropdownItem : styles.dropdownItem}>
+                                            Profile
+                                        </Link>
+                                        <Link href="/settings" className={isDarkMode ? styles.darkDropdownItem : styles.dropdownItem}>
+                                            Settings
+                                        </Link>
+                                    </div>
+                                )}
+                            </div>
                         </li>
                     </ul>
                 </div>
