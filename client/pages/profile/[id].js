@@ -85,7 +85,7 @@ const Profile = () => {
                             />
                         )}
                         <div className={styles.friendList}>
-                            <FriendList userId={profileUser.id} />
+                            <FriendList userId={profileUser?.id} />
                         </div>
                     </div>
                     <div className="container">

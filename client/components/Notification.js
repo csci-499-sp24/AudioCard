@@ -45,7 +45,12 @@ const Notification = ({ userId }) => {
 
     return (
         <div>
-            <i className={`bi bi-bell ${styles.bellIcon}`} onClick={toggleNotification}></i>
+            <div className={styles.bellWrapper} onClick={toggleNotification}>
+                <i className={`bi bi-bell ${styles.bellIcon}`}></i>
+                {friendRequests.length > 0 && (
+                    <span className={styles.notificationBadge}>{friendRequests.length}</span>
+                )}
+            </div>
             {isNotificationOpen && (
                 <div className={styles.notificationDropdown}>
                     {friendRequests.length > 0 ? (
@@ -65,7 +70,7 @@ const Notification = ({ userId }) => {
                             ))}
                         </ul>
                     ) : (
-                        <div className={styles.noNotifications}>No new notifications. User ID: {userId}</div>
+                        <div className={styles.noNotifications}>No new notifications</div>
                     )}
                 </div>
             )}
