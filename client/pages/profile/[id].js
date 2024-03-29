@@ -6,6 +6,7 @@ import axios from 'axios';
 import styles from '@/styles/profile.module.css';
 import { CardProfile } from '@/components/Cards/CardProfile';
 import FriendRequestButton from '@/components/FriendRequestButton';
+import FriendList from '@/components/FriendList';
 import { useDarkMode } from '../../utils/darkModeContext';
 
 const Profile = () => {
@@ -84,10 +85,7 @@ const Profile = () => {
                             />
                         )}
                         <div className={styles.friendList}>
-                            <h2>Friends</h2>
-                            <ul>
-
-                            </ul>
+                            <FriendList userId={profileUser.id} />
                         </div>
                     </div>
                     <div className="container">

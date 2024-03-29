@@ -73,3 +73,47 @@
     margin-right: auto;
     margin-left: auto;
 }
+
+.friendList {
+    width: 100%;
+}
+
+.friendListUl {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.friendListItem {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+}
+
+.friendListItem:hover {
+    background-color: #dddde7; 
+}
+
+.friendAvatar {
+    width: 50px; 
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px; 
+}
+
+.friendAvatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.friendName {
+    font-size: 1em; 
+    line-height: 1.5; 
+    display: flex;
+    align-items: center;
+}

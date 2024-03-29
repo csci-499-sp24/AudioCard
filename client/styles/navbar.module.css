@@ -53,10 +53,9 @@
 }
 
 .profileCircle {
-    /* Style your circle profile icon here */
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #333; /* Replace with user's image or preferred style */
+    background: #333; 
     cursor: pointer;
 }
