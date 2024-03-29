@@ -5,12 +5,14 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from '@/styles/profile.module.css';
 import { CardProfile } from '@/components/Cards/CardProfile';
-import {useDarkMode} from '../../utils/darkModeContext';
+import FriendRequestButton from '@/components/FriendRequestButton';
+import FriendList from '@/components/FriendList';
+import { useDarkMode } from '../../utils/darkModeContext';
 
 const Profile = () => {
     const router = useRouter();
     const { id } = router.query;
-    const {isDarkMode} = useDarkMode();
+    const { isDarkMode } = useDarkMode();
     const [currentUser, setCurrentUser] = useState(null);
     const [profileUser, setProfileUser] = useState(null);
     const [publicCardsets, setPublicCardsets] = useState([]);
@@ -65,23 +67,25 @@ const Profile = () => {
         }
     };
 
-    const shouldShowAddFriendButton = currentUser && profileUser && currentUser.id !== Number(profileUser.id);
+    const shouldShowFriendRequestButton = currentUser && profileUser && currentUser.id !== Number(profileUser.id);
 
     return (
         <div className='wrapper'>
-            <Navbar userId={currentUser?.id}/>
+            <Navbar userId={currentUser?.id} />
             <div className="mt-4">
                 <div className={styles.profileContainer}>
                     <div className={styles.profileSidebar}>
                         <div className={styles.userAvatar}>
                             <img src="/userAvatar.jpg" alt="User Avatar" className={styles.avatarImage} />
                         </div>
-                        {shouldShowAddFriendButton && <button className={styles.addButton}>Add Friend</button>}
+                        {shouldShowFriendRequestButton && (
+                            <FriendRequestButton
+                                currentUserId={currentUser.id}
+                                profileUserId={profileUser.id}
+                            />
+                        )}
                         <div className={styles.friendList}>
-                            <h2>Friends</h2>
-                            <ul>
-
-                            </ul>
+                            <FriendList userId={profileUser?.id} />
                         </div>
                     </div>
                     <div className="container">
