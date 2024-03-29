@@ -29,12 +29,6 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         }
     }, [index, flashcards.length, isFlipped, testStarted]);
 
-    useEffect(() => {
-        const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
-        setProgress(newProgress);
-        console.log('Progress:', progress);
-    }, [index, flashcards.length]);
-
     if (flashcards.length === 0) {
         return <div>No Flashcards Yet!</div>;
     }
@@ -45,10 +39,65 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
 
     const handleSubmitAnswer = (e) => {
         e.preventDefault();
-        const isCorrect = answer.trim().toLowerCase() === flashcards[index].definition.toLowerCase();
+
+        // if definition starts with article - ignore it
+        let defitinition = flashcards[index].definition.toLowerCase();
+        let defitinitionFirstWord = defitinition.slice(0, defitinition.indexOf(" ")); // article
+        let restOfDefitinition = defitinition.slice(defitinition.indexOf(" ")+1); //rest of the word/phrase
+        let isCorrect;
+        
+        if (defitinitionFirstWord === 'the' || defitinitionFirstWord === 'a' || defitinitionFirstWord === 'an') {
+            isCorrect = answer.trim().toLowerCase() === restOfDefitinition;
+        }
+        else {
+            // remove 2+ whitespaces from user's answer
+            let userAnswer = answer.replace(/\s+/g, ' ').trim().toLowerCase();
+
+            // "deaccent" the definition string before comparing
+            let defitinitionStringNorm = defitinition.normalize('NFD').replace(/\p{Diacritic}/gu, ''); 
+
+            // check if definition and answer contain commas
+            let defitinitionContainsCommas = /[,\,]/.test(defitinitionStringNorm);
+            console.log("defitinitionContainsCommas: ", defitinitionContainsCommas);
+            
+            // replace defitition with space if it contains a commas, but the answer doesn't
+            if (defitinitionContainsCommas) {
+                let answerContainsDash = /[,\,]/.test(userAnswer);
+                console.log("answerContainsDash: ", answerContainsDash);
+                if (!answerContainsDash) { 
+                    defitinitionStringNorm = defitinitionStringNorm.replace(/,/g, "");
+                    console.log("defitinitionStringNorm: ", defitinitionStringNorm);
+                }
+                else {
+                    defitinitionStringNorm = defitinitionStringNorm.replace(/,/g, "");
+                    userAnswer = userAnswer.replace(/,/g, "");
+                    console.log("userAnswer: ", userAnswer);
+                }
+            }
+
+            // check if definition and answer contain dashes
+            let defitinitionContainsDash = /[,\-]/.test(defitinitionStringNorm);
+            
+            // replace defitition with space if it contains a dash, but the answer doesn't
+            if (defitinitionContainsDash) {
+                let answerContainsDash = /[,\-]/.test(userAnswer);
+                if (!answerContainsDash) { 
+                    defitinitionStringNorm = defitinitionStringNorm.replace(/-/g, " ");
+                }
+            }
+
+            // compares final strings ignoring accents and dashes
+            isCorrect = userAnswer.toLowerCase() === defitinitionStringNorm.toLowerCase();
+        }
+        
         setBorderClass(isCorrect ? 'correct' : 'incorrect');
         if (isCorrect) {
+            // update the score
             setScore((currentScore) => currentScore + 1);
+
+            // update the progress bar
+            const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
+            setProgress(newProgress);
         }
         setIsFlipped(true);
         setTestStarted(true);
@@ -69,8 +118,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     const handleRestartTest = () => {
         setIndex(0);
         setScore(0);
-        const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
-        setProgress(newProgress);
+        setProgress(0);
         setShowTestResult(false);
         setIsFlipped(false);
         setTestStarted(false);
@@ -90,7 +138,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     };
 
     return (
-        <div className="container">
+        <div className="container mb-5">
             <div className={style.topRightButtons}>
                 <button className={style.optionButton} onClick={() => setShowOptions(true)}>Options</button>
             </div>
@@ -105,6 +153,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                     </div>
                 </div>
             )}
+
             {showTestResult ? (
                 <div className={style.testCompleteContainer}>
                     <h2>Your Test Result</h2>
@@ -116,6 +165,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                     <div className={style.progressBarContainer}>
                         <div className={style.progressBar} style={{ width: `${progress}%` }}></div>
                     </div>
+
                     <div className={style.flashcard}>
                         <RotatingCardTest
                             flashcards={flashcards}
@@ -125,7 +175,8 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                             isDarkMode={isDarkMode}
                         />
                     </div>
-                    {!isFlipped && (
+
+                    {   !isFlipped && (
                         <form onSubmit={handleSubmitAnswer} className="mt-4">
                             <div className={style.formGroup}>
                                 <input
