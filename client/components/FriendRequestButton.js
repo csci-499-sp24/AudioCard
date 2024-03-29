@@ -40,10 +40,50 @@ const FriendRequestButton = ({ currentUserId, profileUserId }) => {
             console.error('Error cancelling friend request:', error);
         }
     };
-    
+
+    const handleFriendRequest = async () => {
+        if (requestStatus === 'pending' || requestStatus === 'not_friends') {
+            sendFriendRequest();
+        } else if (requestStatus === 'accepted') {
+            deleteFriend();
+        }
+    };
+
+    const deleteFriend = async () => {
+        try {
+            await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${currentUserId}/friends`, {
+                data: { friendId: profileUserId }
+            });
+            setRequestStatus('not_friends');
+        } catch (error) {
+            console.error('Error deleting friend:', error);
+        }
+    };
+
+    const renderButtonContent = () => {
+        switch (requestStatus) {
+            case 'not_friends':
+                return 'Add Friend';
+            case 'pending':
+                return 'Cancel Friend Request';
+            case 'accepted':
+                return 'Delete Friend';
+            default:
+                return 'Add Friend';
+        }
+    };
+
+    const getButtonStyle = () => {
+        let buttonClass = styles.addButton;
+        if (requestStatus === 'accepted') {
+            buttonClass = `${styles.deleteButton}`; 
+        }
+        return buttonClass;
+    };
+
     return (
-        <button className={styles.addButton} onClick={requestStatus === 'pending' ? cancelFriendRequest : sendFriendRequest}>
-            {requestStatus === 'pending' ? 'Cancel Friend Request' : 'Add Friend'}
+        <button className={getButtonStyle()} onClick={handleFriendRequest}>
+            {renderButtonContent()}
         </button>
     );
 };
