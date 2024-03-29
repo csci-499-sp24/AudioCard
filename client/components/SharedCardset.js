@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
-import styles from '../styles/dashboard.module.css';
-import { DashboardCard } from '@/components/Cards/DashboardCard';
+import { ExploreCard } from '@/components/Cards/ExploreCard';
 import { useDarkMode } from '../utils/darkModeContext';
 
 const SharedCardset = ({ userid }) => {
@@ -11,11 +10,18 @@ const SharedCardset = ({ userid }) => {
     const { isDarkMode, toggleDarkMode } = useDarkMode();
     const [cardsets, setCardsets] = useState([]); // State to store fetched cardsets
     const [selectedCardset, setSelectedCardset] = useState(null);
+    const [isDetailedViewOpen, setIsDetailedViewOpen] = useState(false);
 
-    const selectCardset = (cardset) => {
+
+    const handleCardsetClick = (cardset) => {
         setSelectedCardset(cardset);
-    }
-    
+        setIsDetailedViewOpen(true);
+    };
+
+    const handleCloseDetailedView = () => {
+        setIsDetailedViewOpen(false);
+    };
+
     useEffect(() => {
         const fetchSharedCardsets = async () => {
             try {
@@ -63,21 +69,20 @@ const SharedCardset = ({ userid }) => {
 
     // Render the shared cardsets once they're available
     return (
-        <div className="container">
-            <div className="row row-cols-1 row-cols-md-3 g-4 mb-4">
+        <div className="">
+            <div className="">
                 {cardsets.map((cardset, index) => (
-                    <Link
-                        id={styles.dashboardCardLink}
-                        href={`/cardsets/${cardset.id}`}
-                        key={index}
+
+                    <Link href={`/cardsets/${cardset.id}`}
                     >
-                        <div className={styles.dashboardCardLink}>
-                            <DashboardCard cardset={cardset} onClick={() => selectCardset(cardset)} isDarkMode={isDarkMode} />
-                        </div>
+                        <ExploreCard cardset={cardset} onCreateCardset={handleCardsetClick} isDarkMode={isDarkMode} />
                     </Link>
+
                 ))}
             </div>
         </div>
+
+
     );
 };
 
