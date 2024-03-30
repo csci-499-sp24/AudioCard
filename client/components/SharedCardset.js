@@ -72,17 +72,12 @@ const SharedCardset = ({ userid }) => {
         <div className="">
             <div className="">
                 {cardsets.map((cardset, index) => (
-                    
-                        <Link href={`/cardsets/${cardset.id}`}
-                             >
-                            <ExploreCard cardset={cardset} onCreateCardset={handleCardsetClick} isDarkMode={isDarkMode}  />
-                        </Link>
-                   
+                    <Link href={`/cardsets/${cardset.id}`} key={cardset.id}>
+                        <ExploreCard cardset={cardset} onCreateCardset={handleCardsetClick} isDarkMode={isDarkMode} />
+                    </Link>
                 ))}
             </div>
         </div>
-
-
     );
 };
 
