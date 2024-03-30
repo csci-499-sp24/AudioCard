@@ -20,7 +20,6 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     const [attempts, setAttempts] = useState(0);
     const [maxAttempts, setMaxAttempts] = useState(0);
     const [timeLimit, setTimeLimit] = useState(Infinity);
-    const [timeLeft, setTimeLeft] = useState(Infinity);
 
     let timer;
     let countDown;
@@ -151,7 +150,8 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                         timeLimit={timeLimit}
                         showTestResult={showTestResult}
                         isFlipped={isFlipped}
-                        handleSubmitAnswer={handleSubmitAnswer}/>
+                        handleSubmitAnswer={handleSubmitAnswer}
+                        isSpeakMode={false}/>
                         )}
                     <div className={style.flashcard}>
                         <RotatingCardTest

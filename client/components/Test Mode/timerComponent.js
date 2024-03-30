@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export const TimerComponent = ({ timeLimit, showTestResult, isFlipped, handleSubmitAnswer }) => {
+export const TimerComponent = ({ timeLimit, showTestResult, isFlipped, handleSubmitAnswer, isSpeakMode }) => {
     const [timeLeft, setTimeLeft] = useState(timeLimit);
 
     useEffect(() => {
@@ -8,7 +8,7 @@ export const TimerComponent = ({ timeLimit, showTestResult, isFlipped, handleSub
         let timer;
 
         if (timeLimit !== Infinity && !showTestResult && !isFlipped) {
-            setTimeLeft(timeLimit);
+            setTimeLeft(timeLimit); 
             countDown = setInterval(() => {
                 setTimeLeft(prevTimeLeft => {
                     const updatedTimeLeft = prevTimeLeft - 1;
@@ -18,7 +18,9 @@ export const TimerComponent = ({ timeLimit, showTestResult, isFlipped, handleSub
             }, 1000);
 
             timer = setTimeout(() => {
+                if (!isSpeakMode){
                 handleSubmitAnswer({ preventDefault: () => {} });
+                }
             }, timeLimit * 1000);
 
             return () => {

@@ -5,6 +5,7 @@ import {checkAnswerSTT} from '../ASR/speechToText';
 import {TTS} from '../ASR/textToSpeech';
 import { useDarkMode } from '../../utils/darkModeContext';
 import { TestOptions } from './testOptions';
+import { TimerComponent } from './timerComponent';
 
 export const ASRTestMode = ({ cardData}) => {
     const {isDarkMode} = useDarkMode();
@@ -175,6 +176,12 @@ export const ASRTestMode = ({ cardData}) => {
                     <div className={style.progressBarContainer}>
                         <div className={style.progressBar} style={{ width: `${progress}%` }}></div>
                     </div>
+                    <TimerComponent
+                        timeLimit={timeLimit}
+                        showTestResult={showTestResult}
+                        isFlipped={isFlipped}
+                        handleSubmitAnswer={handleAnswer}
+                        isSpeakMode={true}/>
                     <div className={style.flashcard}>
                         <RotatingCardTest
                             flashcards={flashcards}
