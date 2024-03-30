@@ -22,7 +22,11 @@ const LandingPage = () => {
             {/* Navigation */}  
             <nav>
                 {/* Logo */}
-                <div className={styles.logo}>AudioCard</div>
+                <div className='row'> 
+                    <div className='col d-flex align-items-center justify-content-center'>
+                        <div className={styles.logo}>AudioCard</div>
+                    </div>
+                </div>
                 
                 <div className='row' >
                     <div className='col d-flex align-items-center justify-content-center'>
@@ -44,12 +48,19 @@ const LandingPage = () => {
             </nav>
 
             {/* Welcome Message */}
-            <div className={styles.welcomeMessage}> {/* Use the imported CSS class */}
-                <h1>Welcome to AudioCard</h1>
-                <p>Experience the power of audio learning like never before.</p>
+            <div className='row'> 
+                <div className='col d-flex align-items-center justify-content-center'>
+                 <div className={styles.welcomeMessage}> {/* Use the imported CSS class */}
+                        <h1>Welcome to AudioCard</h1>
+                        <p>Experience the power of audio learning like never before.</p>
+                    </div>
+                </div>
             </div>
         </div>
+
+        
     );
+    
 };
 
 export default LandingPage;
