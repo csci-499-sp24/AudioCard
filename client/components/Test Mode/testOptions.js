@@ -1,14 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { useDarkMode } from '@/utils/darkModeContext';
+import style from '../../styles/flashcardtestmode.module.css';
 
-export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange}) => {
+export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange, timeLimit, handleTimeLimit}) => {
     const {isDarkMode} = useDarkMode();
     const visualAttempt = attempts + 1 ;
+    const [isTimeLimitUnlocked, setTimeLimitUnlocked] = useState(true);
+    const inputValue = timeLimit === Infinity ? 30 : timeLimit;
+
+    useEffect(() => {
+        if (timeLimit === Infinity) {
+            setTimeLimitUnlocked(false);
+        } else {
+            setTimeLimitUnlocked(true);
+        }
+    }, [timeLimit]);
+
+    const toggleTimeLimitUnlock = () => {
+        setTimeLimitUnlocked(prevState => !prevState);
+    };
+
 
     return (
         <div className='container'>
             <h2>Options</h2>
-            <div className='row d-flex align-items-center justify-content-center'>
+            <div className='row d-flex align-items-center justify-content-center' style={{marginBottom: 10}}>
                 <div className='col d-flex justify-content-center'>
                     <div className="d-flex align-items-center">
                         <div className="me-2">Attempts per card:</div> 
@@ -23,6 +39,16 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange}) => {
                             </ul>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div className='row' style={{marginBottom: 10}}>
+                <div className="flex d-flex align-items-center justify-content-center">
+                    <label htmlFor="answer" className="me-2">Time Limit: </label>
+                    <input type="number" id="timeLimit" name="timeLimit" value={inputValue} onChange={(e) => handleTimeLimit(e.target.value)} style={{ width: "15%", marginRight: 2 }} disabled={!isTimeLimitUnlocked} />
+                    <div style={{marginRight: 2}}>seconds</div>
+                    {!isSpeakMode && (<div className={`form-check form-switch d-flex align-items-center justify-content-center`} onClick={toggleTimeLimitUnlock}>
+                    <input className="form-check-input" type="checkbox" id="toggleTimeLimit" checked={isTimeLimitUnlocked} />
+                    </div>)}
                 </div>
             </div>
             {isSpeakMode && (<div className='row'>

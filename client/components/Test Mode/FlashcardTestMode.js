@@ -18,6 +18,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     const [showOptions, setShowOptions] = useState(false);
     const [attempts, setAttempts] = useState(0);
     const [maxAttempts, setMaxAttempts] = useState(0);
+    const [timeLimit, setTimeLimit] = useState(Infinity); 
 
     useEffect(() => {
         setFlashcards(cardData);
@@ -108,6 +109,10 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         setMaxAttempts(attemptNum - 1);
     }
 
+    const handleTimeLimit = async (event) => {
+        setTimeLimit(event);
+    }
+
     return (
         <div className="container">
             <div className={style.topRightButtons}>
@@ -115,8 +120,10 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
             </div>
             {showOptions && (
                 <div className={style.optionsOverlay}>
-                    <div className={style.optionsModal} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white' }}>
-                    <TestOptions isSpeakMode={false} attempts={attempts} handleAttemptChange={handleAttemptChange}/>
+                    <div className={style.optionsModal} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white'}}>
+    
+                    <TestOptions isSpeakMode={false} attempts={attempts} handleAttemptChange={handleAttemptChange}
+                    timeLimit={timeLimit} handleTimeLimit={handleTimeLimit}/> 
                     <div className={style.closeButtonContainer}>
                         <button className={style.closeButton} onClick={() => setShowOptions(false)}>Close</button>
                     </div>
@@ -134,6 +141,10 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                     <div className={style.progressBarContainer}>
                         <div className={style.progressBar} style={{ width: `${progress}%` }}></div>
                     </div>
+                    {(!timeLimit===Infinity) &&
+                    <div className='clockContainer'>
+                        
+                    </div>}
                     <div className={style.flashcard}>
                         <RotatingCardTest
                             flashcards={flashcards}

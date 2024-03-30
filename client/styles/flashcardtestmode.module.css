@@ -41,22 +41,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
+    z-index: 10; 
 }
 
 .optionsModal {
     padding: 20px;
     border-radius: 10px;
     width: 90%;
-    max-width: 400px;
-    height: 200px;
+    max-width: 500px;
+    height: 400px;
     text-align: center;
 }
 
 .closeButtonContainer {
-    margin-top: 20px; 
+    margin-top: 40%; 
     align-self: stretch; 
     text-align: center; 
+    display:flex; 
+    justify-content: center;
 }
 
 .shuffleButton {

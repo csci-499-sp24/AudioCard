@@ -1,4 +1,4 @@
-export const checkAnswerSTT = (answer) => {
+export const checkAnswerSTT = (answer, timeLimit) => {
     return new Promise(async (resolve, reject) => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -32,7 +32,7 @@ export const checkAnswerSTT = (answer) => {
             timeout = setTimeout(() => {
                 recognition.stop();
                 resolve(false);
-            }, 7000);
+            }, timeLimit * 1000);
 
             recognition.addEventListener('end', () => {
                 clearTimeout(timeout);

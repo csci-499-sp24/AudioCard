@@ -19,6 +19,7 @@ export const ASRTestMode = ({ cardData}) => {
     const [showOptions, setShowOptions] = useState(false);
     const [maxAttempts, setMaxAttempts] = useState(0);
     const mounted = useRef(false)
+    const [timeLimit, setTimeLimit] = useState(7);
 
     const fetchData = async () => {
         if (flashcards.length > 0) {
@@ -29,7 +30,7 @@ export const ASRTestMode = ({ cardData}) => {
 
     React.useEffect(() => {
         mounted.current= true;
-        return ()=>{mounted.current = false; console.log('mounted.current: ', mounted.current)}
+        return ()=>{mounted.current = false;}
       }, []);
     
 
@@ -73,7 +74,7 @@ export const ASRTestMode = ({ cardData}) => {
             setBorderClass('');
         }, 2000);
     
-      let isCorrect = await checkAnswerSTT(answer);
+      let isCorrect = await checkAnswerSTT(answer, timeLimit);
     
         if (isCorrect) {
             setBorderClass('correct');
@@ -86,7 +87,7 @@ export const ASRTestMode = ({ cardData}) => {
                 setTimeout(() => {
                     setBorderClass('');
                 }, 2000)
-                isCorrect = await checkAnswerSTT(answer);
+                isCorrect = await checkAnswerSTT(answer, timeLimit);
                 setBorderClass(isCorrect ? 'correct' : 'incorrect');
                 if (isCorrect) {
                     setScore((currentScore) => currentScore + 1);
@@ -140,6 +141,10 @@ export const ASRTestMode = ({ cardData}) => {
     const handleAttemptChange = (attemptNum) => {
         setMaxAttempts(attemptNum - 1);
     }
+
+    const handleTimeLimit = async (event) => {
+        setTimeLimit(event);
+    }
     return (
         <div className="container">
             <div className={style.topRightButtons}>
@@ -148,7 +153,8 @@ export const ASRTestMode = ({ cardData}) => {
             {showOptions && (
                 <div className={style.optionsOverlay}>
                     <div className={style.optionsModal} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white' }}>
-                    <TestOptions isSpeakMode={true} attempts={maxAttempts} handleAttemptChange={handleAttemptChange}/>
+                    <TestOptions isSpeakMode={true} attempts={maxAttempts} handleAttemptChange={handleAttemptChange}
+                    timeLimit={timeLimit} handleTimeLimit={handleTimeLimit}/>
                     <div className={style.closeButtonContainer}>
                         <button className={style.closeButton} onClick={() => {
                         setShowOptions(false);
