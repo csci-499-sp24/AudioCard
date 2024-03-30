@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDarkMode } from '@/utils/darkModeContext';
+import next from 'next';
 
-const TimerComponent = React.memo(({ timeLimit, showTestResult, isFlipped, handleSubmitAnswer, isSpeakMode }) => {
+const TimerComponent = React.memo(({ timeLimit, showTestResult, isFlipped, handleSubmitAnswer, isSpeakMode, attempts, setAttempts}) => {
     const [timeLeft, setTimeLeft] = useState(timeLimit);
     const { isDarkMode } = useDarkMode();
 
@@ -16,6 +17,10 @@ const TimerComponent = React.memo(({ timeLimit, showTestResult, isFlipped, handl
                     const updatedTimeLeft = prevTimeLeft - 1;
                     if (updatedTimeLeft < 0) {
                         setTimeLeft(timeLimit);
+                        if (!isSpeakMode){
+                            setAttempts(prevAttempts => prevAttempts - 1);
+                            handleSubmitAnswer({ preventDefault: () => { } });
+                        } 
                     }
                     return updatedTimeLeft;
                 });
@@ -35,7 +40,7 @@ const TimerComponent = React.memo(({ timeLimit, showTestResult, isFlipped, handl
             clearInterval(countDown);
             clearTimeout(timer);
         }
-    }, [isFlipped, timeLimit, showTestResult, handleSubmitAnswer, isSpeakMode]);
+    }, [isFlipped, timeLimit, showTestResult, isSpeakMode, handleSubmitAnswer, attempts]);
 
     return (
         <div className='clockContainer d-flex justify-content-center'>
@@ -64,7 +69,8 @@ const TimerComponent = React.memo(({ timeLimit, showTestResult, isFlipped, handl
         prevProps.timeLimit === nextProps.timeLimit &&
         prevProps.showTestResult === nextProps.showTestResult &&
         prevProps.isFlipped === nextProps.isFlipped &&
-        prevProps.isSpeakMode === nextProps.isSpeakMode
+        prevProps.isSpeakMode === nextProps.isSpeakMode && 
+        prevProps.attempts == nextProps.attempts
     );
 });
 

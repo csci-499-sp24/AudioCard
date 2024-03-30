@@ -56,8 +56,9 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         }, 2000)
         const isCorrect = answer.trim().toLowerCase() === flashcards[index].definition.toLowerCase();
         setBorderClass(isCorrect ? 'correct' : 'incorrect');
-        setAttempts((prevAttempts) => prevAttempts - 1);
         if (!isCorrect && attempts > 0) {
+            setAttempts((prevAttempts) => prevAttempts - 1);
+            console.log("Answer submitted. Attempts left: ", attempts);
             return;
         }
         if (isCorrect) {
@@ -149,7 +150,8 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                         isFlipped={isFlipped}
                         handleSubmitAnswer={handleSubmitAnswer}
                         isSpeakMode={false}
-                        attempts={attempts}/>
+                        attempts={attempts}
+                        setAttempts={setAttempts}/>
                         )}
                     <div className={style.flashcard}>
                         <RotatingCardTest

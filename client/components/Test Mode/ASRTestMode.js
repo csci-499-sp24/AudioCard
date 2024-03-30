@@ -182,7 +182,6 @@ export const ASRTestMode = ({ cardData}) => {
                         timeLimit={timeLimit}
                         showTestResult={showTestResult}
                         isFlipped={isFlipped}
-                        handleSubmitAnswer={handleAnswer}
                         isSpeakMode={true}/>
                     <div className={style.flashcard}>
                         <RotatingCardTest
