@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useDarkMode } from '@/utils/darkModeContext';
-import style from '../../styles/flashcardtestmode.module.css';
 
 export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange, timeLimit, handleTimeLimit}) => {
     const {isDarkMode} = useDarkMode();
@@ -17,6 +16,12 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange, timeLim
     }, [timeLimit]);
 
     const toggleTimeLimitUnlock = () => {
+        if (isTimeLimitUnlocked){
+            handleTimeLimit(Infinity);
+        }
+        else {
+            handleTimeLimit(inputValue);
+        }
         setTimeLimitUnlocked(prevState => !prevState);
     };
 
@@ -47,7 +52,7 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange, timeLim
                     <input type="number" id="timeLimit" name="timeLimit" value={inputValue} onChange={(e) => handleTimeLimit(e.target.value)} style={{ width: "15%", marginRight: 2 }} disabled={!isTimeLimitUnlocked}  className={isTimeLimitUnlocked ? '' : 'darkInput'}/>
                     <div style={{marginRight: 2}}>seconds</div>
                     {!isSpeakMode && (<div className={`form-check form-switch d-flex align-items-center justify-content-center`} onClick={toggleTimeLimitUnlock}>
-                    <input className="form-check-input" type="checkbox" id="toggleTimeLimit" checked={isTimeLimitUnlocked} />
+                    <input className="form-check-input" type="checkbox" id="toggleTimeLimit" checked={isTimeLimitUnlocked} onChange={() => {}} />
                     </div>)}
                 </div>
             </div>

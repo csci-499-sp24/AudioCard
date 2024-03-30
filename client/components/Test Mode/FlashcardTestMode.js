@@ -20,6 +20,9 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     const [maxAttempts, setMaxAttempts] = useState(0);
     const [timeLimit, setTimeLimit] = useState(Infinity); 
 
+    let timer;
+    
+
     useEffect(() => {
         setFlashcards(cardData);
     }, [cardData]);
@@ -39,6 +42,17 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         console.log('Progress:', progress);
     }, [index, flashcards.length]);
 
+    useEffect(() => {
+        if (timeLimit !== Infinity && !showTestResult && !isFlipped) {
+            timer = setTimeout(() => {
+                handleSubmitAnswer({ preventDefault: () => {} });
+            }, timeLimit * 1000);
+        } else {
+            clearTimeout(timer);
+        }
+    
+        return () => clearTimeout(timer); 
+    }, [isFlipped, timeLimit, showTestResult]);
 
     if (flashcards.length === 0) {
         return <div>No Flashcards Yet!</div>;
@@ -110,6 +124,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     }
 
     const handleTimeLimit = async (event) => {
+        console.log('event: ', event)
         setTimeLimit(event);
     }
 
