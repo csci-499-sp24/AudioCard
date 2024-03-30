@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import style from '../../styles/flashcardtestmode.module.css';
 import { RotatingCardTest } from '../Cards/RotatingCardTest';
 import {checkAnswerSTT} from '../ASR/speechToText';
@@ -18,18 +18,26 @@ export const ASRTestMode = ({ cardData}) => {
     const [testStarted, setTestStarted] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
     const [maxAttempts, setMaxAttempts] = useState(0);
+    const mounted = useRef(false)
+
+    const fetchData = async () => {
+        if (flashcards.length > 0) {
+            await speakCard();
+            await handleAnswer(flashcards[index].definition);
+        }
+    }
+
+    React.useEffect(() => {
+        mounted.current= true;
+        return ()=>{mounted.current = false; console.log('mounted.current: ', mounted.current)}
+      }, []);
+    
 
     useEffect(() => {
         setFlashcards(cardData);
     }, [cardData]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            if (flashcards.length > 0) {
-                await speakCard();
-                await handleAnswer(flashcards[index].definition);
-            }
-        };
         fetchData();
     }, [flashcards, index]);   
 
@@ -52,6 +60,7 @@ export const ASRTestMode = ({ cardData}) => {
         return <div>No Flashcards Yet!</div>;
     }
     
+
     const speakCard = async () => {
         if (!showTestResult){
             TTS(flashcards[index].term);
@@ -72,7 +81,7 @@ export const ASRTestMode = ({ cardData}) => {
             TTS('Correct');
         } else {
                 setBorderClass('incorrect');
-            for (let attempt = maxAttempts; attempt > 0; attempt--) {
+            for (let attempt = maxAttempts; attempt > 0 && mounted.current; attempt--) {
                 TTS('Try again.');
                 setTimeout(() => {
                     setBorderClass('');
@@ -85,6 +94,7 @@ export const ASRTestMode = ({ cardData}) => {
                     break; 
                 }
             }
+            if (!mounted.current) return;
             if (!isCorrect) {
                 setBorderClass('incorrect');
                 TTS(`The correct answer is ${flashcards[index].definition}`);
