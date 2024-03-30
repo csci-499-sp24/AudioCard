@@ -13,7 +13,7 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange}) => {
                     <div className="d-flex align-items-center">
                         <div className="me-2">Attempts per card:</div> 
                         <div className="dropdown">
-                            <button className="btn dropdown-toggle" style={{ backgroundColor: isDarkMode ? '#222222' : 'white', color: isDarkMode ? 'white' : 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button className="btn dropdown-toggle" style={{ backgroundColor: 'transparent', color: isDarkMode ? 'white' : 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {visualAttempt ? visualAttempt : "1"}
                             </button>
                             <ul className="dropdown-menu">
