@@ -3,6 +3,7 @@ import style from '../../styles/flashcardtestmode.module.css';
 import { RotatingCardTest } from '../Cards/RotatingCardTest';
 import { useDarkMode } from '../../utils/darkModeContext'
 import { TestOptions } from './testOptions';
+import { TimerComponent } from './timerComponent';
 
 export const FlashcardTestMode = ({ cardData, userId}) => {
     const {isDarkMode} = useDarkMode();
@@ -18,10 +19,11 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     const [showOptions, setShowOptions] = useState(false);
     const [attempts, setAttempts] = useState(0);
     const [maxAttempts, setMaxAttempts] = useState(0);
-    const [timeLimit, setTimeLimit] = useState(Infinity); 
+    const [timeLimit, setTimeLimit] = useState(Infinity);
+    const [timeLeft, setTimeLeft] = useState(Infinity);
 
     let timer;
-    
+    let countDown;
 
     useEffect(() => {
         setFlashcards(cardData);
@@ -42,17 +44,6 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         console.log('Progress:', progress);
     }, [index, flashcards.length]);
 
-    useEffect(() => {
-        if (timeLimit !== Infinity && !showTestResult && !isFlipped) {
-            timer = setTimeout(() => {
-                handleSubmitAnswer({ preventDefault: () => {} });
-            }, timeLimit * 1000);
-        } else {
-            clearTimeout(timer);
-        }
-    
-        return () => clearTimeout(timer); 
-    }, [isFlipped, timeLimit, showTestResult]);
 
     if (flashcards.length === 0) {
         return <div>No Flashcards Yet!</div>;
@@ -124,7 +115,6 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     }
 
     const handleTimeLimit = async (event) => {
-        console.log('event: ', event)
         setTimeLimit(event);
     }
 
@@ -156,10 +146,13 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                     <div className={style.progressBarContainer}>
                         <div className={style.progressBar} style={{ width: `${progress}%` }}></div>
                     </div>
-                    {(!timeLimit===Infinity) &&
-                    <div className='clockContainer'>
-                        
-                    </div>}
+                    {(timeLimit!==Infinity) && (
+                    <TimerComponent
+                        timeLimit={timeLimit}
+                        showTestResult={showTestResult}
+                        isFlipped={isFlipped}
+                        handleSubmitAnswer={handleSubmitAnswer}/>
+                        )}
                     <div className={style.flashcard}>
                         <RotatingCardTest
                             flashcards={flashcards}
