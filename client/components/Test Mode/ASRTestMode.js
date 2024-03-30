@@ -5,7 +5,7 @@ import {checkAnswerSTT} from '../ASR/speechToText';
 import {TTS} from '../ASR/textToSpeech';
 import { useDarkMode } from '../../utils/darkModeContext';
 import { TestOptions } from './testOptions';
-import { TimerComponent } from './timerComponent';
+import TimerComponent from './timerComponent';
 
 export const ASRTestMode = ({ cardData}) => {
     const {isDarkMode} = useDarkMode();

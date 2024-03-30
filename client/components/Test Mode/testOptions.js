@@ -58,9 +58,10 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange,
                     </div>)}
                 </div>
             </div>
-            {isSpeakMode && (<div className='row'>
+            {isSpeakMode && (<div className='row flex d-flex align-items-center justify-content-center'>
+            <div>Voice: </div>
             <div className="dropdown me-2 flex-grow-1">
-                <button className="btn  flex-grow-1 dropdown-toggle col-4" style={{ backgroundColor: isDarkMode ? '#222222' : 'white', color: isDarkMode? 'white': 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button className="btn  flex-grow-1 dropdown-toggle col-4" style={{ backgroundColor: 'white', color: 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {voiceGender}
                 </button>
                 <ul className="dropdown-menu">

@@ -3,7 +3,7 @@ import style from '../../styles/flashcardtestmode.module.css';
 import { RotatingCardTest } from '../Cards/RotatingCardTest';
 import { useDarkMode } from '../../utils/darkModeContext'
 import { TestOptions } from './testOptions';
-import { TimerComponent } from './timerComponent';
+import TimerComponent from './timerComponent';
 
 export const FlashcardTestMode = ({ cardData, userId}) => {
     const {isDarkMode} = useDarkMode();
@@ -20,9 +20,6 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     const [attempts, setAttempts] = useState(0);
     const [maxAttempts, setMaxAttempts] = useState(0);
     const [timeLimit, setTimeLimit] = useState(Infinity);
-
-    let timer;
-    let countDown;
 
     useEffect(() => {
         setFlashcards(cardData);
@@ -127,7 +124,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                     <div className={style.optionsModal} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white'}}>
     
                     <TestOptions isSpeakMode={false} attempts={attempts} handleAttemptChange={handleAttemptChange}
-                    timeLimit={timeLimit} handleTimeLimit={handleTimeLimit}/> 
+                    timeLimit={timeLimit} handleTimeLimit={handleTimeLimit}/>
                     <div className={style.closeButtonContainer}>
                         <button className={style.closeButton} onClick={() => setShowOptions(false)}>Close</button>
                     </div>
@@ -151,7 +148,8 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                         showTestResult={showTestResult}
                         isFlipped={isFlipped}
                         handleSubmitAnswer={handleSubmitAnswer}
-                        isSpeakMode={false}/>
+                        isSpeakMode={false}
+                        attempts={attempts}/>
                         )}
                     <div className={style.flashcard}>
                         <RotatingCardTest

@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useDarkMode } from '@/utils/darkModeContext';
-export const TimerComponent = ({ timeLimit, showTestResult, isFlipped, handleSubmitAnswer, isSpeakMode }) => {
+
+const TimerComponent = React.memo(({ timeLimit, showTestResult, isFlipped, handleSubmitAnswer, isSpeakMode }) => {
     const [timeLeft, setTimeLeft] = useState(timeLimit);
-    const {isDarkMode} = useDarkMode();
+    const { isDarkMode } = useDarkMode();
 
     useEffect(() => {
         let countDown;
         let timer;
 
         if (timeLimit !== Infinity && !showTestResult && !isFlipped) {
-            setTimeLeft(timeLimit); 
+            setTimeLeft(timeLimit);
             countDown = setInterval(() => {
                 setTimeLeft(prevTimeLeft => {
                     const updatedTimeLeft = prevTimeLeft - 1;
+                    if (updatedTimeLeft < 0) {
+                        setTimeLeft(timeLimit);
+                    }
                     return updatedTimeLeft;
                 });
             }, 1000);
 
             timer = setTimeout(() => {
-                if (!isSpeakMode){
-                handleSubmitAnswer({ preventDefault: () => {} });
+                if (!isSpeakMode) {
+                    handleSubmitAnswer({ preventDefault: () => { } });
                 }
             }, timeLimit * 1000);
 
@@ -31,7 +35,7 @@ export const TimerComponent = ({ timeLimit, showTestResult, isFlipped, handleSub
             clearInterval(countDown);
             clearTimeout(timer);
         }
-    }, [isFlipped, timeLimit, showTestResult]);
+    }, [isFlipped, timeLimit, showTestResult, handleSubmitAnswer, isSpeakMode]);
 
     return (
         <div className='clockContainer d-flex justify-content-center'>
@@ -48,11 +52,20 @@ export const TimerComponent = ({ timeLimit, showTestResult, isFlipped, handleSub
                 justify-content: center;
                 align-items: center;
                 margin-bottom: 10px;
-                border: 2px solid ${(timeLeft==0)? 'red': '#FF00FF'}; 
+                border: 2px solid ${(timeLeft == 0) ? 'red' : '#FF00FF'}; 
               }
               .timerCircle h5 {
                 margin: 0;
             }`}</style>
         </div>
     );
-};
+}, (prevProps, nextProps) => {
+    return (
+        prevProps.timeLimit === nextProps.timeLimit &&
+        prevProps.showTestResult === nextProps.showTestResult &&
+        prevProps.isFlipped === nextProps.isFlipped &&
+        prevProps.isSpeakMode === nextProps.isSpeakMode
+    );
+});
+
+export default TimerComponent;
