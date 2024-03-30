@@ -14,8 +14,8 @@ function Index() {
         setUserEmail(user.email);
         router.push('/dashboard');
       } else {
-        // No user is signed in, redirect to the login page
-        router.push('/login');
+        // No user is signed in, redirect to the landing page
+        router.push('/LandingPage');
       }
     });
 
@@ -32,6 +32,9 @@ function Index() {
       console.error('Error signing out:', error);
     }
   };
+
+  // Placeholder message while redirecting
+  return <div>Loading...</div>;
 }
 
 export default Index;
