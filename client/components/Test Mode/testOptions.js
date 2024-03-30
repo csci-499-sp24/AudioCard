@@ -44,7 +44,7 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange, timeLim
             <div className='row' style={{marginBottom: 10}}>
                 <div className="flex d-flex align-items-center justify-content-center">
                     <label htmlFor="answer" className="me-2">Time Limit: </label>
-                    <input type="number" id="timeLimit" name="timeLimit" value={inputValue} onChange={(e) => handleTimeLimit(e.target.value)} style={{ width: "15%", marginRight: 2 }} disabled={!isTimeLimitUnlocked} />
+                    <input type="number" id="timeLimit" name="timeLimit" value={inputValue} onChange={(e) => handleTimeLimit(e.target.value)} style={{ width: "15%", marginRight: 2 }} disabled={!isTimeLimitUnlocked}  className={isTimeLimitUnlocked ? '' : 'darkInput'}/>
                     <div style={{marginRight: 2}}>seconds</div>
                     {!isSpeakMode && (<div className={`form-check form-switch d-flex align-items-center justify-content-center`} onClick={toggleTimeLimitUnlock}>
                     <input className="form-check-input" type="checkbox" id="toggleTimeLimit" checked={isTimeLimitUnlocked} />
@@ -55,6 +55,10 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange, timeLim
 
             </div>) 
             }
+        <style jsx>{`.darkInput {
+        background-color: #222;
+                                }       
+        `}</style>
         </div>
     );
 }
