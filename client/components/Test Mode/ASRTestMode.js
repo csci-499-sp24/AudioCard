@@ -190,9 +190,14 @@ export const ASRTestMode = ({ cardData}) => {
                             isFlipped={isFlipped}
                             borderClass={borderClass}
                         />
-                    <div className='d-flex justify-content-center align-items-center mt-3'>
-                     <button className='btn btn-secondary' onClick={shuffleCards}><i class="fas fa-random"></i></button>
-                     </div>
+                    <div className='row'>
+                        <div className='col-4 d-flex justify-content-end align-items-center mt-3'>
+                            <button className='btn btn-secondary' title='Restart Test' onClick={handleRestartTest}><i class="fa fa-refresh"></i></button>
+                        </div>
+                        <div className='col-4 d-flex justify-content-center align-items-center mt-3'>
+                            <button className='btn btn-secondary' title='Shuffle Cards' onClick={shuffleCards}><i class="fas fa-random"></i></button>
+                        </div>
+                    </div>
                     </div>
                 </>
             )}
