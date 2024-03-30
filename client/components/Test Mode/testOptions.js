@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDarkMode } from '@/utils/darkModeContext';
 
-export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange, timeLimit, handleTimeLimit}) => {
+export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange, 
+    timeLimit, handleTimeLimit,
+    voiceGender, setVoiceGender}) => {
     const {isDarkMode} = useDarkMode();
     const visualAttempt = attempts + 1 ;
     const [isTimeLimitUnlocked, setTimeLimitUnlocked] = useState(true);
@@ -57,6 +59,16 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange, timeLim
                 </div>
             </div>
             {isSpeakMode && (<div className='row'>
+            <div className="dropdown me-2 flex-grow-1">
+                <button className="btn  flex-grow-1 dropdown-toggle col-4" style={{ backgroundColor: isDarkMode ? '#222222' : 'white', color: isDarkMode? 'white': 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {voiceGender}
+                </button>
+                <ul className="dropdown-menu">
+                    <li><a className="dropdown-item" onClick={() => setVoiceGender('NEUTRAL')}>Neutral</a></li>
+                    <li><a className="dropdown-item" onClick={() => setVoiceGender('MALE')}>Male</a></li>
+                    <li><a className="dropdown-item" onClick={() => setVoiceGender('FEMALE')}>Female</a></li>
+                </ul>
+            </div>
 
             </div>) 
             }

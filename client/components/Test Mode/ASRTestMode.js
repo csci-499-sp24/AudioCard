@@ -21,6 +21,7 @@ export const ASRTestMode = ({ cardData}) => {
     const [maxAttempts, setMaxAttempts] = useState(0);
     const mounted = useRef(false)
     const [timeLimit, setTimeLimit] = useState(7);
+    const [voiceGender, setVoiceGender] = useState('NEUTRAL');
 
     const fetchData = async () => {
         if (flashcards.length > 0) {
@@ -65,7 +66,7 @@ export const ASRTestMode = ({ cardData}) => {
 
     const speakCard = async () => {
         if (!showTestResult){
-            TTS(flashcards[index].term);
+            TTS(flashcards[index].term, voiceGender);
         }
     }
 
@@ -80,11 +81,11 @@ export const ASRTestMode = ({ cardData}) => {
         if (isCorrect) {
             setBorderClass('correct');
             setScore((currentScore) => currentScore + 1);
-            TTS('Correct');
+            TTS('Correct', voiceGender);
         } else {
                 setBorderClass('incorrect');
             for (let attempt = maxAttempts; attempt > 0 && mounted.current; attempt--) {
-                TTS('Try again.');
+                TTS('Try again.', voiceGender);
                 setTimeout(() => {
                     setBorderClass('');
                 }, 2000)
@@ -92,14 +93,14 @@ export const ASRTestMode = ({ cardData}) => {
                 setBorderClass(isCorrect ? 'correct' : 'incorrect');
                 if (isCorrect) {
                     setScore((currentScore) => currentScore + 1);
-                    TTS('Correct');
+                    TTS('Correct', voiceGender);
                     break; 
                 }
             }
             if (!mounted.current) return;
             if (!isCorrect) {
                 setBorderClass('incorrect');
-                TTS(`The correct answer is ${flashcards[index].definition}`);
+                TTS(`The correct answer is ${flashcards[index].definition}`, voiceGender);
             }
         }   
         setIsFlipped(true);
@@ -155,7 +156,8 @@ export const ASRTestMode = ({ cardData}) => {
                 <div className={style.optionsOverlay}>
                     <div className={style.optionsModal} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white' }}>
                     <TestOptions isSpeakMode={true} attempts={maxAttempts} handleAttemptChange={handleAttemptChange}
-                    timeLimit={timeLimit} handleTimeLimit={handleTimeLimit}/>
+                    timeLimit={timeLimit} handleTimeLimit={handleTimeLimit}
+                    voiceGender={voiceGender} setVoiceGender={setVoiceGender}/>
                     <div className={style.closeButtonContainer}>
                         <button className={style.closeButton} onClick={() => {
                         setShowOptions(false);
