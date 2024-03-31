@@ -10,6 +10,9 @@ export const getLanguageCode = (language) => {
         case 'French':
             languageCode = 'fr-FR';
             break;
+        case 'Spanish':
+            languageCode = 'es-ES'; 
+            break; 
     }
 
     return (languageCode); 
@@ -27,6 +30,9 @@ export const getLanguage = (languageCode) => {
         case 'fr-FR':
             language = 'French'; 
             break; 
+        case 'es-ES':
+            language = 'Spanish';
+            break;
     }
 
     return language; 

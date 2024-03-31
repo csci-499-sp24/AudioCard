@@ -88,6 +88,7 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange,
                         <li><a className="dropdown-item" onClick={() => setLanguage('en-US')}>English (US)</a></li>
                         <li><a className="dropdown-item" onClick={() => setLanguage('en-GB')}>English (UK)</a></li>
                         <li><a className="dropdown-item" onClick={() => setLanguage('fr-FR')}>French</a></li>
+                        <li><a className="dropdown-item" onClick={() => setLanguage('es-ES')}>Spanish</a></li>
                     </ul>
                 </div> 
             </div> 
