@@ -10,7 +10,7 @@
     color: #000; /* Default text color */
 }
 
-/* Styles for the authentication buttons */
+/* Styles for the authentication buttons, vertical */
 .authButtons {
     margin-top: 20px;
 }
@@ -37,29 +37,43 @@
     cursor: pointer;
 }
 
-/* Styles for the welcome message */
+/* Styles for the welcome message vertically */
 .welcomeMessage {
     margin-top: 40px;
     text-align: center; /* Center align the text */
 }
 
-/* Additional styles for the welcome message heading */
+/* Welcome to AudioCard */
 .welcomeMessage h1 {
     font-size: 32px;
     font-weight: bold;
     color: #000; /* Default text color */
 }
 
-/* Additional styles for the welcome message paragraph */
+/* Styles for the welcome message paragraph */
 .welcomeMessage p {
     font-size: 16px;
     color: #000; /* Default text color */
+    font-style: italic; /* Make the text italic */
+    text-transform: uppercase; /* Convert text to uppercase */
+    letter-spacing: 2px; /* Add letter spacing */
+    line-height: 1.5; /* Adjust line height */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow */
+    animation: glow 2s infinite alternate; /* Add glowing effect */
+}
+
+/* Define animation keyframes for glowing effect */
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px rgb(64, 64, 79), 0 0 20px rgb(137, 137, 184), 0 0 30px #00f, 0 0 40px #00f, 0 0 50px #00f, 0 0 60px #00f, 0 0 70px #00f, 0 0 80px #00f;
+    }
+    to {
+        text-shadow: 0 0 20px rgb(207, 207, 222), 0 0 30px rgb(145, 145, 180), 0 0 40px rgb(154, 199, 220), 0 0 50px rgb(156, 156, 169), 0 0 60px #00f, 0 0 70px #00f, 0 0 80px #00f, 0 0 90px #00f;
+    }
 }
 
 /* Dark mode styles */
-.dark-mode .logo,
-.dark-mode .welcomeMessage h1,
-.dark-mode .welcomeMessage p {
+.dark-mode .landingPage * {
     color: #fff; /* Change text color to white in dark mode */
 }
 
