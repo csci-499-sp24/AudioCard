@@ -17,7 +17,7 @@ export const getTranslation = (phrase, language) => {
         case 'es-ES':
             switch(phrase) {
                 case 'Try again.':
-                    translation = "Intentar otra vez.";
+                    translation = "Inténtalo otra vez";
                     break;
                 case 'The correct answer is':
                     translation = "La respuesta correcta es";
