@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
-import { ExploreCard } from '@/components/Cards/ExploreCard';
+import { ShareCard } from '@/components/Cards/sharedCard';
 import { useDarkMode } from '../utils/darkModeContext';
+import styles from '../styles/dashboard.module.css' ; 
 
 const SharedCardset = ({ userid }) => {
     const [sharedData, setSharedData] = useState(null);
     const [error, setError] = useState(null);
-    const { isDarkMode, toggleDarkMode } = useDarkMode();
+    const { isDarkMode} = useDarkMode();
     const [cardsets, setCardsets] = useState([]); // State to store fetched cardsets
     const [selectedCardset, setSelectedCardset] = useState(null);
     const [isDetailedViewOpen, setIsDetailedViewOpen] = useState(false);
@@ -72,8 +73,10 @@ const SharedCardset = ({ userid }) => {
         <div className="">
             <div className="">
                 {cardsets.map((cardset, index) => (
-                    <Link href={`/cardsets/${cardset.id}`} key={cardset.id}>
-                        <ExploreCard cardset={cardset} onCreateCardset={handleCardsetClick} isDarkMode={isDarkMode} />
+                    <Link 
+                    id={styles.dashboardCardLink}
+                    href={`/cardsets/${cardset.id}`} key={cardset.id}>
+                        <ShareCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} />
                     </Link>
                 ))}
             </div>
