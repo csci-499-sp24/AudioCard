@@ -27,6 +27,9 @@ export const CardsetSearchBar = ({ cardsets, onSearchUpdate, changeSearchTopic, 
     const filterCardsets = () => {
         const searchLower = searchInput.toLowerCase();
         var subjectFilter = [...sortedCardsets];
+        if(sortedCardsets.length < 1){
+        var subjectFilter = [...cardsets];
+        }
         if (subject != ''){
             subjectFilter = subjectFilter.filter(cardset => 
                 cardset.subject.toLowerCase().includes(subject.toLowerCase()));

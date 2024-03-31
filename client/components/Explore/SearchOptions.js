@@ -20,6 +20,7 @@ export const SearchOptions = ({ changeSearchTopic, changeSearchBy, searchTopic, 
                         {searchTopic ===  'users' ? <button type="button" className="btn btn-primary me-2" onClick={(e) => onClickTopic(e, 'card sets')}>Users</button>
                         : <button type="button" className="btn btn-secondary me-2" onClick={(e) => onClickTopic(e, 'users')}>Users</button>}
                     </div>
+                    <div className="vertical-line mx-2 me-4" />
                     {searchTopic === 'card sets' && 
                     <div className='d-flex form-inline col-lg-4'>
                         {searchBy ===  'title' ? <button type="button" className="btn btn-primary me-2" onClick={() => changeSearchBy('title')}>Title</button>
@@ -30,11 +31,9 @@ export const SearchOptions = ({ changeSearchTopic, changeSearchBy, searchTopic, 
                     }
                     {searchTopic === 'users' && 
                     <div className='d-flex form-inline col-lg-4'>
-                        {searchBy ===  'both' ? <button type="button" className="btn btn-primary me-2" onClick={() => changeSearchBy('both')}>Both</button>
-                        : <button type="button" className="btn btn-secondary me-2" onClick={() => changeSearchBy('both')}>Both</button>}
-                        {searchBy ===  'username' ? <button type="button" className="btn btn-primary me-2" onClick={() => changeSearchBy('username')}>Username</button>
+                        {searchBy ===  'username' ? <button type="button" className="btn btn-primary me-2" onClick={() => changeSearchBy('email')}>Username</button>
                         : <button type="button" className="btn btn-secondary me-2" onClick={() => changeSearchBy('username')}>Username</button>}
-                        {searchBy ===  'email' ? <button type="button" className="btn btn-primary me-2" onClick={() => changeSearchBy('email')}>Email</button>
+                        {searchBy ===  'email' ? <button type="button" className="btn btn-primary me-2" onClick={() => changeSearchBy('username')}>Email</button>
                         : <button type="button" className="btn btn-secondary me-2" onClick={() => changeSearchBy('email')}>Email</button>}
                     </div>
                     }
@@ -54,6 +53,12 @@ export const SearchOptions = ({ changeSearchTopic, changeSearchBy, searchTopic, 
                 </ul>
             </div>
         </div>
+        <style jsx>
+            {`
+            .vertical-line {
+                border-left: 1px solid black;
+            }`}
+        </style>
     </div>
     )
 }

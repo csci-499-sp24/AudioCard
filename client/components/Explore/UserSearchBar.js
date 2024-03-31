@@ -8,8 +8,7 @@ export const UserSearchBar = ({ users, onSearchUpdate, changeSearchTopic, search
     const [sortedUsers, setSortedUsers] = useState([...users]);
     const [sortingBy, setSortingBy] = useState('');
     const [filteredUsers, setFilteredUsers] = useState([]);
-    const [searchBy, setSearchBy] = useState('both');
-
+    const [searchBy, setSearchBy] = useState('username');
 
     useEffect(() => {
         onSearchUpdate(filteredUsers, searchInput);
@@ -32,11 +31,6 @@ export const UserSearchBar = ({ users, onSearchUpdate, changeSearchTopic, search
                     user.email?.toLowerCase().includes(searchLower)
                 )]);
                 break;
-            case 'both':
-                setFilteredUsers([...sortedUsers.filter(user => 
-                    user.username?.toLowerCase().includes(searchLower) ||
-                    user.email?.toLowerCase().includes(searchLower)
-                )]);
             default:
                 break;
         }
