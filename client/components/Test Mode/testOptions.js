@@ -7,7 +7,6 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange,
     voiceGender, setVoiceGender,
     language, setLanguage}) => {
     const {isDarkMode} = useDarkMode();
-    const visualAttempt = attempts + 1 ;
     const [isTimeLimitUnlocked, setTimeLimitUnlocked] = useState(true);
     const inputValue = timeLimit === Infinity ? 30 : timeLimit;
 
@@ -39,7 +38,7 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange,
                         <div className="me-2">Attempts per card:</div> 
                         <div className="dropdown">
                             <button className="btn dropdown-toggle" style={{ backgroundColor: 'transparent', color: isDarkMode ? 'white' : 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {visualAttempt ? visualAttempt : "1"}
+                                {attempts ? attempts + 1 : "1"}
                             </button>
                             <ul className="dropdown-menu">
                                 {[...Array(10)].map((_, index) => (

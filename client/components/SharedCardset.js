@@ -70,8 +70,8 @@ const SharedCardset = ({ userid }) => {
 
     // Render the shared cardsets once they're available
     return (
-        <div className="">
-            <div className="">
+        <div className="container">
+            <div className="row row row-cols-1 row-cols-md-3 g-4">
                 {cardsets.map((cardset, index) => (
                     <Link 
                     id={styles.dashboardCardLink}

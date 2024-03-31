@@ -50,6 +50,8 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     };
 
     const handleSubmitAnswer = (e) => {
+        console.log("This is attempt no: ", attempts)
+        setAttempts((prevAttempts) => prevAttempts - 1);
         e.preventDefault();
         setTimeout(() => {
             setBorderClass('');
@@ -107,7 +109,6 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         
         setBorderClass(isCorrect ? 'correct' : 'incorrect');
         if (!isCorrect && attempts > 0) {
-            setAttempts((prevAttempts) => prevAttempts - 1);
             console.log("Answer submitted. Attempts left: ", attempts);
             return;
         }
@@ -159,8 +160,9 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     };
 
     const handleAttemptChange = (attemptNum) => {
-        setAttempts(attemptNum - 1); 
         setMaxAttempts(attemptNum - 1);
+        setAttempts(attemptNum - 1);
+        console.log("Attempts changed to: ", maxAttempts)
     }
 
     const handleTimeLimit = async (event) => {
@@ -177,7 +179,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                     <div className={style.optionsModal} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white'}}>
                     <div className='row justify-content-center'>
     
-                        <TestOptions isSpeakMode={false} attempts={attempts} handleAttemptChange={handleAttemptChange}
+                        <TestOptions isSpeakMode={false} attempts={maxAttempts} handleAttemptChange={handleAttemptChange}
                         timeLimit={timeLimit} handleTimeLimit={handleTimeLimit}/>
                     </div>
                     <div className='row mt-5'>

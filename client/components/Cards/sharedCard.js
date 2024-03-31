@@ -5,13 +5,12 @@ import { getSubjectStyle } from '@/utils/getSubjectStyles';
 
 export const ShareCard = ({ cardset}) => {
     const {isDarkMode} = useDarkMode();
-    const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const { bgColor, txtColor } = getSubjectStyle(cardset.subject);
 
     
   return (
-    <div key={cardset.id} className="col-sm-6 col-md-4 col-lg-3 mb-4">
-        <div className="card h-100"  style={{backgroundColor: isDarkMode?'#2e3956':'white', color: isDarkMode ? 'white' : 'black'}}>
+    <div key={cardset.id} className="container">
+        <div className="card h-100 w-100"  style={{backgroundColor: isDarkMode?'#2e3956':'white', color: isDarkMode ? 'white' : 'black'}}>
             <div className="card-body">
                 <h5 className="card-title">{cardset.title}</h5>
                 <div className="mt-3">
