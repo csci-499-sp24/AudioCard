@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FlashcardTestMode } from './FlashcardTestMode';
-import { ASRTestMode } from './ASR/ASRTestMode';
-import styles from '../styles/CardSet.module.css';
+import { ASRTestMode } from './ASRTestMode';
+import styles from '../../styles/CardSet.module.css';
 
 export const CardViewTestMode = ({ userId, cardset }) => {
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
@@ -50,7 +50,6 @@ export const CardViewTestMode = ({ userId, cardset }) => {
                 </div>
                 </div>
                 <hr />
-                {/* Conditionally render mode based on selectedMode */}
                 {selectedMode === 'speak' && <ASRTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} />}
                 {selectedMode === 'type' && <FlashcardTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} />}
             </div>

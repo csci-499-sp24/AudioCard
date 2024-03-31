@@ -36,11 +36,11 @@ export const CreateFlashcard = ({userId, cardsetId, onCreateFlashcard}) => {
         <div>Add a flashcard</div>
         <form className="display flex flex-col" onSubmit={(e) => onSubmit(e)}>
             <div className="flex flex-row">
-                <label htmlFor="question">Question: </label>
+                <label htmlFor="question" className='me-2' >Question: </label>
                 <input type="text" id="question" name="question" value={question} onChange={(e) => setQuestion(e.target.value)} />
             </div>
             <div className="flex flex-row">
-                <label htmlFor="answer" className="basis-1/2">Answer: </label>
+                <label htmlFor="answer" className="me-2">Answer: </label>
                 <input type="text" id="answer" name="answer" value={answer} onChange={(e) => setAnswer(e.target.value)} />
             </div>
             <button className="btn btn-secondary btn-large" type="submit">Add</button>

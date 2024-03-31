@@ -8,11 +8,11 @@ router.route('/:userid/cardsets/:cardsetid/shared')
     .get(async (req, res) => {
         try {
             const { userid, cardsetid } = req.params;
-            const sharedCardsets = await SharedCardset.findAll({ 
-                where: { 
-                    userId: userid, 
-                    cardsetId: cardsetid 
-                } 
+            const sharedCardsets = await SharedCardset.findAll({
+                where: {
+                    userId: userid,
+                    cardsetId: cardsetid
+                }
             });
             res.status(200).json(sharedCardsets);
         } catch (error) {
@@ -21,7 +21,21 @@ router.route('/:userid/cardsets/:cardsetid/shared')
         }
     });
 
-
+router.route('/:userid/cardsets/shared')
+    .get(async (req, res) => {
+        try {
+            const { userid } = req.params;
+            const sharedCardsets = await SharedCardset.findAll({
+                where: {
+                    userId: userid
+                }
+            });
+            res.status(200).json(sharedCardsets);
+        } catch (error) {
+            console.error('Error fetching shared cardsets:', error);
+            res.status(500).json({ error: 'Error fetching shared cardsets' });
+        }
+    });
 
 //Managing a cardsets share options
 //takes userid(user making the request) and cardsetid in url params

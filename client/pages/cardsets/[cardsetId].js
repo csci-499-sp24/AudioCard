@@ -108,7 +108,6 @@ export default function CardsetPage () {
                 // Make a GET request to fetch shared cardsets for the user
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${userData.id}/cardsets/${cardsetId}/shared`);
                 // Handle successful response
-                console.log(response)
                 const role = response.data[0].authority;
                 setAccess(true)
                 if (role == 'admin') {
@@ -221,7 +220,9 @@ export default function CardsetPage () {
                             <>
                                 <div className='col d-flex justify-content-end'>
                                     <div className="d-flex align-items-center">
-                                    <button className='btn' style={{color: isDarkMode ? 'white' : 'gray' }} onClick={toggleSharePopup}>Share</button>
+                                    <button className='btn' style={{ color: isDarkMode ? 'white' : 'gray' }} onClick={toggleSharePopup}>
+                                        <i className="bi bi-share"></i>
+                                    </button>
                                         <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
                                         <button className="btn deleteButton" onClick={() => handleDelete()}>
                                             <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
