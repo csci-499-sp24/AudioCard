@@ -12,9 +12,11 @@ const Notification = ({ userId }) => {
     const toggleNotification = () => setIsNotificationOpen(!isNotificationOpen);
 
     useEffect(() => {
-        fetchFriendRequests();
+        if (userId) {
+            fetchFriendRequests();
+        }
     }, [userId]);
-
+    
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (notificationRef.current && !notificationRef.current.contains(event.target)) {
@@ -30,7 +32,8 @@ const Notification = ({ userId }) => {
     const fetchFriendRequests = async () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/friends/requests`);
-            setFriendRequests(response.data);
+            const incomingRequests = response.data.filter(request => request.requestDirection === 'incoming');
+            setFriendRequests(incomingRequests);
         } catch (error) {
             console.error('Error fetching friend requests:', error);
         }
