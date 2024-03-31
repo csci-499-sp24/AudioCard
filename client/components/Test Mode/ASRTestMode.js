@@ -6,6 +6,7 @@ import {TTS} from '../ASR/textToSpeech';
 import { useDarkMode } from '../../utils/darkModeContext';
 import { TestOptions } from './testOptions';
 import TimerComponent from './timerComponent';
+import { getTranslation } from '@/utils/translations';
 
 export const ASRTestMode = ({ cardData}) => {
     const {isDarkMode} = useDarkMode();
@@ -22,7 +23,14 @@ export const ASRTestMode = ({ cardData}) => {
     const mounted = useRef(false)
     const [timeLimit, setTimeLimit] = useState(7);
     const [voiceGender, setVoiceGender] = useState('NEUTRAL');
-    const [language, setLanguage] = useState('en-US')
+    const [language, setLanguage] = useState('en-US');
+    const [phrases, setPhrases] = useState(
+        {
+            tryAgain : 'Try Again.',
+            correct : 'Correct.',
+            theCorrectAnswerIs: 'The correct answer is.' ,
+        }
+    )
 
     const fetchData = async () => {
         if (flashcards.length > 0) {
@@ -36,6 +44,15 @@ export const ASRTestMode = ({ cardData}) => {
         return ()=>{mounted.current = false;}
       }, []);
     
+    useEffect (() => {
+        if (language !== 'en-US' && language !== 'en-GB'){
+            setPhrases({
+                tryAgain: getTranslation('Try again.', language),
+                correct: getTranslation('Correct.', language),
+                theCorrectAnswerIs: getTranslation('The correct answer is', language)
+            })
+        }
+    }, [language])
 
     useEffect(() => {
         setFlashcards(cardData);
@@ -82,11 +99,11 @@ export const ASRTestMode = ({ cardData}) => {
         if (isCorrect) {
             setBorderClass('correct');
             setScore((currentScore) => currentScore + 1);
-            TTS('Correct', voiceGender, language);
+            TTS(phrases.correct, voiceGender, language);
         } else {
                 setBorderClass('incorrect');
             for (let attempt = maxAttempts; attempt > 0 && mounted.current; attempt--) {
-                TTS('Try again.', voiceGender, language);
+                TTS(phrases.tryAgain, voiceGender, language);
                 setTimeout(() => {
                     setBorderClass('');
                 }, 2000)
@@ -94,14 +111,14 @@ export const ASRTestMode = ({ cardData}) => {
                 setBorderClass(isCorrect ? 'correct' : 'incorrect');
                 if (isCorrect) {
                     setScore((currentScore) => currentScore + 1);
-                    TTS('Correct', voiceGender, language);
+                    TTS(phrases.correct, voiceGender, language);
                     break; 
                 }
             }
             if (!mounted.current) return;
             if (!isCorrect) {
                 setBorderClass('incorrect');
-                TTS(`The correct answer is ${flashcards[index].definition}`, voiceGender, language);
+                TTS(`${phrases.theCorrectAnswerIs} ${flashcards[index].definition}`, voiceGender, language);
             }
         }   
         setIsFlipped(true);

@@ -123,11 +123,15 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
             {showOptions && (
                 <div className={style.optionsOverlay}>
                     <div className={style.optionsModal} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white'}}>
+                    <div className='row justify-content-center'>
     
-                    <TestOptions isSpeakMode={false} attempts={attempts} handleAttemptChange={handleAttemptChange}
-                    timeLimit={timeLimit} handleTimeLimit={handleTimeLimit}/>
-                    <div className={style.closeButtonContainer}>
-                        <button className={style.closeButton} onClick={() => setShowOptions(false)}>Close</button>
+                        <TestOptions isSpeakMode={false} attempts={attempts} handleAttemptChange={handleAttemptChange}
+                        timeLimit={timeLimit} handleTimeLimit={handleTimeLimit}/>
+                    </div>
+                    <div className='row mt-5'>
+                        <div className={style.closeButtonContainer}>
+                            <button className={style.closeButton} onClick={() => setShowOptions(false)}>Close</button>
+                        </div>
                     </div>
                     </div>
                 </div>
