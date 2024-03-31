@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { CardViewTestMode } from '@/components/CardViewTestMode';
+import { CardViewTestMode } from '@/components/Test Mode/CardViewTestMode';
 import Navbar from '../../components/Navbar/Navbar';
 import axios from 'axios';
 import { auth } from '@/utils/firebase';
