@@ -1,33 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const ShareFunction = ({ userid, cardsetId }) => {
-    const [email, setEmail] = useState('');
+    const [emailOrUsername, setEmailOrUsername] = useState('');
     const [role, setRole] = useState('');
+    const [curuserId, setcurUserId] = useState(null); // State to store the user ID
+    const [error, setError] = useState(null); // State to handle errors
+    
+    useEffect(() => {
+        if (curuserId !== null) {
+            console.log("Sharing with user ID:", curuserId, "and role:", role);
+            handleShareLogic(curuserId);
+        }
+    }, [curuserId]); // Run this effect whenever curuserId changes
 
     const handleShare = async () => {
-        // Implement logic to share the cardset with the entered email and selected role
-        console.log("Sharing with email:", email, "and role:", role);
-        // You can send this information to your backend to handle sharing functionality
-        // Reset the form after sharing
         try {
-            // Send a PUT request to update user access level
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userid}/cardsets/${cardsetId}/shared/${cardsetId}/share?userid=${email}&authority=${role}`);
-            return response.data;
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/userCheck/${emailOrUsername}`);
+            setcurUserId(response.data.userId);
+            setError(null);
         } catch (error) {
-            console.error('Error updating card set access:', error);
-            throw error;
+            console.error('Error checking user:', error);
+            setError(error.message);
+        }
+    };
+
+    const handleShareLogic = async (userId) => {
+        try {
+            const shareresponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userid}/cardsets/${cardsetId}/shared/${cardsetId}/share?userid=${userId}&authority=${role}`);
+            console.log('Sharing response:', shareresponse.data);
+            setEmailOrUsername('');
+            setRole('');
+        } catch (error) {
+            console.error('Error sharing card set:', error);
+            setError(error.message);
         }
     };
 
     return (
         <div>
-            <div> 
+            <div>
                 <h2>Share your cardset</h2>
             </div>
             <div style={{ marginBottom: '20px' }}>
-                <label>Email: </label>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <label>Email or Username: </label>
+                <input type="text" value={emailOrUsername} onChange={(e) => setEmailOrUsername(e.target.value)} />
             </div>
             <div style={{ marginBottom: '20px' }}>
                 <label>Role: </label>
@@ -38,6 +55,7 @@ const ShareFunction = ({ userid, cardsetId }) => {
                     <option value="admin">Admin</option>
                 </select>
             </div>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <button className='btn btn-secondary' onClick={() => handleShare()}>Share</button>
         </div>
     );
