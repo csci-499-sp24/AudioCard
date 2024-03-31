@@ -44,6 +44,17 @@
 
 }
 
+.deleteButton {
+    margin-top: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+
+}
+
 .cardset {
     border: 1px solid #ddd;
     padding: 10px;
@@ -62,3 +73,62 @@
     margin-right: auto;
     margin-left: auto;
 }
+
+.friendList {
+    width: 100%;
+}
+
+.friendListUl {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.friendListItem {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+}
+
+.friendListItem:hover {
+    background-color: #dddde7; 
+}
+
+.darkFriendListItem {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+}
+
+.darkFriendListItem:hover {
+    background-color: #dddde7; 
+    color: black;
+}
+
+.friendAvatar {
+    width: 50px; 
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px; 
+}
+
+.friendAvatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.friendName {
+    font-size: 1em; 
+    line-height: 1.5; 
+    display: flex;
+    align-items: center;
+}
+

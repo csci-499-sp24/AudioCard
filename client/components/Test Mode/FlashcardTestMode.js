@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import style from '../../styles/flashcardtestmode.module.css';
-import { RotatingCardTest } from '../Cards/RotatingCardTest';
-import { useDarkMode } from '../../utils/darkModeContext'
-import { TestOptions } from './testOptions';
-import TimerComponent from './timerComponent';
+import style from '../styles/flashcardtestmode.module.css';
+import { RotatingCardTest } from './Cards/RotatingCardTest';
+import { useDarkMode } from '../utils/darkModeContext'
 
 export const FlashcardTestMode = ({ cardData, userId}) => {
     const {isDarkMode} = useDarkMode();
@@ -17,9 +15,6 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     const [showTestResult, setShowTestResult] = useState(false);
     const [testStarted, setTestStarted] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
-    const [attempts, setAttempts] = useState(0);
-    const [maxAttempts, setMaxAttempts] = useState(0);
-    const [timeLimit, setTimeLimit] = useState(Infinity);
 
     useEffect(() => {
         setFlashcards(cardData);
@@ -34,13 +29,6 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         }
     }, [index, flashcards.length, isFlipped, testStarted]);
 
-    useEffect(() => {
-        const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
-        setProgress(newProgress);
-        console.log('Progress:', progress);
-    }, [index, flashcards.length]);
-
-
     if (flashcards.length === 0) {
         return <div>No Flashcards Yet!</div>;
     }
@@ -51,20 +39,66 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
 
     const handleSubmitAnswer = (e) => {
         e.preventDefault();
-        setTimeout(() => {
-            setBorderClass('');
-        }, 2000)
-        const isCorrect = answer.trim().toLowerCase() === flashcards[index].definition.toLowerCase();
-        setBorderClass(isCorrect ? 'correct' : 'incorrect');
-        if (!isCorrect && attempts > 0) {
-            setAttempts((prevAttempts) => prevAttempts - 1);
-            console.log("Answer submitted. Attempts left: ", attempts);
-            return;
-        }
-        if (isCorrect) {
-                setScore((currentScore) => currentScore + 1);
-        }
 
+        // if definition starts with article - ignore it
+        let defitinition = flashcards[index].definition.toLowerCase();
+        let defitinitionFirstWord = defitinition.slice(0, defitinition.indexOf(" ")); // article
+        let restOfDefitinition = defitinition.slice(defitinition.indexOf(" ")+1); //rest of the word/phrase
+        let isCorrect;
+        
+        if (defitinitionFirstWord === 'the' || defitinitionFirstWord === 'a' || defitinitionFirstWord === 'an') {
+            isCorrect = answer.trim().toLowerCase() === restOfDefitinition;
+        }
+        else {
+            // remove 2+ whitespaces from user's answer
+            let userAnswer = answer.replace(/\s+/g, ' ').trim().toLowerCase();
+
+            // "deaccent" the definition string before comparing
+            let defitinitionStringNorm = defitinition.normalize('NFD').replace(/\p{Diacritic}/gu, ''); 
+
+            // check if definition and answer contain commas
+            let defitinitionContainsCommas = /[,\,]/.test(defitinitionStringNorm);
+            console.log("defitinitionContainsCommas: ", defitinitionContainsCommas);
+            
+            // replace defitition with space if it contains a commas, but the answer doesn't
+            if (defitinitionContainsCommas) {
+                let answerContainsDash = /[,\,]/.test(userAnswer);
+                console.log("answerContainsDash: ", answerContainsDash);
+                if (!answerContainsDash) { 
+                    defitinitionStringNorm = defitinitionStringNorm.replace(/,/g, "");
+                    console.log("defitinitionStringNorm: ", defitinitionStringNorm);
+                }
+                else {
+                    defitinitionStringNorm = defitinitionStringNorm.replace(/,/g, "");
+                    userAnswer = userAnswer.replace(/,/g, "");
+                    console.log("userAnswer: ", userAnswer);
+                }
+            }
+
+            // check if definition and answer contain dashes
+            let defitinitionContainsDash = /[,\-]/.test(defitinitionStringNorm);
+            
+            // replace defitition with space if it contains a dash, but the answer doesn't
+            if (defitinitionContainsDash) {
+                let answerContainsDash = /[,\-]/.test(userAnswer);
+                if (!answerContainsDash) { 
+                    defitinitionStringNorm = defitinitionStringNorm.replace(/-/g, " ");
+                }
+            }
+
+            // compares final strings ignoring accents and dashes
+            isCorrect = userAnswer.toLowerCase() === defitinitionStringNorm.toLowerCase();
+        }
+        
+        setBorderClass(isCorrect ? 'correct' : 'incorrect');
+        if (isCorrect) {
+            // update the score
+            setScore((currentScore) => currentScore + 1);
+
+            // update the progress bar
+            const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
+            setProgress(newProgress);
+        }
         setIsFlipped(true);
         setTestStarted(true);
         setTimeout(() => {
@@ -76,7 +110,6 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                     setIndex((currentIndex) => currentIndex + 1);
                     setAnswer('');
                     setBorderClass('');
-                    setAttempts(maxAttempts);
                 }, 150);
             }
         }, 2000);
@@ -85,14 +118,12 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     const handleRestartTest = () => {
         setIndex(0);
         setScore(0);
-        const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
-        setProgress(newProgress);
+        setProgress(0);
         setShowTestResult(false);
         setIsFlipped(false);
         setTestStarted(false);
         setBorderClass('');
         setAnswer('');
-        setAttempts(maxAttempts);
     };
 
     const shuffleCards = () => {
@@ -106,36 +137,23 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         setShowOptions(false);
     };
 
-    const handleAttemptChange = (attemptNum) => {
-        setAttempts(attemptNum - 1); 
-        setMaxAttempts(attemptNum - 1);
-    }
-
-    const handleTimeLimit = async (event) => {
-        setTimeLimit(event);
-    }
-
     return (
-        <div className="container">
+        <div className="container mb-5">
             <div className={style.topRightButtons}>
                 <button className={style.optionButton} onClick={() => setShowOptions(true)}>Options</button>
             </div>
             {showOptions && (
                 <div className={style.optionsOverlay}>
-                    <div className={style.optionsModal} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white'}}>
-                    <div className='row justify-content-center'>
-    
-                        <TestOptions isSpeakMode={false} attempts={attempts} handleAttemptChange={handleAttemptChange}
-                        timeLimit={timeLimit} handleTimeLimit={handleTimeLimit}/>
-                    </div>
-                    <div className='row mt-5'>
+                    <div className={style.optionsModal}>
+                        <h2>Options</h2>
+                        <button className={style.shuffleButton} onClick={shuffleCards}>Shuffle Cards</button>
                         <div className={style.closeButtonContainer}>
                             <button className={style.closeButton} onClick={() => setShowOptions(false)}>Close</button>
                         </div>
                     </div>
-                    </div>
                 </div>
             )}
+
             {showTestResult ? (
                 <div className={style.testCompleteContainer}>
                     <h2>Your Test Result</h2>
@@ -147,26 +165,19 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                     <div className={style.progressBarContainer}>
                         <div className={style.progressBar} style={{ width: `${progress}%` }}></div>
                     </div>
-                    {(timeLimit!==Infinity) && (
-                    <TimerComponent
-                        timeLimit={timeLimit}
-                        showTestResult={showTestResult}
-                        isFlipped={isFlipped}
-                        handleSubmitAnswer={handleSubmitAnswer}
-                        isSpeakMode={false}
-                        attempts={attempts}
-                        setAttempts={setAttempts}/>
-                        )}
+
                     <div className={style.flashcard}>
                         <RotatingCardTest
                             flashcards={flashcards}
                             index={index}
                             isFlipped={isFlipped}
                             borderClass={borderClass}
+                            isDarkMode={isDarkMode}
                         />
                     </div>
-                    {!isFlipped && (
-                        <form onSubmit={(event) => { handleSubmitAnswer(event) }} className="mt-4">
+
+                    {   !isFlipped && (
+                        <form onSubmit={handleSubmitAnswer} className="mt-4">
                             <div className={style.formGroup}>
                                 <input
                                     type="text"
@@ -179,14 +190,6 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                             <button type="submit" className={`btn btn-primary ${style.centeredButton}`}>Submit Answer</button>
                         </form>
                     )}
-                    <div className='row'>
-                        <div className='col-4 d-flex justify-content-end align-items-center mt-3'>
-                            <button className='btn btn-secondary' title='Restart Test' onClick={handleRestartTest}><i class="fa fa-refresh"></i></button>
-                        </div>
-                        <div className='col-4 d-flex justify-content-center align-items-center mt-3'>
-                            <button className='btn btn-secondary' title='Shuffle Cards' onClick={shuffleCards}><i class="fas fa-random"></i></button>
-                        </div>
-                    </div>
                 </>
             )}
         </div>
