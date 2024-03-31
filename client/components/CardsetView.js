@@ -49,7 +49,7 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage, ca
                 {/*Study mode with rorating flashcard */}
                 <div className="row">
                     <div className='col mb-2'>
-                        <Flashcard cardData={currentCardsetData} userId={userId} cardsetId={cardsetId}/>
+                        <Flashcard cardData={currentCardsetData} userId={userId} cardsetId={cardsetId} canEdit ={canEdit}/>
                     </div>
                 </div>
                 { canEdit ?

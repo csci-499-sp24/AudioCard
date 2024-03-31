@@ -5,8 +5,8 @@ import { RotatingCard } from '../components/Cards/RotatingCard';
 import axios from 'axios';
 import { useDarkMode } from '@/utils/darkModeContext';
 
-export const Flashcard = ({ cardData, userId, cardsetId}) => {
-  const {isDarkMode} = useDarkMode();
+export const Flashcard = ({ cardData, userId, cardsetId, canEdit }) => {
+  const { isDarkMode } = useDarkMode();
   const [isFlipped, setFlipped] = useState(false);
   const [index, setIndex] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
@@ -22,8 +22,8 @@ export const Flashcard = ({ cardData, userId, cardsetId}) => {
 
   if (flashcards.length === 0) {
     return <div className='text-center my-5'>
-        <h4>No Flashcards Yet!</h4>
-      </div>;
+      <h4>No Flashcards Yet!</h4>
+    </div>;
   }
 
   const handleChange = (change) => {
@@ -73,7 +73,7 @@ export const Flashcard = ({ cardData, userId, cardsetId}) => {
           {isEditing && editingCard ? (
             <EditFlashcard userId={userId} cardsetId={cardsetId} flashcard={editingCard} onEditFlashcard={handleEditComplete} onCancel={handleEditCancel} />
           ) : (
-            <RotatingCard flashcards={flashcards} index={index}/>
+            <RotatingCard flashcards={flashcards} index={index} />
           )}
 
           {isEditing ? null : (
@@ -82,17 +82,19 @@ export const Flashcard = ({ cardData, userId, cardsetId}) => {
             </div>
           )}
         </div>
-  
+
         <div className="d-flex flex-row justify-content-around" id={style.ButtonsSmallScreen}>
           <div className="p-2"><button className="btn btn-secondary" onClick={() => handleChange(-1)}>Prev</button></div>
           <div className="p-2"><button className="btn btn-secondary" onClick={() => handleChange(1)}>Next</button></div>
         </div>
 
-        <div className="d-flex flex-row justify-content-around">
-          {!isEditing && (
-            <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => handleEdit(flashcards[index])}>Edit</button>
-          )}
-        </div>
+        {canEdit ?
+          <div className="d-flex flex-row justify-content-around">
+            {!isEditing && (
+              <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => handleEdit(flashcards[index])}>Edit</button>
+            )}
+          </div>
+          : null}
 
       </div>
     </div>
