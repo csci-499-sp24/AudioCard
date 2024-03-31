@@ -47,6 +47,8 @@ const LandingPage = () => {
                 <div className={`${styles.col} ${styles.welcomeMessage}`}>
                     <h1>Welcome to AudioCard</h1>
                     <p>Experience the power of audio learning like never before.</p>
+                    {/* Wave effect */}
+                    <div className={styles.wave}></div>
                 </div>
             </div>
         </div>

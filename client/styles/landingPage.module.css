@@ -8,11 +8,14 @@
     font-size: 24px;
     font-weight: bold;
     color: #000; /* Default text color */
+    margin-left: 20px; /* Add left margin to create some space */
 }
+
 
 /* Styles for the authentication buttons, vertical */
 .authButtons {
     margin-top: 20px;
+    margin-left: 20px;
 }
 
 /* Styles for the login and signup buttons */
@@ -37,18 +40,28 @@
     cursor: pointer;
 }
 
-/* Styles for the welcome message vertically */
-.welcomeMessage {
-    margin-top: 40px;
-    text-align: center; /* Center align the text */
-}
-
 /* Welcome to AudioCard */
 .welcomeMessage h1 {
     font-size: 32px;
     font-weight: bold;
     color: #000; /* Default text color */
+    animation: shimmer 2s infinite linear; /* Add shimmering effect */
+    text-align: center; /* Center align the text */
 }
+
+/* Style for the Welcome to Audiocard*/
+@keyframes shimmer {
+    0% {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px #7ed6df, 0 0 30px #7ed6df, 0 0 40px #7ed6df, 0 0 50px #7ed6df;
+    }
+    50% {
+        text-shadow: none;
+    }
+    100% {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px #7ed6df, 0 0 30px #7ed6df, 0 0 40px #7ed6df, 0 0 50px #7ed6df;
+    }
+}
+
 
 /* Styles for the welcome message paragraph */
 .welcomeMessage p {
@@ -59,17 +72,28 @@
     letter-spacing: 2px; /* Add letter spacing */
     line-height: 1.5; /* Adjust line height */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow */
-    animation: glow 2s infinite alternate; /* Add glowing effect */
+    animation: glow 2s infinite alternate, flicker 2s infinite; /* Add glowing and flicker effect */
+    text-align: center; /* Center align the text */
 }
 
 /* Define animation keyframes for glowing effect */
 @keyframes glow {
-    from {
-        text-shadow: 0 0 10px rgb(64, 64, 79), 0 0 20px rgb(137, 137, 184), 0 0 30px #00f, 0 0 40px #00f, 0 0 50px #00f, 0 0 60px #00f, 0 0 70px #00f, 0 0 80px #00f;
+    0% {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px #7ed6df, 0 0 30px #7ed6df, 0 0 40px #7ed6df, 0 0 50px #7ed6df;
     }
-    to {
-        text-shadow: 0 0 20px rgb(207, 207, 222), 0 0 30px rgb(145, 145, 180), 0 0 40px rgb(154, 199, 220), 0 0 50px rgb(156, 156, 169), 0 0 60px #00f, 0 0 70px #00f, 0 0 80px #00f, 0 0 90px #00f;
+    50% {
+        text-shadow: none;
     }
+    100% {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px #7ed6df, 0 0 30px #7ed6df, 0 0 40px #7ed6df, 0 0 50px #7ed6df;
+    }
+}
+
+/* Define animation keyframes for flicker effect */
+@keyframes flicker {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
 }
 
 /* Dark mode styles */
