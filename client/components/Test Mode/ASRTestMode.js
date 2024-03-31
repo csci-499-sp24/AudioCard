@@ -15,6 +15,7 @@ export const ASRTestMode = ({ cardData}) => {
     const [isFlipped, setIsFlipped] = useState(false);
     const [borderClass, setBorderClass] = useState('');
     const [progress, setProgress] = useState(0);
+    const [completion, setCompletion] = useState(0);
     const [score, setScore] = useState(0);
     const [showTestResult, setShowTestResult] = useState(false);
     const [testStarted, setTestStarted] = useState(false);
@@ -72,9 +73,8 @@ export const ASRTestMode = ({ cardData}) => {
     }, [index, flashcards.length, isFlipped, testStarted]);
 
     useEffect(() => {
-        const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
-        setProgress(newProgress);
-        console.log('Progress:', progress);
+        const newCompletion = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
+        setCompletion(newCompletion);
     }, [index, flashcards.length]);
 
     if (flashcards.length === 0) {
@@ -99,6 +99,8 @@ export const ASRTestMode = ({ cardData}) => {
         if (isCorrect) {
             setBorderClass('correct');
             setScore((currentScore) => currentScore + 1);
+            const newProgress = progress + (100 / flashcards.length)
+            setProgress(newProgress);
             TTS(phrases.correct, voiceGender, language);
         } else {
                 setBorderClass('incorrect');
@@ -111,6 +113,8 @@ export const ASRTestMode = ({ cardData}) => {
                 setBorderClass(isCorrect ? 'correct' : 'incorrect');
                 if (isCorrect) {
                     setScore((currentScore) => currentScore + 1);
+                    const newProgress = progress + (100 / flashcards.length)
+                    setProgress(newProgress);
                     TTS(phrases.correct, voiceGender, language);
                     break; 
                 }
@@ -140,8 +144,8 @@ export const ASRTestMode = ({ cardData}) => {
     const handleRestartTest = () => {
         setIndex(0);
         setScore(0);
-        const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
-        setProgress(newProgress);
+        setProgress(0);
+        setCompletion(0);
         setShowTestResult(false);
         setIsFlipped(false);
         setTestStarted(false);
@@ -194,9 +198,10 @@ export const ASRTestMode = ({ cardData}) => {
                 </div>
             ) : (
                 <>
-                    <div className={style.progressBarContainer}>
-                        <div className={style.progressBar} style={{ width: `${progress}%` }}></div>
-                    </div>
+                <div className={style.progressBarContainer}>
+                    <div className={style.progressBar} style={{ width: `${progress}%` }}></div>
+                    <div className={style.completionBar} style={{ width: `${completion}%` }}></div>
+                </div>
                     <TimerComponent
                         timeLimit={timeLimit}
                         showTestResult={showTestResult}

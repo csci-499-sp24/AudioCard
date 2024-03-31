@@ -1,17 +1,30 @@
 .progressBarContainer {
+    position: relative;
     width: 100%;
     background-color: #eee;
     border-radius: 4px;
     margin-top: 20px;
+    height: 20px;
+    margin-bottom: 20px; 
+}
+
+.progressBar, .completionBar {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    border-radius: 4px;
 }
 
 .progressBar {
-    height: 20px;
     background-color: #4CAF50;
-    border-radius: 4px;
-    transition: width 0.4s ease;
-    margin-bottom: 20px;
+    z-index: 2; 
 }
+
+.completionBar {
+    background-color: #ffc507; 
+    z-index: 1; 
+}
+
 
 .formGroup {
     display: flex;
