@@ -70,7 +70,7 @@ const Profile = () => {
     const shouldShowFriendRequestButton = currentUser && profileUser && currentUser.id !== Number(profileUser.id);
 
     return (
-        <div className='wrapper'>
+        <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={currentUser?.id} />
             <div className="mt-4">
                 <div className={styles.profileContainer}>

@@ -79,7 +79,7 @@ const Explore = () => {
     };
 
     return (
-        <div className="wrapper">
+        <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={userData?.id}/>
             <div className="container mt-5">
                 <h1 className="mb-4">Explore Cardsets</h1>

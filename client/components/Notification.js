@@ -71,7 +71,7 @@ const Notification = ({ userId }) => {
             </div>
             <div ref={notificationRef}>
                 {isNotificationOpen && (
-                    <div className={styles.notificationDropdown} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white' }}>
+                    <div className={`${isDarkMode ? styles.notificationDropdownDark : styles.notificationDropdownLight}`}>
                         {friendRequests.length > 0 ? (
                             <ul className={styles.notificationList}>
                                 {friendRequests.map((request) => (

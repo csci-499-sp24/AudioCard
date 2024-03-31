@@ -39,7 +39,7 @@
 }
 
 #frontDark {
-    background-color: #2e3956;
+    background-color: #252526;
     color: white;
 }
   
@@ -53,6 +53,6 @@
 #backDark {
     transform: rotateX(180deg);
   
-    background-color: #2e3956; 
+    background-color: #252526; 
     color: white;
 }

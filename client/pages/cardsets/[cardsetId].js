@@ -163,7 +163,7 @@ export default function CardsetPage () {
 
     // Render flashcard data
     return (
-        <div className='wrapper'>
+        <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={userData?.id}/>
             <div className="container">
                 <div className="row">

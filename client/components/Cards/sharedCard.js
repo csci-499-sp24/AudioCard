@@ -10,7 +10,7 @@ export const ShareCard = ({ cardset}) => {
     
   return (
     <div key={cardset.id} className="container">
-        <div className="card h-100 w-100"  style={{backgroundColor: isDarkMode?'#2e3956':'white', color: isDarkMode ? 'white' : 'black'}}>
+        <div className="card h-100 w-100"  style={{backgroundColor: isDarkMode?'#252526':'white', color: isDarkMode ? 'white' : 'black'}}>
             <div className="card-body">
                 <h5 className="card-title">{cardset.title}</h5>
                 <div className="mt-3">
