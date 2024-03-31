@@ -1,14 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const { Cardset, User, Flashcard } = require('../models/modelRelations');
-const flashcards = require('./flashcards');
-const sharedCardsets = require('./sharedCardsets');
+const flashcards = require ('./flashcards');
+const sharedCardsets = require ('./sharedCardsets');
+const friends = require ('./friends');
 
 const { Sequelize } = require('sequelize');
 const { checkCardsetAuthority } = require('./functions');
 
 router.use('/:userid/cardsets/:cardsetid/flashcards', flashcards);
 router.use('/:userid/cardsets/:cardsetid/shared', sharedCardsets);
+router.use('/:userid/friends', friends)
 
 router.route('/signup')
     .post(async (req, res) => {
@@ -52,16 +54,29 @@ router.route('/')
 
 //Get user's database entry using their firebaseId
 router.route('/getuser')
-    .get(async (req, res) => {
-        try {
-            const { firebaseId } = req.query;
-            const user = await User.findOne({ where: { firebaseId } });
-            res.status(200).json({ user });
-        } catch (error) {
-            console.error('Error fetching database user:', error);
-            res.status(500).json({ error: 'Error fetching database user' });
-        }
-    });
+.get(async(req, res) => {
+    try{
+        const { firebaseId } = req.query;
+        const user = await User.findOne({ where: { firebaseId }});
+        res.status(200).json({ user });
+    } catch (error) {
+        console.error('Error fetching database user:', error);
+        res.status(500).json({ error: 'Error fetching database user' });
+    }
+});
+
+//Get user's database entry using their email
+router.route('/getuserbyemail')
+.get(async(req, res) => {
+    try{
+        const { email } = req.query;
+        const user = await User.findOne({ where: { email }});
+        res.status(200).json({ user });
+    } catch (error) {
+        console.error('Error fetching database user:', error);
+        res.status(500).json({ error: 'Error fetching database user' });
+    }
+});
 
 //Get user by ID
 router.route('/:userid')

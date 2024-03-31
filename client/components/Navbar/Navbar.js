@@ -1,14 +1,29 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { auth } from '../../utils/firebase';
 import Link from 'next/link';
 import styles from '../../styles/navbar.module.css';
 import { useDarkMode } from '../../utils/darkModeContext';
+import Notification from '../Notification'
 
 const Navbar = ({ userId }) => {
-    const {isDarkMode, toggleDarkMode} = useDarkMode();
+    const { isDarkMode, toggleDarkMode } = useDarkMode();
     const router = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <nav className={`navbar navbar-expand-lg ${isDarkMode ? 'bg-dark' : 'bg-body-tertiary'}`} id={styles.navbar}>
@@ -33,15 +48,18 @@ const Navbar = ({ userId }) => {
 
                 <div className="navbar-collapse collapse w-100 order-3 dual-collapse2" id="navbarScroll">
                     <ul className="navbar-nav ms-auto">
-                    <li className={isDarkMode ? 'text-white' : 'text-dark'} id={styles.mobileExploreLink}>
-                    <Link href="/explore" className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'}>
-                            Explore
-                        </Link>
-                    </li>
+                        <li className={isDarkMode ? 'text-white' : 'text-dark'} id={styles.mobileExploreLink}>
+                            <Link href="/explore" className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'}>
+                                Explore
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Notification userId={userId} />
+                        </li>
                         <li className="nav-item text-center">
-                        <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink} onClick={toggleDarkMode}>
-                            {isDarkMode ? 'Light' : 'Dark'}
-                        </button>
+                            <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink} onClick={toggleDarkMode}>
+                                {isDarkMode ? 'Light' : 'Dark'}
+                            </button>
                         </li>
                         <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink}
                             onClick={() => { auth.signOut(); router.push('/login'); }}
@@ -52,16 +70,18 @@ const Navbar = ({ userId }) => {
                             <div className={styles.navUserAvatar} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
                                 <img src="/userAvatarSmall.jpg" alt="User Avatar" className={styles.avatarImage} />
                             </div>
-                            {isDropdownOpen && (
-                                <div className={styles.dropdownMenu}>
-                                    <Link href={`/profile/${userId}`} className={styles.dropdownItem}>
-                                        Profile
-                                    </Link>
-                                    <Link href="/settings" className={styles.dropdownItem}>
-                                        Settings
-                                    </Link>
-                                </div>
-                            )}
+                            <div ref={dropdownRef}>
+                                {isDropdownOpen && (
+                                    <div className={styles.dropdownMenu} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white' }}>
+                                        <Link href={`/profile/${userId}`} className={isDarkMode ? styles.darkDropdownItem : styles.dropdownItem}>
+                                            Profile
+                                        </Link>
+                                        <Link href="/settings" className={isDarkMode ? styles.darkDropdownItem : styles.dropdownItem}>
+                                            Settings
+                                        </Link>
+                                    </div>
+                                )}
+                            </div>
                         </li>
                     </ul>
                 </div>
