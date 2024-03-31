@@ -74,4 +74,6 @@ const TimerComponent = React.memo(({ timeLimit, showTestResult, isFlipped, handl
     );
 });
 
+TimerComponent.displayName = 'TimerComponent';
+
 export default TimerComponent;

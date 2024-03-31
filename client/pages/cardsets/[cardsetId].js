@@ -108,7 +108,6 @@ export default function CardsetPage () {
                 // Make a GET request to fetch shared cardsets for the user
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${userData.id}/cardsets/${cardsetId}/shared`);
                 // Handle successful response
-                console.log(response)
                 const role = response.data[0].authority;
                 setAccess(true)
                 if (role == 'admin') {
