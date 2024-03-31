@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDarkMode } from '@/utils/darkModeContext';
+import { getLanguage } from '@/utils/languageCodes';
 
 export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange, 
     timeLimit, handleTimeLimit,
-    voiceGender, setVoiceGender}) => {
+    voiceGender, setVoiceGender,
+    language, setLanguage}) => {
     const {isDarkMode} = useDarkMode();
     const visualAttempt = attempts + 1 ;
     const [isTimeLimitUnlocked, setTimeLimitUnlocked] = useState(true);
@@ -58,11 +60,15 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange,
                     </div>)}
                 </div>
             </div>
-            {isSpeakMode && (<div className='row flex d-flex align-items-center justify-content-center'>
+            {isSpeakMode && (
+            <div className='SpeakSettingscontainer'> 
+            <div className='row flex d-flex align-items-center'>
+            <div className='col d-flex justify-content-end'>
             <div>Voice: </div>
-            <div className="dropdown me-2 flex-grow-1">
-                <button className="btn  flex-grow-1 dropdown-toggle col-4" style={{ backgroundColor: 'white', color: 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    {voiceGender}
+            </div>
+            <div className="col d-flex justify-content-begin dropdown">
+                <button className="btn dropdown-toggle" style={{ backgroundColor: 'white', color: 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {voiceGender.charAt(0).toUpperCase() + voiceGender.slice(1).toLowerCase()}
                 </button>
                 <ul className="dropdown-menu">
                     <li><a className="dropdown-item" onClick={() => setVoiceGender('NEUTRAL')}>Neutral</a></li>
@@ -70,12 +76,32 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange,
                     <li><a className="dropdown-item" onClick={() => setVoiceGender('FEMALE')}>Female</a></li>
                 </ul>
             </div>
-
-            </div>) 
+            </div>
+            <div className='row flex d-flex align-items-center mt-3'>
+                <div className='col d-flex justify-content-end'>
+                    <div>Language: </div>
+                </div>
+                <div className="col d-flex justify-content-begin dropdown">
+                    <button className="btn dropdown-toggle" style={{ backgroundColor: 'white', color: 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {getLanguage(language)}
+                        </button>
+                    <ul className="dropdown-menu">
+                        <li><a className="dropdown-item" onClick={() => setLanguage('en-US')}>English (US)</a></li>
+                        <li><a className="dropdown-item" onClick={() => setLanguage('en-GB')}>English (UK)</a></li>
+                    </ul>
+                </div> 
+            </div> 
+                </div>) 
             }
         <style jsx>{`.darkInput {
         background-color: #222;
-                                }       
+                                }
+        .dropdown-toggle{
+            margin: -10px;
+        }
+        .dropdown {
+            margin: -10px; 
+        }
         `}</style>
         </div>
     );
