@@ -235,7 +235,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                             <button type="submit" className={`btn btn-primary ${style.centeredButton}`}>Submit Answer</button>
                         </form>
                     )}
-                      {!isFlipped && (
+                    {!isFlipped && (
                         <div className='row mx-auto mt-3 mb-5' id={style.optionButtons}>
                             <div className="d-flex justify-content-between">
                                 <div className=''>

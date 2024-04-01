@@ -110,14 +110,13 @@ const Dashboard = () => {
                                 </li>
                             </ul>
                         </div>
-
                     </div>
 
                     {activeTab === 'YourFlashcardSets' && (
                         <div className="col-12 my-3">
                             <div className="d-flex justify-content-between align-items-center mb-3">
                                 <h4 className="m-0" style={{color: isDarkMode ? 'white' : 'black'}}>Your Card Sets</h4>
-                                <button className="btn btn-secondary" onClick={toggleCreateCardsetForm}>Shared Card Sets</button>
+                                <button className="btn btn-secondary" onClick={toggleCreateCardsetForm}>Create New Set</button>
                             </div>
                             {showCreateCardsetForm && 
                              <CreateCardset userId={userData.id} onCreateCardset={handleCreateCardset} onClickToggle={toggleCreateCardsetForm} isDarkMode={isDarkMode} /> } 

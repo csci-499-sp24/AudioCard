@@ -113,6 +113,7 @@ export const SearchBar = ({ cardsets, onSearchUpdate }) => {
                     <li><a className="dropdown-item" onClick={(e) => setSubject('Foreign Languages')}>Foreign Languages</a></li>
                     <li><a className="dropdown-item" onClick={(e) => setSubject('Nature')}>Nature</a></li>
                     <li><a className="dropdown-item" onClick={(e) => setSubject('Humanities')}>Humanities</a></li>
+                    <li><a className="dropdown-item" onClick={(e) => setSubject('Entertainment')}>Entertainment</a></li>
                     <li><a className="dropdown-item" onClick={(e) => setSubject('Health')}>Health</a></li>
                     <li><a className="dropdown-item" onClick={(e) => setSubject('Other')}>Other</a></li>
                 </ul>

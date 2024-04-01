@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {useDarkMode} from '../utils/darkModeContext'
+
 export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
     const {isDarkMode} = useDarkMode();
     const onSubmit = async (event) =>{
@@ -18,7 +19,7 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
     }
 
     return (
-        <div className="mb-5 p-4" style={{ borderRadius: '10px', backgroundColor: isDarkMode ? '#2e3956':'white', color: isDarkMode? 'white':'black', width: '75%'}}>
+        <div className="mb-5 p-4" style={{ borderRadius: '10px', backgroundColor: isDarkMode ? '#252526':'white', color: isDarkMode? 'white':'black', width: '75%'}}>
             <div className="d-flex justify-content-end">
                 <button className="btn" style={{color: isDarkMode ? 'white' : 'gray' }} onClick={onClickToggle}>X</button>
             </div>
