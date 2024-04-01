@@ -73,13 +73,11 @@
 
 #navigation {
     border-bottom: 1px solid lightgrey;
-    z-index: 999 !important; 
 }
 
 #inlineNavItemActive,
 #inlineNavItemActive:active {
-    z-index: 999 !important; 
-    border-bottom: 3px solid #2273d6ba;
+    border-bottom: 5px solid #2273d6ba;
 }
 
 
