@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { useDarkMode } from '@/utils/darkModeContext';
 import { SearchOptions } from './SearchOptions';
+import { SearchLimiters } from './SearchLimiters';
 
 export const CardsetSearchBar = ({ cardsets, onSearchUpdate, changeSearchTopic, searchTopic }) => {
     const {isDarkMode} = useDarkMode();
@@ -103,12 +104,12 @@ export const CardsetSearchBar = ({ cardsets, onSearchUpdate, changeSearchTopic, 
     <div className='container'>
         <div className='row d-flex align-items-center'>
             <div className="col-sm-6 col-md-4 col-lg-10 mb-2">
-                <div className='d-flex mb-4'>
+                <div className='d-flex'>
                     <form className="d-flex form-inline col-lg-4" onSubmit={((e) => e.preventDefault())}>
-                        <input className="form-control mr-sm-2 me-2" type="search" placeholder="Search"  aria-label="Search" onInput={(e) => onInputChange(e)}/>
+                        <input className="form-control mr-sm-2 me-2" type="search" placeholder="Ex. French Revolution"  aria-label="Search" onInput={(e) => onInputChange(e)}/>
                     </form>
-                    <div className="dropdown me-2 flex-grow-1">
-                        <button className="btn  flex-grow-1 dropdown-toggle col-4" style={{ backgroundColor: isDarkMode ? '#222222' : 'white', color: isDarkMode? 'white': 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div className="dropdown me-2 ">
+                        <button className="btn flex-grow-1 dropdown-toggle" style={{ backgroundColor: isDarkMode ? '#222222' : 'white', color: isDarkMode? 'white': 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {subject ? subject: "Any Subject"}
                         </button>
                         <ul className="dropdown-menu">
@@ -126,9 +127,10 @@ export const CardsetSearchBar = ({ cardsets, onSearchUpdate, changeSearchTopic, 
                             <li><a className="dropdown-item" onClick={(e) => setSubject('Other')}>Other</a></li>
                         </ul>
                     </div>
+                    <SearchLimiters searchBy={searchBy} searchTopic={'card sets'} changeSearchBy={changeSearchBy}/>
                 </div>
             </div>
-            <SearchOptions changeSearchTopic={changeSearchTopic} changeSearchBy={changeSearchBy} searchTopic={searchTopic} searchBy={searchBy} onSortChange={onSortChange} sortingBy={sortingBy}/>
+            <SearchOptions changeSearchTopic={changeSearchTopic} searchTopic={searchTopic} onSortChange={onSortChange} sortingBy={sortingBy}/>
         </div>
     <style jsx>{`
     .custom-btn {

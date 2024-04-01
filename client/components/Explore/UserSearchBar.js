@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { useDarkMode } from '@/utils/darkModeContext';
 import { SearchOptions } from './SearchOptions';
+import { SearchLimiters } from './SearchLimiters';
 
 export const UserSearchBar = ({ users, onSearchUpdate, changeSearchTopic, searchTopic }) => {
     const {isDarkMode} = useDarkMode();
@@ -68,10 +69,12 @@ export const UserSearchBar = ({ users, onSearchUpdate, changeSearchTopic, search
     <div className='container'>
         <div className='row d-flex align-items-center'>
             <div className="col-sm-6 col-md-4 col-lg-10 mb-2">
-                <div className='d-flex mb-4'>
+                <div className='d-flex'>
                     <form className="d-flex form-inline col-lg-4" onSubmit={((e) => e.preventDefault())}>
-                        <input className="form-control mr-sm-2 me-2" type="search" placeholder="Search"  aria-label="Search" onInput={(e) => onInputChange(e)}/>
+                        <input className="form-control mr-sm-2 me-2" type="search" placeholder="Ex. John Doe"  aria-label="Search" onInput={(e) => onInputChange(e)}/>
                     </form>
+                <SearchLimiters searchBy={searchBy} searchTopic={'users'} changeSearchBy={changeSearchBy}/>
+
                 </div>
             </div>
             <SearchOptions changeSearchTopic={changeSearchTopic} changeSearchBy={changeSearchBy} searchTopic={searchTopic} searchBy={searchBy} onSortChange={onSortChange} sortingBy={sortingBy}/>
