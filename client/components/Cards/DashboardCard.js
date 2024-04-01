@@ -11,9 +11,7 @@ export const DashboardCard = ({ cardset, onClick }) => {
 
     return (
         <div key={cardset.id} className="col" onClick={onClick}>
-            {/* <div className="card h-100" style={{backgroundColor: isDarkMode?'#252526':'white', color: isDarkMode ? 'white' : 'black'}}> */}
             <div className="card h-100" id={`${isDarkMode ? styles.cardDark : styles.cardLight}`}>
-
                 <div className="card-body">
                     <h2 className="card-title">{cardset.title}</h2>
                     <div className="mt-3">
