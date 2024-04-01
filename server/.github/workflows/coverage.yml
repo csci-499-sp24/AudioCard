@@ -16,9 +16,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./server
 
       - name: Run tests
         run: npm test
+        working-directory: ./server
 
       - name: Jest coverage report
         uses: ./.github/ArtiomTr/jest-coverage-report-action@v2.3.0
