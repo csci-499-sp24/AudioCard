@@ -12,15 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./server/.github/ArtiomTr/jest-coverage-report-action@v2
+      - uses: ./.github/ArtiomTr/jest-coverage-report-action@v2
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./server  
 
       - name: Run tests
         run: npm test
-        working-directory: ./server
 
       - name: Jest coverage report
-        uses: ./server/.github/ArtiomTr/jest-coverage-report-action@v2.3.0
+        uses: ./.github/ArtiomTr/jest-coverage-report-action@v2.3.0
+
