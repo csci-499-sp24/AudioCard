@@ -14,13 +14,9 @@
     display: none !important;
 }
 
-
-@media (max-width: 991px) {
-
-    #mobileExploreLink {
-        display: inline-block !important;
-    }
-
+#navIconUser,
+#navIconMode {
+    font-size: 1.5em;
 }
 
 .navUserAvatar {
@@ -72,4 +68,12 @@
     border-radius: 50%;
     background: #333;
     cursor: pointer;
+}
+
+@media (max-width: 991px) {
+
+    #mobileExploreLink {
+        display: inline-block !important;
+    }
+
 }

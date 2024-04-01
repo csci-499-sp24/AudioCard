@@ -88,7 +88,7 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="wrapper">
+        <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={userData?.id} />
             <div className="container">
                 <div className="row px-2">
@@ -96,39 +96,26 @@ const Dashboard = () => {
                         <h1 className="" id={`${isDarkMode ? styles.welcomeDark : styles.welcome}`}>Welcome, <span className={`font-weight-bold ${isDarkMode ? 'text-light' : 'text-dark'}`}>{userData?.username}</span></h1>
                     </div>
                     <div className="col-12 my-3">
-                        <div className="d-flex justify-start">
-                            <button
-                                className="btn btn-tab"
-                                style={{
-                                    backgroundColor: 'transparent',
-                                    color: activeTab === 'YourFlashcardSets' ? '#007bff' : isDarkMode ? 'white': 'black',
-                                    borderBottom: activeTab === 'YourFlashcardSets' ? '2px solid #007bff' : 'none',
-                                    fontSize: '20px'
-                                }}
-                                onClick={() => setActiveTab('YourFlashcardSets')}
-                            >
-                                Your Flashcard Sets
-                            </button>
-                            <button
-                                className="btn btn-tab"
-                                style={{
-                                    backgroundColor: 'transparent',
-                                    color: activeTab === 'SharedWithYou' ? '#007bff' : isDarkMode ? 'white': 'black',
-                                    borderBottom: activeTab === 'SharedWithYou' ? '2px solid #007bff' : 'none',
-                                    fontSize: '20px'
-                                }}
-                                onClick={() => setActiveTab('SharedWithYou')}
-                            >
-                                Shared With You
-                            </button>
+                        <div className="d-flex justify-start" id={styles.navigation}>
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class={isDarkMode ? "nav-link text-white": "nav-link text-dark"}
+                                    id={`${activeTab === 'YourFlashcardSets' ? styles.inlineNavItemActive : styles.inlineNavItemNotActive}`} 
+                                    aria-current="page" href="#" onClick={() => setActiveTab('YourFlashcardSets')}>Your Card Sets</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class={isDarkMode ? "nav-link text-white": "nav-link text-dark"}
+                                    id={`${activeTab === 'SharedWithYou' ? styles.inlineNavItemActive : styles.inlineNavItemNotActive}`} 
+                                    aria-current="page" href="#" onClick={() => setActiveTab('SharedWithYou')}>Shared Card Sets</a>
+                                </li>
+                            </ul>
                         </div>
-
                     </div>
 
                     {activeTab === 'YourFlashcardSets' && (
                         <div className="col-12 my-3">
                             <div className="d-flex justify-content-between align-items-center mb-3">
-                                <h4 className="m-0" style={{color: isDarkMode ? 'white' : 'black'}}>Your Flashcard Sets</h4>
+                                <h4 className="m-0" style={{color: isDarkMode ? 'white' : 'black'}}>Your Card Sets</h4>
                                 <button className="btn btn-secondary" onClick={toggleCreateCardsetForm}>Create New Set</button>
                             </div>
                             {showCreateCardsetForm && 

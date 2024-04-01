@@ -107,7 +107,7 @@ const Explore = () => {
     };
 
     return (
-        <div className="wrapper">
+        <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={userData?.id}/>
             <div className="container mt-5">
                 <h1 className="mb-4">Explore {searchTopic === 'card sets' ? "Card Sets" : "Users" }</h1>
@@ -144,7 +144,7 @@ const Explore = () => {
                 {isDetailedViewOpen && (
                     <div className="detailed-cardset-view" style={{ backgroundColor: isDarkMode ? '#0a092d' : '#ADD8E6' }}>
                         <div className="detailed-cardset-content">
-                            <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }}onClick={handleCloseDetailedView}>
+                            <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseDetailedView}>
                                 &times;
                             </button>
                             {selectedCardset && (

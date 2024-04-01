@@ -24,13 +24,27 @@
     font-weight: bold; 
 }
 
-.notificationDropdown {
+.notificationDropdownDark {
     position: absolute;
     top: 100%;
+    right: 6%;
+    color: white;
+    background-color: #252526;
+    border: 1px solid #d3d3d340;
+    border-radius: 0.375rem;
+    width: 400px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.notificationDropdownLight {
+    position: absolute;
+    top: 100%;
+    right: 6%;
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     width: 400px;
     max-height: 300px;
     overflow-y: auto;

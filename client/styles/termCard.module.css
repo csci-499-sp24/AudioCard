@@ -6,8 +6,10 @@
 }
 
 #flashcardDark {
-    background-color: #2e3956;
+    background-color: #252526;
     padding: 20px;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
+    color: white;
+    background-color: #252526;
+    border: 1px solid #d3d3d340;
+    border-radius: 0.375rem;
 }

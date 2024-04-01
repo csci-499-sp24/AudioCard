@@ -2,9 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { auth } from '../../utils/firebase';
 import Link from 'next/link';
+import Image from "next/image"; 
 import styles from '../../styles/navbar.module.css';
 import { useDarkMode } from '../../utils/darkModeContext';
 import Notification from '../Notification'
+import userDark from '../../assets/images/user-dark-24.png';
+import userLight from '../../assets/images/user-light-24.png';
 
 const Navbar = ({ userId }) => {
     const { isDarkMode, toggleDarkMode } = useDarkMode();
@@ -47,7 +50,7 @@ const Navbar = ({ userId }) => {
                 </div>
 
                 <div className="navbar-collapse collapse w-100 order-3 dual-collapse2" id="navbarScroll">
-                    <ul className="navbar-nav ms-auto">
+                    <ul className="navbar-nav ms-auto d-flex align-items-center">
                         <li className={isDarkMode ? 'text-white' : 'text-dark'} id={styles.mobileExploreLink}>
                             <Link href="/explore" className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'}>
                                 Explore
@@ -56,28 +59,31 @@ const Navbar = ({ userId }) => {
                         <li className="nav-item">
                             <Notification userId={userId} />
                         </li>
-                        <li className="nav-item text-center">
+
+                        <li className="nav-item">
                             <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink} onClick={toggleDarkMode}>
-                                {isDarkMode ? <i class="bi bi-sun"></i> : <i class="bi bi-moon"></i>}
+                                {isDarkMode ? <i className="bi bi-sun" id={styles.navIconMode}></i> : <i className="bi bi-moon" id={styles.navIconMode}></i>}
                             </button>
                         </li>
-                        <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink}
-                            onClick={() => { auth.signOut(); router.push('/login'); }}
-                        >
-                            Logout
-                        </button>
+
                         <li className="nav-item">
-                            <div className={styles.navUserAvatar} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                                <img src="/userAvatarSmall.jpg" alt="User Avatar" className={styles.avatarImage} />
-                            </div>
+                            <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink}  onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                                {isDarkMode ? <i className="fa-solid fa-circle-user" id={styles.navIconUser}></i> : <i className="fa-solid fa-circle-user"  id={styles.navIconUser}></i>}
+                            </button>
+
                             <div ref={dropdownRef}>
                                 {isDropdownOpen && (
-                                    <div className={styles.dropdownMenu} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white' }}>
+                                    <div className={styles.dropdownMenu} style={{ backgroundColor: isDarkMode ? '#252526' : 'white' }}>
                                         <Link href={`/profile/${userId}`} className={isDarkMode ? styles.darkDropdownItem : styles.dropdownItem}>
                                             Profile
                                         </Link>
                                         <Link href="/settings" className={isDarkMode ? styles.darkDropdownItem : styles.dropdownItem}>
                                             Settings
+                                        </Link>
+                                        <Link href="/login" className={isDarkMode ? styles.darkDropdownItem : styles.dropdownItem}
+                                            onClick={() => { auth.signOut(); router.push('/login'); }}
+                                        >
+                                            Logout
                                         </Link>
                                     </div>
                                 )}

@@ -62,7 +62,7 @@ const Notification = ({ userId }) => {
     };
 
     return (
-        <div>
+        <div style={{ padding: '5px' }}>
             <div className={styles.bellWrapper} onClick={toggleNotification}>
                 <i className={`bi bi-bell ${styles.bellIcon}`}></i>
                 {friendRequests.length > 0 && (
@@ -71,7 +71,7 @@ const Notification = ({ userId }) => {
             </div>
             <div ref={notificationRef}>
                 {isNotificationOpen && (
-                    <div className={styles.notificationDropdown} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white' }}>
+                    <div className={`${isDarkMode ? styles.notificationDropdownDark : styles.notificationDropdownLight}`}>
                         {friendRequests.length > 0 ? (
                             <ul className={styles.notificationList}>
                                 {friendRequests.map((request) => (

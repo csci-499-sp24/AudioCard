@@ -1,3 +1,14 @@
+.cardLight {
+    
+}
+
+#cardDark {
+    color: white;
+    background-color: #252526;
+    border: 1px solid #d3d3d340;
+    border-radius: 0.375rem;
+}
+
 .cardSubject {
     background-clip: padding-box;
     border-radius: 20px;

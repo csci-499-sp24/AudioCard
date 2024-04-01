@@ -36,10 +36,10 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         }
     }, [index, flashcards.length, isFlipped, testStarted]);
 
-    useEffect(() => {
-        const newCompletion = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
-        setCompletion(newCompletion);
-    }, [index, flashcards.length]);
+    // useEffect(() => {
+    //     const newCompletion = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
+    //     setCompletion(newCompletion);
+    // }, [index, flashcards.length]);
 
 
     if (flashcards.length === 0) {
@@ -115,6 +115,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         }
         if (isCorrect) {
             setScore((currentScore) => currentScore + 1);
+            // update the progress bar
             const newProgress = progress + (100 / flashcards.length)
             setProgress(newProgress);
         }
@@ -237,14 +238,19 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                             <button type="submit" className={`btn btn-primary ${style.centeredButton}`}>Submit Answer</button>
                         </form>
                     )}
-                    <div className='row'>
-                        <div className='col-4 d-flex justify-content-end align-items-center mt-3'>
-                            <button className='btn btn-secondary' title='Restart Test' onClick={handleRestartTest}><i class="fa fa-refresh"></i></button>
+                    {!isFlipped && (
+                        <div className='row mx-auto mt-3 mb-5' id={style.optionButtons}>
+                            <div className="d-flex justify-content-between">
+                                <div className=''>
+                                    <button className='btn btn-secondary' title='Restart Test' onClick={handleRestartTest}><i class="fa fa-refresh"></i></button>
+                                </div>
+                                <div className=''>
+                                    <button className='btn btn-secondary' title='Shuffle Cards' onClick={shuffleCards}><i class="fas fa-random"></i></button>
+                                </div>
+
+                            </div>
                         </div>
-                        <div className='col-4 d-flex justify-content-center align-items-center mt-3'>
-                            <button className='btn btn-secondary' title='Shuffle Cards' onClick={shuffleCards}><i class="fas fa-random"></i></button>
-                        </div>
-                    </div>
+                    )}
                 </>
             )}
         </div>

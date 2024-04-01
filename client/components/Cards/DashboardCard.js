@@ -7,12 +7,12 @@ export const DashboardCard = ({ cardset, onClick }) => {
     const {isDarkMode} = useDarkMode();
     console.log('cardset ', cardset);
 
-    const { bgColor, txtColor } = getSubjectStyle(cardset.subject);
+    const { bgColor, txtColor } = getSubjectStyle(cardset.subject, isDarkMode);
 
     return (
         <div key={cardset.id} className="col" onClick={onClick}>
-            <div className="card h-100" style={{backgroundColor: isDarkMode?'#2e3956':'white', color: isDarkMode ? 'white' : 'black'}}>
-                <div className="card-body" style={{backgroundColor: isDarkMode? '#2e3956':'white'}}>
+            <div className="card h-100" id={`${isDarkMode ? styles.cardDark : styles.cardLight}`}>
+                <div className="card-body">
                     <h2 className="card-title">{cardset.title}</h2>
                     <div className="mt-3">
                         <span className={styles.cardSubject} style={{ backgroundColor: `${bgColor}`, color: `${txtColor}` }}>
