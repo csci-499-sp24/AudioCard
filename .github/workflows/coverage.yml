@@ -16,12 +16,12 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ../server
+        working-directory: ${{ github.workspace}}/server
 
       - name: Run tests
         run: npm test
-        working-directory: ../server
+        working-directory: ${{ github.workspace }}/server
 
       - name: Jest coverage report
-        uses: ../server/.github/ArtiomTr/jest-coverage-report-action@v2.3.0
+        uses: ${{ github.workspace }}/server/.github/ArtiomTr/jest-coverage-report-action@v2.3.0
 
