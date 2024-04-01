@@ -45,6 +45,10 @@ export const getSubjectStyle = (subject, isDarkMode) => {
                 bgColor = '#b4d194';
                 txtColor = '#546f35';
                 break;
+            case 'Entertainment': 
+                bgColor = '#c3da1d';
+                txtColor = '#606c06';
+                break;
             case 'Other': 
                 bgColor = '#787878';
                 txtColor = '#2d2a2a';
@@ -97,6 +101,10 @@ export const getSubjectStyle = (subject, isDarkMode) => {
             case 'Health': 
                 bgColor = '#e8f7d7';
                 txtColor = '#85a95b';
+                break;
+            case 'Entertainment': 
+                bgColor = '#f6ffb0';
+                txtColor = '#9bae0b';
                 break;
             case 'Other': 
                 bgColor = '#f0f0f0';

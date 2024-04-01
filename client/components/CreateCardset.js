@@ -45,6 +45,7 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
                         <option value="Foreign Languages">Foreign Languages</option>
                         <option value="Nature">Nature</option>
                         <option value="Humanities">Humanities</option>
+                        <option value="Entertainment">Entertainment</option>
                         <option value="Health">Health</option>
                         <option value="Other">Other</option>
                     </select>
