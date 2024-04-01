@@ -19,6 +19,7 @@ export const ASRTestMode = ({ cardData}) => {
     const [score, setScore] = useState(0);
     const [showTestResult, setShowTestResult] = useState(false);
     const [testStarted, setTestStarted] = useState(false);
+    const [restartFlag, setRestartFlag] = useState(true); 
     const [showOptions, setShowOptions] = useState(false);
     const [maxAttempts, setMaxAttempts] = useState(0);
     const mounted = useRef(false)
@@ -122,7 +123,7 @@ export const ASRTestMode = ({ cardData}) => {
             if (!mounted.current) return;
             if (!isCorrect) {
                 setBorderClass('incorrect');
-                TTS(`${phrases.theCorrectAnswerIs} ${flashcards[index].definition}`, voiceGender, language);
+                await TTS(`${phrases.theCorrectAnswerIs} ${flashcards[index].definition}`, voiceGender, language); 
             }
         }   
         setIsFlipped(true);
@@ -150,6 +151,8 @@ export const ASRTestMode = ({ cardData}) => {
         setIsFlipped(false);
         setTestStarted(false);
         setBorderClass('');
+        setTimeLimit(timeLimit);
+        setRestartFlag(!restartFlag);
     };
 
     const shuffleCards = () => {
@@ -206,7 +209,8 @@ export const ASRTestMode = ({ cardData}) => {
                         timeLimit={timeLimit}
                         showTestResult={showTestResult}
                         isFlipped={isFlipped}
-                        isSpeakMode={true}/>
+                        isSpeakMode={true}
+                        restartFlag={restartFlag}/>
                     <div className={style.flashcard}>
                         <RotatingCardTest
                             flashcards={flashcards}
