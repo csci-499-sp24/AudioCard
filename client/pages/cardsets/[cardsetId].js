@@ -229,7 +229,9 @@ export default function CardsetPage() {
                                     <div className='col d-flex justify-content-end'>
                                         <div className="d-flex align-items-center">
                                             {isadmin ?
-                                                <button className='btn' style={{ color: isDarkMode ? 'white' : 'gray' }} onClick={toggleSharePopup}>Share</button>
+                                                <button className='btn' style={{ color: isDarkMode ? 'white' : 'gray' }} onClick={toggleSharePopup}>
+                                                <i className="bi bi-share"></i>
+                                            </button>
                                                 : null}
                                             <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
                                             <button className="btn deleteButton" onClick={() => handleDelete()}>
