@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { auth } from '../utils/firebase';
 import { useRouter } from 'next/router';
-import {useDarkMode} from '../utils/darkModeContext';
+import { useDarkMode } from '../utils/darkModeContext';
+// Corrected import with capitalization
 
-export const CardsetView = ({cardset}) => {
-    const {isDarkMode} = useDarkMode();
+export const CardsetView = ({ cardset }) => {
+    const { isDarkMode } = useDarkMode();
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const firebaseId = auth.currentUser.uid;
     const [userData, setUserData] = useState(null);
@@ -94,6 +95,9 @@ export const CardsetView = ({cardset}) => {
                                 {cardset.user?.username}
                             </span>
                         </div>
+
+                       
+                        
                     </div>
                 </div>
                 <div className='col d-flex justify-content-end align-items-center'>
@@ -121,6 +125,5 @@ export const CardsetView = ({cardset}) => {
                 }
             `}</style>
         </div>
-
     )
 }
