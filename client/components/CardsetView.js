@@ -7,7 +7,6 @@ import {useDarkMode} from '../utils/darkModeContext';
 
 export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage, canEdit}) => {
     const {isDarkMode} = useDarkMode();
-    console.log('can edit:', canEdit)
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [showCreateFlashcardForm, setShowCreateFlashcardForm] = useState(false);
 

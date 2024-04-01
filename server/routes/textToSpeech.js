@@ -10,9 +10,11 @@ router.route('/')
         const input = {
             text: req.body.input,
         };
+        const ssmlGender = req.body.voiceGender;
+        const languageCode = req.body.language || 'en-US';
         const request = {
             input: input,
-            voice: {languageCode: 'en-US', ssmlGender: 'NEUTRAL'},
+            voice: {languageCode: languageCode, ssmlGender: ssmlGender},
             audioConfig: { audioEncoding: 'MP3' },
         }
         const [response] = await client.synthesizeSpeech(request);
