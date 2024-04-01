@@ -6,7 +6,6 @@ on:
       - master
       - main
       - Jest
-      
 
 jobs:
   coverage:
@@ -14,3 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ArtiomTr/jest-coverage-report-action@v2
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./server  
+
+      - name: Run tests
+        run: npm test
+        working-directory: ./server
