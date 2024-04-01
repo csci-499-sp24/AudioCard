@@ -12,6 +12,12 @@ export const SearchLimiters = ({ changeSearchBy, searchTopic, searchBy }) => {
             <label className="form-check-label mx-2" onClick={() => changeSearchBy(labelLower)}>
                 {label}
             </label>
+            <style jsx>{`
+                .form-check-input:checked {
+                    background-color: #007bff;
+                    border-color: #007bff;
+                }
+            `}</style>
         </div>
         )
     }
@@ -34,6 +40,7 @@ export const SearchLimiters = ({ changeSearchBy, searchTopic, searchBy }) => {
                 </div>
             }
             </div>
+
 
     </div>
     
