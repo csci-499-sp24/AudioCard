@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "jest": "^29.7.0",
+    "jest-coverage-report-action": "*",
     "nodemon": "^3.0.3"
   }
 }
