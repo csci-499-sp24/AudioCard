@@ -2,9 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { auth } from '../../utils/firebase';
 import Link from 'next/link';
+import Image from "next/image"; 
 import styles from '../../styles/navbar.module.css';
 import { useDarkMode } from '../../utils/darkModeContext';
 import Notification from '../Notification'
+import userDark from '../../assets/images/user-dark-24.png';
+import userLight from '../../assets/images/user-light-24.png';
 
 const Navbar = ({ userId }) => {
     const { isDarkMode, toggleDarkMode } = useDarkMode();
@@ -68,7 +71,9 @@ const Navbar = ({ userId }) => {
                         </button>
                         <li className="nav-item">
                             <div className={styles.navUserAvatar} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                                <img src="/userAvatarSmall.jpg" alt="User Avatar" className={styles.avatarImage} />
+                                <Image src={isDarkMode ? userLight : userDark} alt="logo"/>
+                                {/* <Image src={logo} alt="logo"/> */}
+                                {/* <img src="/userAvatarSmall.jpg" alt="User Avatar" className={styles.avatarImage} /> */}
                             </div>
                             <div ref={dropdownRef}>
                                 {isDropdownOpen && (
