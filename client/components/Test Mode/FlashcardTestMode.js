@@ -35,10 +35,10 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         }
     }, [index, flashcards.length, isFlipped, testStarted]);
 
-    useEffect(() => {
-        const newCompletion = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
-        setCompletion(newCompletion);
-    }, [index, flashcards.length]);
+    // useEffect(() => {
+    //     const newCompletion = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
+    //     setCompletion(newCompletion);
+    // }, [index, flashcards.length]);
 
 
     if (flashcards.length === 0) {
@@ -114,7 +114,8 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         }
         if (isCorrect) {
             setScore((currentScore) => currentScore + 1);
-            const newProgress = progress + (100 / flashcards.length)
+            // update the progress bar
+            const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
             setProgress(newProgress);
         }
         setIsFlipped(true);

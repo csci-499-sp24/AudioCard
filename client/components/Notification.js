@@ -62,7 +62,7 @@ const Notification = ({ userId }) => {
     };
 
     return (
-        <div>
+        <div style={{ padding: '5px' }}>
             <div className={styles.bellWrapper} onClick={toggleNotification}>
                 <i className={`bi bi-bell ${styles.bellIcon}`}></i>
                 {friendRequests.length > 0 && (
