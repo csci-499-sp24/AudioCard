@@ -115,7 +115,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         if (isCorrect) {
             setScore((currentScore) => currentScore + 1);
             // update the progress bar
-            const newProgress = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
+            const newProgress = progress + (100 / flashcards.length)
             setProgress(newProgress);
         }
         setIsFlipped(true);
