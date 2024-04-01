@@ -1,6 +1,6 @@
 const request = require('supertest');
 const express = require('express');
-const getEmail = require('./userTests'); 
+const {getEmail, checkIfUsernameExists} = require('./userTests'); 
 
 const app = express();
 
@@ -13,4 +13,12 @@ describe('getEmail function', () => {
 
     expect(userEmail).toBe(email);
   });
+});
+
+describe('Check if this username already exists', () => {
+    it('Should return true', async () => {
+        const username = 'testkevin';
+        const result = await checkIfUsernameExists(username);
+        expect(result).toBe(true);
+    })
 });

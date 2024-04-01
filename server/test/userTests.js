@@ -19,4 +19,16 @@ const getEmail = async (userId) => {
     }
 }
 
-module.exports = getEmail;
+
+const checkIfUsernameExists = async (username) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/api/users/usernameCheck?username=${username}`);
+        return response.data.exists;
+    } catch (error) {
+        console.error('Error checking username exists', error);
+        throw error;
+    }
+}
+
+
+module.exports = { getEmail, checkIfUsernameExists} ;
