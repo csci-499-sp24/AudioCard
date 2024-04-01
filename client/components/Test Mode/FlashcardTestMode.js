@@ -36,10 +36,10 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         }
     }, [index, flashcards.length, isFlipped, testStarted]);
 
-    // useEffect(() => {
-    //     const newCompletion = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
-    //     setCompletion(newCompletion);
-    // }, [index, flashcards.length]);
+    useEffect(() => {
+        const newCompletion = flashcards.length > 0 ? ((index + 1) / flashcards.length) * 100 : 0;
+         setCompletion(newCompletion);
+     }, [index, flashcards.length]);
 
 
     if (flashcards.length === 0) {
