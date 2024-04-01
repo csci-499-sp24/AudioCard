@@ -8,8 +8,7 @@
     font-size: 24px;
     font-weight: bold;
     color: #000; /* Default text color */
-    margin-left: 20px; /* Add left margin to create some space */
-}
+    text-align: center; /* Center align the text */}
 
 
 /* Styles for the authentication buttons, vertical */

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useDarkMode } from '@/utils/darkModeContext';
 import styles from "../styles/landingPage.module.css"
-import ASRTestMode from '../components/ASR/ASRTestMode'; // Corrected import
+//import ASRTestMode from '../components/ASR/ASRTestMode'; // Corrected import
 
 const LandingPage = () => {
     const router = useRouter();
