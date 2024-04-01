@@ -99,11 +99,13 @@ const Dashboard = () => {
                         <div className="d-flex justify-start" id={styles.navigation}>
                             <ul class="nav">
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" id={`${activeTab === 'YourFlashcardSets' ? styles.inlineNavItemActive : styles.inlineNavItemNotActive}`} 
+                                    <a class={isDarkMode ? "nav-link text-white": "nav-link text-dark"}
+                                    id={`${activeTab === 'YourFlashcardSets' ? styles.inlineNavItemActive : styles.inlineNavItemNotActive}`} 
                                     aria-current="page" href="#" onClick={() => setActiveTab('YourFlashcardSets')}>Your Card Sets</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark"id={`${activeTab === 'SharedWithYou' ? styles.inlineNavItemActive : styles.inlineNavItemNotActive}`} 
+                                    <a class={isDarkMode ? "nav-link text-white": "nav-link text-dark"}
+                                    id={`${activeTab === 'SharedWithYou' ? styles.inlineNavItemActive : styles.inlineNavItemNotActive}`} 
                                     aria-current="page" href="#" onClick={() => setActiveTab('SharedWithYou')}>Shared Card Sets</a>
                                 </li>
                             </ul>

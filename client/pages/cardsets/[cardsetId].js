@@ -202,7 +202,7 @@ export default function CardsetPage () {
                                 <div className="col mt-5 mb-2">
                                     <div className="">
                                         <h3>Flashcard Set: {cardset.title}</h3>
-                                        <div style={{ color: `${txtColor}` }}> Subject: {cardset.subject} </div>
+                                        <div> Subject: <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
                                         <div> {currentCardsetData.length} flashcards </div>
                                         {cardset.isPublic ? 
                                         <div>

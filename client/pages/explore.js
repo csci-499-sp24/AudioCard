@@ -98,7 +98,7 @@ const Explore = () => {
                 {isDetailedViewOpen && (
                     <div className="detailed-cardset-view" style={{ backgroundColor: isDarkMode ? '#0a092d' : '#ADD8E6' }}>
                         <div className="detailed-cardset-content">
-                            <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }}onClick={handleCloseDetailedView}>
+                            <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseDetailedView}>
                                 &times;
                             </button>
                             {selectedCardset && (

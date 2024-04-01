@@ -62,13 +62,13 @@ const Navbar = ({ userId }) => {
 
                         <li className="nav-item">
                             <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink} onClick={toggleDarkMode}>
-                                {isDarkMode ? <i class="bi bi-sun" id={styles.navIconMode}></i> : <i class="bi bi-moon" id={styles.navIconMode}></i>}
+                                {isDarkMode ? <i className="bi bi-sun" id={styles.navIconMode}></i> : <i className="bi bi-moon" id={styles.navIconMode}></i>}
                             </button>
                         </li>
 
                         <li className="nav-item">
                             <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink}  onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                                {isDarkMode ? <i class="fa-solid fa-circle-user" id={styles.navIconUser}></i> : <i class="fa-solid fa-circle-user"  id={styles.navIconUser}></i>}
+                                {isDarkMode ? <i className="fa-solid fa-circle-user" id={styles.navIconUser}></i> : <i className="fa-solid fa-circle-user"  id={styles.navIconUser}></i>}
                             </button>
 
                             <div ref={dropdownRef}>
@@ -80,7 +80,7 @@ const Navbar = ({ userId }) => {
                                         <Link href="/settings" className={isDarkMode ? styles.darkDropdownItem : styles.dropdownItem}>
                                             Settings
                                         </Link>
-                                        <Link href="" className={isDarkMode ? styles.darkDropdownItem : styles.dropdownItem}
+                                        <Link href="/login" className={isDarkMode ? styles.darkDropdownItem : styles.dropdownItem}
                                             onClick={() => { auth.signOut(); router.push('/login'); }}
                                         >
                                             Logout

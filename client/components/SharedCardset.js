@@ -12,7 +12,7 @@ const SharedCardset = ({ userid }) => {
     const [cardsets, setCardsets] = useState([]); // State to store fetched cardsets
     const [selectedCardset, setSelectedCardset] = useState(null);
     const [isDetailedViewOpen, setIsDetailedViewOpen] = useState(false);
-
+    const [loading, setLoading] = useState('');
 
     const handleCardsetClick = (cardset) => {
         setSelectedCardset(cardset);
@@ -26,10 +26,12 @@ const SharedCardset = ({ userid }) => {
     useEffect(() => {
         const fetchSharedCardsets = async () => {
             try {
+                setLoading("Loading...")
                 // Send a GET request to fetch shared cardsets
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${userid}/cardsets/shared`);
                 const cardsetIds = response.data.map(cardset => cardset.cardsetId); // Extracting cardset IDs
                 setSharedData(cardsetIds);
+                setLoading("")
             } catch (error) {
                 console.error('Error fetching shared cardsets:', error);
                 setError(error);
@@ -65,7 +67,7 @@ const SharedCardset = ({ userid }) => {
 
     if (!sharedData || cardsets.length === 0) {
         // Render a loading indicator while data is being fetched
-        return <h1>Loading...</h1>;
+        return <h3 className='text-center'>No shared card sets</h3>;
     }
 
     // Render the shared cardsets once they're available
