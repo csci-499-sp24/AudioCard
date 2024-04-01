@@ -127,4 +127,30 @@ router.route('/:cardsetid/share')
         }
     });
 
+
+router.route('/:cardsetid/emails')
+    .get(async (req, res) => {
+        try {
+            const { cardsetid } = req.params;
+            const sharedCardsets = await SharedCardset.findAll({
+                where: {
+                    cardsetId: cardsetid,
+                    authority: ['admin', 'edit'] 
+                }
+                
+            });
+
+            // Extracting user IDs from the sharedCardsets
+            const userIds = sharedCardsets.map(sharedCardset => sharedCardset.userId);
+
+            res.status(200).json({ userIds: userIds }); // Return user IDs in a JSON object
+        } catch (error) {
+            console.error('Error fetching user IDs associated with cardset:', error);
+            res.status(500).json({ error: 'Error fetching user IDs associated with cardset' });
+        }
+    });
+
+
+
+
 module.exports = router;

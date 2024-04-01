@@ -5,15 +5,20 @@ import { ExploreCard } from '@/components/Cards/ExploreCard';
 import Navbar from '@/components/Navbar/Navbar';
 import { auth } from "@/utils/firebase";
 import {useDarkMode} from '../utils/darkModeContext';
-import { SearchBar } from "@/components/Explore/SearchBar";
+import { CardsetSearchBar } from "@/components/Explore/CardsetSearchBar";
+import { UserSearchBar } from "@/components/Explore/UserSearchBar";
+import { UserCard } from "@/components/Cards/UserCard";
 
 const Explore = () => {
     const { isDarkMode} = useDarkMode();
     const [cardsets, setCardsets] = useState([]);
+    const [users, setUsers] = useState([]);
     const [selectedCardset, setSelectedCardset] = useState(null);
     const [isDetailedViewOpen, setIsDetailedViewOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
+    const [searchTopic, setSearchTopic] = useState('card sets');
     const [filteredCardsets, setFilteredCardsets] = useState([]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
     const [user, setUser] = useState(null);
     const [userData, setUserData] = useState(null);
 
@@ -33,11 +38,21 @@ const Explore = () => {
 
     useEffect(() => {
         fetchCardsets();
+        fetchUsers();
     }, []);
 
-    const onSearchUpdate = (sortedSets, input) => {
-        setFilteredCardsets(sortedSets);
-        setSearchInput(input)
+    const onSearchUpdate = (sortedList, input) => {
+        if(searchTopic === 'card sets'){
+            setFilteredCardsets(sortedList);
+        }
+        else if(searchTopic === 'users'){
+            setFilteredUsers(sortedList);
+        }
+        setSearchInput(input);
+    }
+
+    const changeSearchTopic = (topic) => {
+        setSearchTopic(topic);
     }
 
     const fetchUserData = async () => {
@@ -69,10 +84,23 @@ const Explore = () => {
         }
     };
 
+    const fetchUsers = async () => {
+        try {
+            const response = await axios.get(
+                process.env.NEXT_PUBLIC_SERVER_URL + "/api/users"
+            );
+            const usersData = response.data;
+            setUsers(usersData);
+        } catch (error) {
+            console.error("Error fetching all users: ", error);
+        }
+    };
+
     const handleCardsetClick = (cardset) => {
         setSelectedCardset(cardset);
         setIsDetailedViewOpen(true);
     };
+
 
     const handleCloseDetailedView = () => {
         setIsDetailedViewOpen(false);
@@ -82,19 +110,37 @@ const Explore = () => {
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={userData?.id}/>
             <div className="container mt-5">
-                <h1 className="mb-4">Explore Cardsets</h1>
-                <SearchBar cardsets={cardsets} onSearchUpdate={onSearchUpdate}/>
+                <h1 className="mb-4">Explore {searchTopic === 'card sets' ? "Card Sets" : "Users" }</h1>
+                {searchTopic === 'card sets' ? 
+                <CardsetSearchBar cardsets={cardsets} onSearchUpdate={onSearchUpdate} changeSearchTopic={changeSearchTopic} searchTopic={searchTopic}/>
+                :
+                <UserSearchBar users={users} onSearchUpdate={onSearchUpdate} changeSearchTopic={changeSearchTopic} searchTopic={searchTopic}/>
 
-            <div className="row">
-                {filteredCardsets.length === 0 && searchInput.length > 0 && <div>No cardsets matching this search</div> }
-                {filteredCardsets.length > 0 || searchInput.length > 0 ? filteredCardsets.map((cardset) => (                
-                        <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick}/>
-                    )):
-                    cardsets.map((cardset) => (
-                        <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick}/>
-                    )) }
+                }
+                <div className="row">
+                    {searchTopic === 'card sets' && 
+                        (filteredCardsets.length > 0 || searchInput.length > 0 ? 
+                            filteredCardsets.map((cardset) => (                
+                                <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} isDarkMode={isDarkMode}/>
+                            ))
+                            :
+                            cardsets.map((cardset) => (
+                                <ExploreCard key={cardset.id} cardset={cardset} onCreateCardset={handleCardsetClick} isDarkMode={isDarkMode}/>
+                            ))
+                        )
+                    }
+                    {searchTopic === 'users' && 
+                        (filteredUsers.length > 0 || searchInput.length > 0 ? 
+                            filteredUsers.map((userIndex) => (                
+                                <UserCard key={userIndex.id} user={userIndex} isDarkMode={isDarkMode}/>
+                                ))
+                            :
+                            users.map((userIndex) => (
+                                <UserCard key={userIndex.id} user={userIndex} isDarkMode={isDarkMode}/>
+                                ))
+                        )
+                    }
                 </div>
-
                 {isDetailedViewOpen && (
                     <div className="detailed-cardset-view" style={{ backgroundColor: isDarkMode ? '#0a092d' : '#ADD8E6' }}>
                         <div className="detailed-cardset-content">

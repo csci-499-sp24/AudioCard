@@ -21,6 +21,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
     const [attempts, setAttempts] = useState(0);
     const [maxAttempts, setMaxAttempts] = useState(0);
     const [timeLimit, setTimeLimit] = useState(Infinity);
+    const [restartFlag, setRestartFlag] = useState(true); 
 
     useEffect(() => {
         setFlashcards(cardData);
@@ -147,6 +148,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
         setAnswer('');
         setCompletion(0);
         setAttempts(maxAttempts);
+        setRestartFlag(!restartFlag);
     };
 
     const shuffleCards = () => {
@@ -211,7 +213,8 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                         handleSubmitAnswer={handleSubmitAnswer}
                         isSpeakMode={false}
                         attempts={attempts}
-                        setAttempts={setAttempts}/>
+                        setAttempts={setAttempts}
+                        restartFlag={restartFlag}/>
                         )}
                     <div className={style.flashcard}>
                         <RotatingCardTest
