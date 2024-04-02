@@ -5,6 +5,9 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import Link from 'next/link';
 import Image from "next/image"; 
 import logo from '../assets/images/logo.png';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+
+
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -37,6 +40,27 @@ const Login = () => {
             }
 
             setError(userErrorMessage);
+        }
+    };
+
+    const handleGoogleLogin = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            const result = await signInWithPopup(auth, provider);
+            // The signed-in user info.
+            const user = result.user;
+            // Redirect to the dashboard page after successful login
+            router.push('/dashboard');
+        } catch (error) {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            // Set the error message
+            setError(errorMessage);
         }
     };
 
@@ -85,6 +109,11 @@ const Login = () => {
                         <div className='text-center mt-4'>
                             <button type="submit" className="btn btn-secondary">Login</button>
                         </div>
+
+                        {/* Google Log in */}
+                        <div className='text-center mt-4'>
+                        <button onClick={handleGoogleLogin} className="btn btn-secondary">Log in with Google</button>
+                    </div>
                     </form>
                     
                     <div className='text-center mt-4'>

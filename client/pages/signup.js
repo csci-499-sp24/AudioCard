@@ -6,6 +6,7 @@ import axios from 'axios'; // Import Axios for making HTTP requests
 import Link from 'next/link';
 import Image from "next/image"; 
 import logo from '../assets/images/logo.png';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const SignUp = () => {
     const [username, setUsername] = useState('');
@@ -71,6 +72,32 @@ const SignUp = () => {
         }
     };
 
+    const handleGoogleSignIn = async () => {
+        const provider = new GoogleAuthProvider();
+        const auth = getAuth();
+        try {
+          const result = await signInWithPopup(auth, provider);
+          // The signed-in user info.
+          const user = result.user;
+          //  the Google Auth token.
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+    
+          // Redirect to the dashboard page after successful sign up
+          router.push('/dashboard');
+          
+        } catch (error) {
+          // Handle Errors 
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // The email of the user's account used.
+          const email = error.email;
+          // The AuthCredential type that was used.
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          
+        }
+      };
+
     return (
         <div className="container">
             <div className="row mt-5 justify-content-md-center">
@@ -129,11 +156,12 @@ const SignUp = () => {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                             />                    
                         </div>
-
-                        <div className='text-center mt-4'>
-                            <button type="submit" className="btn btn-secondary">Sign Up</button>
-                        </div>
-                    </form>
+                    {/*Google sign in added here */}
+                        <div className='text-center mt-4 d-flex flex-column align-items-center'>
+                        <button type="submit" className="btn btn-secondary">Sign Up</button>
+                        <button onClick={handleGoogleSignIn} className="btn btn-secondary mt-2">Sign up with Google</button>
+                    </div>
+                </form>
                     
                     <div className='text-center mt-4'>
                         <Link href="/login" className="link-dark link-offset-2">Login</Link> 
