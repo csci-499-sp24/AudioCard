@@ -13,6 +13,12 @@ export const getLanguageCode = (language) => {
         case 'Spanish':
             languageCode = 'es-ES'; 
             break; 
+        case 'Bengali':
+            languageCode = 'bn-IN';
+            break;
+        case 'Chinese (Mandarin)':
+            languageCode = 'cmn-CN';
+            break;
     }
 
     return (languageCode); 
@@ -33,6 +39,12 @@ export const getLanguage = (languageCode) => {
         case 'es-ES':
             language = 'Spanish';
             break;
+        case 'bn-IN':
+            language = 'Bengali';
+            break; 
+        case 'cmn-CN':
+            language = 'Chinese (Mandarin)';
+            break; 
     }
 
     return language; 

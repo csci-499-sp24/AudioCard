@@ -29,6 +29,36 @@ export const getTranslation = (phrase, language) => {
                     translation = phrase;
             }
             break;
+            case 'bn-IN':
+                switch(phrase) {
+                    case 'Try again.':
+                        translation = "আবার চেষ্টা কর";
+                        break;
+                    case 'The correct answer is':
+                        translation = "সঠিক উত্তর হল";
+                        break;
+                    case 'Correct.':
+                        translation = "সঠিক";
+                        break;
+                    default:
+                        translation = phrase;
+                }
+                break;
+            case 'cmn-CN':
+                switch(phrase) {
+                    case 'Try again.':
+                        translation = "再试一次";
+                        break;
+                    case 'The correct answer is':
+                        translation = "正确答案是";
+                        break;
+                    case 'Correct.':
+                        translation = "正确的";
+                        break;
+                    default:
+                        translation = phrase;
+                }
+                break;
 
         default:
             translation = phrase; 
