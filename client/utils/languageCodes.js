@@ -19,6 +19,8 @@ export const getLanguageCode = (language) => {
         case 'Chinese (Mandarin)':
             languageCode = 'cmn-CN';
             break;
+        case 'Russian':
+            languageCode = 'ru-RU';
     }
 
     return (languageCode); 
@@ -45,6 +47,9 @@ export const getLanguage = (languageCode) => {
         case 'cmn-CN':
             language = 'Chinese (Mandarin)';
             break; 
+        case 'ru-RU':
+            language = 'Russian'; 
+            break;
     }
 
     return language; 

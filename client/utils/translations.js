@@ -59,6 +59,21 @@ export const getTranslation = (phrase, language) => {
                         translation = phrase;
                 }
                 break;
+            case 'ru-RU':
+                switch(phrase) {
+                    case 'Try again.':
+                        translation = "Попробуйте еще раз";
+                        break;
+                    case 'The correct answer is':
+                        translation = "Правильный ответ";
+                        break;
+                    case 'Correct.':
+                        translation = "Правильный";
+                        break;
+                    default:
+                        translation = phrase;
+                }
+                break;
 
         default:
             translation = phrase; 
