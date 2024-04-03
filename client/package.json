@@ -12,7 +12,7 @@
     "@fortawesome/fontawesome-free": "^6.5.1",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
-    "firebase": "^10.8.1",
+    "firebase": "^10.10.0",
     "howler": "^2.2.4",
     "next": "14.1.0",
     "react": "^18",
