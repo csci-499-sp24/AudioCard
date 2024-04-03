@@ -1,9 +1,9 @@
-export const checkAnswerSTT = (answer) => {
+export const checkAnswerSTT = (answer, timeLimit, language) => {
     return new Promise(async (resolve, reject) => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             const recognition = new webkitSpeechRecognition(); 
-            recognition.lang = 'en-US'; 
+            recognition.lang = language; 
             recognition.continuous = true; 
             recognition.interimResults = true; 
             let fullTranscript = '';
@@ -32,7 +32,7 @@ export const checkAnswerSTT = (answer) => {
             timeout = setTimeout(() => {
                 recognition.stop();
                 resolve(false);
-            }, 7000);
+            }, timeLimit * 1000);
 
             recognition.addEventListener('end', () => {
                 clearTimeout(timeout);

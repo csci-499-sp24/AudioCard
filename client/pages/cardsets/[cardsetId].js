@@ -8,11 +8,14 @@ import { CardsetView } from '../../components/CardsetView';
 import { EditView } from "@/components/EditCardset";
 import ShareFunction from "@/components/share";
 import { auth } from '../../utils/firebase';
-import {useDarkMode} from '../../utils/darkModeContext';
+import { useDarkMode } from '../../utils/darkModeContext';
 import { getSubjectStyle } from '@/utils/getSubjectStyles';
+import { CollaboratorList } from '@/components/collaboratorList';
 
-export default function CardsetPage () {
-    const { isDarkMode} = useDarkMode();
+
+
+export default function CardsetPage() {
+    const { isDarkMode } = useDarkMode();
     const [user, setUser] = useState(null);
     const router = useRouter();
     const [userData, setUserData] = useState(null);
@@ -31,7 +34,7 @@ export default function CardsetPage () {
     const cardsetId = router.query.cardsetId; // get current cardset Id from route
     useEffect(() => {
         if (cardset.subject) {
-            const {bgColor, txtColor} = getSubjectStyle(cardset.subject);
+            const { bgColor, txtColor } = getSubjectStyle(cardset.subject);
             setTxtColor(txtColor);
         }
     }, [cardset]);
@@ -108,7 +111,6 @@ export default function CardsetPage () {
                 // Make a GET request to fetch shared cardsets for the user
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${userData.id}/cardsets/${cardsetId}/shared`);
                 // Handle successful response
-                console.log(response)
                 const role = response.data[0].authority;
                 setAccess(true)
                 if (role == 'admin') {
@@ -119,7 +121,7 @@ export default function CardsetPage () {
                     setCanEdit(true)
                 }
 
-                
+
             } catch (error) {
                 // Handle error
                 console.error('Error fetching shared cardsets:', error);
@@ -144,9 +146,6 @@ export default function CardsetPage () {
         deleteCardSet(cardsetId);
     };
 
-
-
-
     const deleteCardSet = async (cardsetId) => {
         try {
             await axios.delete(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}`);
@@ -162,9 +161,14 @@ export default function CardsetPage () {
         router.push(`/test/${cardsetId}${darkModeParam}`);
     };
 
+    const navigateToReviewPage = () => {
+        const darkModeParam = isDarkMode ? '?darkMode=true' : '?darkMode=false';
+        router.push(`/review/${cardsetId}${darkModeParam}`);
+    };
+
     // Render flashcard data
     return (
-        <div className='wrapper'>
+        <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={userData?.id}/>
             <div className="container">
                 <div className="row">
@@ -180,10 +184,11 @@ export default function CardsetPage () {
                             <div className="row">
                                 <div className="row d-flex align-items-center">
                                     <div className='col'>
-                                        <button className={`btn ${isDarkMode? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>
+                                        <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>
                                     </div>
                                     <div className='col d-flex justify-content-end mb-4'>
                                         <button className="btn btn-secondary testButton" onClick={navigateToTestPage}>Test Mode</button>
+                                        <button className="btn btn-secondary ReviewButton" onClick={navigateToReviewPage}>Review Mode</button>
                                     </div>
                                 </div>
                             </div>
@@ -193,7 +198,7 @@ export default function CardsetPage () {
                     {!access || loading ? (
                         <div className='text-center'><h5>Loading...</h5></div>
                     ) : (
-                        <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards} canEdit={canEdit}/>
+                        <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards} canEdit={canEdit} />
                     )}
                     {/* All Flashcards in the set  */}
                     <div className="container">
@@ -203,33 +208,42 @@ export default function CardsetPage () {
                                 <div className="col mt-5 mb-2">
                                     <div className="">
                                         <h3>Flashcard Set: {cardset.title}</h3>
-                                        <div style={{ color: `${txtColor}` }}> Subject: {cardset.subject} </div>
+                                        <div> Subject: <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
                                         <div> {currentCardsetData.length} flashcards </div>
-                                        {cardset.isPublic ? 
+                                        {cardset.isPublic ?
+                                            <div>
+                                                <span className="bi bi-globe" title="public"></span>
+                                            </div>
+                                            :
+                                            <div>
+                                                <span className="bi bi-lock" title="restricted"></span>
+                                            </div>}
+
                                         <div>
-                                            <span className="bi bi-globe" title="public"></span>
+                                            <CollaboratorList cardsetId={cardset.id} />
                                         </div>
-                                            : 
-                                        <div>
-                                            <span className="bi bi-lock" title="restricted"></span>
-                                        </div>}
+
                                     </div>
                                 </div>
                             ) : null}
                             {/*Edit/Delete Flashcard set */}
                             {canEdit && (
-                            <>
-                                <div className='col d-flex justify-content-end'>
-                                    <div className="d-flex align-items-center">
-                                    <button className='btn' style={{color: isDarkMode ? 'white' : 'gray' }} onClick={toggleSharePopup}>Share</button>
-                                        <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
-                                        <button className="btn deleteButton" onClick={() => handleDelete()}>
-                                            <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
-                                        </button>
+                                <>
+                                    <div className='col d-flex justify-content-end'>
+                                        <div className="d-flex align-items-center">
+                                            {isadmin ?
+                                                <button className='btn' style={{ color: isDarkMode ? 'white' : 'gray' }} onClick={toggleSharePopup}>
+                                                <i className="bi bi-share"></i>
+                                            </button>
+                                                : null}
+                                            <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
+                                            <button className="btn deleteButton" onClick={() => handleDelete()}>
+                                                <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </>
-                        )}
+                                </>
+                            )}
 
                             {/* Delete message */}
                             {showDeleteConfirmation && (
@@ -247,23 +261,23 @@ export default function CardsetPage () {
                             )}
 
                             {isadmin && (
-                                    <div>
-                                        {showSharePopup && (
-                                                <div className="modal-content " style={{backgroundColor: isDarkMode ? '#2e3956' : 'white', color: isDarkMode ? 'white' : 'black'}}>
-                                                    <div className='row'>
-                                                    <div className='col d-flex justify-content-end'>
-                                                        <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }} onClick={toggleSharePopup}>
-                                                            &times;
-                                                        </button>
-                                                    </div>
-                                                    </div>
-                                                    <div className='row'>
-                                                        <ShareFunction userid={userData?.id} cardsetId={cardsetId}/>
-                                                    </div>
+                                <div>
+                                    {showSharePopup && (
+                                        <div className="modal-content " style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white', color: isDarkMode ? 'white' : 'black' }}>
+                                            <div className='row'>
+                                                <div className='col d-flex justify-content-end'>
+                                                    <button className="close-btn" style={{ color: isDarkMode ? 'white' : 'black' }} onClick={toggleSharePopup}>
+                                                        &times;
+                                                    </button>
                                                 </div>
-                                        )}
-                                    </div>
-                                )}
+                                            </div>
+                                            <div className='row'>
+                                                <ShareFunction userid={userData?.id} cardsetId={cardsetId} />
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                             {/* All Flashcards in the set */}
                             <div className="flashcardContainer mb-5">
                                 {currentCardsetData.map(flashcard => (
@@ -271,11 +285,11 @@ export default function CardsetPage () {
                                 ))}
                             </div>
                             {/* Edit Flashcards set */}
-                            { isEditPageOpen && (
+                            {isEditPageOpen && (
                                 <div className="edit-page-view" style={{ backgroundColor: isDarkMode ? '#0a092d' : '#ADD8E6' }}>
                                     <div className="edit-page-content">
-                                        <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseEditPage}>
-                                        &times;
+                                        <button className="close-btn" style={{ color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseEditPage}>
+                                            &times;
                                         </button>
                                         {currentCardsetData && (
                                             <EditView
@@ -404,10 +418,13 @@ export default function CardsetPage () {
                         background: none;
                         border: none;
                       }
+                    .ReviewButton {
+                        margin-left: 10px;
+                    }
                     `}</style>
                 </div>
             </div>
         </div>
     );
-    
-    }
+
+}

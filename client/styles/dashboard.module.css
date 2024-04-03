@@ -70,3 +70,21 @@
 #dashboardCardLink:active { 
     text-decoration: none !important; 
 } 
+
+#navigation {
+    border-bottom: 1px solid lightgrey;
+}
+
+#inlineNavItemActive,
+#inlineNavItemActive:active {
+    border-bottom: 5px solid #2273d6ba;
+}
+
+
+#inlineNavItemNotActive {
+
+}
+
+.nav-item:first-child > a {
+    padding: 0 !important;
+} 

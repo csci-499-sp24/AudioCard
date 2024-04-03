@@ -99,7 +99,7 @@ export const SearchBar = ({ cardsets, onSearchUpdate }) => {
                 <input className="form-control mr-sm-2 me-2" type="search" placeholder="Search"  aria-label="Search" onInput={(e) => onInputChange(e)}/>
             </form>
             <div className="dropdown me-2 flex-grow-1">
-                <button className="btn  flex-grow-1 dropdown-toggle col-4" style={{ backgroundColor: isDarkMode ? '#222222' : 'white', color: isDarkMode? 'white': 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button className="btn  flex-grow-1 dropdown-toggle col-4" id={isDarkMode ? 'dropdownDark' : 'dropdownLight'} type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {subject ? subject: "Any Subject"}
                 </button>
                 <ul className="dropdown-menu">
@@ -113,6 +113,7 @@ export const SearchBar = ({ cardsets, onSearchUpdate }) => {
                     <li><a className="dropdown-item" onClick={(e) => setSubject('Foreign Languages')}>Foreign Languages</a></li>
                     <li><a className="dropdown-item" onClick={(e) => setSubject('Nature')}>Nature</a></li>
                     <li><a className="dropdown-item" onClick={(e) => setSubject('Humanities')}>Humanities</a></li>
+                    <li><a className="dropdown-item" onClick={(e) => setSubject('Entertainment')}>Entertainment</a></li>
                     <li><a className="dropdown-item" onClick={(e) => setSubject('Health')}>Health</a></li>
                     <li><a className="dropdown-item" onClick={(e) => setSubject('Other')}>Other</a></li>
                 </ul>
@@ -142,6 +143,15 @@ export const SearchBar = ({ cardsets, onSearchUpdate }) => {
 
         </div>
     <style jsx>{`
+    #dropdownDark {
+        color: white;
+        background-color: #252526;
+        border: 1px solid #d3d3d340;
+        border-radius: 0.375rem;
+    }
+    #dropdownLight {
+        background-color: white;
+    }
     .custom-btn {
         padding: 0.5rem 1rem;
       }

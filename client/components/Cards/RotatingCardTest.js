@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import style from '../../styles/rotatingcardtest.module.css';
 import { useEffect } from 'react';
+import { useDarkMode } from '@/utils/darkModeContext';
 
-export const RotatingCardTest = ({ flashcards, index, isFlipped, borderClass, isDarkMode }) => {
-    console.log('Border class:', borderClass);
+export const RotatingCardTest = ({ flashcards, index, isFlipped, borderClass}) => {
+    const {isDarkMode} = useDarkMode();
     return (
         <div className={`d-flex justify-content-center ${style[borderClass]}`} id={style.container}>
             <div id={style.card} className={isFlipped ? style.isFlipped : ''}>

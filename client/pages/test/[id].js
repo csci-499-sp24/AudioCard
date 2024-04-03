@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { CardViewTestMode } from '@/components/CardViewTestMode';
+import { CardViewTestMode } from '@/components/Test Mode/CardViewTestMode';
+import Navbar from '../../components/Navbar/Navbar';
 import axios from 'axios';
 import { auth } from '@/utils/firebase';
 import styles from '../../styles/testmode.module.css';
@@ -58,7 +59,7 @@ const TestPage = (isDarkMode) => {
 
     return (
         <div>
-            <h1 className={styles.testModeHeading}>Test Mode</h1>
+            <h1 className="text-center">Test Mode</h1>
             <button className={styles.exitButton} onClick={() => router.back()}>
                 X
             </button>

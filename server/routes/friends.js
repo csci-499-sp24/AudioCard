@@ -127,6 +127,7 @@ async function restructureFriendData(friends, currentUserId){
 }
 
 //Routes for getting, adding, and deleting friends
+//uses api route of /api/users/:userid/friends
 router.route('/')
 //Get all of a user's friends and friend requests
 .get(async (req, res) => {  
@@ -238,6 +239,5 @@ router.route('/:friendId')
         res.status(500).json({ error: 'Error checking friendship status' });
     }
 });
-
 
 module.exports = router;

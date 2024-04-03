@@ -16,3 +16,9 @@
     border-radius: 0.3rem;
     cursor: pointer;
 }
+
+.setTitle{
+    color: #37505C;
+    display: flex;
+    justify-content: center;
+}

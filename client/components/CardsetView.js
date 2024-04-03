@@ -7,7 +7,6 @@ import {useDarkMode} from '../utils/darkModeContext';
 
 export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage, canEdit}) => {
     const {isDarkMode} = useDarkMode();
-    console.log('can edit:', canEdit)
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [showCreateFlashcardForm, setShowCreateFlashcardForm] = useState(false);
 
@@ -49,7 +48,7 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage, ca
                 {/*Study mode with rorating flashcard */}
                 <div className="row">
                     <div className='col mb-2'>
-                        <Flashcard cardData={currentCardsetData} userId={userId} cardsetId={cardsetId}/>
+                        <Flashcard cardData={currentCardsetData} userId={userId} cardsetId={cardsetId} canEdit ={canEdit}/>
                     </div>
                 </div>
                 { canEdit ?

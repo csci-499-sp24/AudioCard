@@ -14,13 +14,9 @@
     display: none !important;
 }
 
-
-@media (max-width: 991px) {
-
-    #mobileExploreLink {
-        display: inline-block !important;
-    }
-
+#navIconUser,
+#navIconMode {
+    font-size: 1.5em;
 }
 
 .navUserAvatar {
@@ -48,15 +44,36 @@
     white-space: nowrap;
 }
 
+.darkDropdownItem {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: white;
+    white-space: nowrap;
+}
+
 .dropdownItem:hover {
     background-color: #f8f8f8;
+    color: black;
+}
+
+.darkDropdownItem:hover {
+    background-color: #f8f8f8;
+    color: black;
 }
 
 .profileCircle {
-    /* Style your circle profile icon here */
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #333; /* Replace with user's image or preferred style */
+    background: #333;
     cursor: pointer;
+}
+
+@media (max-width: 991px) {
+
+    #mobileExploreLink {
+        display: inline-block !important;
+    }
+
 }
