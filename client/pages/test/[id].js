@@ -5,8 +5,10 @@ import Navbar from '../../components/Navbar/Navbar';
 import axios from 'axios';
 import { auth } from '@/utils/firebase';
 import styles from '../../styles/testmode.module.css';
+import { useDarkMode } from '@/utils/darkModeContext';
 
-const TestPage = (isDarkMode) => {
+const TestPage = () => {
+    const {isDarkMode} = useDarkMode(); 
     console.log(isDarkMode);
     const router = useRouter();
     const { id } = router.query; // This is the ID of the cardset
