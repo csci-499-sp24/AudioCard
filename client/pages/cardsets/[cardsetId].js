@@ -146,9 +146,6 @@ export default function CardsetPage() {
         deleteCardSet(cardsetId);
     };
 
-
-
-
     const deleteCardSet = async (cardsetId) => {
         try {
             await axios.delete(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}`);
@@ -162,6 +159,11 @@ export default function CardsetPage() {
     const navigateToTestPage = () => {
         const darkModeParam = isDarkMode ? '?darkMode=true' : '?darkMode=false';
         router.push(`/test/${cardsetId}${darkModeParam}`);
+    };
+
+    const navigateToReviewPage = () => {
+        const darkModeParam = isDarkMode ? '?darkMode=true' : '?darkMode=false';
+        router.push(`/review/${cardsetId}${darkModeParam}`);
     };
 
     // Render flashcard data
@@ -186,6 +188,7 @@ export default function CardsetPage() {
                                     </div>
                                     <div className='col d-flex justify-content-end mb-4'>
                                         <button className="btn btn-secondary testButton" onClick={navigateToTestPage}>Test Mode</button>
+                                        <button className="btn btn-secondary ReviewButton" onClick={navigateToReviewPage}>Review Mode</button>
                                     </div>
                                 </div>
                             </div>
