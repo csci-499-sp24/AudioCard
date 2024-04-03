@@ -17,6 +17,7 @@ export const ASRTestMode = ({ cardData}) => {
     const [progress, setProgress] = useState(0);
     const [completion, setCompletion] = useState(0);
     const [score, setScore] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
     const [showTestResult, setShowTestResult] = useState(false);
     const [testStarted, setTestStarted] = useState(false);
     const [restartFlag, setRestartFlag] = useState(true); 
@@ -55,6 +56,10 @@ export const ASRTestMode = ({ cardData}) => {
             })
         }
     }, [language])
+    
+    useEffect(() => {
+        console.log('Is Paused: ', isPaused);
+    }, [isPaused]);
 
     useEffect(() => {
         setFlashcards(cardData);
@@ -88,10 +93,12 @@ export const ASRTestMode = ({ cardData}) => {
             let _duration = await TTS(flashcards[index].term, voiceGender, language);
             console.log(_duration); 
             if (_duration >= 3) {
-                let difference = _duration - 2;
+                setIsPaused(true);
+                let difference = _duration - 3;
                 await new Promise(resolve => setTimeout(resolve, difference * 1000));
                 console.log('Paused for', difference, 'seconds');
             }
+            setIsPaused(false);
         }
     }
 
@@ -130,12 +137,15 @@ export const ASRTestMode = ({ cardData}) => {
             if (!isCorrect) {
                 setBorderClass('incorrect');
                 let _duration = await TTS(`${phrases.theCorrectAnswerIs} ${flashcards[index].definition}`, voiceGender, language);
+                setIsFlipped(false);
                 console.log(_duration)
                 if (_duration >= 3) {
+                    setIsPaused(true);
                     let difference = _duration - 2;
                     await new Promise(resolve => setTimeout(resolve, difference * 1000));
                     console.log('Paused for', difference, 'seconds');
                 }
+                setIsPaused(false);
             }
         }   
         setIsFlipped(true);
@@ -222,7 +232,8 @@ export const ASRTestMode = ({ cardData}) => {
                         showTestResult={showTestResult}
                         isFlipped={isFlipped}
                         isSpeakMode={true}
-                        restartFlag={restartFlag}/>
+                        restartFlag={restartFlag}
+                        isPaused={isPaused}/>
                     <div className={style.flashcard}>
                         <RotatingCardTest
                             flashcards={flashcards}
