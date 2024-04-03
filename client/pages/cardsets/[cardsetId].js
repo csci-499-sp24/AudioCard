@@ -418,6 +418,9 @@ export default function CardsetPage() {
                         background: none;
                         border: none;
                       }
+                    .ReviewButton {
+                        margin-left: 10px;
+                    }
                     `}</style>
                 </div>
             </div>

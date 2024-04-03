@@ -57,11 +57,18 @@ const ReviewPage = (isDarkMode) => {
     };
 
     return (
-        <div>
+        <div className='container'>
             <h1 className="text-center">Review Mode</h1>
             <button className={styles.exitButton} onClick={() => router.back()}>
                 X
             </button>
+            <hr />
+            <div className="row">
+                    <div className="col mb-2">
+                        <h1 className={styles.setTitle}>Current cardset: {cardsetData?.title}</h1>
+                    </div>
+                </div>
+            <hr />
             {cardsetData && <CardViewReviewMode userId={userData?.id} cardset={cardsetData} isDarkMode={isDarkMode} />}
 
         </div>
