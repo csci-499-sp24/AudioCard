@@ -50,6 +50,7 @@ next-env.d.ts
 #sens info
 /server/config.js
 
+#google keys info
 /server/googlekeys.json
 
 # Next.js cache files
