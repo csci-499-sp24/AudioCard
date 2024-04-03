@@ -5,7 +5,8 @@ import { getLanguage } from '@/utils/languageCodes';
 export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange, 
     timeLimit, handleTimeLimit,
     voiceGender, setVoiceGender,
-    language, setLanguage}) => {
+    language, setLanguage,
+    speakingRate, setSpeakingRate}) => {
     const {isDarkMode} = useDarkMode();
     const [isTimeLimitUnlocked, setTimeLimitUnlocked] = useState(true);
     const inputValue = timeLimit === Infinity ? 30 : timeLimit;
@@ -94,6 +95,26 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange,
                         <li><a className="dropdown-item" onClick={() => setLanguage('es-ES')}>Spanish</a></li>
                     </ul>
                 </div> 
+            </div>
+            <div className='row flex d-flex align-items-center mt-3'>
+                <div className='col d-flex justify-content-end'>
+                    <div> Speaking Rate: </div> 
+
+                    </div>
+                <div className='col d-flex justify-content-begin'>
+                <input
+                    className='me-2'
+                    type="range"
+                    id="timeLimit"
+                    name="timeLimit"
+                    min="0.25"
+                    max="4.0"
+                    step="0.25"
+                    value={speakingRate}
+                    onChange={(e) => setSpeakingRate(parseFloat(e.target.value))}
+                    />
+                    <span>{speakingRate}</span>
+                </div>
             </div> 
                 </div>) 
             }

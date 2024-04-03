@@ -112,10 +112,10 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
 
     return (
         <div className="container">
-            <div className={style.topRightButtons}>
-                <button className={style.optionButton} onClick={handleShowOptions}>
-                <i class="fa-solid fa-gear"></i>
-                </button>
+            <div className='d-flex justify-content-end'>
+            <button className={style.optionButton} onClick={handleShowOptions}>
+                <i className={`fa-solid fa-gear ${style.gearIcon}`}></i>
+            </button>
             </div>
             {showOptions && (
                 <div className={style.optionsOverlay}>

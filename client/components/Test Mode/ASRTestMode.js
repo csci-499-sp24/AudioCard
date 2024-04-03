@@ -23,6 +23,7 @@ export const ASRTestMode = ({ cardData}) => {
     const [restartFlag, setRestartFlag] = useState(true); 
     const [showOptions, setShowOptions] = useState(false);
     const [maxAttempts, setMaxAttempts] = useState(0);
+    const [speakingRate, setSpeakingRate] = useState(1.0); 
     const mounted = useRef(false);
     const [timeLimit, setTimeLimit] = useState(7);
     const [voiceGender, setVoiceGender] = useState('NEUTRAL');
@@ -90,7 +91,7 @@ export const ASRTestMode = ({ cardData}) => {
 
     const speakCard = async () => {
         if (!showTestResult){
-            let _duration = await TTS(flashcards[index].term, voiceGender, language);
+            let _duration = await TTS(flashcards[index].term, voiceGender, language, speakingRate);
             console.log(_duration); 
             if (_duration >= 3) {
                 setIsPaused(true);
@@ -115,15 +116,15 @@ export const ASRTestMode = ({ cardData}) => {
             setScore((currentScore) => currentScore + 1);
             const newProgress = progress + (100 / flashcards.length)
             setProgress(newProgress);
-            TTS(phrases.correct, voiceGender, language);
+            TTS(phrases.correct, voiceGender, language, speakingRate);
         } else {
                 setBorderClass('incorrect');
             for (let attempt = maxAttempts; attempt > 0 && mounted.current; attempt--) {
-                TTS(phrases.tryAgain, voiceGender, language);
+                TTS(phrases.tryAgain, voiceGender, language, speakingRate);
                 setTimeout(() => {
                     setBorderClass('');
                 }, 2000)
-                isCorrect = await checkAnswerSTT(answer, timeLimit, language);
+                isCorrect = await checkAnswerSTT(answer, timeLimit, language, speakingRate);
                 setBorderClass(isCorrect ? 'correct' : 'incorrect');
                 if (isCorrect) {
                     setScore((currentScore) => currentScore + 1);
@@ -136,7 +137,7 @@ export const ASRTestMode = ({ cardData}) => {
             if (!mounted.current) return;
             if (!isCorrect) {
                 setBorderClass('incorrect');
-                let _duration = await TTS(`${phrases.theCorrectAnswerIs} ${flashcards[index].definition}`, voiceGender, language);
+                let _duration = await TTS(`${phrases.theCorrectAnswerIs} ${flashcards[index].definition}`, voiceGender, language, speakingRate);
                 setIsFlipped(false);
                 console.log(_duration)
                 if (_duration >= 3) {
@@ -196,8 +197,8 @@ export const ASRTestMode = ({ cardData}) => {
     }
     return (
         <div className="container">
-            <div className={style.topRightButtons}>
-                <button className={style.optionButton} onClick={() => setShowOptions(true)}>Options</button>
+            <div className="d-flex justify-content-end">
+                <button className={style.optionButton} onClick={() => setShowOptions(true)}><i className={`fa-solid fa-gear ${style.gearIcon}`}></i></button>
             </div>
             {showOptions && (
                 <div className={style.optionsOverlay}>
@@ -205,7 +206,8 @@ export const ASRTestMode = ({ cardData}) => {
                     <TestOptions isSpeakMode={true} attempts={maxAttempts} handleAttemptChange={handleAttemptChange}
                     timeLimit={timeLimit} handleTimeLimit={handleTimeLimit}
                     voiceGender={voiceGender} setVoiceGender={setVoiceGender}
-                    language={language} setLanguage={setLanguage}/>
+                    language={language} setLanguage={setLanguage}
+                    speakingRate={speakingRate} setSpeakingRate={setSpeakingRate}/>
                     <div className={style.closeButtonContainer}>
                         <button className={style.closeButton} onClick={() => {
                         setShowOptions(false);

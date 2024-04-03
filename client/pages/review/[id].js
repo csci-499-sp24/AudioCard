@@ -4,9 +4,10 @@ import { CardViewReviewMode } from '@/components/CardViewReviewMode';
 import axios from 'axios';
 import { auth } from '@/utils/firebase';
 import styles from '../../styles/testmode.module.css';
+import { useDarkMode } from '@/utils/darkModeContext';
 
-const ReviewPage = (isDarkMode) => {
-    console.log(isDarkMode);
+const ReviewPage = () => {
+    const {isDarkMode} = useDarkMode();
     const router = useRouter();
     const { id } = router.query; // This is the ID of the cardset
     const [user, setUser] = useState(null);
@@ -59,8 +60,8 @@ const ReviewPage = (isDarkMode) => {
     return (
         <div className='container'>
             <h1 className="text-center">Review Mode</h1>
-            <button className={styles.exitButton} onClick={() => router.back()}>
-                X
+            <button className={styles.exitButton} style={{color: isDarkMode? 'white': 'black'}} onClick={() => router.back()}>
+                &times;
             </button>
             <hr />
             <div className="row">

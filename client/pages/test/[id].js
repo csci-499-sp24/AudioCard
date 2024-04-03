@@ -60,8 +60,8 @@ const TestPage = (isDarkMode) => {
     return (
         <div>
             <h1 className="text-center">Test Mode</h1>
-            <button className={styles.exitButton} onClick={() => router.back()}>
-                X
+            <button className={styles.exitButton} style={{color: isDarkMode? 'white': 'black'}} onClick={() => router.back()}>
+                &times;
             </button>
             {cardsetData && <CardViewTestMode userId={userData?.id} cardset={cardsetData} isDarkMode={isDarkMode} />}
 
