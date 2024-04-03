@@ -22,7 +22,7 @@ export const ASRTestMode = ({ cardData}) => {
     const [restartFlag, setRestartFlag] = useState(true); 
     const [showOptions, setShowOptions] = useState(false);
     const [maxAttempts, setMaxAttempts] = useState(0);
-    const mounted = useRef(false)
+    const mounted = useRef(false);
     const [timeLimit, setTimeLimit] = useState(7);
     const [voiceGender, setVoiceGender] = useState('NEUTRAL');
     const [language, setLanguage] = useState('en-US');
@@ -85,7 +85,13 @@ export const ASRTestMode = ({ cardData}) => {
 
     const speakCard = async () => {
         if (!showTestResult){
-            TTS(flashcards[index].term, voiceGender, language);
+            let _duration = await TTS(flashcards[index].term, voiceGender, language);
+            console.log(_duration); 
+            if (_duration >= 3) {
+                let difference = _duration - 2;
+                await new Promise(resolve => setTimeout(resolve, difference * 1000));
+                console.log('Paused for', difference, 'seconds');
+            }
         }
     }
 
@@ -123,7 +129,13 @@ export const ASRTestMode = ({ cardData}) => {
             if (!mounted.current) return;
             if (!isCorrect) {
                 setBorderClass('incorrect');
-                await TTS(`${phrases.theCorrectAnswerIs} ${flashcards[index].definition}`, voiceGender, language); 
+                let _duration = await TTS(`${phrases.theCorrectAnswerIs} ${flashcards[index].definition}`, voiceGender, language);
+                console.log(_duration)
+                if (_duration >= 3) {
+                    let difference = _duration - 2;
+                    await new Promise(resolve => setTimeout(resolve, difference * 1000));
+                    console.log('Paused for', difference, 'seconds');
+                }
             }
         }   
         setIsFlipped(true);

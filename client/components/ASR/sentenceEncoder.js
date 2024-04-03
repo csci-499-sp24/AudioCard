@@ -9,13 +9,9 @@ import axios from 'axios';
                 let fullTranscript = '';
 
                 recognition.onresult = async (event) => {
-                    let interimTranscript = ''; 
-                    console.log('transcript: ', interimTranscript); 
                     for (let i = event.resultIndex; i < event.results.length; i++) {
                         if (event.results[i].isFinal) {
                             fullTranscript += event.results[i][0].transcript + ' '; 
-                        } else {
-                            interimTranscript += event.results[i][0].transcript + ' ';
                         }
                     }
                     if (fullTranscript.length >= 1) {
@@ -24,8 +20,9 @@ import axios from 'axios';
                     console.log (fullTranscript, similarity)
                    if (similarity >= 0.75) {
                         console.log('Match!'); 
-                        /* recognition.stop();
-                        resolve(true);*/ 
+                    }
+                    else {
+                        console.log('Did not match')
                     }
                     }
                 }; 

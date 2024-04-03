@@ -7,6 +7,7 @@ const speechRoutes = require('./speechIncoming');
 const textToSpeechRoutes = require('./textToSpeech.js');
 const sharedRoutes = require('./sharedCardsets');
 const sentenceEncoder = require('./sentenceEncoder.js');
+const naturalLanguage = require('./sentenceEncoder.js')
 
 app.use('/cardsets', cardsetsRoutes);
 app.use('/users', usersRoutes);
@@ -15,5 +16,6 @@ app.use('/speechIncoming', speechRoutes);
 app.use('/textToSpeech',textToSpeechRoutes);
 app.use('/shared', sharedRoutes);
 app.use('/sentenceEncoder', sentenceEncoder);
+app.use('naturalLanguage', naturalLanguage);
 
 module.exports = app;
