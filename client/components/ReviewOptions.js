@@ -2,7 +2,7 @@ import React from 'react';
 import { useDarkMode } from '@/utils/darkModeContext';
 import { getLanguage } from '@/utils/languageCodes';
 
-export const ReviewOptions = ({voiceGender, setVoiceGender, language, setLanguage, delay, setDelay, willLoop, setWillLoop}) => {
+export const ReviewOptions = ({voiceGender, setVoiceGender, language, setLanguage, delay, setDelay, willLoop, setWillLoop, speakingRate, setSpeakingRate}) => {
   const { isDarkMode } = useDarkMode();
 
   return (
@@ -18,7 +18,7 @@ export const ReviewOptions = ({voiceGender, setVoiceGender, language, setLanguag
           </div>
       </div>
       </div>
-      <div className='row flex d-flex align-items-center mt-3'>
+      <div className='row flex d-flex align-items-center mt-2'>
         <div className='col d-flex justify-content-end'>
           <div>Voice Gender:</div>
         </div>
@@ -51,7 +51,7 @@ export const ReviewOptions = ({voiceGender, setVoiceGender, language, setLanguag
           </ul>
         </div>
       </div>
-      <div className='row flex d-flex align-items-center mt-3'>
+      <div className='row flex d-flex align-items-center mt-2'>
         <div className='col d-flex justify-content-end'>
           <div>Language:</div>
         </div>
@@ -76,7 +76,26 @@ export const ReviewOptions = ({voiceGender, setVoiceGender, language, setLanguag
           </ul>
         </div>
       </div>
-     <div className='row flex d-flex align-items-center mt-3'>
+    <div className='row flex d-flex align-items-center mt-2'>
+      <div className='col d-flex justify-content-end'>
+        <div>Speaking speed: </div>
+      </div>
+      <div className='col d-flex justify-content-begin'>
+            <input
+            className='me-2'
+              type="range"
+              id="timeLimit"
+              name="timeLimit"
+              min="0.25"
+              max="4.0"
+              step="0.25"
+              value={speakingRate}
+              onChange={(e) => setSpeakingRate(parseFloat(e.target.value))}
+            />
+            <span>{speakingRate}</span>
+  </div>
+    </div>
+     <div className='row flex d-flex align-items-center mt-2'>
       <div className='col d-flex justify-content-end'>
         <div>Delay in seconds:</div>
       </div>

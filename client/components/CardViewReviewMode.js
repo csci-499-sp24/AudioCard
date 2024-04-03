@@ -19,6 +19,7 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
     const [showOptions, setShowOptions] = useState(false);
     const [delay, setDelay] = useState(4);
     const [willLoop, setWillLoop] = useState(false);
+    const [speakingRate, setSpeakingRate] = useState(1.0);
 
     useEffect(() => {
         mounted.current = true;
@@ -60,7 +61,7 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
         const currentIndex = index;
         if (index !== currentIndex) return ; 
         const speakAndPause = async (text) => {
-            _duration = await TTS(text, voiceGender, language);
+            _duration = await TTS(text, voiceGender, language, speakingRate);
             await new Promise(resolve => setTimeout(resolve, _duration * 1000));
         };
     
@@ -113,7 +114,7 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
         <div className="container">
             <div className={style.topRightButtons}>
                 <button className={style.optionButton} onClick={handleShowOptions}>
-                    Options
+                <i class="fa-solid fa-gear"></i>
                 </button>
             </div>
             {showOptions && (
@@ -128,6 +129,8 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
                             setDelay={setDelay}
                             willLoop={willLoop}
                             setWillLoop={setWillLoop}
+                            speakingRate={speakingRate}
+                            setSpeakingRate={setSpeakingRate}
                         />
                         <div className={style.closeButtonContainer}>
                             <button className={style.closeButton} onClick={handleCloseOptions}>
