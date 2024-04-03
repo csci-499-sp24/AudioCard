@@ -65,7 +65,7 @@ const ReviewPage = (isDarkMode) => {
             <hr />
             <div className="row">
                     <div className="col mb-2">
-                        <h1 className={styles.setTitle}>Current cardset: {cardsetData?.title}</h1>
+                        <h1 className={styles.setTitle}>{cardsetData?.title}</h1>
                     </div>
                 </div>
             <hr />

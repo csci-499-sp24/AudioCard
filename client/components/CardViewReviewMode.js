@@ -17,6 +17,8 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
     const mounted = useRef(true);
     const timeoutRef = useRef(null);
     const [showOptions, setShowOptions] = useState(false);
+    const [delay, setDelay] = useState(4);
+    const [willLoop, setWillLoop] = useState(false);
 
     useEffect(() => {
         mounted.current = true;
@@ -32,6 +34,7 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
             fetchData();
         }
     }, [index, dataFetched]);
+
 
     const fetchFlashCards = async () => {
         try {
@@ -51,21 +54,46 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
     };
 
     const speakCard = async () => {
-        TTS(flashcards[index].term, voiceGender, language);
+        if (!mounted.current) return;
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
-
-        timeoutRef.current = setTimeout(() => {
-            if (!mounted.current) return;
-            setIsFlipped(true);
-            TTS(flashcards[index].definition, voiceGender, language);
-            timeoutRef.current = setTimeout(() => {
-                if (!mounted.current) return;
-                setIsFlipped(false);
-                if (index < flashcards.length - 1) {
-                    setIndex((currentIndex) => currentIndex + 1);
+        let _duration;
+        const currentIndex = index;
+        if (index !== currentIndex) return ; 
+        const speakAndPause = async (text) => {
+            _duration = await TTS(text, voiceGender, language);
+            await new Promise(resolve => setTimeout(resolve, _duration * 1000));
+        };
+    
+        await speakAndPause(flashcards[currentIndex].term);
+        await new Promise(resolve => setTimeout(resolve, delay * 1000));
+        setIsFlipped(true); 
+        await speakAndPause(flashcards[currentIndex].definition);
+        
+        setTimeout(() => {
+            if (index !== currentIndex || !mounted.current) return;
+            setIsFlipped(false);
+            setTimeout(() => {
+                if (willLoop){
+                    if (currentIndex + 1 >= flashcards.length){
+                        setIndex (0);
+                        return; 
+                    }
                 }
-            }, 4000);
-        }, 5000);
+                setIndex((currentIndex) => currentIndex + 1);
+            }, 150);
+        }, 2000);
+        
+    };
+    
+    const shuffleCards = () => {
+        let shuffledCards = [...flashcards];
+        for (let i = shuffledCards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledCards[i], shuffledCards[j]] = [shuffledCards[j], shuffledCards[i]];
+        }
+        setFlashcards(shuffledCards);
+        handleRestartTest();
+        setShowOptions(false);
     };
 
     const handleRestartTest = () => {
@@ -85,7 +113,7 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
         <div className="container">
             <div className={style.topRightButtons}>
                 <button className={style.optionButton} onClick={handleShowOptions}>
-                    Show Options
+                    Options
                 </button>
             </div>
             {showOptions && (
@@ -96,6 +124,10 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
                             setVoiceGender={setVoiceGender}
                             language={language}
                             setLanguage={setLanguage}
+                            delay={delay}
+                            setDelay={setDelay}
+                            willLoop={willLoop}
+                            setWillLoop={setWillLoop}
                         />
                         <div className={style.closeButtonContainer}>
                             <button className={style.closeButton} onClick={handleCloseOptions}>
@@ -113,11 +145,18 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
                             isFlipped={isFlipped}
                         />
                 </div>
-                <div className={style.restartButtonContainer}>
-                    <button className={'btn btn-secondary'} onClick={handleRestartTest}>
-                        Restart Review
-                    </button>
-                </div>
+
+                <div className='row mx-auto mt-3 mb-5' id={style.optionButtons}>
+                            <div className="d-flex justify-content-between">
+                                <div className=''>
+                                    <button className='btn btn-secondary' title='Restart Test' onClick={handleRestartTest}><i class="fa fa-refresh"></i></button>
+                                </div>
+                                <div className=''>
+                                    <button className='btn btn-secondary' title='Shuffle Cards' onClick={shuffleCards}><i class="fas fa-random"></i></button>
+                                </div>
+
+                            </div>
+                        </div>
             </div>
         </div>
     );

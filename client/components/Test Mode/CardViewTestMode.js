@@ -37,7 +37,7 @@ export const CardViewTestMode = ({ userId, cardset }) => {
                 <hr />
                 <div className="row">
                     <div className="col mb-2">
-                        <h1 className={styles.setTitle}>Current cardset: {cardset.title}</h1>
+                        <h1 className={styles.setTitle}>{cardset.title}</h1>
                     </div>
                 </div>
                 {/*Pass all the cards of the cardset to the flashcard component*/}
