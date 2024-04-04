@@ -1,3 +1,5 @@
+import { numberSpellings } from "@/utils/translations";
+
 export const checkAnswerSTT = (answer, timeLimit, language) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -9,11 +11,26 @@ export const checkAnswerSTT = (answer, timeLimit, language) => {
             let fullTranscript = '';
             let timeout;
             answer = answer.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, '');
+
+            //replace numerical rep of number with spelled out version
+            const spelledOutNumbers = numberSpellings[language][0]; 
+            for (let i = 0; i < 9; i++) {
+                const numRegExp = new RegExp(`(?<![0-9])${i + 1}(?![0-9])`, 'g'); // Match only if not surrounded by other numbers
+                answer = answer.replace(numRegExp, spelledOutNumbers[i]);
+            }
             
             recognition.onresult = (event) => {
+                for (let j = event.resultIndex; j < event.results.length; j++) {
+                    if (event.results[j].isFinal) {
+                        fullTranscript += event.results[j][0].transcript + ' ';
+                        for (let i = 0; i < 9; i++) {
+                            const numRegExp = new RegExp(`(?<![0-9])${i + 1}(?![0-9])`, 'g');
+                            fullTranscript = fullTranscript.replace(numRegExp, spelledOutNumbers[i]);
+                        }
+                    }
+                }
                 let interimTranscript = event.results[event.results.length - 1][0].transcript; 
                 console.log('Interim Transcription:', interimTranscript);
-                fullTranscript += interimTranscript;
                 fullTranscript = fullTranscript.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, '');
                 interimTranscript = interimTranscript.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, '');
                 if (fullTranscript.toLowerCase().includes(answer.toLowerCase()) || interimTranscript.toLowerCase().includes(answer.toLowerCase())) {

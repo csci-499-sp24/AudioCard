@@ -174,8 +174,8 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
 
     return (
         <div className="container">
-            <div className={style.topRightButtons}>
-                <button className={style.optionButton} onClick={() => setShowOptions(true)}>Options</button>
+            <div className="d-flex justify-content-end">
+                <button className={style.optionButton} onClick={() => setShowOptions(true)}><i className={`fa-solid fa-gear ${style.gearIcon}`}></i></button>
             </div>
             {showOptions && (
                 <div className={style.optionsOverlay}>

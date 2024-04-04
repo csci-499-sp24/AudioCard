@@ -11,6 +11,8 @@ import { auth } from '../../utils/firebase';
 import { useDarkMode } from '../../utils/darkModeContext';
 import { getSubjectStyle } from '@/utils/getSubjectStyles';
 import { CollaboratorList } from '@/components/collaboratorList';
+import Image from 'next/image';
+import exam from '../../assets/images/exam.png'; 
 
 
 
@@ -171,8 +173,11 @@ export default function CardsetPage() {
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={userData?.id}/>
             <div className="container">
-                <div className="row">
-                    <div className="col mt-5 mb-2">
+                <div className="row mt-5">
+                    <div className='col'>
+                        <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>
+                        </div>
+                    <div className="row">
                         <h1 className="text-center">{cardset.title}</h1>
                     </div>
                     {!access ? (
@@ -183,12 +188,10 @@ export default function CardsetPage() {
                         <div className="container">
                             <div className="row">
                                 <div className="row d-flex align-items-center">
-                                    <div className='col'>
-                                        <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>
-                                    </div>
-                                    <div className='col d-flex justify-content-end mb-4'>
-                                        <button className="btn btn-secondary testButton" onClick={navigateToTestPage}>Test Mode</button>
-                                        <button className="btn btn-secondary ReviewButton" onClick={navigateToReviewPage}>Review Mode</button>
+                                    <div className='col d-flex justify-content-center mb-4 mt-3'>
+                                        <button className="btn btn-lg testButton" style={{backgroundColor: isDarkMode? '#377ec9':'white', color: isDarkMode? 'white' : 'black'}} onClick={navigateToTestPage}> <Image style={{height: '1.5em', width: '1.5em'}}src={exam}/> Test</button>
+                                        <button className="btn btn-lg ReviewButton"  style={{backgroundColor: isDarkMode? '#377ec9':'white', color: isDarkMode? 'white' : 'black'}} onClick={navigateToReviewPage}>
+                                            <i className="bi bi-headphones"></i> Review</button>
                                     </div>
                                 </div>
                             </div>

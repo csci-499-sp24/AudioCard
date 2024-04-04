@@ -16,5 +16,9 @@ jobs:
         run: |
           npm install cross-fetch
           npm install
+      - name: Set up environment variables
+        env:
+          ENV_FILE_CONTENTS: ${{ secrets.ENV_FILE }}
+        run: echo "${ENV_FILE_CONTENTS}" > .env
       - name: Test
         run: npm test -- --coverage
