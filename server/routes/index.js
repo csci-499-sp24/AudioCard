@@ -7,6 +7,7 @@ const speechRoutes = require('./speechIncoming');
 const recorderRoutes = require('./recorder.js');
 const textToSpeechRoutes = require('./textToSpeech.js');
 const sharedRoutes = require('./sharedCardsets');
+const userAvatarRoutes = require('./userAvatar');
 
 app.use('/cardsets', cardsetsRoutes);
 app.use('/users', usersRoutes);
@@ -15,4 +16,6 @@ app.use('/speechIncoming', speechRoutes);
 app.use('/recorder', recorderRoutes);
 app.use('/textToSpeech',textToSpeechRoutes);
 app.use('/shared', sharedRoutes)
+app.use('/userAvatar', userAvatarRoutes);
+
 module.exports = app;
