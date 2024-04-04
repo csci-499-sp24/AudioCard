@@ -61,7 +61,7 @@ const TestPage = () => {
 
     return (
         <div>
-            <h1 className="text-center">Test Mode</h1>
+            <h1 className="text-center mt-5">Test Mode</h1>
             <button className={styles.exitButton} style={{color: isDarkMode? 'white': 'black'}} onClick={() => router.back()}>
                 &times;
             </button>
