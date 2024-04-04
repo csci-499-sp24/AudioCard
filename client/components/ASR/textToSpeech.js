@@ -17,15 +17,15 @@ export const TTS = (input, voiceGender, language, speakingRate) => {
 
                 const sound = new Howl({
                     src: [audioSrc],
-                    format: ['mp3']
+                    format: ['mp3'],
+                    onload: () => {
+                        console.log('duration at tts:', sound.duration()); 
+                        resolve(sound.duration());
+                    },
                 });
 
                 sound.play(); 
 
-                setTimeout(() => {
-                    console.log("Duration at TTS:", duration)
-                    resolve(sound.duration());
-                }, 1000);
             })
             .catch(error => {
                 console.error('Error:', error);
