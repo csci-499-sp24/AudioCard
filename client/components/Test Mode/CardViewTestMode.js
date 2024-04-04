@@ -39,7 +39,7 @@ export const CardViewTestMode = ({ userId, cardset }) => {
                 <div className="row mb-2">
                     <div className="col-12">
                         <ul className="nav nav-tabs nav-fill" style={{width: '100%'}}>
-                            <li className="nav-item" style={{ flex: '1' }}>
+                            <li className="nav-item" style={{ flex: '1', borderTop: '1px solid #ccc', borderRight: '1px solid #ccc', borderLeft: '1px solid #ccc', borderRadius: '5px' }}>
                                 <button
                                     className={`nav-link ${selectedMode === 'speak' ? 'active' : ''}`}
                                     onClick={() => setSelectedMode('speak')}
@@ -47,7 +47,7 @@ export const CardViewTestMode = ({ userId, cardset }) => {
                                     <i className="bi bi-headset"></i> Speak
                                 </button>
                             </li>
-                            <li className="nav-item" style={{ flex: '1' }}>
+                            <li className="nav-item" style={{ flex: '1', borderTop: '1px solid #ccc', borderRight: '1px solid #ccc', borderRadius: '5px' }}>
                                 <button
                                     className={`nav-link ${selectedMode === 'type' ? 'active' : ''}`}
                                     onClick={() => setSelectedMode('type')}
@@ -70,7 +70,7 @@ export const CardViewTestMode = ({ userId, cardset }) => {
                         </div>
                         <div classname='bodyContainer'>
                             <div className='row'>
-                                <div>Select a mode to get started.</div>
+                                <div>Select a mode above to start.</div>
                             </div>
                             <div className='row mt-5' style={{color: 'green'}}>
                                 <div>&#127911; Speak Mode:</div>
