@@ -33,10 +33,11 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange,
     return (
         <div className='container'>
             <h2>Options</h2>
-            <div className='row d-flex align-items-center justify-content-center' style={{marginBottom: 10}}>
-                <div className='col d-flex justify-content-center'>
-                    <div className="d-flex align-items-center">
+            <div className='row d-flex align-items-center' style={{marginBottom: 10}}>
+                <div className='col d-flex justify-content-end'>
                         <div className="me-2">Attempts per card:</div> 
+                </div>
+                <div className='col d-flex justify-content-begin'>
                         <div className="dropdown">
                             <button className="btn dropdown-toggle" style={{ backgroundColor: 'transparent', color: isDarkMode ? 'white' : 'black' }} type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {attempts ? attempts + 1 : "1"}
@@ -47,14 +48,15 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange,
                                 ))}
                             </ul>
                         </div>
-                    </div>
                 </div>
             </div>
-            <div className='row' style={{marginBottom: 10}}>
-                <div className="flex d-flex align-items-center justify-content-center">
-                    <label htmlFor="answer" className="me-2">Time Limit: </label>
-                    <input type="number" id="timeLimit" name="timeLimit" value={inputValue} onChange={(e) => handleTimeLimit(e.target.value)} style={{ width: "15%", marginRight: 2 }} disabled={!isTimeLimitUnlocked}  className={isTimeLimitUnlocked ? '' : 'darkInput'}/>
-                    <div style={{marginRight: 2}}>seconds</div>
+            <div className='row d-flex align-items-center' style={{marginBottom: 10}}>
+                <div className="col flex d-flex justify-content-end">
+                    <label htmlFor="timeLimit" className="me-2">Time Limit: </label>
+                </div>
+                <div className='col flex d-flex justify-content-begin'>
+                    <input type="number" id="timeLimit" name="timeLimit" value={inputValue} onChange={(e) => handleTimeLimit(e.target.value)} style={{ width: "25%", marginRight: 2 }} placeholder={timeLimit} disabled={!isTimeLimitUnlocked}  className={isTimeLimitUnlocked ? '' : 'darkInput'}/>
+                    <div>seconds</div>
                     {!isSpeakMode && (<div className={`form-check form-switch d-flex align-items-center justify-content-center`} onClick={toggleTimeLimitUnlock}>
                     <input className="form-check-input" type="checkbox" id="toggleTimeLimit" checked={isTimeLimitUnlocked} onChange={() => {}} />
                     </div>)}
