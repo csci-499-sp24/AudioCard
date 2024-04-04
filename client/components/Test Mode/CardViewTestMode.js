@@ -82,7 +82,7 @@ export const CardViewTestMode = ({ userId, cardset }) => {
                                 <div>&#x1F5A5; Type Mode:</div>
                             </div>
                             <div className='row' style={{color:'green'}}>
-                                <p style={{paddingLeft: '40px'}}>Match your terms by typing and submitting your answers</p>
+                                <p style={{paddingLeft: '40px'}}>Match your terms by typing and submitting your answers <i class="bi bi-input-cursor-text" style={{color: isDarkMode ? 'white': 'black'}}></i></p>
                             </div>
                             <div className='row mt-5' style={{color: '#FFA500'}}>
                                 <div>	&#x2699; Settings:</div>

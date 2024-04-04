@@ -58,7 +58,7 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage, ca
                             null
                             :
                             <div className="d-flex justify-content-end">
-                                <button className="btn btn-secondary btn-large" onClick={toggleCreateFlashcardForm}>Add Flashcard</button>
+                                <button className="btn btn-secondary btn-large" onClick={toggleCreateFlashcardForm}><i className="bi bi-plus" style={{color: '#00FF00'}}></i> add flashcard</button>
                             </div>
                         }
                     </div>
