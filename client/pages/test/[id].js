@@ -5,8 +5,10 @@ import Navbar from '../../components/Navbar/Navbar';
 import axios from 'axios';
 import { auth } from '@/utils/firebase';
 import styles from '../../styles/testmode.module.css';
+import { useDarkMode } from '@/utils/darkModeContext';
 
-const TestPage = (isDarkMode) => {
+const TestPage = () => {
+    const {isDarkMode} = useDarkMode(); 
     console.log(isDarkMode);
     const router = useRouter();
     const { id } = router.query; // This is the ID of the cardset
@@ -59,9 +61,9 @@ const TestPage = (isDarkMode) => {
 
     return (
         <div>
-            <h1 className="text-center">Test Mode</h1>
-            <button className={styles.exitButton} onClick={() => router.back()}>
-                X
+            <h1 className="text-center mt-5">Test Mode</h1>
+            <button className={styles.exitButton} style={{color: isDarkMode? 'white': 'black'}} onClick={() => router.back()}>
+                &times;
             </button>
             {cardsetData && <CardViewTestMode userId={userData?.id} cardset={cardsetData} isDarkMode={isDarkMode} />}
 

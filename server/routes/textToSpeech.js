@@ -12,10 +12,12 @@ router.route('/')
         };
         const ssmlGender = req.body.voiceGender;
         const languageCode = req.body.language || 'en-US';
+        const speakingRate = req.body.speakingRate; 
         const request = {
             input: input,
             voice: {languageCode: languageCode, ssmlGender: ssmlGender},
-            audioConfig: { audioEncoding: 'MP3' },
+            audioConfig: { "audioEncoding": 'MP3',
+                            "speakingRate": speakingRate },
         }
         const [response] = await client.synthesizeSpeech(request);
 
