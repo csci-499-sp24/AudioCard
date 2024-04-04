@@ -27,14 +27,12 @@ export const checkAnswerSTT = (answer, timeLimit, language) => {
                             const numRegExp = new RegExp(`(?<![0-9])${i + 1}(?![0-9])`, 'g');
                             fullTranscript = fullTranscript.replace(numRegExp, spelledOutNumbers[i]);
                         }
-                        console.log("Transcript after number cleanse", fullTranscript);
                     }
                 }
                 let interimTranscript = event.results[event.results.length - 1][0].transcript; 
                 console.log('Interim Transcription:', interimTranscript);
                 fullTranscript = fullTranscript.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, '');
                 interimTranscript = interimTranscript.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, '');
-                console.log("Full transcript ", fullTranscript)
                 if (fullTranscript.toLowerCase().includes(answer.toLowerCase()) || interimTranscript.toLowerCase().includes(answer.toLowerCase())) {
                     recognition.stop();
                     resolve(true);

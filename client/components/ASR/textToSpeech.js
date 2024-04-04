@@ -22,7 +22,10 @@ export const TTS = (input, voiceGender, language, speakingRate) => {
 
                 sound.play(); 
 
-                resolve(sound.duration())
+                setTimeout(() => {
+                    console.log("Duration at TTS:", duration)
+                    resolve(sound.duration());
+                }, 1000);
             })
             .catch(error => {
                 console.error('Error:', error);
