@@ -20,6 +20,7 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
     const [delay, setDelay] = useState(4);
     const [willLoop, setWillLoop] = useState(false);
     const [speakingRate, setSpeakingRate] = useState(1.0);
+    const [isReviewDone, setIsReviewDone ] = useState(false); 
 
     useEffect(() => {
         mounted.current = true;
@@ -33,6 +34,9 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
     useEffect(() => {
         if (dataFetched && index < flashcards.length) {
             fetchData();
+        }
+        if (dataFetched && index >= flashcards.length){
+            setIsReviewDone(true);
         }
     }, [index, dataFetched]);
 
@@ -114,7 +118,9 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
         <div className="container">
             <div className='d-flex justify-content-end'>
             <button className={style.optionButton} onClick={handleShowOptions}>
-                <i className={`fa-solid fa-gear ${style.gearIcon}`}></i>
+                <div>
+                    <i className="fa-solid fa-gear"></i>
+                </div>
             </button>
             </div>
             {showOptions && (
@@ -140,6 +146,19 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
                     </div>
                 </div>
             )}
+            {isReviewDone ? (<div className='reviewDoneContainer'>
+            <div className='row mx-auto mt-3 mb-5' id={style.optionButtons}>
+                            <div className="d-flex justify-content-between">
+                                <div className=''>
+                                    <button className='btn btn-secondary' title='Restart Test' onClick={() => {setIsReviewDone(false); handleRestartTest();}}><i class="fa fa-refresh"></i> Restart Review</button>
+                                </div>
+                                <div className=''>
+                                    <button className='btn btn-secondary' title='Shuffle Cards' onClick={() => {setIsReviewDone(false); shuffleCards();}}><i class="fas fa-random"></i> Shuffle and Restart</button>
+                                </div>
+
+                            </div>
+                        </div>
+                </div>) : (
             <div className={style.flashcardContainer}>
                 <div className={style.flashcard}>
                         <RotatingCardTest
@@ -161,6 +180,7 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
                             </div>
                         </div>
             </div>
+        )}
         </div>
     );
 };
