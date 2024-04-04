@@ -188,7 +188,8 @@ export default function CardsetPage() {
                                     </div>
                                     <div className='col d-flex justify-content-end mb-4'>
                                         <button className="btn btn-secondary testButton" onClick={navigateToTestPage}>Test Mode</button>
-                                        <button className="btn btn-secondary ReviewButton" onClick={navigateToReviewPage}>Audio Review</button>
+                                        <button className="btn btn-secondary ReviewButton" onClick={navigateToReviewPage}>
+                                            <i className="bi bi-headphones"></i> Review</button>
                                     </div>
                                 </div>
                             </div>
