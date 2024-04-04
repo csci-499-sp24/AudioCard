@@ -81,3 +81,28 @@ export const getTranslation = (phrase, language) => {
 
     return translation;
 }
+
+
+export const numberSpellings = {
+    'en-US': [
+        ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
+    ],
+    'en-GB': [
+        ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
+    ],
+    'fr-FR': [
+        ['un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix']
+    ],
+    'es-ES': [
+        ['uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez']
+    ],
+    'ru-RU': [
+        ['один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять', 'десять']
+    ],
+    'cmn-CN': [
+        ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
+    ],
+    'bn-IN': [
+        ['এক', 'দুই', 'তিন', 'চার', 'পাঁচ', 'ছয়', 'সাত', 'আট', 'নয়', 'দশ']
+    ]
+};
