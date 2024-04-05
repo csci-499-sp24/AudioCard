@@ -12,7 +12,9 @@ const AvatarChangeModal = ({ isOpen, onClose, imageSrc, onSave, username }) => {
     const handleSaveAvatar = () => {
         if (avatarEditorRef.current) {
             const canvasScaled = avatarEditorRef.current.getImageScaledToCanvas();
-            canvasScaled.toBlob(onSave, 'image/jpeg');
+            canvasScaled.toBlob(blob => {
+                onSave(blob);
+            }, 'image/jpeg');
         }
     };
 
