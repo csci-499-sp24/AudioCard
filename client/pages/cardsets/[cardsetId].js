@@ -219,7 +219,6 @@ export default function CardsetPage() {
                                             </div>}
 
                                         {isOwner ?
-
                                             <div>
                                                 <CollaboratorList cardsetId={cardset.id} />
                                             </div>

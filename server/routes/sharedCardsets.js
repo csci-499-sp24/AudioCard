@@ -135,7 +135,6 @@ router.route('/:cardsetid/emails')
             const sharedCardsets = await SharedCardset.findAll({
                 where: {
                     cardsetId: cardsetid,
-                    authority: ['admin', 'edit']
                 }
 
             });
