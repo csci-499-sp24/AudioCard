@@ -31,7 +31,7 @@ export default function CardsetPage() {
     const [canEdit, setCanEdit] = useState(false);
     const [txtColor, setTxtColor] = useState('');
     const [isOwner, setIsOwner] = useState(false);
-
+    const [Owner,SetOwner] = useState('');
     const cardsetId = router.query.cardsetId; // get current cardset Id from route
     useEffect(() => {
         if (cardset.subject) {
@@ -99,6 +99,10 @@ export default function CardsetPage() {
             const cardsetData = resp.data;
             const id = cardsetData.userId;
             const ispublic = cardsetData.isPublic
+
+            const owner = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}`);
+            SetOwner(owner.data.user.email)
+
             if (!ispublic) {
                 setAccess(false)
             }
@@ -209,6 +213,7 @@ export default function CardsetPage() {
                                         <h3>Flashcard Set: {cardset.title}</h3>
                                         <div style={{ color: `${txtColor}` }}> Subject: {cardset.subject} </div>
                                         <div> {currentCardsetData.length} flashcards </div>
+                                        <h3>Owner: {Owner}</h3>
                                         {cardset.isPublic ?
                                             <div>
                                                 <span className="bi bi-globe" title="public"></span>
@@ -222,7 +227,7 @@ export default function CardsetPage() {
                                             <div>
                                                 <CollaboratorList cardsetId={cardset.id} />
                                             </div>
-                                        :null}
+                                            : null}
 
                                     </div>
                                 </div>
