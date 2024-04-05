@@ -76,6 +76,7 @@ const Settings = () => {
         }
     };
 
+    //API call to PUT the avatar image in S3
     const handleSaveAvatar = async (blob) => {
         const formData = new FormData();
         formData.append('image', blob, 'avatar.jpg');
@@ -88,8 +89,8 @@ const Settings = () => {
                 { headers: { 'Content-Type': 'multipart/form-data' } }
             );
             console.log('Avatar uploaded successfully:', response.data);
-            closeModal(); // Close the modal after saving the avatar
-            fetchAvatarUrl(); // Fetch the new avatar URL to reflect the change
+            closeModal(); 
+            fetchAvatarUrl(); //fetch user avatar after uploading
         } catch (error) {
             console.error('Avatar upload failed:', error);
         }

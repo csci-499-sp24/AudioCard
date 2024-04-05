@@ -16,22 +16,28 @@ const Profile = () => {
     const [currentUser, setCurrentUser] = useState(null);
     const [profileUser, setProfileUser] = useState(null);
     const [publicCardsets, setPublicCardsets] = useState([]);
+    const [avatarUrl, setAvatarUrl] = useState('');
 
     useEffect(() => {
-        auth.onAuthStateChanged(async (user) => {
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
             if (user) {
                 await fetchCurrentUserData(user.uid);
             } else {
                 setCurrentUser(null);
             }
         });
+        return () => unsubscribe && unsubscribe();
     }, []);
 
     useEffect(() => {
-        if (id) {
-            fetchUserProfile(id);
-            fetchPublicCardsets(id);
-        }
+        const fetchInitialData = async () => {
+            if (id) {
+                await fetchUserProfile(id);
+                await fetchPublicCardsets(id);
+            }
+        };
+
+        fetchInitialData();
     }, [id]);
 
     const fetchCurrentUserData = async (firebaseId) => {
@@ -52,6 +58,7 @@ const Profile = () => {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${profileUserId}`);
             const profileData = response.data.user;
             setProfileUser(profileData);
+            await fetchAvatarUrl(profileData.username);
         } catch (error) {
             console.error('Error fetching profile user data:', error);
         }
@@ -67,6 +74,20 @@ const Profile = () => {
         }
     };
 
+    const fetchAvatarUrl = async (username) => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/userAvatar/avatar/${username}`);
+            setAvatarUrl(response.data.url);
+        } catch (error) {
+            console.error('Error fetching avatar URL:', error);
+            setAvatarUrl('/userAvatar.jpg');
+        }
+    };
+
+    const setDefaultAvatar = (event) => {
+        event.target.src = '/userAvatar.jpg';
+    };
+
     const shouldShowFriendRequestButton = currentUser && profileUser && currentUser.id !== Number(profileUser.id);
 
     return (
@@ -75,9 +96,7 @@ const Profile = () => {
             <div className="mt-4">
                 <div className={styles.profileContainer}>
                     <div className={styles.profileSidebar}>
-                        <div className={styles.userAvatar}>
-                            <img src="/userAvatar.jpg" alt="User Avatar" className={styles.avatarImage} />
-                        </div>
+                    <img src={avatarUrl} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} />
                         {shouldShowFriendRequestButton && (
                             <FriendRequestButton
                                 currentUserId={currentUser.id}
