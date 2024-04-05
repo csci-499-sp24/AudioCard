@@ -153,7 +153,6 @@ router.route('/:cardsetid/:userId/authority')
     .get(async (req, res) => {
         try {
             const { cardsetid, userId } = req.params;
-
             const sharedCardset = await SharedCardset.findOne({
                 where: {
                     cardsetId: cardsetid,
@@ -172,8 +171,29 @@ router.route('/:cardsetid/:userId/authority')
         }
     });
 
+router.route('/:cardsetid/:userId/authority')
+    .delete(async (req, res) => {
+        try {
+            const { cardsetid, userId } = req.params;
+            const sharedCardset = await SharedCardset.findOne({
+                where: {
+                    cardsetId: cardsetid,
+                    userId: userId,
+                }
+            });
 
+            if (!sharedCardset) {
+                return res.status(404).json({ error: 'User not authorized for this cardset' });
+            }
 
+            await sharedCardset.destroy(); // Delete the sharedCardset record
+
+            res.status(200).json({ message: 'Authority deleted successfully' });
+        } catch (error) {
+            console.error('Error deleting authority associated with user and cardset:', error);
+            res.status(500).json({ error: 'Error deleting authority associated with user and cardset' });
+        }
+    });
 
 
 

@@ -223,9 +223,9 @@ export default function CardsetPage() {
                                                 <span className="bi bi-lock" title="restricted"></span>
                                             </div>}
 
-                                        {isOwner ?
+                                        {isadmin  ?
                                             <div>
-                                                <CollaboratorList cardsetId={cardset.id} />
+                                                <CollaboratorList cardsetId={cardset.id} isOwner={isOwner} />
                                             </div>
                                             : null}
 
@@ -276,7 +276,7 @@ export default function CardsetPage() {
                                                 </div>
                                             </div>
                                             <div className='row'>
-                                                <ShareFunction userid={userData?.id} cardsetId={cardsetId} />
+                                                <ShareFunction userid={userData?.id} cardsetId={cardsetId} isOwner={isOwner}/>
                                             </div>
                                         </div>
                                     )}

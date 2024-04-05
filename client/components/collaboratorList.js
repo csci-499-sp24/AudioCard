@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export const CollaboratorList = ({ cardsetId }) => {
+export const CollaboratorList = ({ cardsetId, isOwner }) => {
     const [userEmailsWithAuth, setUserEmailsWithAuth] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -21,7 +21,7 @@ export const CollaboratorList = ({ cardsetId }) => {
             const emailFetchPromises = userIds.map(async userId => {
                 const userDataResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}`);
                 const userauth = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${cardsetId}/${userId}/authority`);
-                return { email: userDataResponse.data.user.email, authority: userauth.data.authority };
+                return { email: userDataResponse.data.user.email, authority: userauth.data.authority, id: userId };
             });
             const userEmailsWithAuth = await Promise.all(emailFetchPromises);
             setUserEmailsWithAuth(userEmailsWithAuth);
@@ -29,6 +29,17 @@ export const CollaboratorList = ({ cardsetId }) => {
         } catch (error) {
             setError('Error fetching access user emails');
             setLoading(false);
+        }
+    };
+
+    const deleteAccess = async (id) => {
+        try {
+            const response = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${cardsetId}/${id}/authority`);
+            setUserEmailsWithAuth(prevUsers => prevUsers.filter(user => user.id !== id));
+            return response
+        } catch (error) {
+            console.error('Error deleting access:', error);
+            setError('Error deleting access');
         }
     };
 
@@ -50,9 +61,13 @@ export const CollaboratorList = ({ cardsetId }) => {
 
                         userEmailsWithAuth.length > 0 ? (
                             <ul>
-                                {userEmailsWithAuth.map(({ email, authority }, index) => (
+                                {userEmailsWithAuth.map(({ email, authority, id }, index) => (
                                     <li key={index}>
                                         {email} - {authority}
+
+                                        {authority != 'admin' || isOwner ?
+                                            <button onClick={() => deleteAccess(id)}>Delete</button>
+                                            : null}
                                     </li>
                                 ))}
                             </ul>
