@@ -135,9 +135,9 @@ router.route('/:cardsetid/emails')
             const sharedCardsets = await SharedCardset.findAll({
                 where: {
                     cardsetId: cardsetid,
-                    authority: ['admin', 'edit'] 
+                    authority: ['admin', 'edit']
                 }
-                
+
             });
 
             // Extracting user IDs from the sharedCardsets
@@ -149,6 +149,31 @@ router.route('/:cardsetid/emails')
             res.status(500).json({ error: 'Error fetching user IDs associated with cardset' });
         }
     });
+
+router.route('/:cardsetid/:userId/authority')
+    .get(async (req, res) => {
+        try {
+            const { cardsetid, userId } = req.params;
+
+            const sharedCardset = await SharedCardset.findOne({
+                where: {
+                    cardsetId: cardsetid,
+                    userId: userId,
+                }
+            });
+
+            if (!sharedCardset) {
+                return res.status(404).json({ error: 'User not authorized for this cardset' });
+            }
+
+            res.status(200).json({ authority: sharedCardset.authority }); // Return authority
+        } catch (error) {
+            console.error('Error fetching authority associated with user and cardset:', error);
+            res.status(500).json({ error: 'Error fetching authority associated with user and cardset' });
+        }
+    });
+
+
 
 
 

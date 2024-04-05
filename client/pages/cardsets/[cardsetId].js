@@ -30,6 +30,7 @@ export default function CardsetPage() {
     const [showSharePopup, setShowSharePopup] = useState(false);
     const [canEdit, setCanEdit] = useState(false);
     const [txtColor, setTxtColor] = useState('');
+    const [isOwner, setIsOwner] = useState(false);
 
     const cardsetId = router.query.cardsetId; // get current cardset Id from route
     useEffect(() => {
@@ -105,6 +106,7 @@ export default function CardsetPage() {
                 setAccess(true);
                 setadmin(true);
                 setCanEdit(true);
+                setIsOwner(true);
             }
 
             try {
@@ -216,9 +218,12 @@ export default function CardsetPage() {
                                                 <span className="bi bi-lock" title="restricted"></span>
                                             </div>}
 
-                                        <div>
-                                            <CollaboratorList cardsetId={cardset.id} />
-                                        </div>
+                                        {isOwner ?
+
+                                            <div>
+                                                <CollaboratorList cardsetId={cardset.id} />
+                                            </div>
+                                        :null}
 
                                     </div>
                                 </div>
