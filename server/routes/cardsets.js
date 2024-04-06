@@ -12,7 +12,7 @@ router.route('/')
         // sequelize doesn't support subqueries
         // so I am using a dirty workaround
         //const my_userid = await User.findOne({where: { id: req.params.userid }});
-        const my_userid=56
+        const my_userid = await User.findOne({where: { id: req.params.userid }});
         // Using two literals because mySQL doesn't like it when I put them together
         // into one query
         const get_friend_sql = `(SELECT user2Id FROM friends WHERE user1Id IN (${my_userid})
