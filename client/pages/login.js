@@ -141,7 +141,7 @@ const Login = () => {
                     
                     <div className='text-center mt-4'>
                         <div className='col d-flex justify-content-center'>
-                            <div className='me-2'>Don't have an account? </div>
+                            <div className='me-2'>Don&apos;t have an account? </div>
                             <Link href="/signup" className={`${isDarkMode ? 'link-light' : 'link-dark'} link-offset-2`}>Sign Up</Link>
                         </div>
                     </div>
