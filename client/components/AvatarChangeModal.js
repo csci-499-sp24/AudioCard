@@ -1,9 +1,8 @@
-// AvatarChangeModal.js
 import React, { useRef, useState } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import styles from '../styles/avatarChangeModal.module.css';
 
-const AvatarChangeModal = ({ isOpen, onClose, imageSrc, onSave }) => {
+const AvatarChangeModal = ({ isOpen, onClose, imageSrc, onSave, isDarkMode }) => {
     const [scaleValue, setScaleValue] = useState(1);
     const avatarEditorRef = useRef(null);
 
@@ -19,8 +18,8 @@ const AvatarChangeModal = ({ isOpen, onClose, imageSrc, onSave }) => {
     };
 
     return (
-        <div className={styles.overlay}>
-            <div className={styles.modal}>
+        <div className={styles.overlay} >
+            <div className={styles.modal} style={{backgroundColor: isDarkMode ? 'gray' : 'white' }}>
                 <AvatarEditor
                     ref={avatarEditorRef}
                     image={imageSrc}
@@ -40,7 +39,7 @@ const AvatarChangeModal = ({ isOpen, onClose, imageSrc, onSave }) => {
                     step="0.01"
                     defaultValue="1"
                 />
-                <button onClick={handleSaveAvatar}>Save Avatar</button>
+                <button onClick={handleSaveAvatar} className={styles.uploadButton}>Save Avatar</button>
                 <button onClick={onClose} className={styles.closeButton}>Cancel</button>
             </div>
         </div>

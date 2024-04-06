@@ -80,11 +80,6 @@
     border-bottom: 5px solid #2273d6ba;
 }
 
-
-#inlineNavItemNotActive {
-
-}
-
 .nav-item:first-child > a {
     padding: 0 !important;
 } 

@@ -22,8 +22,11 @@ const Settings = () => {
         setScaleValue(1);
     };
 
+
     const handleAvatarChangeClick = () => {
-        document.getElementById('avatarUploadInput').click();
+        const fileInput = document.getElementById('avatarUploadInput');
+        fileInput.value = '';
+        fileInput.click();
     };
 
     const handleFileChange = (event) => {
@@ -109,8 +112,9 @@ const Settings = () => {
                     imageSrc={selectedFile ? URL.createObjectURL(selectedFile) : null}
                     onSave={handleSaveAvatar}
                     username={username}
+                    isDarkMode={isDarkMode}
                 />
-                    <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} />
+                    <img src={userAvatar} alt="User Avatar" onError={setDefaultAvatar} className={styles.avatarImage} />
                 <input
                     id="avatarUploadInput"
                     type="file"
