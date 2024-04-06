@@ -63,7 +63,7 @@ const ShareFunction = ({ userid, cardsetId, isOwner }) => {
                     <i className="bi bi-question-circle-fill" 
                     data-tooltip-id="rolesTip"
                     data-tooltip-place='right'
-                    data-tooltip-html="Admins can edit, add or remove editors/viewers, view collaborator list<br/>Editors can edit, view collaborator list<br/>Viewers can view the cardset."></i>
+                    data-tooltip-html="Admins can edit, add or remove editors/viewers, view collaborator list<br/>Editors can edit, view collaborator list<br/>Viewers can view the card set."></i>
                 <Tooltip id = "rolesTip"/> 
                 </div> 
                 </div> 

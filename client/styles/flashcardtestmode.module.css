@@ -133,3 +133,21 @@
     bottom: -50px; 
     transform: translateX(-50%);
 }
+
+.micIconLight { 
+    font-size: 40px;
+    padding: 10px;
+    display: flex; 
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid black; 
+}
+
+.micIconDark { 
+    font-size: 40px;
+    padding: 10px;
+    display: flex; 
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid rgb(255, 255, 255); 
+}

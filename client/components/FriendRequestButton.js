@@ -8,12 +8,33 @@ const FriendRequestButton = ({ currentUserId, profileUserId }) => {
     
     useEffect(() => {
         checkFriendship();
-    }, [currentUserId, profileUserId]);
+        renderButtonContent(); 
+    }, [currentUserId, profileUserId, requestStatus]);
 
     const checkFriendship = async () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${currentUserId}/friends/${profileUserId}`);
-            setRequestStatus(response.data.status); 
+            if (response.data.status !== 'pending'){
+                setRequestStatus(response.data.status);
+                return; 
+            }
+            if (response.data.status==='pending'){
+                let pending_direction; 
+                const pending_request = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${currentUserId}/friends/requests`);
+                for (let i = 0; i < pending_request.data.length; i++){
+                    if (pending_request.data[i].id === profileUserId){
+                        pending_direction = pending_request.data[i].requestDirection; 
+                        break;
+                    }
+                }
+                if (pending_direction === 'incoming'){
+                    setRequestStatus('pending_incoming'); 
+                    return;
+                }
+                else if (pending_direction === 'outgoing'){
+                    setRequestStatus('pending_outgoing');
+                }
+            }
         } catch (error) {
             console.error('Error checking friendship status:', error);
         }
@@ -29,6 +50,17 @@ const FriendRequestButton = ({ currentUserId, profileUserId }) => {
             console.error('Error sending friend request:', error);
         }
     };
+
+    const acceptFriendRequest = async () => {
+        try {
+            await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${currentUserId}/friends`, {
+                friendId: profileUserId
+            });
+            setRequestStatus('accepted');
+        } catch (error) {
+            console.error('Error accepting friend', error)
+        }
+    }
     
     const cancelFriendRequest = async () => {
         try {
@@ -42,10 +74,16 @@ const FriendRequestButton = ({ currentUserId, profileUserId }) => {
     };
 
     const handleFriendRequest = async () => {
-        if (requestStatus === 'pending' || requestStatus === 'not_friends') {
+        if (requestStatus === 'not_friends') {
             sendFriendRequest();
         } else if (requestStatus === 'accepted') {
             deleteFriend();
+        }
+        else if (requestStatus === 'pending_outgoing'){
+            cancelFriendRequest();
+        }
+        else if (requestStatus === 'pending_incoming'){
+            acceptFriendRequest(); 
         }
     };
 
@@ -64,8 +102,10 @@ const FriendRequestButton = ({ currentUserId, profileUserId }) => {
         switch (requestStatus) {
             case 'not_friends':
                 return 'Add Friend';
-            case 'pending':
+            case 'pending_outgoing':
                 return 'Cancel Friend Request';
+            case 'pending_incoming':
+                return 'Accept Friend Request'; 
             case 'accepted':
                 return 'Delete Friend';
             default:

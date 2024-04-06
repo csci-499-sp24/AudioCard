@@ -263,6 +263,10 @@ export const ASRTestMode = ({ cardData}) => {
                             </div>
                         </div>
 
+                        <div className={`d-inline-flex align-items-center justify-content-center`}>
+                        <i className={`bi bi-mic-fill ${isDarkMode ? style.micIconDark : style.micIconLight}`}></i>
+                        </div>
+
                     </div>
                 </>
             )}
