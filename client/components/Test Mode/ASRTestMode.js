@@ -4,7 +4,7 @@ import { RotatingCardTest } from '../Cards/RotatingCardTest';
 import {checkAnswerSTT} from '../ASR/speechToText';
 import {TTS} from '../ASR/textToSpeech';
 import { useDarkMode } from '../../utils/darkModeContext';
-import { TestOptions } from './testOptions';
+import {TestOptions} from './testOptions';
 import TimerComponent from './timerComponent';
 import { getTranslation } from '@/utils/translations';
 

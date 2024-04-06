@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import 'react-tooltip/dist/react-tooltip.css'; 
+import { Tooltip } from 'react-tooltip'
 import { useDarkMode } from '@/utils/darkModeContext';
 import { getLanguage } from '@/utils/languageCodes';
 
@@ -79,7 +81,7 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange,
                 </ul>
             </div>
             </div>
-            <div className='row flex d-flex align-items-center mt-3'>
+            <div className='row flex d-flex align-items-center mt-2'>
                 <div className='col d-flex justify-content-end'>
                     <div>Language: </div>
                 </div>
@@ -118,17 +120,26 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange,
                     <span>{speakingRate}</span>
                 </div>
             </div> 
-                </div>) 
+            <div className='row flex d-flex align-items-center mt-3'>
+                <div className='col d-flex justify-content-end'>
+                    <div>Voice Commands:</div>
+                </div>
+                <div className='col d-flex justify-content-begin'>
+                    <div>
+                    <i className="bi bi-question-circle-fill" 
+                    data-tooltip-id="voiceCommandTip"
+                    data-tooltip-content="Say &quot;shuffle&quot;, &quot;restart&quot;, or &quot;exit&quot;"
+                    data-tooltip-place='bottom'></i>
+                    <Tooltip id = "voiceCommandTip" /> 
+                    </div>
+                </div> 
+            </div> 
+            </div>) 
             }
         <style jsx>{`.darkInput {
         background-color: #222;
                                 }
-        .dropdown-toggle{
-            margin: -10px;
-        }
-        .dropdown {
-            margin: -10px; 
-        }
+
         `}</style>
         </div>
     );

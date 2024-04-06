@@ -89,7 +89,8 @@ export const CardViewTestMode = ({ userId, cardset }) => {
                             </div>
                             <div className='row mb-5' style={{color:'#FFA500'}}>
                                 <p style={{paddingLeft: '40px'}}>Adjust time limits, maximum number of attempts</p>
-                                <p style={{paddingLeft: '40px'}}>&#127911;: set the gender, language, and speaking rate!</p>
+                                <p style={{paddingLeft: '40px'}}>&#127911;: -set the gender, language, and speaking rate!</p>
+                                <p style={{paddingLeft: '65px'}}>-voice commands: 'shuffle', 'restart', or 'exit'</p>
                             </div>
                         </div>
                 </div>
