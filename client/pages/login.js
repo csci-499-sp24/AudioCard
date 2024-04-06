@@ -6,10 +6,12 @@ import Link from 'next/link';
 import Image from "next/image"; 
 import logo from '../assets/images/logo.png';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { useDarkMode } from '@/utils/darkModeContext';
 
 
 
 const Login = () => {
+    const {isDarkMode} = useDarkMode();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -131,7 +133,10 @@ const Login = () => {
                     </form>
                     
                     <div className='text-center mt-4'>
-                        <Link href="/signup" className="link-dark link-offset-2">Sign Up</Link> 
+                        <div className='col d-flex justify-content-center'>
+                            <div className='me-2'>Don't have an account? </div>
+                            <Link href="/signup" className={`${isDarkMode ? 'link-light' : 'link-dark'} link-offset-2`}>Sign Up</Link>
+                        </div>
                     </div>
                 </div>
             </div>
