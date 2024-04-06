@@ -2,17 +2,20 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { auth } from '../../utils/firebase';
 import Link from 'next/link';
-import Image from "next/image"; 
+import Image from "next/image";
 import styles from '../../styles/navbar.module.css';
 import { useDarkMode } from '../../utils/darkModeContext';
 import Notification from '../Notification'
 import userDark from '../../assets/images/user-dark-24.png';
 import userLight from '../../assets/images/user-light-24.png';
+import axios from 'axios';
 
 const Navbar = ({ userId }) => {
     const { isDarkMode, toggleDarkMode } = useDarkMode();
     const router = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [userAvatar, setUserAvatar] = useState('/userAvatar.jpg');
+    const [userData, setUserData] = useState(null);
 
     const dropdownRef = useRef(null);
 
@@ -27,6 +30,37 @@ const Navbar = ({ userId }) => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+    useEffect(() => {
+        if (userId) {
+            fetchUserData(userId);
+        }
+    }, [userId]);
+
+    const fetchUserAvatar = async (username) => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/userAvatar/avatar/${username}`);
+            setUserAvatar(response.data.url);
+        } catch (error) {
+            console.error('Error fetching avatar:', error);
+            setUserAvatar('/userAvatar.jpg');
+        }
+    };
+
+    const fetchUserData = async (userId) => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}`);
+            const user = response.data.user;
+            setUserData(user);
+            await fetchUserAvatar(user.username);
+        } catch (error) {
+            console.error('Error fetching profile user data:', error);
+        }
+    };
+
+    const setDefaultAvatar = (event) => {
+        event.target.src = '/userAvatar.jpg';
+    };
 
     return (
         <nav className={`navbar navbar-expand-lg ${isDarkMode ? 'bg-dark' : 'bg-body-tertiary'}`} id={styles.navbar}>
@@ -67,8 +101,8 @@ const Navbar = ({ userId }) => {
                         </li>
 
                         <li className="nav-item">
-                            <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink}  onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                                {isDarkMode ? <i className="fa-solid fa-circle-user" id={styles.navIconUser}></i> : <i className="fa-solid fa-circle-user"  id={styles.navIconUser}></i>}
+                            <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                                <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} />
                             </button>
 
                             <div ref={dropdownRef}>
