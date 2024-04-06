@@ -203,6 +203,7 @@
     justify-content: center;
     border-radius: 50%;
     border: 2px solid black; 
+    transition: padding 0.3s ease; 
 }
 
 .micIconDark { 
@@ -212,4 +213,25 @@
     justify-content: center;
     border-radius: 50%;
     border: 2px solid rgb(255, 255, 255); 
+    transition: padding 0.3s ease; 
+}
+
+.micIconLight:hover,
+.micIconDark:hover {
+    padding: 15px; /* Increase padding on hover */
+}
+
+.micRing {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background-color: transparent; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    border: 2px solid #FF00FF; 
+}
+.timerCircle h5 {
+    margin: 0;
 }
