@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const ShareFunction = ({ userid, cardsetId }) => {
+const ShareFunction = ({ userid, cardsetId, isOwner }) => {
     const [emailOrUsername, setEmailOrUsername] = useState('');
     const [role, setRole] = useState('');
     const [curuserId, setcurUserId] = useState(null); // State to store the user ID
     const [error, setError] = useState(null); // State to handle errors
-    
+
     useEffect(() => {
         if (curuserId !== null) {
             console.log("Sharing with user ID:", curuserId, "and role:", role);
@@ -52,7 +52,9 @@ const ShareFunction = ({ userid, cardsetId }) => {
                     <option value="">Select Role</option>
                     <option value="read-only">Viewer</option>
                     <option value="edit">Editor</option>
-                    <option value="admin">Admin</option>
+                    {isOwner ?
+                        <option value="admin">Admin</option>
+                    :null}
                 </select>
             </div>
             {error && <p style={{ color: 'red' }}>{error}</p>}

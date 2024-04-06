@@ -32,7 +32,8 @@ export default function CardsetPage() {
     const [showSharePopup, setShowSharePopup] = useState(false);
     const [canEdit, setCanEdit] = useState(false);
     const [txtColor, setTxtColor] = useState('');
-
+    const [isOwner, setIsOwner] = useState(false);
+    const [Owner,SetOwner] = useState('');
     const cardsetId = router.query.cardsetId; // get current cardset Id from route
     useEffect(() => {
         if (cardset.subject) {
@@ -100,6 +101,10 @@ export default function CardsetPage() {
             const cardsetData = resp.data;
             const id = cardsetData.userId;
             const ispublic = cardsetData.isPublic
+
+            const owner = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}`);
+            SetOwner(owner.data.user.email)
+
             if (!ispublic) {
                 setAccess(false)
             }
@@ -107,6 +112,7 @@ export default function CardsetPage() {
                 setAccess(true);
                 setadmin(true);
                 setCanEdit(true);
+                setIsOwner(true);
             }
 
             try {
@@ -213,6 +219,7 @@ export default function CardsetPage() {
                                         <h3>Flashcard Set: {cardset.title}</h3>
                                         <div> Subject: <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
                                         <div> {currentCardsetData.length} flashcards </div>
+                                        <h3>Owner: {Owner}</h3>
                                         {cardset.isPublic ?
                                             <div>
                                                 <span className="bi bi-globe" title="public"></span>
@@ -222,9 +229,11 @@ export default function CardsetPage() {
                                                 <span className="bi bi-lock" title="restricted"></span>
                                             </div>}
 
-                                        <div>
-                                            <CollaboratorList cardsetId={cardset.id} />
-                                        </div>
+                                        {isadmin  ?
+                                            <div>
+                                                <CollaboratorList cardsetId={cardset.id} isOwner={isOwner} />
+                                            </div>
+                                            : null}
 
                                     </div>
                                 </div>
@@ -275,7 +284,7 @@ export default function CardsetPage() {
                                                 </div>
                                             </div>
                                             <div className='row'>
-                                                <ShareFunction userid={userData?.id} cardsetId={cardsetId} />
+                                                <ShareFunction userid={userData?.id} cardsetId={cardsetId} isOwner={isOwner}/>
                                             </div>
                                         </div>
                                     )}
