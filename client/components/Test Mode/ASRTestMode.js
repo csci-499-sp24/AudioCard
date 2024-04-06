@@ -28,6 +28,7 @@ export const ASRTestMode = ({ cardData}) => {
     const [timeLimit, setTimeLimit] = useState(7);
     const [voiceGender, setVoiceGender] = useState('NEUTRAL');
     const [language, setLanguage] = useState('en-US');
+    const [ringSize, setRingSize] = useState('scaleDown');
     const [phrases, setPhrases] = useState(
         {
             tryAgain : 'Try Again.',
@@ -116,7 +117,7 @@ export const ASRTestMode = ({ cardData}) => {
             setBorderClass('');
         }, 2000);
     
-      let isCorrect = await checkAnswerSTT(answer, timeLimit, language, handleRestartTest, shuffleCards, voiceCommands);
+      let isCorrect = await checkAnswerSTT(answer, timeLimit, language, handleRestartTest, shuffleCards, voiceCommands, setRingSize);
     
         if (isCorrect) {
             setBorderClass('correct');
@@ -263,7 +264,8 @@ export const ASRTestMode = ({ cardData}) => {
                             </div>
                         </div>
                         <div className='row d-flex justify-content-center'>
-                        <div className={`${style.micRing}`}>
+                        <div className={`${style.micRing} ${style[ringSize]}`}></div>
+                        <div className='container'>
                         <i className={`bi bi-mic-fill ${isDarkMode ? style.micIconDark : style.micIconLight}`}></i>
                         </div>
                         </div>

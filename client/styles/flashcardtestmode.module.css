@@ -197,33 +197,36 @@
 }
 
 .micIconLight { 
+    border: 2px solid black; 
+}
+
+.micIconDark, .micIconLight {
     font-size: 40px;
     padding: 10px;
     display: flex; 
     justify-content: center;
     border-radius: 50%;
-    border: 2px solid black; 
+    position: absolute; 
+    top: 77%;
+    left: 50%; 
+    transform: translate(-50%, -50%);
     transition: padding 0.3s ease; 
 }
 
-.micIconDark { 
-    font-size: 40px;
-    padding: 10px;
-    display: flex; 
-    justify-content: center;
-    border-radius: 50%;
+.micIconDark {
     border: 2px solid rgb(255, 255, 255); 
-    transition: padding 0.3s ease; 
 }
 
 .micIconLight:hover,
 .micIconDark:hover {
-    padding: 15px; /* Increase padding on hover */
+    padding: 15px;
 }
 
 .micRing {
-    width: 75px;
-    height: 75px;
+    position: absolute; 
+    top: 77%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
     border-radius: 50%;
     background-color: transparent; 
     display: flex;
@@ -232,6 +235,26 @@
     margin-bottom: 10px;
     border: 2px solid #FF00FF; 
 }
-.timerCircle h5 {
-    margin: 0;
+
+.scaleUp {
+    width: 100px; 
+    height: 100px; 
+    animation: pulse 1.0s infinite alternate; 
+    box-shadow: 0 0 0 0 rgba(255, 0, 255, 0.7);
+}
+
+.scaleDown {
+    width: 75px; 
+    height: 75px; 
+    transition: width 0.3s ease, height 0.3s ease; 
+}
+
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 0, 255, 0.7); /* Start with no shadow */
+    }
+    100% {
+        box-shadow: 0 0 0 20px rgba(255, 0, 255, 0); /* End with larger shadow */
+    }
 }
