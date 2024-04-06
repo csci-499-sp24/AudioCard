@@ -163,13 +163,11 @@ export default function CardsetPage() {
         }
     };
     const navigateToTestPage = () => {
-        const darkModeParam = isDarkMode ? '?darkMode=true' : '?darkMode=false';
-        router.push(`/test/${cardsetId}${darkModeParam}`);
+        router.push(`/test/${cardsetId}`);
     };
 
     const navigateToReviewPage = () => {
-        const darkModeParam = isDarkMode ? '?darkMode=true' : '?darkMode=false';
-        router.push(`/review/${cardsetId}${darkModeParam}`);
+        router.push(`/review/${cardsetId}`);
     };
 
     // Render flashcard data

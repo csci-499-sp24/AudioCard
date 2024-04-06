@@ -35,6 +35,13 @@ export const ASRTestMode = ({ cardData}) => {
             theCorrectAnswerIs: 'The correct answer is.' ,
         }
     )
+    const [voiceCommands, setVoiceCommands] = useState(
+        {
+            shuffle: 'shuffle',
+            restart: 'restart',
+            exit: 'exit',
+        }
+    )
 
     const fetchData = async () => {
         if (flashcards.length > 0) {
@@ -109,7 +116,7 @@ export const ASRTestMode = ({ cardData}) => {
             setBorderClass('');
         }, 2000);
     
-      let isCorrect = await checkAnswerSTT(answer, timeLimit, language);
+      let isCorrect = await checkAnswerSTT(answer, timeLimit, language, handleRestartTest, shuffleCards, voiceCommands);
     
         if (isCorrect) {
             setBorderClass('correct');
@@ -124,7 +131,7 @@ export const ASRTestMode = ({ cardData}) => {
                 setTimeout(() => {
                     setBorderClass('');
                 }, 2000)
-                isCorrect = await checkAnswerSTT(answer, timeLimit, language, speakingRate);
+                isCorrect = await checkAnswerSTT(answer, timeLimit, language, handleRestartTest, shuffleCards, voiceCommands);
                 setBorderClass(isCorrect ? 'correct' : 'incorrect');
                 if (isCorrect) {
                     setScore((currentScore) => currentScore + 1);

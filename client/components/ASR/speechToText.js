@@ -1,8 +1,9 @@
 import { numberSpellings } from "@/utils/translations";
 
-export const checkAnswerSTT = (answer, timeLimit, language) => {
+export const checkAnswerSTT = (answer, timeLimit, language, handleRestartTest, shuffleCards, voiceCommands) => {
     return new Promise(async (resolve, reject) => {
         try {
+            let voiceCommandTriggered = false; 
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             const recognition = new webkitSpeechRecognition(); 
             recognition.lang = language; 
@@ -31,6 +32,24 @@ export const checkAnswerSTT = (answer, timeLimit, language) => {
                 }
                 let interimTranscript = event.results[event.results.length - 1][0].transcript; 
                 console.log('Interim Transcription:', interimTranscript);
+                if (interimTranscript.toLowerCase().includes(voiceCommands.shuffle) && !voiceCommandTriggered){
+                    voiceCommandTriggered = true; 
+                    recognition.stop();
+                    shuffleCards();
+                    return;
+                }
+                if (interimTranscript.toLowerCase().includes(voiceCommands.restart)  && !voiceCommandTriggered){
+                    voiceCommandTriggered = true; 
+                    recognition.stop();
+                    handleRestartTest();
+                    return;
+                }
+                if (interimTranscript.toLowerCase().includes(voiceCommands.exit)  && !voiceCommandTriggered){
+                    voiceCommandTriggered = true; 
+                    recognition.stop(); 
+                    window.location.reload();
+                    return; 
+                }
                 fullTranscript = fullTranscript.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, '');
                 interimTranscript = interimTranscript.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, '');
                 if (fullTranscript.toLowerCase().includes(answer.toLowerCase()) || interimTranscript.toLowerCase().includes(answer.toLowerCase())) {
