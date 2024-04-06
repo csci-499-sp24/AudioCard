@@ -13,6 +13,11 @@ const Cardset = db.define('cardset',{
     isPublic: {
         type: DataTypes.BOOLEAN,
         allowNull: false
+    },
+    isFriendsOnly: {
+        type: DataTypes.BOOLEAN,
+        default: false,
+        allowNull: false
     }
 });
 
