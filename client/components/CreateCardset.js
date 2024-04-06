@@ -23,7 +23,7 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
             <div className="d-flex justify-content-end">
                 <button className="btn" style={{color: isDarkMode ? 'white' : 'gray' }} onClick={onClickToggle}>X</button>
             </div>
-            <h5>Create a new cardset</h5>
+            <h5>Create a new card set</h5>
 
             <form className="row row-cols-lg-auto g-3 align-items-center" onSubmit={(e) => onSubmit(e)}>
                 <div className="col-12">
