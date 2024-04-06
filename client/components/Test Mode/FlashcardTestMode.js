@@ -229,13 +229,13 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                             <div className={style.formGroup}>
                                 <input
                                     type="text"
-                                    className={style.formControl}
+                                    className={`${style.formControl} ${isDarkMode ? style.transparentInput : style.transparentInputLight}`}
                                     placeholder="Enter your answer here"
                                     value={answer}
                                     onChange={handleAnswerChange}
                                 />
                             </div>
-                            <button type="submit" className={`btn btn-primary ${style.centeredButton}`}>Submit Answer</button>
+                            <button type="submit" className={`btn btn-primary ${style.centeredButton} ${style.btnOutlinePurple}`}>Submit</button>
                         </form>
                     )}
                     {!isFlipped && (
