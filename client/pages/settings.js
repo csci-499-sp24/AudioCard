@@ -11,12 +11,10 @@ const Settings = () => {
     const [username, setUsername] = useState('');
     const [user, setUser] = useState(null);
     const [userData, setUserData] = useState(null);
-    const [avatarUrl, setAvatarUrl] = useState('');
+    const [userAvatar, setUserAvatar] = useState('');
     const [editorOpen, setEditorOpen] = useState(false);
     const [scaleValue, setScaleValue] = useState(1);
     const { isDarkMode } = useDarkMode();
-
-    const avatarEditorRef = useRef(null);
 
     const closeModal = () => {
         setEditorOpen(false);
@@ -46,7 +44,7 @@ const Settings = () => {
             fetchUserData();
         }
         if (username) {
-            fetchAvatarUrl();
+            fetchUserAvatar();
         }
         return () => unsubscribe();
     }, [user, userData, username]);
@@ -67,10 +65,10 @@ const Settings = () => {
         }
     }
 
-    const fetchAvatarUrl = async () => {
+    const fetchUserAvatar = async () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/userAvatar/avatar/${username}`);
-            setAvatarUrl(response.data.url);
+            setUserAvatar(response.data.url);
         } catch (error) {
             console.error('Error fetching avatar URL:', error);
         }
@@ -90,10 +88,14 @@ const Settings = () => {
             );
             console.log('Avatar uploaded successfully:', response.data);
             closeModal(); 
-            fetchAvatarUrl(); //fetch user avatar after uploading
+            fetchUserAvatar(); //fetch user avatar after uploading
         } catch (error) {
             console.error('Avatar upload failed:', error);
         }
+    };
+
+    const setDefaultAvatar = (event) => {
+        event.target.src = '/userAvatar.jpg';
     };
 
     return (
@@ -108,9 +110,7 @@ const Settings = () => {
                     onSave={handleSaveAvatar}
                     username={username}
                 />
-                {avatarUrl && (
-                    <img src={avatarUrl} alt="User Avatar" className={styles.avatarImage} />
-                )}
+                    <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} />
                 <input
                     id="avatarUploadInput"
                     type="file"

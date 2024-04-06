@@ -16,7 +16,7 @@ const Profile = () => {
     const [currentUser, setCurrentUser] = useState(null);
     const [profileUser, setProfileUser] = useState(null);
     const [publicCardsets, setPublicCardsets] = useState([]);
-    const [avatarUrl, setAvatarUrl] = useState('');
+    const [userAvatar, setUserAvatar] = useState('');
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -58,7 +58,7 @@ const Profile = () => {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${profileUserId}`);
             const profileData = response.data.user;
             setProfileUser(profileData);
-            await fetchAvatarUrl(profileData.username);
+            await fetchUserAvatar(profileData.username);
         } catch (error) {
             console.error('Error fetching profile user data:', error);
         }
@@ -74,13 +74,12 @@ const Profile = () => {
         }
     };
 
-    const fetchAvatarUrl = async (username) => {
+    const fetchUserAvatar = async (username) => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/userAvatar/avatar/${username}`);
-            setAvatarUrl(response.data.url);
+            setUserAvatar(response.data.url);
         } catch (error) {
             console.error('Error fetching avatar URL:', error);
-            setAvatarUrl('/userAvatar.jpg');
         }
     };
 
@@ -96,7 +95,7 @@ const Profile = () => {
             <div className="mt-4">
                 <div className={styles.profileContainer}>
                     <div className={styles.profileSidebar}>
-                    <img src={avatarUrl} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} />
+                    <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} />
                         {shouldShowFriendRequestButton && (
                             <FriendRequestButton
                                 currentUserId={currentUser.id}

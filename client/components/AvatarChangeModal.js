@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import styles from '../styles/avatarChangeModal.module.css';
 
-const AvatarChangeModal = ({ isOpen, onClose, imageSrc, onSave, username }) => {
+const AvatarChangeModal = ({ isOpen, onClose, imageSrc, onSave }) => {
     const [scaleValue, setScaleValue] = useState(1);
     const avatarEditorRef = useRef(null);
 
