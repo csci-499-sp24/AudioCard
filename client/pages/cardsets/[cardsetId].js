@@ -2,7 +2,6 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar/Navbar';
-import { Flashcard } from '../../components/Flashcard';
 import { TermCard } from '../../components/Cards/TermCard';
 import { CardsetView } from '../../components/CardsetView';
 import { EditView } from "@/components/EditCardset";
@@ -23,7 +22,6 @@ export default function CardsetPage() {
     const [userData, setUserData] = useState(null);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [isEditPageOpen, setIsEditPageOpen] = useState(false);
-    const [showCreateFlashcardForm, setShowCreateFlashcardForm] = useState(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [cardset, setCardset] = useState([]);
     const [access, setAccess] = useState(true);
@@ -34,7 +32,7 @@ export default function CardsetPage() {
     const [txtColor, setTxtColor] = useState('');
     const [isOwner, setIsOwner] = useState(false);
     const [Owner,SetOwner] = useState('');
-    const cardsetId = router.query.cardsetId; // get current cardset Id from route
+    const cardsetId = router.query.cardsetId;
     useEffect(() => {
         if (cardset.subject) {
             const { bgColor, txtColor } = getSubjectStyle(cardset.subject);
@@ -219,7 +217,7 @@ export default function CardsetPage() {
                                         <h3>Flashcard Set: {cardset.title}</h3>
                                         <div> Subject: <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
                                         <div> {currentCardsetData.length} flashcards </div>
-                                        <h3>Owner: {Owner}</h3>
+                                        {isOwner ? <></> : <div>Creator: {Owner}</div>}
                                         {cardset.isPublic ?
                                             <div>
                                                 <span className="bi bi-globe" title="public"></span>
@@ -229,9 +227,9 @@ export default function CardsetPage() {
                                                 <span className="bi bi-lock" title="restricted"></span>
                                             </div>}
 
-                                        {isadmin  ?
+                                        {canEdit  ?
                                             <div>
-                                                <CollaboratorList cardsetId={cardset.id} isOwner={isOwner} />
+                                                <CollaboratorList cardsetId={cardset.id} isOwner={isOwner} isadmin={isadmin}/>
                                             </div>
                                             : null}
 
