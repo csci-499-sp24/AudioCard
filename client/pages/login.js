@@ -52,7 +52,9 @@ const Login = () => {
             // The signed-in user info.
             const user = result.user;
             // Redirect to the dashboard page after successful login
+            if (user) {
             router.push('/dashboard');
+            }
         } catch (error) {
             // Handle Errors here.
             const errorCode = error.code;
@@ -64,6 +66,11 @@ const Login = () => {
             // Set the error message
             setError(errorMessage);
         }
+    };
+
+    const clearFields = () => {
+        setEmail('');
+        setPassword('');
     };
 
     return (
@@ -114,7 +121,7 @@ const Login = () => {
 
                         {/* Google Log in */}
                         <div className='text-center mt-4'>
-                    <button onClick={handleGoogleLogin} className="gsi-material-button">
+                    <button onClick={() => { clearFields(); handleGoogleLogin(); }}  className="gsi-material-button">
                     <div className="gsi-material-button-state"></div>
                             <div className="gsi-material-button-content-wrapper">
                             <div className="gsi-material-button-icon">

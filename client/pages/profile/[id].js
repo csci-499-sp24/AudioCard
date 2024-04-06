@@ -16,21 +16,6 @@ const Profile = () => {
     const [currentUser, setCurrentUser] = useState(null);
     const [profileUser, setProfileUser] = useState(null);
     const [publicCardsets, setPublicCardsets] = useState([]);
-    const [shouldShowFriendRequestButton, setShouldShowFriendRequestButton] = useState(false); 
-
-    useEffect(() => {
-        if (id) {
-            fetchUserProfile(id);
-            fetchPublicCardsets(id);
-        }
-    }, [id]);
-
-    useEffect(() => {
-        if (profileUser && currentUser){
-            const shouldShow = currentUser && profileUser && currentUser.id !== Number(profileUser.id);
-            setShouldShowFriendRequestButton(shouldShow);
-        }
-    }, [currentUser, profileUser])
 
     useEffect(() => {
         auth.onAuthStateChanged(async (user) => {
@@ -42,6 +27,12 @@ const Profile = () => {
         });
     }, []);
 
+    useEffect(() => {
+        if (id) {
+            fetchUserProfile(id);
+            fetchPublicCardsets(id);
+        }
+    }, [id]);
 
     const fetchCurrentUserData = async (firebaseId) => {
         try {
@@ -76,7 +67,8 @@ const Profile = () => {
         }
     };
 
-    
+    const shouldShowFriendRequestButton = currentUser && profileUser && currentUser.id !== Number(profileUser.id);
+
     return (
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={currentUser?.id} />

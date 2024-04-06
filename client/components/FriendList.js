@@ -10,7 +10,9 @@ const FriendList = ({userId}) => {
     const { isDarkMode } = useDarkMode();
 
     useEffect(() => {
-        fetchFriends();
+        if (userId) {
+            fetchFriends();
+        }
     }, [userId]);
 
     const fetchFriends = async () => {

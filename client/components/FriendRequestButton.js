@@ -7,14 +7,17 @@ const FriendRequestButton = ({ currentUserId, profileUserId }) => {
     const [requestStatus, setRequestStatus] = useState('not_friends'); 
     
     useEffect(() => {
+        if (currentUserId && profileUserId) {
         checkFriendship();
         renderButtonContent(); 
+        }
     }, [currentUserId, profileUserId, requestStatus]);
 
     const checkFriendship = async () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${currentUserId}/friends/${profileUserId}`);
             if (response.data.status !== 'pending'){
+                console.log('response data', response.data)
                 setRequestStatus(response.data.status);
                 return; 
             }
@@ -37,6 +40,9 @@ const FriendRequestButton = ({ currentUserId, profileUserId }) => {
             }
         } catch (error) {
             console.error('Error checking friendship status:', error);
+            if (error.response && error.response.status === 404) {
+                setRequestStatus('not_friends');
+            }
         }
     };
 
