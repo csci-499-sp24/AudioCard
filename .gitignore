@@ -60,3 +60,6 @@ client/.next/server/vendor-chunks/next.js
 client/.next/static/chunks/webpack.js
 client/.next/static/development/_buildManifest.js
 client/.next/trace
+
+# keep the Google keys safe
+googlekeys.json
