@@ -52,7 +52,7 @@ export const checkAnswerSTT = (answer, timeLimit, language, handleRestartTest, s
                 fullTranscript = fullTranscript.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, '');
                 interimTranscript = interimTranscript.replace(/[.,\/#!$%^&*;:{}=\-_`~()]/g, '');
                 if (fullTranscript.toLowerCase().includes(answer.toLowerCase()) || interimTranscript.toLowerCase().includes(answer.toLowerCase())) {
-                    setRingSize('scaleDown'); 
+                    setRingSize('scaleDown');
                     recognition.stop();
                     resolve(true);
                 }
@@ -68,7 +68,7 @@ export const checkAnswerSTT = (answer, timeLimit, language, handleRestartTest, s
 
             timeout = setTimeout(() => {
                 recognition.stop();
-                setRingSize('scaleDown'); 
+                setRingSize('scaleDown');
                 resolve(false);
             }, timeLimit * 1000);
 

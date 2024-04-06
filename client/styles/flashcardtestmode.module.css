@@ -210,9 +210,17 @@
     top: 77%;
     left: 50%; 
     transform: translate(-50%, -50%);
-    transition: padding 0.3s ease; 
+    padding: 10px; 
+    transition: padding 0.3s ease;
 }
 
+.micIconPulse {
+    animation: micPulse 1s infinite alternate; 
+}
+
+.micIconReg {
+    animation: micPulseReg 1s infinite alternate; 
+}
 .micIconDark {
     border: 2px solid rgb(255, 255, 255); 
 }
@@ -256,5 +264,23 @@
     }
     100% {
         box-shadow: 0 0 0 20px rgba(255, 0, 255, 0); /* End with larger shadow */
+    }
+}
+
+@keyframes micPulse {
+    0% {
+        padding: 10px;
+    }
+    100% {
+        padding: 30px;
+    }
+}
+
+@keyframes micPulseReg {
+    0% {
+        padding: 10px;
+    }
+    100% {
+        padding: 12px;
     }
 }
