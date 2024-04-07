@@ -20,10 +20,14 @@
 }
 
 .navUserAvatar {
+    position: relative;
+    top: -3px;
     overflow: hidden;
     border-radius: 50%;
     width: 40px;
     height: 40px;
+    cursor: pointer;
+    border: 1px solid #333;
 }
 
 .dropdownMenu {

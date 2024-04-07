@@ -20,9 +20,13 @@
 }
 
 .avatarImage {
-    width: 100%;
-    height: 100%;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
     object-fit: cover;
+    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+    border: 3px solid #333;
 }
 
 .friendList {
@@ -41,7 +45,6 @@
     color: white;
     border: none;
     border-radius: 5px;
-
 }
 
 .deleteButton {

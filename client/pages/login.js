@@ -6,10 +6,12 @@ import Link from 'next/link';
 import Image from "next/image"; 
 import logo from '../assets/images/logo.png';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { useDarkMode } from '@/utils/darkModeContext';
 
 
 
 const Login = () => {
+    const {isDarkMode} = useDarkMode();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -50,7 +52,9 @@ const Login = () => {
             // The signed-in user info.
             const user = result.user;
             // Redirect to the dashboard page after successful login
+            if (user) {
             router.push('/dashboard');
+            }
         } catch (error) {
             // Handle Errors here.
             const errorCode = error.code;
@@ -62,6 +66,11 @@ const Login = () => {
             // Set the error message
             setError(errorMessage);
         }
+    };
+
+    const clearFields = () => {
+        setEmail('');
+        setPassword('');
     };
 
     return (
@@ -112,7 +121,7 @@ const Login = () => {
 
                         {/* Google Log in */}
                         <div className='text-center mt-4'>
-                    <button onClick={handleGoogleLogin} className="gsi-material-button">
+                    <button onClick={() => { clearFields(); handleGoogleLogin(); }}  className="gsi-material-button">
                     <div className="gsi-material-button-state"></div>
                             <div className="gsi-material-button-content-wrapper">
                             <div className="gsi-material-button-icon">
@@ -131,7 +140,10 @@ const Login = () => {
                     </form>
                     
                     <div className='text-center mt-4'>
-                        <Link href="/signup" className="link-dark link-offset-2">Sign Up</Link> 
+                        <div className='col d-flex justify-content-center'>
+                            <div className='me-2'>Don&apos;t have an account? </div>
+                            <Link href="/signup" className={`${isDarkMode ? 'link-light' : 'link-dark'} link-offset-2`}>Sign Up</Link>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -10,9 +10,10 @@ import { DashboardCard } from '@/components/Cards/DashboardCard';
 import SharedCardset from '@/components/SharedCardset';
 import Navbar from '@/components/Navbar/Navbar';
 import { useDarkMode } from '../utils/darkModeContext';
+import BackToTopButton from '@/components/BackToTopButton';
 
 const Dashboard = () => {
-    const { isDarkMode, toggleDarkMode } = useDarkMode();
+    const { isDarkMode } = useDarkMode();
     const [user, setUser] = useState(null);
     const [userData, setUserData] = useState(null);
     const [cardsets, setCardsets] = useState([]);
@@ -148,6 +149,7 @@ const Dashboard = () => {
                             <SharedCardset userid={userData?.id} />
                         </div>
                     )}
+                    <BackToTopButton/> 
                 </div>
             </div>
         </div>

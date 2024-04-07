@@ -1,20 +1,35 @@
 import axios from 'axios';
-import {Howl} from 'howler';
+import { Howl } from 'howler';
 
-export const TTS = async (input, voiceGender, language) => {
-    if (!language){
-        language = 'en-US'; 
+export const TTS = (input, voiceGender, language, speakingRate) => {
+    if (!language) {
+        language = 'en-US';
     }
-    const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_URL + '/api/textToSpeech', { input, voiceGender, language}, { responseType: 'arraybuffer' });
-    
-    const audioData = Buffer.from(response.data).toString('base64');
-    const audioSrc = `data:audio/mp3;base64,${audioData}`;
+    if (!speakingRate){
+        speakingRate = 1.0; 
+    }
 
-    const sound = new Howl({
-        src: [audioSrc], 
-        format: ['mp3'],
-        onload: () => {
-            sound.play();
-        }
+    return new Promise((resolve, reject) => {
+        axios.post(process.env.NEXT_PUBLIC_SERVER_URL + '/api/textToSpeech', { input, voiceGender, language , speakingRate}, { responseType: 'arraybuffer' })
+            .then(response => {
+                const audioData = Buffer.from(response.data).toString('base64');
+                const audioSrc = `data:audio/mp3;base64,${audioData}`;
+
+                const sound = new Howl({
+                    src: [audioSrc],
+                    format: ['mp3'],
+                    onload: () => {
+                        console.log('duration at tts:', sound.duration()); 
+                        resolve(sound.duration());
+                    },
+                });
+
+                sound.play(); 
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                reject(error);
+            });
     });
 }

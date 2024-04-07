@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const apiRoutes = require('./routes/index');
 const sequelize = require('./config/db');
-
 const app = express();
 
 // Middleware
@@ -14,6 +13,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // Routes
 app.use('/api', apiRoutes);
 
+
 // Start the server
 const PORT = process.env.PORT || 8080;
 sequelize.sync().then(() => {
@@ -21,3 +21,5 @@ sequelize.sync().then(() => {
         console.log(`Server is running on port ${PORT}`);
     });
 });
+
+module.exports = app;

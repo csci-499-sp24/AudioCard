@@ -174,8 +174,8 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
 
     return (
         <div className="container">
-            <div className={style.topRightButtons}>
-                <button className={style.optionButton} onClick={() => setShowOptions(true)}>Options</button>
+            <div className="d-flex justify-content-end">
+                <button className={style.optionButton} onClick={() => setShowOptions(true)}><i className={`fa-solid fa-gear ${style.gearIcon}`}></i></button>
             </div>
             {showOptions && (
                 <div className={style.optionsOverlay}>
@@ -229,13 +229,13 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                             <div className={style.formGroup}>
                                 <input
                                     type="text"
-                                    className={style.formControl}
+                                    className={`${style.formControl} ${isDarkMode ? style.transparentInput : style.transparentInputLight}`}
                                     placeholder="Enter your answer here"
                                     value={answer}
                                     onChange={handleAnswerChange}
                                 />
                             </div>
-                            <button type="submit" className={`btn btn-primary ${style.centeredButton}`}>Submit Answer</button>
+                            <button type="submit" className={`btn btn-primary ${style.centeredButton} ${style.btnOutlinePurple}`}>Submit</button>
                         </form>
                     )}
                     {!isFlipped && (

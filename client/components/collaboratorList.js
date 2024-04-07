@@ -1,33 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { auth } from '@/utils/firebase';
 
-export const CollaboratorList = ({ cardsetId }) => {
-    const [userEmails, setUserEmails] = useState([]);
+export const CollaboratorList = ({ cardsetId, isOwner, isadmin }) => {
+    const [userEmailsWithAuth, setUserEmailsWithAuth] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [showList, setShowList] = useState(false);
 
     useEffect(() => {
         if (showList) {
-            fetchAccessUserEmails();
+            fetchAccessUserEmailsWithAuth();
         }
     }, [showList]); // Run the effect whenever showList changes
 
-    const fetchAccessUserEmails = async () => {
+    const fetchAccessUserEmailsWithAuth = async () => {
         setLoading(true);
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${cardsetId}/emails`);
             const userIds = response.data.userIds || [];
             const emailFetchPromises = userIds.map(async userId => {
                 const userDataResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}`);
-                return userDataResponse.data.user.email;
+                const userauth = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${cardsetId}/${userId}/authority`);
+                return { email: userDataResponse.data.user.email, authority: userauth.data.authority, id: userId };
             });
-            const userEmails = await Promise.all(emailFetchPromises);
-            setUserEmails(userEmails);
+            const userEmailsWithAuth = await Promise.all(emailFetchPromises);
+            setUserEmailsWithAuth(userEmailsWithAuth);
             setLoading(false);
         } catch (error) {
             setError('Error fetching access user emails');
             setLoading(false);
+        }
+    };
+
+    const deleteAccess = async (id) => {
+        try {
+            const response = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${cardsetId}/${id}/authority`);
+            setUserEmailsWithAuth(prevUsers => prevUsers.filter(user => user.id !== id));
+            return response
+        } catch (error) {
+            console.error('Error deleting access:', error);
+            setError('Error deleting access');
         }
     };
 
@@ -37,20 +50,37 @@ export const CollaboratorList = ({ cardsetId }) => {
 
     return (
         <div>
-            <button onClick={toggleList}>Show Collaborator List</button>
+            <button className='btn btn-secondary mt-3 mb-2' onClick={toggleList}>
+                <i className="bi bi-people-fill me-2"></i>Collaborators 
+                <i style={{marginLeft: '2px'}}className={`${showList ? 'bi bi-caret-down-fill' : 'bi bi-caret-left-fill'}`}></i>
+            </button>
+
             {showList && (
                 <div>
-                    <h2>Emails of users with access:</h2>
+                    <h2>Users with access:</h2>
                     {loading ? (
                         <div>Loading...</div>
                     ) : error ? (
                         <div>{error}</div>
                     ) : (
-                        <ul>
-                            {userEmails.map((email, index) => (
-                                <li key={index}>{email}</li>
-                            ))}
-                        </ul>
+
+                        userEmailsWithAuth.length > 0 ? (
+                            <ul>
+                                {userEmailsWithAuth.map(({ email, authority, id }, index) => (
+                                    <li className="mb-2"key={index}>
+                                        <strong>{email}</strong> - {authority === 'edit' ? 'editor' : authority === 'read-only' ? 'viewer' : authority}
+                                {isadmin && (
+                                    <> 
+                                        {authority != 'admin' || isOwner ?
+                                            <button className="btn btn-danger" style={{marginLeft: '10px'}}onClick={() => deleteAccess(id)}>remove</button>
+                                            : null} </> )} 
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p>Not shared with anyone</p>
+                        )
+
                     )}
                 </div>
             )}

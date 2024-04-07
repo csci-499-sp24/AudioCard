@@ -4,7 +4,7 @@ import { RotatingCardTest } from '../Cards/RotatingCardTest';
 import {checkAnswerSTT} from '../ASR/speechToText';
 import {TTS} from '../ASR/textToSpeech';
 import { useDarkMode } from '../../utils/darkModeContext';
-import { TestOptions } from './testOptions';
+import {TestOptions} from './testOptions';
 import TimerComponent from './timerComponent';
 import { getTranslation } from '@/utils/translations';
 
@@ -17,20 +17,31 @@ export const ASRTestMode = ({ cardData}) => {
     const [progress, setProgress] = useState(0);
     const [completion, setCompletion] = useState(0);
     const [score, setScore] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
     const [showTestResult, setShowTestResult] = useState(false);
     const [testStarted, setTestStarted] = useState(false);
     const [restartFlag, setRestartFlag] = useState(true); 
     const [showOptions, setShowOptions] = useState(false);
     const [maxAttempts, setMaxAttempts] = useState(0);
-    const mounted = useRef(false)
+    const [speakingRate, setSpeakingRate] = useState(1.0); 
+    const mounted = useRef(false);
     const [timeLimit, setTimeLimit] = useState(7);
     const [voiceGender, setVoiceGender] = useState('NEUTRAL');
     const [language, setLanguage] = useState('en-US');
+    const [ringSize, setRingSize] = useState('scaleDown');
+    const [micBorder, setMicBorder] = useState('');
     const [phrases, setPhrases] = useState(
         {
             tryAgain : 'Try Again.',
             correct : 'Correct.',
             theCorrectAnswerIs: 'The correct answer is.' ,
+        }
+    )
+    const [voiceCommands, setVoiceCommands] = useState(
+        {
+            shuffle: 'shuffle',
+            restart: 'restart',
+            exit: 'exit',
         }
     )
 
@@ -55,6 +66,10 @@ export const ASRTestMode = ({ cardData}) => {
             })
         }
     }, [language])
+    
+    useEffect(() => {
+        console.log('Is Paused: ', isPaused);
+    }, [isPaused]);
 
     useEffect(() => {
         setFlashcards(cardData);
@@ -85,7 +100,15 @@ export const ASRTestMode = ({ cardData}) => {
 
     const speakCard = async () => {
         if (!showTestResult){
-            TTS(flashcards[index].term, voiceGender, language);
+            let _duration = await TTS(flashcards[index].term, voiceGender, language, speakingRate);
+            console.log(_duration); 
+            if (_duration >= 3) {
+                setIsPaused(true);
+                let difference = _duration - 3;
+                await new Promise(resolve => setTimeout(resolve, difference * 1000));
+                console.log('Paused for', difference, 'seconds');
+            }
+            setIsPaused(false);
         }
     }
 
@@ -95,22 +118,22 @@ export const ASRTestMode = ({ cardData}) => {
             setBorderClass('');
         }, 2000);
     
-      let isCorrect = await checkAnswerSTT(answer, timeLimit, language);
+      let isCorrect = await checkAnswerSTT(answer, timeLimit, language, handleRestartTest, shuffleCards, voiceCommands, setRingSize);
     
         if (isCorrect) {
             setBorderClass('correct');
             setScore((currentScore) => currentScore + 1);
             const newProgress = progress + (100 / flashcards.length)
             setProgress(newProgress);
-            TTS(phrases.correct, voiceGender, language);
+            TTS(phrases.correct, voiceGender, language, speakingRate);
         } else {
                 setBorderClass('incorrect');
             for (let attempt = maxAttempts; attempt > 0 && mounted.current; attempt--) {
-                TTS(phrases.tryAgain, voiceGender, language);
+                TTS(phrases.tryAgain, voiceGender, language, speakingRate);
                 setTimeout(() => {
                     setBorderClass('');
                 }, 2000)
-                isCorrect = await checkAnswerSTT(answer, timeLimit, language);
+                isCorrect = await checkAnswerSTT(answer, timeLimit, language, handleRestartTest, shuffleCards, voiceCommands, setRingSize);
                 setBorderClass(isCorrect ? 'correct' : 'incorrect');
                 if (isCorrect) {
                     setScore((currentScore) => currentScore + 1);
@@ -123,7 +146,16 @@ export const ASRTestMode = ({ cardData}) => {
             if (!mounted.current) return;
             if (!isCorrect) {
                 setBorderClass('incorrect');
-                await TTS(`${phrases.theCorrectAnswerIs} ${flashcards[index].definition}`, voiceGender, language); 
+                let _duration = await TTS(`${phrases.theCorrectAnswerIs} ${flashcards[index].definition}`, voiceGender, language, speakingRate);
+                setIsFlipped(false);
+                console.log(_duration)
+                if (_duration >= 3) {
+                    setIsPaused(true);
+                    let difference = _duration - 2;
+                    await new Promise(resolve => setTimeout(resolve, difference * 1000));
+                    console.log('Paused for', difference, 'seconds');
+                }
+                setIsPaused(false);
             }
         }   
         setIsFlipped(true);
@@ -174,8 +206,8 @@ export const ASRTestMode = ({ cardData}) => {
     }
     return (
         <div className="container">
-            <div className={style.topRightButtons}>
-                <button className={style.optionButton} onClick={() => setShowOptions(true)}>Options</button>
+            <div className="d-flex justify-content-end">
+                <button className={style.optionButton} onClick={() => setShowOptions(true)}><i className={`fa-solid fa-gear ${style.gearIcon}`}></i></button>
             </div>
             {showOptions && (
                 <div className={style.optionsOverlay}>
@@ -183,7 +215,8 @@ export const ASRTestMode = ({ cardData}) => {
                     <TestOptions isSpeakMode={true} attempts={maxAttempts} handleAttemptChange={handleAttemptChange}
                     timeLimit={timeLimit} handleTimeLimit={handleTimeLimit}
                     voiceGender={voiceGender} setVoiceGender={setVoiceGender}
-                    language={language} setLanguage={setLanguage}/>
+                    language={language} setLanguage={setLanguage}
+                    speakingRate={speakingRate} setSpeakingRate={setSpeakingRate}/>
                     <div className={style.closeButtonContainer}>
                         <button className={style.closeButton} onClick={() => {
                         setShowOptions(false);
@@ -210,7 +243,8 @@ export const ASRTestMode = ({ cardData}) => {
                         showTestResult={showTestResult}
                         isFlipped={isFlipped}
                         isSpeakMode={true}
-                        restartFlag={restartFlag}/>
+                        restartFlag={restartFlag}
+                        isPaused={isPaused}/>
                     <div className={style.flashcard}>
                         <RotatingCardTest
                             flashcards={flashcards}
@@ -229,6 +263,12 @@ export const ASRTestMode = ({ cardData}) => {
                                 </div>
 
                             </div>
+                        </div>
+                        <div className='row d-flex justify-content-center'>
+                        <div className={`${style.micRing} ${style[ringSize]}`}></div>
+                        <div className='container'>
+                        <i className={`bi bi-mic-fill ${isDarkMode ? style.micIconDark : style.micIconLight} ${ringSize==='scaleUp' ? style.micIconPulse : null}`}></i>
+                        </div>
                         </div>
 
                     </div>

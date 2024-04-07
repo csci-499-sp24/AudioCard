@@ -37,6 +37,68 @@
     width: 50%;
 }
 
+.transparentInput {
+    border: none; 
+    border-bottom: 3px solid lightskyblue;
+    background-color: transparent; 
+    outline: none;
+    width: 50%;
+    padding: 5px 0; 
+    font-size: 40px;
+    font-family: Exo; 
+    background-image: linear-gradient(to right, blue, white, lightskyblue);
+    background-size: 100%; 
+    background-clip: text; 
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -o-background-clip: text;
+    -ms-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;
+    -o-text-fill-color: transparent;
+    -ms-text-fill-color: transparent;
+    caret-color: white;
+}
+
+.transparentInputLight {
+    border: none; 
+    border-bottom: 3px solid lightskyblue;
+    background-color: transparent; 
+    outline: none;
+    width: 50%;
+    padding: 5px 0; 
+    font-size: 40px;
+    font-family: Exo; 
+    background-image: linear-gradient(to right, blue, rgb(0, 0, 0), lightskyblue);
+    background-clip: text ; 
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -o-background-clip: text;
+    -ms-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;
+    -o-text-fill-color: transparent;
+    -ms-text-fill-color: transparent;
+    caret-color: black; 
+}
+
+.transparentInput::placeholder {
+    color: lightskyblue;
+}
+
+.btnOutlinePurple{
+    color: lightskyblue;
+    background-color: transparent;
+    background-image: none;
+    border-color: lightskyblue; 
+}
+
+.btnOutlinePurple:hover {
+    color: #fff;
+    background-color: #000dff; 
+    border-color: #000000;
+}
+
 .centeredButton {
     display: block;
     margin-left: auto;
@@ -62,7 +124,6 @@
     border-radius: 10px;
     width: 90%;
     max-width: 400px;
-    height: 300px;
     text-align: center;
 }
 
@@ -94,19 +155,30 @@
 }
 
 .topRightButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     top: 10px;
     right: 63px;
     padding: 10px;
+    outline: 2px solid white; 
+}
+.gearIcon {
+    padding: 0.3rem; /* Optional: adjust padding as needed */
 }
 
+
 .optionButton {
+    justify-content: center;
+    display: flex;
+    background-color: transparent;
+    align-items: center;
     border: none;
-    background-color: #1d62b4ba; 
-    color: white;
+    color:#1d62b4ba; 
     padding: 0.5rem 1rem;
-    border-radius: 0.3rem;
     cursor: pointer;
+    font-size: 2.5rem; 
 }
 
 #optionButtons {
@@ -122,4 +194,93 @@
     left: 50%;
     bottom: -50px; 
     transform: translateX(-50%);
+}
+
+.micIconLight { 
+    border: 2px solid black; 
+}
+
+.micIconDark, .micIconLight {
+    font-size: 40px;
+    padding: 10px;
+    display: flex; 
+    justify-content: center;
+    border-radius: 50%;
+    position: absolute; 
+    top: 77%;
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    padding: 10px; 
+    transition: padding 0.3s ease;
+}
+
+.micIconPulse {
+    animation: micPulse 1s infinite alternate; 
+}
+
+.micIconReg {
+    animation: micPulseReg 1s infinite alternate; 
+}
+.micIconDark {
+    border: 2px solid rgb(255, 255, 255); 
+}
+
+.micIconLight:hover,
+.micIconDark:hover {
+    padding: 15px;
+}
+
+.micRing {
+    position: absolute; 
+    top: 77%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background-color: transparent; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    border: 2px solid #FF00FF; 
+}
+
+.scaleUp {
+    width: 100px; 
+    height: 100px; 
+    animation: pulse 1.0s infinite alternate; 
+    box-shadow: 0 0 0 0 rgba(255, 0, 255, 0.7);
+}
+
+.scaleDown {
+    width: 75px; 
+    height: 75px; 
+    transition: width 0.3s ease, height 0.3s ease; 
+}
+
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 0, 255, 0.7); /* Start with no shadow */
+    }
+    100% {
+        box-shadow: 0 0 0 20px rgba(255, 0, 255, 0); /* End with larger shadow */
+    }
+}
+
+@keyframes micPulse {
+    0% {
+        padding: 10px;
+    }
+    100% {
+        padding: 30px;
+    }
+}
+
+@keyframes micPulseReg {
+    0% {
+        padding: 10px;
+    }
+    100% {
+        padding: 12px;
+    }
 }
