@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import 'react-tooltip/dist/react-tooltip.css'; 
 import { Tooltip } from 'react-tooltip'
 import axios from 'axios';
 
