@@ -93,7 +93,7 @@ const Profile = () => {
                         <h1 className={styles.cardSetTitle}>{`${profileUser?.username}'s Public Card Sets`}</h1>
                         <div className="row">
                             {publicCardsets.map(cardset => (
-                                <div className='col-6'>
+                                <div className='col-6' key={cardset.id}>
                                 <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{textDecoration: 'none'}}>
                                 <CardProfile key={cardset.id} cardset={cardset}/>
                                 </Link>
