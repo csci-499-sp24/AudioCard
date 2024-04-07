@@ -240,5 +240,4 @@ router.route('/:friendId')
     }
 });
 
-
 module.exports = router;

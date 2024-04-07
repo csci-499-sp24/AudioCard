@@ -11,6 +11,8 @@ import { auth } from '../../utils/firebase';
 import { useDarkMode } from '../../utils/darkModeContext';
 import { getSubjectStyle } from '@/utils/getSubjectStyles';
 import { CollaboratorList } from '@/components/collaboratorList';
+import Image from 'next/image';
+import exam from '../../assets/images/exam.png'; 
 
 
 
@@ -30,7 +32,8 @@ export default function CardsetPage() {
     const [showSharePopup, setShowSharePopup] = useState(false);
     const [canEdit, setCanEdit] = useState(false);
     const [txtColor, setTxtColor] = useState('');
-
+    const [isOwner, setIsOwner] = useState(false);
+    const [Owner,SetOwner] = useState('');
     const cardsetId = router.query.cardsetId; // get current cardset Id from route
     useEffect(() => {
         if (cardset.subject) {
@@ -103,6 +106,10 @@ export default function CardsetPage() {
             const id = cardsetData.userId;
             const ispublic = cardsetData.isPublic;
             const isFriendsOnly = cardsetData.isFriendsOnly;
+
+            const owner = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}`);
+            SetOwner(owner.data.user.email)
+
             if (!ispublic && !isFriendsOnly) {
                 setAccess(false)
             } 
@@ -121,6 +128,7 @@ export default function CardsetPage() {
                 setAccess(true);
                 setadmin(true);
                 setCanEdit(true);
+                setIsOwner(true);
             }
 
             try {
@@ -162,9 +170,6 @@ export default function CardsetPage() {
         deleteCardSet(cardsetId);
     };
 
-
-
-
     const deleteCardSet = async (cardsetId) => {
         try {
             await axios.delete(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}`);
@@ -180,13 +185,21 @@ export default function CardsetPage() {
         router.push(`/test/${cardsetId}${darkModeParam}`);
     };
 
+    const navigateToReviewPage = () => {
+        const darkModeParam = isDarkMode ? '?darkMode=true' : '?darkMode=false';
+        router.push(`/review/${cardsetId}${darkModeParam}`);
+    };
+
     // Render flashcard data
     return (
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={userData?.id}/>
             <div className="container">
-                <div className="row">
-                    <div className="col mt-5 mb-2">
+                <div className="row mt-5">
+                    <div className='col'>
+                        <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>
+                        </div>
+                    <div className="row">
                         <h1 className="text-center">{cardset.title}</h1>
                     </div>
                     {!access ? (
@@ -197,11 +210,10 @@ export default function CardsetPage() {
                         <div className="container">
                             <div className="row">
                                 <div className="row d-flex align-items-center">
-                                    <div className='col'>
-                                        <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>
-                                    </div>
-                                    <div className='col d-flex justify-content-end mb-4'>
-                                        <button className="btn btn-secondary testButton" onClick={navigateToTestPage}>Test Mode</button>
+                                    <div className='col d-flex justify-content-center mb-4 mt-3'>
+                                        <button className="btn btn-lg testButton" style={{backgroundColor: isDarkMode? '#377ec9':'white', color: isDarkMode? 'white' : 'black'}} onClick={navigateToTestPage}> <Image style={{height: '1.5em', width: '1.5em'}}src={exam}/> Test</button>
+                                        <button className="btn btn-lg ReviewButton"  style={{backgroundColor: isDarkMode? '#377ec9':'white', color: isDarkMode? 'white' : 'black'}} onClick={navigateToReviewPage}>
+                                            <i className="bi bi-headphones"></i> Review</button>
                                     </div>
                                 </div>
                             </div>
@@ -223,6 +235,7 @@ export default function CardsetPage() {
                                         <h3>Flashcard Set: {cardset.title}</h3>
                                         <div> Subject: <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
                                         <div> {currentCardsetData.length} flashcards </div>
+                                        <h3>Owner: {Owner}</h3>
                                         {cardset.isPublic ?
                                             <div>
                                                 <span className="bi bi-globe" title="public"></span>
@@ -235,9 +248,11 @@ export default function CardsetPage() {
                                                 </div>
                                             </div>}
 
-                                        <div>
-                                            <CollaboratorList cardsetId={cardset.id} />
-                                        </div>
+                                        {isadmin  ?
+                                            <div>
+                                                <CollaboratorList cardsetId={cardset.id} isOwner={isOwner} />
+                                            </div>
+                                            : null}
 
                                     </div>
                                 </div>
@@ -288,7 +303,7 @@ export default function CardsetPage() {
                                                 </div>
                                             </div>
                                             <div className='row'>
-                                                <ShareFunction userid={userData?.id} cardsetId={cardsetId} />
+                                                <ShareFunction userid={userData?.id} cardsetId={cardsetId} isOwner={isOwner}/>
                                             </div>
                                         </div>
                                     )}
@@ -434,6 +449,9 @@ export default function CardsetPage() {
                         background: none;
                         border: none;
                       }
+                    .ReviewButton {
+                        margin-left: 10px;
+                    }
                     `}</style>
                 </div>
             </div>

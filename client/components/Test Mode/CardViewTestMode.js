@@ -3,10 +3,12 @@ import axios from 'axios';
 import { FlashcardTestMode } from './FlashcardTestMode';
 import { ASRTestMode } from './ASRTestMode';
 import styles from '../../styles/CardSet.module.css';
+import { useDarkMode } from '@/utils/darkModeContext';
 
 export const CardViewTestMode = ({ userId, cardset }) => {
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [selectedMode, setSelectedMode] = useState(null); 
+    const {isDarkMode} = useDarkMode(); 
 
     useEffect(() => {
         fetchFlashCards();
@@ -26,32 +28,72 @@ export const CardViewTestMode = ({ userId, cardset }) => {
         }
     }
 
-    const handleModeSelection = (mode) => {
-        setSelectedMode(mode);
-    };
 
     return (
         <div className={styles.setContainer}>
-            {/*Form for changing currently viewed cardset */}
             <div className="container">
-                <hr />
+                <hr style={{borderColor: isDarkMode ? 'white' : 'black', borderWidth: '2px'}}/>
                 <div className="row">
-                    <div className="col mb-2">
-                        <h1 className={styles.setTitle}>Current cardset: {cardset.title}</h1>
+                        <h1 className={styles.setTitle}>{cardset.title}</h1>
+                </div>
+                <div className="row mb-2">
+                    <div className="col-12">
+                        <ul className="nav nav-tabs nav-fill" style={{width: '100%'}}>
+                            <li className="nav-item" style={{ flex: '1', borderTop: '1px solid #ccc', borderRight: '1px solid #ccc', borderLeft: '1px solid #ccc', borderRadius: '5px' }}>
+                                <button
+                                    className={`nav-link ${selectedMode === 'speak' ? 'active' : ''}`}
+                                    onClick={() => setSelectedMode('speak')}
+                                >
+                                    <i className="bi bi-headset"></i> Speak
+                                </button>
+                            </li>
+                            <li className="nav-item" style={{ flex: '1', borderTop: '1px solid #ccc', borderRight: '1px solid #ccc', borderRadius: '5px' }}>
+                                <button
+                                    className={`nav-link ${selectedMode === 'type' ? 'active' : ''}`}
+                                    onClick={() => setSelectedMode('type')}
+                                >
+                                    <i className="bi bi-keyboard"></i> Type
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-                {/*Pass all the cards of the cardset to the flashcard component*/}
-                <div className="row mb-2 d-flex justify-content-center align-items-center'">
-                <div className='col d-flex justify-content-end'>
-                    <button className="btn btn-secondary" onClick={() => handleModeSelection('speak')}>Speak Mode</button>
-                </div>
-                <div className='col'>
-                    <button className="btn btn-secondary" onClick={() => handleModeSelection('type')}>Type Mode</button>
-                </div>
-                </div>
-                <hr />
                 {selectedMode === 'speak' && <ASRTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} />}
                 {selectedMode === 'type' && <FlashcardTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} />}
+                {!selectedMode &&
+                <div className='container d-flex justify-content-center mt-5' style={{backgroundColor: isDarkMode? '#252526' : 'white', width: '70%', borderRadius: '10px',}}>
+                    <div className='container2'>
+                        <div className='headingContainer mt-5'>
+                            <div className='row'>
+                                <h1>Test your knowledge!</h1>
+                            </div>
+                        </div>
+                        <div classname='bodyContainer'>
+                            <div className='row'>
+                                <div>Select a mode above to start.</div>
+                            </div>
+                            <div className='row mt-5' style={{color: 'green'}}>
+                                <div>&#127911; Speak Mode:</div>
+                            </div>
+                            <div className='row' style={{color:'green'}}>
+                                <p style={{paddingLeft: '40px'}}>Make learning hands-free! The app will speak terms out to you and listen for your answers &#127897;</p>
+                            </div>
+                            <div className='row mt-5' style={{color: 'green'}}>
+                                <div>&#x1F5A5; Type Mode:</div>
+                            </div>
+                            <div className='row' style={{color:'green'}}>
+                                <p style={{paddingLeft: '40px'}}>Match your terms by typing and submitting your answers <i class="bi bi-input-cursor-text" style={{color: isDarkMode ? 'white': 'black'}}></i></p>
+                            </div>
+                            <div className='row mt-5' style={{color: '#FFA500'}}>
+                                <div>	&#x2699; Settings:</div>
+                            </div>
+                            <div className='row mb-5' style={{color:'#FFA500'}}>
+                                <p style={{paddingLeft: '40px'}}>Adjust time limits, maximum number of attempts</p>
+                                <p style={{paddingLeft: '40px'}}>&#127911;: set the gender, language, and speaking rate!</p>
+                            </div>
+                        </div>
+                </div>
+                </div>}
             </div>
         </div>
     )
