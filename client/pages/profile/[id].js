@@ -169,7 +169,7 @@ useEffect(() => {
                         <div className="row">
                             {publicCardsets.map(cardset => (
                                 <div className='col-6' key={cardset.id}>
-                                    <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{textDecoration: 'none'}}>
+                                    <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{textDecoration: 'none', width: '100%'}}>
                                         <CardProfile key={cardset.id} cardset={cardset}/>
                                     </Link>
                                 </div> 
@@ -184,7 +184,7 @@ useEffect(() => {
                                 .filter(cardset => cardset.title != null)
                                 .map(cardset => (
                                     <div className='col-6' key={cardset.id}>
-                                    <Link href={`/cardsets/${cardset.id}`} style={{textDecoration: 'none'}}>
+                                    <Link href={`/cardsets/${cardset.id}`} style={{textDecoration: 'none', width: '100%'}}>
                                         <CardProfile key={cardset.id} cardset={cardset}/>
                                     </Link>
                                     </div> 
