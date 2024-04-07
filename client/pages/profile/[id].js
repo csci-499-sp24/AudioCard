@@ -16,6 +16,8 @@ const Profile = () => {
     const [currentUser, setCurrentUser] = useState(null);
     const [profileUser, setProfileUser] = useState(null);
     const [publicCardsets, setPublicCardsets] = useState([]);
+    const [friendCardsets, setFriendCardsets] = useState([]); 
+    const [isFriends, setIsFriends] = useState(false);
 
     useEffect(() => {
         auth.onAuthStateChanged(async (user) => {
@@ -31,6 +33,7 @@ const Profile = () => {
         if (id) {
             fetchUserProfile(id);
             fetchPublicCardsets(id);
+            checkFriendship(id); 
         }
     }, [id]);
 
@@ -57,6 +60,19 @@ const Profile = () => {
         }
     };
 
+    const checkFriendship = async (id) => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${currentUser.id}/friends/${id}`);
+            if (response.data.status=='accepted'){
+                setIsFriends(true);
+                fetchFriendCardsets(id);
+            } 
+        } catch (error) {
+            console.error('Error checking friendship status:', error);
+            setIsFriends(false);
+        }
+    };
+
     const fetchPublicCardsets = async (userId) => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/cardsets`);
@@ -66,6 +82,17 @@ const Profile = () => {
             console.error('Error fetching public cardsets:', error);
         }
     };
+
+    const fetchFriendCardsets = async (id) => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}/friends-only`);
+            const cardsets = response.data.cardsets
+            setFriendCardsets(cardsets);
+
+        } catch (error){
+            console.error('Error fetching friends only cardsets:', error);
+        }
+    }
 
     const shouldShowFriendRequestButton = currentUser && profileUser && currentUser.id !== Number(profileUser.id);
 
@@ -88,6 +115,8 @@ const Profile = () => {
                             <FriendList userId={profileUser?.id} />
                         </div>
                     </div>
+                    <div className='cardsetsContainers'>
+                    <div className='row'>
                     <div className="container">
                         <h1 className={styles.cardSetTitle}>{`${profileUser?.username}'s Public Card Sets`}</h1>
                         <div className="row">
@@ -96,6 +125,20 @@ const Profile = () => {
                             ))}
                         </div>
                     </div>
+                    </div>
+                    <div className='row'>
+                    {isFriends ? (<div className="container">
+                        <div className='row'>
+                        <h1 className={styles.cardSetTitle}>{`${profileUser?.username}'s Friends Only Card Sets`}</h1>
+                        </div>
+                        <div className="row">
+                            {friendCardsets.map(cardset => (
+                                <CardProfile key={cardset.id} cardset={cardset} />
+                            ))}
+                        </div>
+                        </div>) : (null)}
+                        </div>
+                        </div>
                 </div>
             </div>
         </div>

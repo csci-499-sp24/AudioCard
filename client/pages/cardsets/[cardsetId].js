@@ -53,8 +53,9 @@ export default function CardsetPage() {
     }, [user, userData]);
 
     useEffect(() => {
+        if (userData && userData.id){
         fetchFlashCards();
-        checkaccess();
+        checkaccess();}
     }, [userData]);
 
     const fetchUserData = async () => {
@@ -77,6 +78,9 @@ export default function CardsetPage() {
 
     const fetchFlashCards = async () => {
         try {
+            if(!userData.id){
+                return; 
+            }
             setLoading(true);
             // get current cardset's flashcards
             const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}/flashcards`);
@@ -97,9 +101,21 @@ export default function CardsetPage() {
             const resp = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}`);
             const cardsetData = resp.data;
             const id = cardsetData.userId;
-            const ispublic = cardsetData.isPublic
-            if (!ispublic) {
+            const ispublic = cardsetData.isPublic;
+            const isFriendsOnly = cardsetData.isFriendsOnly;
+            if (!ispublic && !isFriendsOnly) {
                 setAccess(false)
+            } 
+            if (!ispublic && isFriendsOnly){
+                try {
+                    const friendStatus = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}/friends/${userData.id}`);
+                    if (friendStatus.data.status=='accepted'){
+                        setAccess(true);
+                    }
+                } catch (error) {
+                    console.error('Error checking friendship', error);
+                    setAccess(false);
+                }
             }
             if (id == userData.id) {
                 setAccess(true);

@@ -236,7 +236,17 @@ router.get('/:userid/friends-only', async(req,res) => {
                 userId: userId,
                 isPublic: false, 
                 isFriendsOnly: true
-            }
+            },  
+            include: [{
+                model: Flashcard,
+                attributes: [],
+                duplicating: false,
+            }],
+            attributes: {
+                include: [
+                    [Sequelize.fn("COUNT", Sequelize.col("flashcards.id")), "flashcardCount"]
+                ]
+            },
         });
         res.status(200).json({cardsets: friendsOnlyCardSets});
     } catch(error){
