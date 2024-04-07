@@ -17,6 +17,9 @@ const Profile = () => {
     const [currentUser, setCurrentUser] = useState(null);
     const [profileUser, setProfileUser] = useState(null);
     const [publicCardsets, setPublicCardsets] = useState([]);
+    const [friendCardsets, setFriendCardsets] = useState([]);
+    const [isUser, setIsUser] = useState(false);
+    const [isFriends, setIsFriends] = useState(false);
     const [userAvatar, setUserAvatar] = useState('');
 
     useEffect(() => {
@@ -40,6 +43,28 @@ const Profile = () => {
 
         fetchInitialData();
     }, [id]);
+
+    useEffect(() => {
+        const fetchFriendData = async () => {
+            if (currentUser && profileUser && currentUser.id && profileUser.id && !isUser){
+                checkFriendship()
+            }
+        }
+        fetchFriendData(); 
+    },[currentUser, profileUser, isUser])
+
+    //if user is viewing own profile, fetch cardsets
+useEffect(() => {
+    if (currentUser && profileUser && currentUser.id && profileUser.id){ 
+        if (currentUser.id == Number(profileUser.id)){
+            setIsUser(true); 
+            fetchFriendCardsets(currentUser.id);
+        } else {
+            setIsUser(false);
+        }
+    }
+}, [currentUser, profileUser]);
+
 
     const fetchCurrentUserData = async (firebaseId) => {
         try {
@@ -65,6 +90,21 @@ const Profile = () => {
         }
     };
 
+    const checkFriendship = async () => {
+        if (!isUser){
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${currentUser.id}/friends/${profileUser.id}`);
+            if (response.data.status=='accepted'){
+                setIsFriends(true);
+                fetchFriendCardsets(id);
+            } 
+        } catch (error) {
+            console.error('Error checking friendship status:', error);
+            setIsFriends(false);
+        }
+    }
+    };
+
     const fetchPublicCardsets = async (userId) => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/cardsets`);
@@ -74,6 +114,17 @@ const Profile = () => {
             console.error('Error fetching public cardsets:', error);
         }
     };
+
+    const fetchFriendCardsets = async (id) => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}/friends-only`);
+            const cardsets = response.data.cardsets
+            setFriendCardsets(cardsets);
+
+        } catch (error){
+            console.error('Error fetching friends only cardsets:', error);
+        }
+    }
 
     const fetchUserAvatar = async (username) => {
         try {
@@ -96,6 +147,7 @@ const Profile = () => {
             <div className="mt-4">
                 <div className={styles.profileContainer}>
                     <div className={styles.profileSidebar}>
+                    <h1 className={styles.cardSetTitle}>{`${profileUser?.username}`} </h1>
                     <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} />
                         {shouldShowFriendRequestButton && (
                             <FriendRequestButton
@@ -108,7 +160,7 @@ const Profile = () => {
                         </div>
                     </div>
                     <div className="container">
-                        <h1 className={styles.cardSetTitle}>{`${profileUser?.username}'s Public Card Sets`}</h1>
+                        <h1 className={styles.cardSetTitle}>Public Card Sets <span className="bi bi-globe"></span></h1>
                         <div className="row">
                             {publicCardsets.map(cardset => (
                                 <div className='col-6' key={cardset.id}>
@@ -119,6 +171,19 @@ const Profile = () => {
                             ))}
                         </div>
                     </div>
+                    {isFriends || isUser && (
+                    <div className="container">
+                        <h1 className={styles.cardSetTitle}>Friends Only Card Sets <span className="bi bi-lock"></span></h1>
+                        <div className="row">
+                            {friendCardsets.map(cardset => (
+                                <div className='col-6' key={cardset.id}>
+                                <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{textDecoration: 'none'}}>
+                                <CardProfile key={cardset.id} cardset={cardset}/>
+                                </Link>
+                                </div> 
+                            ))}
+                        </div>
+                    </div> )} 
                 </div>
             </div>
         </div>
