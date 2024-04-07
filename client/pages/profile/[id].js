@@ -159,31 +159,35 @@ useEffect(() => {
                             <FriendList userId={profileUser?.id} />
                         </div>
                     </div>
+                    <div>
                     <div className="container">
                         <h1 className={styles.cardSetTitle}>Public Card Sets <span className="bi bi-globe"></span></h1>
                         <div className="row">
                             {publicCardsets.map(cardset => (
                                 <div className='col-6' key={cardset.id}>
-                                <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{textDecoration: 'none'}}>
-                                <CardProfile key={cardset.id} cardset={cardset}/>
-                                </Link>
+                                    <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{textDecoration: 'none'}}>
+                                        <CardProfile key={cardset.id} cardset={cardset}/>
+                                    </Link>
                                 </div> 
                             ))}
                         </div>
                     </div>
-                    {isFriends || isUser && (
-                    <div className="container">
-                        <h1 className={styles.cardSetTitle}>Friends Only Card Sets <span className="bi bi-lock"></span></h1>
-                        <div className="row">
-                            {friendCardsets.map(cardset => (
-                                <div className='col-6' key={cardset.id}>
-                                <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{textDecoration: 'none'}}>
-                                <CardProfile key={cardset.id} cardset={cardset}/>
-                                </Link>
-                                </div> 
-                            ))}
+                    {(isFriends || isUser)&& (
+                        <div className="container mt-4"> {/* Adjust margin-top for separation */}
+                            <h1 className={styles.cardSetTitle}>Friends Only Card Sets <span className="bi bi-lock"></span></h1>
+                            <div className="row">
+                                {friendCardsets.map(cardset => (
+                                    <div className='col-6' key={cardset.id}>
+                                        <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{textDecoration: 'none'}}>
+                                            <CardProfile key={cardset.id} cardset={cardset}/>
+                                        </Link>
+                                    </div> 
+                                ))}
+                            </div>
                         </div>
-                    </div> )} 
+                    )}
+                </div>
+
                 </div>
             </div>
         </div>
