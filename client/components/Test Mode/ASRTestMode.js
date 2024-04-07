@@ -4,7 +4,7 @@ import { RotatingCardTest } from '../Cards/RotatingCardTest';
 import {checkAnswerSTT} from '../ASR/speechToText';
 import {TTS} from '../ASR/textToSpeech';
 import { useDarkMode } from '../../utils/darkModeContext';
-import { TestOptions } from './testOptions';
+import {TestOptions} from './testOptions';
 import TimerComponent from './timerComponent';
 import { getTranslation } from '@/utils/translations';
 
@@ -28,11 +28,20 @@ export const ASRTestMode = ({ cardData}) => {
     const [timeLimit, setTimeLimit] = useState(7);
     const [voiceGender, setVoiceGender] = useState('NEUTRAL');
     const [language, setLanguage] = useState('en-US');
+    const [ringSize, setRingSize] = useState('scaleDown');
+    const [micBorder, setMicBorder] = useState('');
     const [phrases, setPhrases] = useState(
         {
             tryAgain : 'Try Again.',
             correct : 'Correct.',
             theCorrectAnswerIs: 'The correct answer is.' ,
+        }
+    )
+    const [voiceCommands, setVoiceCommands] = useState(
+        {
+            shuffle: 'shuffle',
+            restart: 'restart',
+            exit: 'exit',
         }
     )
 
@@ -109,7 +118,7 @@ export const ASRTestMode = ({ cardData}) => {
             setBorderClass('');
         }, 2000);
     
-      let isCorrect = await checkAnswerSTT(answer, timeLimit, language);
+      let isCorrect = await checkAnswerSTT(answer, timeLimit, language, handleRestartTest, shuffleCards, voiceCommands, setRingSize);
     
         if (isCorrect) {
             setBorderClass('correct');
@@ -124,7 +133,7 @@ export const ASRTestMode = ({ cardData}) => {
                 setTimeout(() => {
                     setBorderClass('');
                 }, 2000)
-                isCorrect = await checkAnswerSTT(answer, timeLimit, language, speakingRate);
+                isCorrect = await checkAnswerSTT(answer, timeLimit, language, handleRestartTest, shuffleCards, voiceCommands, setRingSize);
                 setBorderClass(isCorrect ? 'correct' : 'incorrect');
                 if (isCorrect) {
                     setScore((currentScore) => currentScore + 1);
@@ -254,6 +263,12 @@ export const ASRTestMode = ({ cardData}) => {
                                 </div>
 
                             </div>
+                        </div>
+                        <div className='row d-flex justify-content-center'>
+                        <div className={`${style.micRing} ${style[ringSize]}`}></div>
+                        <div className='container'>
+                        <i className={`bi bi-mic-fill ${isDarkMode ? style.micIconDark : style.micIconLight} ${ringSize==='scaleUp' ? style.micIconPulse : null}`}></i>
+                        </div>
                         </div>
 
                     </div>

@@ -2,7 +2,6 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar/Navbar';
-import { Flashcard } from '../../components/Flashcard';
 import { TermCard } from '../../components/Cards/TermCard';
 import { CardsetView } from '../../components/CardsetView';
 import { EditView } from "@/components/EditCardset";
@@ -23,7 +22,6 @@ export default function CardsetPage() {
     const [userData, setUserData] = useState(null);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [isEditPageOpen, setIsEditPageOpen] = useState(false);
-    const [showCreateFlashcardForm, setShowCreateFlashcardForm] = useState(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [cardset, setCardset] = useState([]);
     const [access, setAccess] = useState(true);
@@ -34,7 +32,7 @@ export default function CardsetPage() {
     const [txtColor, setTxtColor] = useState('');
     const [isOwner, setIsOwner] = useState(false);
     const [Owner,SetOwner] = useState('');
-    const cardsetId = router.query.cardsetId; // get current cardset Id from route
+    const cardsetId = router.query.cardsetId;
     useEffect(() => {
         if (cardset.subject) {
             const { bgColor, txtColor } = getSubjectStyle(cardset.subject);
@@ -56,9 +54,8 @@ export default function CardsetPage() {
     }, [user, userData]);
 
     useEffect(() => {
-        if (userData && userData.id){
         fetchFlashCards();
-        checkaccess();}
+        checkaccess();
     }, [userData]);
 
     const fetchUserData = async () => {
@@ -81,9 +78,6 @@ export default function CardsetPage() {
 
     const fetchFlashCards = async () => {
         try {
-            if(!userData.id){
-                return; 
-            }
             setLoading(true);
             // get current cardset's flashcards
             const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}/flashcards`);
@@ -104,25 +98,13 @@ export default function CardsetPage() {
             const resp = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}`);
             const cardsetData = resp.data;
             const id = cardsetData.userId;
-            const ispublic = cardsetData.isPublic;
-            const isFriendsOnly = cardsetData.isFriendsOnly;
+            const ispublic = cardsetData.isPublic
 
             const owner = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}`);
             SetOwner(owner.data.user.email)
 
-            if (!ispublic && !isFriendsOnly) {
+            if (!ispublic) {
                 setAccess(false)
-            } 
-            if (!ispublic && isFriendsOnly){
-                try {
-                    const friendStatus = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}/friends/${userData.id}`);
-                    if (friendStatus.data.status=='accepted'){
-                        setAccess(true);
-                    }
-                } catch (error) {
-                    console.error('Error checking friendship', error);
-                    setAccess(false);
-                }
             }
             if (id == userData.id) {
                 setAccess(true);
@@ -181,13 +163,11 @@ export default function CardsetPage() {
         }
     };
     const navigateToTestPage = () => {
-        const darkModeParam = isDarkMode ? '?darkMode=true' : '?darkMode=false';
-        router.push(`/test/${cardsetId}${darkModeParam}`);
+        router.push(`/test/${cardsetId}`);
     };
 
     const navigateToReviewPage = () => {
-        const darkModeParam = isDarkMode ? '?darkMode=true' : '?darkMode=false';
-        router.push(`/review/${cardsetId}${darkModeParam}`);
+        router.push(`/review/${cardsetId}`);
     };
 
     // Render flashcard data
@@ -235,22 +215,19 @@ export default function CardsetPage() {
                                         <h3>Flashcard Set: {cardset.title}</h3>
                                         <div> Subject: <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
                                         <div> {currentCardsetData.length} flashcards </div>
-                                        <h3>Owner: {Owner}</h3>
+                                        {isOwner ? <></> : <div>Creator: {Owner}</div>}
                                         {cardset.isPublic ?
                                             <div>
                                                 <span className="bi bi-globe" title="public"></span>
                                             </div>
                                             :
                                             <div>
-                                                <div style={{ display: 'inline-flex', alignItems: 'center' }}>
-                                                    <span className="bi bi-lock me-2" title="restricted"></span>
-                                                    {cardset.isFriendsOnly && <div style={{ color: 'red', fontWeight: 'bold' }}>Friends Only</div>}
-                                                </div>
+                                                <span className="bi bi-lock" title="restricted"></span>
                                             </div>}
 
-                                        {isadmin  ?
+                                        {canEdit  ?
                                             <div>
-                                                <CollaboratorList cardsetId={cardset.id} isOwner={isOwner} />
+                                                <CollaboratorList cardsetId={cardset.id} isOwner={isOwner} isadmin={isadmin}/>
                                             </div>
                                             : null}
 
@@ -330,7 +307,7 @@ export default function CardsetPage() {
                                                 cardsetTitle={cardset.title}
                                                 cardsetSubject={cardset.subject}
                                                 cardsetIsPublic={cardset.isPublic}
-                                                cardsetIsFriendsOnly={cardset.isFriendsOnly}
+                                                isDarkMode={isDarkMode}
                                             />
                                         )}
                                     </div>
