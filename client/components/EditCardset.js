@@ -4,8 +4,9 @@ import { CreateFlashcard } from '@/components/CreateFlashcard';
 import { EditFlashcard } from '@/components/EditFlashcard'; 
 import { useDarkMode } from '@/utils/darkModeContext';
 import { getSubjectStyle } from '@/utils/getSubjectStyles';
+import { Tooltip } from 'react-tooltip'
 
-export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubject, cardsetIsPublic}) => {
+export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubject, cardsetIsPublic, cardsetIsFriendsOnly}) => {
     const {isDarkMode} = useDarkMode();
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
@@ -14,6 +15,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
     const [newTitle, setNewTitle] = useState(cardsetTitle);
     const [newSubject, setNewSubject] = useState(cardsetSubject);
     const [newPublicStatus, setNewPublicStatus] = useState(cardsetIsPublic);
+    const [newFriendsOnlyStatus, setNewFriendsOnlyStatus] = useState(cardsetIsFriendsOnly);
     const [isAddingCard, setIsAddingCard] = useState(false);
     const [isEditingCard, setIsEditingCard] = useState(false); 
     const [txtColor, setTxtColor] = useState('');
@@ -46,8 +48,10 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
         const updatedData = {
             title: newTitle,
             subject: newSubject,
-            isPublic: newPublicStatus
+            isPublic: newPublicStatus,
+            isFriendsOnly: newFriendsOnlyStatus
         }
+        console.log(cardset);
         try{
             await axios.put(process.env.NEXT_PUBLIC_SERVER_URL+`/api/users/${userId}/cardsets/${cardsetId}`, {updatedData});
         } catch (error) {
@@ -112,7 +116,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
 
     return (
         <div className="container">
-            <div className="setInfoContainer">
+            <div className="setInfoContainer mt-3">
                 <div className='row d-flex align-items-center'>
                         {isEditingSet ? (
                             <>
@@ -144,7 +148,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                                         <option value="Other">Other</option>
                                     </select>
                                 </div>
-                                <div className="flex flex-row">
+                                <div className="flex flex-row mt-2">
                                     <input
                                         className="form-check-input"
                                         type="checkbox"
@@ -156,7 +160,27 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                                         Make publicly viewable?
                                     </label>
                                 </div>
-                                <button className="btn btn-secondary btn-large" type="submit">Save</button>
+                                {!newPublicStatus && 
+                                <div className='flex flex-row mt-2 mb-2 d-flex align-items-center'>
+                                    <div className='me-2'><i className="bi bi-lock-fill"></i>:</div>
+                                    <div className='me-2'>
+                                    <button className="btn" style={{ backgroundColor: 'white', color: 'black'}} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {newFriendsOnlyStatus ? 'Friends Only' : 'Only Me'} <i className="fas fa-caret-down"></i>
+                                        </button>
+                                    <ul className="dropdown-menu">
+                                        <li><a className="dropdown-item" onClick={() => setNewFriendsOnlyStatus(false)}>Only Me</a></li>
+                                        <li><a className="dropdown-item" onClick={() => setNewFriendsOnlyStatus(true)}>Friends Only</a></li>
+                                        </ul>
+                                        </div>
+                                        <div>
+                                        <i className="bi bi-exclamation-circle" 
+                                        data-tooltip-id="privacyTip"
+                                        data-tooltip-place='right'
+                                        data-tooltip-html="Collaborators will still be able to view this set until removed."></i>
+                                    <Tooltip id = "privacyTip"/> 
+                                    </div> 
+                                </div>}
+                                <button className="btn btn-secondary btn-large mb-1" type="submit">Save</button>
                             </form>
                             </>
                         ) : ( 

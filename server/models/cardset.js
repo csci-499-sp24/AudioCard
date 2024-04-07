@@ -19,6 +19,14 @@ const Cardset = db.define('cardset',{
         default: false,
         allowNull: false
     }
+    
 });
+
+Cardset.beforeValidate((cardset, options) => {
+    if (cardset.isPublic) {
+        cardset.isFriendsOnly = false;
+    }
+});
+
 
 module.exports = Cardset;

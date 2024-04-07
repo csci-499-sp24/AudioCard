@@ -296,7 +296,7 @@ export default function CardsetPage() {
                                                 cardsetTitle={cardset.title}
                                                 cardsetSubject={cardset.subject}
                                                 cardsetIsPublic={cardset.isPublic}
-                                                isDarkMode={isDarkMode}
+                                                cardsetIsFriendsOnly={cardset.isFriendsOnly}
                                             />
                                         )}
                                     </div>
