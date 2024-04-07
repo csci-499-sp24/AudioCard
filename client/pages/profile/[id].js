@@ -20,6 +20,7 @@ const Profile = () => {
     const [friendCardsets, setFriendCardsets] = useState([]); 
     const [isFriends, setIsFriends] = useState(false);
 
+    
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
             if (user) {
@@ -33,7 +34,7 @@ const Profile = () => {
 
 
     useEffect(() => {
-        if (currentUser){
+        if (currentUser && profileUser){
         if (currentUser.id == Number(profileUser.id)){
             setIsFriends(true);
             fetchFriendCardsets(currentUser.id);
