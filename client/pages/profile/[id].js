@@ -117,12 +117,14 @@ useEffect(() => {
 
     const fetchFriendCardsets = async (id) => {
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}/friends-only`);
-            const cardsets = response.data.cardsets
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}/cardsets`);
+            const cardsets = response.data.cardsets.filter(cardset => cardset.isFriendsOnly);
+            console.log(response.data);
             setFriendCardsets(cardsets);
 
         } catch (error){
             console.error('Error fetching friends only cardsets:', error);
+            setFriendCardsets([]);
         }
     }
 
@@ -161,7 +163,9 @@ useEffect(() => {
                     </div>
                     <div>
                     <div className="container">
-                        <h1 className={styles.cardSetTitle}>Public Card Sets <span className="bi bi-globe"></span></h1>
+                        <div className='row d-flex justify-content-center'>
+                            <h1 className={styles.cardSetTitle}>Public Card Sets <span className="bi bi-globe"></span></h1>
+                        </div>
                         <div className="row">
                             {publicCardsets.map(cardset => (
                                 <div className='col-6' key={cardset.id}>
@@ -173,14 +177,16 @@ useEffect(() => {
                         </div>
                     </div>
                     {(isFriends || isUser)&& (
-                        <div className="container mt-4"> {/* Adjust margin-top for separation */}
+                        <div className="container mt-4">
                             <h1 className={styles.cardSetTitle}>Friends Only Card Sets <span className="bi bi-lock"></span></h1>
                             <div className="row">
-                                {friendCardsets.map(cardset => (
+                            {friendCardsets
+                                .filter(cardset => cardset.title != null)
+                                .map(cardset => (
                                     <div className='col-6' key={cardset.id}>
-                                        <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{textDecoration: 'none'}}>
-                                            <CardProfile key={cardset.id} cardset={cardset}/>
-                                        </Link>
+                                    <Link href={`/cardsets/${cardset.id}`} style={{textDecoration: 'none'}}>
+                                        <CardProfile key={cardset.id} cardset={cardset}/>
+                                    </Link>
                                     </div> 
                                 ))}
                             </div>

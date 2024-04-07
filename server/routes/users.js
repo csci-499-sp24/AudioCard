@@ -234,7 +234,6 @@ router.get('/:userid/friends-only', async(req,res) => {
         const friendsOnlyCardSets = await Cardset.findAll({
             where: {
                 userId: userId,
-                isPublic: false, 
                 isFriendsOnly: true
             },  
             include: [{
