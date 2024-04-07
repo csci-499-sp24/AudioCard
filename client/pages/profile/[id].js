@@ -29,6 +29,16 @@ const Profile = () => {
         });
     }, []);
 
+
+    useEffect(() => {
+        if (currentUser){
+        if (currentUser.id == Number(profileUser.id)){
+            setIsFriends(true);
+            fetchFriendCardsets(currentUser.id);
+        }}
+    }, [id, currentUser, profileUser]
+)
+
     useEffect(() => {
         if (id) {
             fetchUserProfile(id);
@@ -102,6 +112,7 @@ const Profile = () => {
             <div className="mt-4">
                 <div className={styles.profileContainer}>
                     <div className={styles.profileSidebar}>
+                    <h1 className={styles.cardSetTitle}>{`${profileUser?.username}`} </h1>
                         <div className={styles.userAvatar}>
                             <img src="/userAvatar.jpg" alt="User Avatar" className={styles.avatarImage} />
                         </div>
@@ -118,7 +129,7 @@ const Profile = () => {
                     <div className='cardsetsContainers'>
                     <div className='row'>
                     <div className="container">
-                        <h1 className={styles.cardSetTitle}>{`${profileUser?.username}'s Public Card Sets`}</h1>
+                        <h1 className={styles.cardSetTitle}>Public Card Sets <span className="bi bi-globe"></span></h1>
                         <div className="row">
                             {publicCardsets.map(cardset => (
                                 <CardProfile key={cardset.id} cardset={cardset} />
@@ -127,13 +138,13 @@ const Profile = () => {
                     </div>
                     </div>
                     <div className='row'>
-                    {isFriends ? (<div className="container">
+                    {isFriends && friendCardsets && friendCardsets.length > 0 ? (<div className="container">
                         <div className='row'>
-                        <h1 className={styles.cardSetTitle}>{`${profileUser?.username}'s Friends Only Card Sets`}</h1>
+                        <h1 className={styles.cardSetTitle}>Friends Only Card Sets <span className="bi bi-lock"></span></h1>
                         </div>
                         <div className="row">
                             {friendCardsets.map(cardset => (
-                                <CardProfile key={cardset.id} cardset={cardset} />
+                                cardset.id && <CardProfile key={cardset.id} cardset={cardset} />
                             ))}
                         </div>
                         </div>) : (null)}
