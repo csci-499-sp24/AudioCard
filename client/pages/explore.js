@@ -8,6 +8,7 @@ import {useDarkMode} from '../utils/darkModeContext';
 import { CardsetSearchBar } from "@/components/Explore/CardsetSearchBar";
 import { UserSearchBar } from "@/components/Explore/UserSearchBar";
 import { UserCard } from "@/components/Cards/UserCard";
+import BackToTopButton from "@/components/BackToTopButton";
 
 const Explore = () => {
     const { isDarkMode} = useDarkMode();
@@ -154,6 +155,7 @@ const Explore = () => {
                         </div>
                     </div>
                 )}
+                <BackToTopButton /> 
             </div>
             <style jsx>{`
                     .container {
