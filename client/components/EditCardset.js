@@ -165,7 +165,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                                     <div className='me-2'><i className="bi bi-lock-fill"></i>:</div>
                                     <div className='me-2'>
                                     <button className="btn" style={{ backgroundColor: 'white', color: 'black'}} type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        {newFriendsOnlyStatus ? 'Friends Only' : 'Only Me'} <i className="fas fa-caret-down"></i>
+                                        {newFriendsOnlyStatus ? 'Friends Only': 'Only Me'} <i className="fas fa-caret-down"></i>
                                         </button>
                                     <ul className="dropdown-menu">
                                         <li><a className="dropdown-item" onClick={() => setNewFriendsOnlyStatus(false)}>Only Me</a></li>
