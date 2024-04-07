@@ -2,6 +2,7 @@ export const checkAnswerSTT = (answer, timeLimit, language) => {
     return new Promise(async (resolve, reject) => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            // webkit will onli work in chrome and safari
             const recognition = new webkitSpeechRecognition(); 
             recognition.lang = language; 
             recognition.continuous = true; 

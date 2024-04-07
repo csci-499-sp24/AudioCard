@@ -64,17 +64,6 @@ const Navbar = ({ userId }) => {
                             <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink} onClick={toggleDarkMode}>
                                 {isDarkMode ? <i className="bi bi-sun" id={styles.navIconMode}></i> : <i className="bi bi-moon" id={styles.navIconMode}></i>}
                             </button>
-                    <ul className="navbar-nav ms-auto">
-                    <li className={isDarkMode ? 'text-white' : 'text-dark'} id={styles.mobileExploreLink}>
-                    <Link href="/explore" className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'}>
-                            Explore
-                        </Link>
-                    </li>
-                    {/* button for light/dark mode with bootstrap sun/moon */}
-                        <li className="nav-item text-center">
-                        <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink} onClick={toggleDarkMode}>
-                            {isDarkMode ? <i class="bi bi-brightness-high"></i> : <i class="bi bi-moon"></i>}
-                        </button>
                         </li>
 
                         <li className="nav-item">

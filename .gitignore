@@ -61,3 +61,6 @@ client/.next/server/vendor-chunks/next.js
 client/.next/static/chunks/webpack.js
 client/.next/static/development/_buildManifest.js
 client/.next/trace
+
+#pointed to from .env GOOGLE_APPLICATION_CREDENTIALS
+audiocard-88c2a0dfea76.json

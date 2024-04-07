@@ -3,6 +3,7 @@ import styles from '../../styles/dashboardCard.module.css';
 import { useDarkMode } from '@/utils/darkModeContext';
 import { getSubjectStyle } from '@/utils/getSubjectStyles';
 
+
 export const LandingPageCardSet = ({ cardset, onClick }) => {
     const {isDarkMode} = useDarkMode();
     console.log('cardset ', cardset);
