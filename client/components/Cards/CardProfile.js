@@ -8,7 +8,7 @@ export const CardProfile = ({ cardset }) => {
     const {bgColor, txtColor} = getSubjectStyle(cardset.subject);
 
     return (
-        <div key={cardset.id} className="col-md-6 mb-4">
+        <div key={cardset.id} className="container" style={{margin:'10px'}}>
             <div className="card h-100" id={isDarkMode ? 'cardDark' : 'cardLight'}>
                 <div className="card-body">
                     <h5 className="card-title">{cardset.title}</h5>

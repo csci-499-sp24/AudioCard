@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { auth } from '@/utils/firebase';
 
-export const CollaboratorList = ({ cardsetId, isOwner }) => {
+export const CollaboratorList = ({ cardsetId, isOwner, isadmin }) => {
     const [userEmailsWithAuth, setUserEmailsWithAuth] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -49,10 +50,14 @@ export const CollaboratorList = ({ cardsetId, isOwner }) => {
 
     return (
         <div>
-            <button onClick={toggleList}>Show Collaborator List</button>
+            <button className='btn btn-secondary mt-3 mb-2' onClick={toggleList}>
+                <i className="bi bi-people-fill me-2"></i>Collaborators 
+                <i style={{marginLeft: '2px'}}className={`${showList ? 'bi bi-caret-down-fill' : 'bi bi-caret-left-fill'}`}></i>
+            </button>
+
             {showList && (
                 <div>
-                    <h2>Emails of users with access:</h2>
+                    <h2>Users with access:</h2>
                     {loading ? (
                         <div>Loading...</div>
                     ) : error ? (
@@ -62,12 +67,13 @@ export const CollaboratorList = ({ cardsetId, isOwner }) => {
                         userEmailsWithAuth.length > 0 ? (
                             <ul>
                                 {userEmailsWithAuth.map(({ email, authority, id }, index) => (
-                                    <li key={index}>
-                                        {email} - {authority}
-
+                                    <li className="mb-2"key={index}>
+                                        <strong>{email}</strong> - {authority === 'edit' ? 'editor' : authority === 'read-only' ? 'viewer' : authority}
+                                {isadmin && (
+                                    <> 
                                         {authority != 'admin' || isOwner ?
-                                            <button onClick={() => deleteAccess(id)}>Delete</button>
-                                            : null}
+                                            <button className="btn btn-danger" style={{marginLeft: '10px'}}onClick={() => deleteAccess(id)}>remove</button>
+                                            : null} </> )} 
                                     </li>
                                 ))}
                             </ul>

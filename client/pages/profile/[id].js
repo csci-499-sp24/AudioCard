@@ -8,6 +8,7 @@ import { CardProfile } from '@/components/Cards/CardProfile';
 import FriendRequestButton from '@/components/FriendRequestButton';
 import FriendList from '@/components/FriendList';
 import { useDarkMode } from '../../utils/darkModeContext';
+import Link from 'next/link';
 
 const Profile = () => {
     const router = useRouter();
@@ -110,7 +111,11 @@ const Profile = () => {
                         <h1 className={styles.cardSetTitle}>{`${profileUser?.username}'s Public Card Sets`}</h1>
                         <div className="row">
                             {publicCardsets.map(cardset => (
-                                <CardProfile key={cardset.id} cardset={cardset} />
+                                <div className='col-6' key={cardset.id}>
+                                <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{textDecoration: 'none'}}>
+                                <CardProfile key={cardset.id} cardset={cardset}/>
+                                </Link>
+                                </div> 
                             ))}
                         </div>
                     </div>

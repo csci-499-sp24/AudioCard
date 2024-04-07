@@ -87,9 +87,9 @@ export const CardsetView = ({ cardset }) => {
                         <h1>Flashcard Set: {cardset.title}</h1>
                         <div> Subject: {cardset.subject} </div>
                         <div> {cardset.flashcardCount} flashcards </div>
-                        <div>Created by:
+                        <div className='mb-2'>Created by:
                             <span
-                                style={{ cursor: 'pointer', color: 'blue' }}
+                                style={{ cursor: 'pointer', color: 'blue' , marginLeft: '3px'}}
                                 onClick={() => navigateToUserProfile(cardset.user?.id)}
                             >
                                 {cardset.user?.username}
