@@ -1,17 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { auth } from '../utils/firebase';
+import AvatarChangeModal from '../components/AvatarChangeModal';
+import Navbar from '@/components/Navbar/Navbar';
+import { useDarkMode } from '../utils/darkModeContext';
+import styles from '../styles/settings.module.css';
 
 const Settings = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [username, setUsername] = useState('');
     const [user, setUser] = useState(null);
     const [userData, setUserData] = useState(null);
-    const [avatarUrl, setAvatarUrl] = useState('');
+    const [userAvatar, setUserAvatar] = useState('');
+    const [editorOpen, setEditorOpen] = useState(false);
+    const [scaleValue, setScaleValue] = useState(1);
+    const { isDarkMode } = useDarkMode();
+
+    const closeModal = () => {
+        setEditorOpen(false);
+        setSelectedFile(null);
+        setScaleValue(1);
+    };
+
+
+    const handleAvatarChangeClick = () => {
+        const fileInput = document.getElementById('avatarUploadInput');
+        fileInput.value = '';
+        fileInput.click();
+    };
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
+        setEditorOpen(true);
     };
+
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -25,7 +47,7 @@ const Settings = () => {
             fetchUserData();
         }
         if (username) {
-            fetchAvatarUrl();
+            fetchUserAvatar();
         }
         return () => unsubscribe();
     }, [user, userData, username]);
@@ -46,44 +68,62 @@ const Settings = () => {
         }
     }
 
-    const fetchAvatarUrl = async () => {
+    const fetchUserAvatar = async () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/userAvatar/avatar/${username}`);
-            setAvatarUrl(response.data.url);
+            setUserAvatar(response.data.url);
         } catch (error) {
             console.error('Error fetching avatar URL:', error);
         }
     };
 
-    const handleUpload = async (event) => {
-        event.preventDefault();
-
+    //API call to PUT the avatar image in S3
+    const handleSaveAvatar = async (blob) => {
         const formData = new FormData();
-
-        formData.append('image', selectedFile);
+        formData.append('image', blob, 'avatar.jpg');
         formData.append('username', username);
 
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/userAvatar/upload`, formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            });
-            console.log('File uploaded successfully:', response.data);
-            fetchAvatarUrl();
+            const response = await axios.post(
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/api/userAvatar/upload`,
+                formData,
+                { headers: { 'Content-Type': 'multipart/form-data' } }
+            );
+            console.log('Avatar uploaded successfully:', response.data);
+            closeModal(); 
+            fetchUserAvatar(); //fetch user avatar after uploading
         } catch (error) {
-            console.error('Upload failed:', error);
+            console.error('Avatar upload failed:', error);
         }
     };
 
+    const setDefaultAvatar = (event) => {
+        event.target.src = '/userAvatar.jpg';
+    };
+
     return (
-        <div>
-            <h1>Settings</h1>
-            <form onSubmit={handleUpload}>
-                <input type="file" onChange={handleFileChange} />
-                <button type="submit">Upload Avatar</button>
-            </form>
-            <div>
-                <h2>{username} Avatar</h2>
-                {avatarUrl && <img src={avatarUrl} alt="User Avatar" />}
+        <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
+            <Navbar userId={userData?.id} />
+            <div className={styles.container}>
+                <h1>Avatar</h1>
+                <AvatarChangeModal
+                    isOpen={editorOpen}
+                    onClose={closeModal}
+                    imageSrc={selectedFile ? URL.createObjectURL(selectedFile) : null}
+                    onSave={handleSaveAvatar}
+                    username={username}
+                    isDarkMode={isDarkMode}
+                />
+                    <img src={userAvatar} alt="User Avatar" onError={setDefaultAvatar} className={styles.avatarImage} />
+                <input
+                    id="avatarUploadInput"
+                    type="file"
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                />
+                <button onClick={handleAvatarChangeClick} className={styles.uploadButton}>
+                    Upload Your Avatar
+                </button>
             </div>
         </div>
     );

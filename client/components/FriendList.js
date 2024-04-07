@@ -18,14 +18,27 @@ const FriendList = ({userId}) => {
     const fetchFriends = async () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/friends`);
-            setFriends(response.data);
+            const friendsWithAvatars = await Promise.all(response.data.map(async (friend) => {
+                try {
+                    const avatarResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/userAvatar/avatar/${friend.username}`);
+                    friend.avatar = avatarResponse.data.url;
+                } catch (error) {
+                    console.error('Error fetching avatar:', error);
+                }
+                return friend;
+            }));
+
+            setFriends(friendsWithAvatars);
         } catch (error) {
             console.error('Error fetching friends:', error);
         }
     };
-
     const navigateToUserProfile = (friendId) => {
         router.push(`/profile/${friendId}`);
+    };
+
+    const setDefaultAvatar = (event) => {
+        event.target.src = '/userAvatar.jpg';
     };
 
     return (
@@ -35,7 +48,7 @@ const FriendList = ({userId}) => {
             {friends.map((friend) => (
                 <li key={friend.id} className={isDarkMode ? styles.darkFriendListItem : styles.friendListItem } onClick={() => navigateToUserProfile(friend.id)}>
                     <div className={styles.friendAvatar}>
-                        <img src="/userAvatar.jpg" alt="User Avatar"/>
+                        <img src={friend.avatar} onError={setDefaultAvatar} alt={`${friend.username}'s avatar`} />
                     </div>
                     <span className={styles.friendName} style={{}}>{friend.username}</span>
                 </li>
