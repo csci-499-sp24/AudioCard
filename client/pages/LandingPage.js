@@ -22,9 +22,6 @@ const LandingPage = () => {
         router.push('/signup');
     };
 
-// useEffect(() => {
-//     fetchCardset(345);
-// }, []);
 
     const handleTryItOut = async () => {
         try {
