@@ -5,6 +5,8 @@ import { useDarkMode } from '@/utils/darkModeContext';
 import styles from "../styles/landingPage.module.css";
 import { LandingPageCardSet } from '@/components/Cards/LandingPageCardSet';
 import axios from 'axios';
+import { ASRTestMode } from '../components/Test Mode/ASRTestMode';
+
 
 const LandingPage = () => {
     const router = useRouter();
@@ -22,8 +24,8 @@ const LandingPage = () => {
 
     const handleTryItOut = async () => {
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/cardsets/${327}`);
-            setCardset(response.data); // Set the fetched cardset
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${42}/cardsets/${327}/flashcards`);
+            setCardset(response.data.flashcards); // Set the fetched cardset
             setShowCardset(true); // Show the cardset
         } catch (error) {
             console.error('Error fetching cardset:', error);
@@ -67,26 +69,10 @@ const LandingPage = () => {
                 </div>
             </div>
 
-            {/* Display the fetched cardset if it's shown */}
+            
             {showCardset && cardset && (
                 <div className="container d-flex justify-content-center"> {/* Center the content */}
-                    <div className="row">
-                        <div className="col">
-                            <Link 
-                                id={styles.dashboardCardLink}
-                                href={{ 
-                                    pathname: `/cardsets/${cardset.id}`, 
-                                    query: { 
-                                        cardsetTitle: cardset.title,
-                                        cardsetSubject: cardset.subject,
-                                        cardsetIsPublic: cardset.isPublic  
-                                    } 
-                                }}
-                            >
-                                <LandingPageCardSet cardset={cardset} isDarkMode={isDarkMode} style={{width: "300px", height: "200px"}} />
-                            </Link>
-                        </div>
-                    </div>
+                     <ASRTestMode cardData={cardset}/>
                 </div>
             )}
 
