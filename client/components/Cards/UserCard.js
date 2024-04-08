@@ -34,7 +34,7 @@ export const UserCard = ({ user}) => {
                 <div className="card-body">
                     <div className='d-flex flex-column align-items-center'>
                         <div onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                                        <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} />
+                                        <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} style={{borderColor: isDarkMode ? 'white': 'black'}} />
                         </div>
                         <h5 className="px-3">{user.username}</h5>
                         <div className='mt-2 mb-3'>

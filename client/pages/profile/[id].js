@@ -150,7 +150,7 @@ useEffect(() => {
                 <div className={styles.profileContainer}>
                     <div className={styles.profileSidebar}>
                     <h1 className={styles.cardSetTitle}>{`${profileUser?.username}`} </h1>
-                    <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} />
+                    <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} style={{borderColor: isDarkMode ? 'white': 'black'}}/>
                         {shouldShowFriendRequestButton && (
                             <FriendRequestButton
                                 currentUserId={currentUser.id}

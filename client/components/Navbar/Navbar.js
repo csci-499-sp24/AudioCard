@@ -102,7 +102,7 @@ const Navbar = ({ userId }) => {
 
                         <li className="nav-item">
                             <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                                <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} />
+                                <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} style={{borderColor: isDarkMode ? 'white': 'black'}}/>
                             </button>
 
                             <div ref={dropdownRef}>
