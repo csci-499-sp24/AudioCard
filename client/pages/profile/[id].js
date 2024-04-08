@@ -95,7 +95,7 @@ useEffect(() => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${currentUser.id}/friends/${profileUser.id}`);
             if (response.data.status=='accepted'){
-                setIsFriends(true);
+                setIsFriends(true);http://localhost:3000/cardsets/166
                 fetchFriendCardsets(id);
             } 
         } catch (error) {
@@ -145,23 +145,27 @@ useEffect(() => {
 
     return (
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
-            <Navbar userId={currentUser?.id} />
-            <div className="mt-4">
-                <div className={styles.profileContainer}>
-                    <div className={styles.profileSidebar}>
-                    <h1 className={styles.cardSetTitle}>{`${profileUser?.username}`} </h1>
-                    <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} style={{borderColor: isDarkMode ? 'white': 'black'}}/>
-                        {shouldShowFriendRequestButton && (
-                            <FriendRequestButton
-                                currentUserId={currentUser.id}
-                                profileUserId={profileUser.id}
-                            />
-                        )}
-                        <div className={styles.friendList}>
-                            <FriendList userId={profileUser?.id} />
+        <Navbar userId={currentUser?.id} />
+        <div className="mt-4">
+            <div className="row d-flex">
+                <div className="col-2">
+                    <div className={styles.profileContainer}>
+                        <div className={styles.profileSidebar}>
+                            <h1 className={styles.cardSetTitle}>{`${profileUser?.username}`} </h1>
+                            <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} style={{ borderColor: isDarkMode ? 'white' : 'black' }} />
+                            {shouldShowFriendRequestButton && (
+                                <FriendRequestButton
+                                    currentUserId={currentUser.id}
+                                    profileUserId={profileUser.id}
+                                />
+                            )}
+                            <div className={styles.friendList}>
+                                <FriendList userId={profileUser?.id} />
+                            </div>
                         </div>
                     </div>
-                    <div>
+                </div>
+                <div className="col">
                     <div className="container">
                         <div className='row d-flex justify-content-center'>
                             <h1 className={styles.cardSetTitle}>Public Card Sets <span className="bi bi-globe"></span></h1>
@@ -169,35 +173,33 @@ useEffect(() => {
                         <div className="row">
                             {publicCardsets.map(cardset => (
                                 <div className='col-6' key={cardset.id}>
-                                    <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{textDecoration: 'none', width: '100%'}}>
-                                        <CardProfile key={cardset.id} cardset={cardset}/>
+                                    <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{ textDecoration: 'none', width: '100%' }}>
+                                        <CardProfile key={cardset.id} cardset={cardset} />
                                     </Link>
-                                </div> 
+                                </div>
                             ))}
                         </div>
                     </div>
-                    {(isFriends || isUser)&& (
+                    {(isFriends || isUser) && (
                         <div className="container mt-4">
                             <h1 className={styles.cardSetTitle}>Friends Only Card Sets <span className="bi bi-lock"></span></h1>
                             <div className="row">
-                            {friendCardsets
-                                .filter(cardset => cardset.title != null)
-                                .map(cardset => (
-                                    <div className='col-6' key={cardset.id}>
-                                    <Link href={`/cardsets/${cardset.id}`} style={{textDecoration: 'none', width: '100%'}}>
-                                        <CardProfile key={cardset.id} cardset={cardset}/>
-                                    </Link>
-                                    </div> 
-                                ))}
+                                {friendCardsets
+                                    .filter(cardset => cardset.title != null)
+                                    .map(cardset => (
+                                        <div className='col-6' key={cardset.id}>
+                                            <Link href={`/cardsets/${cardset.id}`} style={{ textDecoration: 'none', width: '100%' }}>
+                                                <CardProfile key={cardset.id} cardset={cardset} />
+                                            </Link>
+                                        </div>
+                                    ))}
                             </div>
                         </div>
                     )}
                 </div>
-
-                </div>
             </div>
         </div>
-    );
+    </div>);
 };
 
 export default Profile;
