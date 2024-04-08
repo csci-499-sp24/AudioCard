@@ -3,6 +3,7 @@ import axios from 'axios';
 import { auth } from '../utils/firebase';
 import { useRouter } from 'next/router';
 import { useDarkMode } from '../utils/darkModeContext';
+import styles from '../styles/navbar.module.css'; 
 // Corrected import with capitalization
 
 export const CardsetView = ({ cardset }) => {
@@ -11,12 +12,17 @@ export const CardsetView = ({ cardset }) => {
     const firebaseId = auth.currentUser.uid;
     const [userData, setUserData] = useState(null);
     const [copyCreated, setCopyCreated] = useState(false);
+    const [userAvatar, setUserAvatar] = useState(''); 
     const router = useRouter();
 
     useEffect(() => {
         fetchUserData();
     }, [firebaseId]);
 
+    useEffect(() => {
+        fetchuserAvatar(cardset.user?.username); 
+    }
+    , [cardset]);
 
     const fetchUserData = async () => {
         try {
@@ -75,9 +81,22 @@ export const CardsetView = ({ cardset }) => {
         }
     };
 
+    const fetchuserAvatar = async (username) => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/userAvatar/avatar/${username}`);
+            setUserAvatar(response.data.url);
+        } catch (error) {
+            console.error('Error fetching avatar:', error);
+        }
+    };
+
     const navigateToUserProfile = (userId) => {
         router.push(`/profile/${userId}`);
     }
+
+    const setDefaultAvatar = (event) => {
+        event.target.src = '/userAvatar.jpg';
+    };
 
     return (
         <div className='Container'>
@@ -93,6 +112,7 @@ export const CardsetView = ({ cardset }) => {
                                 onClick={() => navigateToUserProfile(cardset.user?.id)}
                             >
                                 {cardset.user?.username}
+                                <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} style={{borderColor: 'white', marginLeft: '5px'}} />
                             </span>
                         </div>
 
