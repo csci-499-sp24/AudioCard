@@ -47,8 +47,8 @@ const FriendList = ({userId}) => {
         <ul className={styles.friendListUl}>
             {friends.map((friend) => (
                 <li key={friend.id} className={isDarkMode ? styles.darkFriendListItem : styles.friendListItem } onClick={() => navigateToUserProfile(friend.id)}>
-                    <div className={styles.friendAvatar}>
-                        <img src={friend.avatar} onError={setDefaultAvatar} alt={`${friend.username}'s avatar`} />
+                    <div className={styles.friendAvatar} style={{borderColor: isDarkMode ? 'white': 'black'}}>
+                        <img src={friend.avatar} onError={setDefaultAvatar} alt={`${friend.username}'s avatar`}/>
                     </div>
                     <span className={styles.friendName} style={{}}>{friend.username}</span>
                 </li>

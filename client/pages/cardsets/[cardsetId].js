@@ -12,7 +12,8 @@ import { getSubjectStyle } from '@/utils/getSubjectStyles';
 import { CollaboratorList } from '@/components/collaboratorList';
 import Image from 'next/image';
 import exam from '../../assets/images/exam.png'; 
-
+import styles from '../../styles/navbar.module.css';
+import Link from 'next/link';
 
 
 export default function CardsetPage() {
@@ -32,13 +33,23 @@ export default function CardsetPage() {
     const [txtColor, setTxtColor] = useState('');
     const [isOwner, setIsOwner] = useState(false);
     const [Owner,SetOwner] = useState('');
+    const [ownerId, setOwnerId] = useState(0); 
+    const [userAvatar, setUserAvatar] = useState('');
     const cardsetId = router.query.cardsetId;
+
     useEffect(() => {
         if (cardset.subject) {
             const { bgColor, txtColor } = getSubjectStyle(cardset.subject);
             setTxtColor(txtColor);
         }
     }, [cardset]);
+
+    useEffect(() => {
+        if (Owner){
+            fetchuserAvatar(Owner);
+        }
+    }, [Owner])
+
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
@@ -76,6 +87,15 @@ export default function CardsetPage() {
         setShowSharePopup(!showSharePopup);
     };
 
+    const fetchuserAvatar = async (username) => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/userAvatar/avatar/${username}`);
+            setUserAvatar(response.data.url);
+        } catch (error) {
+            console.error('Error fetching avatar:', error);
+        }
+    };
+
     const fetchFlashCards = async () => {
         try {
             setLoading(true);
@@ -101,7 +121,8 @@ export default function CardsetPage() {
             const ispublic = cardsetData.isPublic
 
             const owner = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}`);
-            SetOwner(owner.data.user.email)
+            SetOwner(owner.data.user.username)
+            setOwnerId(owner.data.user.id)
 
             if (!ispublic) {
                 setAccess(false)
@@ -170,6 +191,11 @@ export default function CardsetPage() {
         router.push(`/review/${cardsetId}`);
     };
 
+    const setDefaultAvatar = (event) => {
+        event.target.src = '/userAvatar.jpg';
+    };
+
+
     // Render flashcard data
     return (
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
@@ -215,7 +241,11 @@ export default function CardsetPage() {
                                         <h3>Flashcard Set: {cardset.title}</h3>
                                         <div> Subject: <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
                                         <div> {currentCardsetData.length} flashcards </div>
-                                        {isOwner ? <></> : <div>Creator: {Owner}</div>}
+                                        <Link href={`/profile/${ownerId}`}  style={{textDecoration: 'none'}}>
+                                            <h5>
+                                            Creator: {Owner} <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} style={{borderColor: isDarkMode ? 'white': 'black'}} />
+                                            </h5>
+                                        </Link>
                                         {cardset.isPublic ?
                                             <div>
                                                 <span className="bi bi-globe" title="public"></span>
