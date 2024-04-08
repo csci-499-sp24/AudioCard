@@ -1,0 +1,105 @@
+/* Styles for the landing page container */
+.landingPage {
+    padding: 20px;
+}
+
+/* Styles for the logo */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000; /* Default text color */
+    text-align: center; /* Center align the text */}
+
+
+/* Styles for the authentication buttons, vertical */
+.authButtons {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+/* Styles for the login and signup buttons */
+.authButtons button {
+    background-color: #6996bf; /* Change to your desired color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* Hover effect for the login and signup buttons */
+.authButtons button:hover {
+    background-color: #14171b; /* Change to your desired hover color */
+}
+
+/* Styles for the dark mode toggle button */
+.darkModeToggle {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/* Welcome to AudioCard */
+.welcomeMessage h1 {
+    font-size: 32px;
+    font-weight: bold;
+    color: #000; /* Default text color */
+    animation: shimmer 2s infinite linear; /* Add shimmering effect */
+    text-align: center; /* Center align the text */
+}
+
+/* Style for the Welcome to Audiocard*/
+@keyframes shimmer {
+    0% {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px #7ed6df, 0 0 30px #7ed6df, 0 0 40px #7ed6df, 0 0 50px #7ed6df;
+    }
+    50% {
+        text-shadow: none;
+    }
+    100% {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px #7ed6df, 0 0 30px #7ed6df, 0 0 40px #7ed6df, 0 0 50px #7ed6df;
+    }
+}
+
+
+/* Styles for the welcome message paragraph */
+.welcomeMessage p {
+    font-size: 16px;
+    color: #000; /* Default text color */
+    font-style: italic; /* Make the text italic */
+    text-transform: uppercase; /* Convert text to uppercase */
+    letter-spacing: 2px; /* Add letter spacing */
+    line-height: 1.5; /* Adjust line height */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow */
+    animation: glow 2s infinite alternate, flicker 2s infinite; /* Add glowing and flicker effect */
+    text-align: center; /* Center align the text */
+}
+
+/* Define animation keyframes for glowing effect */
+@keyframes glow {
+    0% {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px #7ed6df, 0 0 30px #7ed6df, 0 0 40px #7ed6df, 0 0 50px #7ed6df;
+    }
+    50% {
+        text-shadow: none;
+    }
+    100% {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px #7ed6df, 0 0 30px #7ed6df, 0 0 40px #7ed6df, 0 0 50px #7ed6df;
+    }
+}
+
+/* Define animation keyframes for flicker effect */
+@keyframes flicker {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Dark mode styles */
+.dark-mode .landingPage * {
+    color: #fff; /* Change text color to white in dark mode */
+}
+
+.dark-mode .pages {
+    background-color: #000; /* Change background color to black in dark mode */
+}
