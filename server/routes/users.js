@@ -228,6 +228,31 @@ router.get('/:userid/public-cardsets', async (req, res) => {
     }
 });
 
+router.get('/:userid/friends-only', async(req,res) => {
+    try {
+        const userId = req.params.userid;
+        const friendsOnlyCardSets = await Cardset.findAll({
+            where: {
+                userId: userId,
+                isFriendsOnly: true
+            },  
+            include: [{
+                model: Flashcard,
+                attributes: [],
+                duplicating: false,
+            }],
+            attributes: {
+                include: [
+                    [Sequelize.fn("COUNT", Sequelize.col("flashcards.id")), "flashcardCount"]
+                ]
+            },
+        });
+        res.status(200).json({cardsets: friendsOnlyCardSets});
+    } catch(error){
+        console.error('Error fetching user public card sets:', error);
+        res.status(500).json({ error: 'Error fetching user public card sets' });
+    }
+});
 
 router.route('/userCheck/:identifier')
     .get(async (req, res) => {
