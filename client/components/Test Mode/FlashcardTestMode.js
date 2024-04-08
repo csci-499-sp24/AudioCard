@@ -197,7 +197,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                 <div className={style.testCompleteContainer}>
                     <h2>Your Test Result</h2>
                     <p>You got {score} out of {flashcards.length} correct!</p>
-                    <button className={'btn btn-primary'} onClick={handleRestartTest}>Start New Test</button>
+                    <button className={'btn btn-primary'} onClick={handleRestartTest}>Try Again</button>
                 </div>
             ) : (
                 <>
