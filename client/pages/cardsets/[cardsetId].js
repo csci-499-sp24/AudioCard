@@ -13,6 +13,7 @@ import { CollaboratorList } from '@/components/collaboratorList';
 import Image from 'next/image';
 import exam from '../../assets/images/exam.png'; 
 import styles from '../../styles/navbar.module.css';
+import Link from 'next/link';
 
 
 export default function CardsetPage() {
@@ -32,6 +33,7 @@ export default function CardsetPage() {
     const [txtColor, setTxtColor] = useState('');
     const [isOwner, setIsOwner] = useState(false);
     const [Owner,SetOwner] = useState('');
+    const [ownerId, setOwnerId] = useState(0); 
     const [userAvatar, setUserAvatar] = useState('');
     const cardsetId = router.query.cardsetId;
 
@@ -120,6 +122,7 @@ export default function CardsetPage() {
 
             const owner = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}`);
             SetOwner(owner.data.user.username)
+            setOwnerId(owner.data.user.id)
 
             if (!ispublic) {
                 setAccess(false)
@@ -238,7 +241,11 @@ export default function CardsetPage() {
                                         <h3>Flashcard Set: {cardset.title}</h3>
                                         <div> Subject: <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
                                         <div> {currentCardsetData.length} flashcards </div>
-                                        <h5>Creator: {Owner} <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} style={{borderColor: isDarkMode ? 'white': 'black'}}></img></h5>
+                                        <Link href={`/profile/${ownerId}`}  style={{textDecoration: 'none'}}>
+                                            <h5>
+                                            Creator: {Owner} <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} style={{borderColor: isDarkMode ? 'white': 'black'}} />
+                                            </h5>
+                                        </Link>
                                         {cardset.isPublic ?
                                             <div>
                                                 <span className="bi bi-globe" title="public"></span>
