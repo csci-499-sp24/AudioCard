@@ -222,7 +222,10 @@ export default function CardsetPage() {
                                             </div>
                                             :
                                             <div>
-                                                <span className="bi bi-lock" title="restricted"></span>
+                                                <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+                                                    <span className="bi bi-lock me-2" title="restricted"></span>
+                                                    {cardset.isFriendsOnly && <div style={{ color: 'red', fontWeight: 'bold' }}>Friends Only</div>}
+                                                </div>
                                             </div>}
 
                                         {canEdit  ?
@@ -307,7 +310,7 @@ export default function CardsetPage() {
                                                 cardsetTitle={cardset.title}
                                                 cardsetSubject={cardset.subject}
                                                 cardsetIsPublic={cardset.isPublic}
-                                                isDarkMode={isDarkMode}
+                                                cardsetIsFriendsOnly={cardset.isFriendsOnly}
                                             />
                                         )}
                                     </div>
