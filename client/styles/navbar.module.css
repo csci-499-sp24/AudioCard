@@ -10,6 +10,14 @@
     color: black !important;
 }
 
+#navLinkLogoLanding {
+    font-weight: 500;
+}
+
+#navLinkLogoLanding:hover {
+    color: #1d62b4ba !important;
+}
+
 #mobileExploreLink {
     display: none !important;
 }
@@ -17,6 +25,10 @@
 #navIconUser,
 #navIconMode {
     font-size: 1.5em;
+}
+
+#navIconModeLanding {
+    font-size: 1em;
 }
 
 .navUserAvatar {

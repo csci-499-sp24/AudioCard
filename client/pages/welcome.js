@@ -6,7 +6,7 @@ import styles from "../styles/landingPage.module.css";
 import { LandingPageCardSet } from '@/components/Cards/LandingPageCardSet';
 import axios from 'axios';
 import { ASRTestMode } from '../components/Test Mode/ASRTestMode';
-
+import LandingPageNavbar from '../components/Navbar/LandingPageNavbar';
 
 const LandingPage = () => {
     const router = useRouter();
@@ -48,30 +48,7 @@ const LandingPage = () => {
 
     return (
         <div className={`${styles.pages} ${styles.container}`}>
-            {/* Navigation */}
-            <nav>
-                {/* Logo */}
-                <div className={`${styles.row} ${styles.logoContainer}`}>
-                    <div className={`${styles.col} ${styles.logo}`}>
-                        AudioCard
-                    </div>
-                </div>
-                
-                <div className={`${styles.row} ${styles.authButtonsContainer}`}>
-                    <div className={`${styles.col} ${styles.authButtons}`}>
-                        {/* Login and Signup Buttons */}
-                        <button onClick={handleLogin}>Login</button>
-                        <button onClick={handleSignup}>Signup</button>
-                    </div>
-
-                    <div className='container d-flex justify-content-end'>
-                        {/* Light/Dark Mode Toggle */}
-                        <button className={styles.darkModeToggle} onClick={toggleDarkMode}>
-                            {isDarkMode ? <i className="bi bi-brightness-high"></i> : <i className="bi bi-moon"></i>}
-                        </button>
-                    </div>
-                </div>
-            </nav>
+            <LandingPageNavbar />
 
             {/* Welcome Message */}
             <div className={`${styles.row} ${styles.welcomeMessageContainer}`}> 
