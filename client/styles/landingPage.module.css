@@ -1,3 +1,33 @@
+#welcomeText {
+    font-size: 3rem !important;
+}
+
+#welcomeSubText {
+    font-size: 1.3rem;
+}
+
+#card {
+    width: 95%;
+    height: 433px;
+    background-color: #6996bf;
+}
+
+#heroSection {
+    margin-top: 90px;
+}
+
+#uniqueSection {
+    border: 1px solid #6996bf;
+    border-radius: 5px;
+    padding: 45px 25px;
+    margin: 90px 15px;
+}
+
+
+
+
+
+
 /* Styles for the landing page container */
 .landingPage {
     padding: 20px;

@@ -50,36 +50,93 @@ const LandingPage = () => {
         <div className={`${styles.pages} ${styles.container}`}>
             <LandingPageNavbar />
 
-            {/* Welcome Message */}
-            <div className={`${styles.row} ${styles.welcomeMessageContainer}`}> 
+            <div className="container">
+                <div className="row d-flex align-items-center mb-6" id={styles.heroSection}>
+                    <div className="col-lg-6 text-center pt-5">
+                        <div className="mt-6">
+                            <h1 className="xl-text" id={styles.welcomeText}>Welcome to AudioCard</h1>
+                            <p className="lead mb-4" id={styles.welcomeSubText}>
+                                Experience the power of audio learning like never before.
+                            </p>
+                            <Link href="/signup" className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink}>
+                                
+                                <button className="btn btn-secondary">Get Started</button>
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div className="col-lg-6">
+                        <div className="mt-6">
+                            {/* Placeholder for Rotating card */}
+                            <div className="mx-auto" id={styles.card}>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="row d-flex align-items-center" id={styles.uniqueSection}>
+                    <div className="col-md-4 d-flex flex-column gap-4">
+                        <div className='mx-auto'>
+                            {isDarkMode ? <i className="fa-regular fa-pen-to-square " id={styles.navIconModeLanding}></i> : <i className="fa-regular fa-pen-to-square" id={styles.navIconModeLanding}></i>}
+                        </div>
+                        <div>
+                            <h5 className="text-center fw-bold">Lorem Ipsum</h5>
+                            <p className="text-center text-muted">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                        </div>
+                    </div>
+
+                    <div className="col-md-4 d-flex flex-column gap-4">
+                        <div className='mx-auto'>
+                            {isDarkMode ? <i className="fa-regular fa-pen-to-square" id={styles.navIconModeLanding}></i> : <i className="fa-regular fa-pen-to-square" id={styles.navIconModeLanding}></i>}
+                        </div>
+                        <div>
+                            <h5 className="text-center fw-bold">Lorem Ipsum</h5>
+                            <p className="text-center text-muted">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                        </div>
+                    </div>
+
+                    <div className="col-md-4 d-flex flex-column gap-4">
+                        <div className='mx-auto'>
+                            {isDarkMode ? <i className="fa-regular fa-pen-to-square" id={styles.navIconModeLanding}></i> : <i className="fa-regular fa-pen-to-square" id={styles.navIconModeLanding}></i>}
+                        </div>
+                        <div>
+                            <h5 className="text-center fw-bold">Lorem Ipsum</h5>
+                            <p className="text-center text-muted">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+            {/* <div className={`${styles.row} ${styles.welcomeMessageContainer}`}> 
                 <div className={`${styles.col} ${styles.welcomeMessage}`}>
                     <h1>Welcome to AudioCard</h1>
                     <p>Experience the power of audio learning like never before.</p>
-                    {/* Wave effect */}
                     <div className={styles.wave}></div>
                 </div>
-            </div>
+            </div> */}
 
             
-            {showCardset && cardset && (
-                <div className="container d-flex justify-content-center"> {/* Center the content */}
+            {/* {showCardset && cardset && (
+                <div className="container d-flex justify-content-center"> 
                      <ASRTestMode cardData={cardset}/>
                 </div>
-            )}
+            )} */}
 
-{/* Display the "Try it Out" button if the cardset is not yet shown */}
-{!showCardset && (
-    <div className="container">
-        <div className="row">
-            <div className="col text-center mt-4"> {/* Center the content */}
-                <button className="btn btn-primary" onClick={handleTryItOut}>Become a Quiz Master!</button>
-            </div>
-        </div>
-    </div>
-)}
-
-
-
+            {/* {!showCardset && (
+                <div className="container">
+                    <div className="row">
+                        <div className="col text-center mt-4"> 
+                            <button className="btn btn-primary" onClick={handleTryItOut}>Become a Quiz Master!</button>
+                        </div>
+                    </div>
+                </div>
+            )} */}
         </div>
     );
 };
