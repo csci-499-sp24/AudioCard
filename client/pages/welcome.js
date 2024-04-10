@@ -59,7 +59,6 @@ const LandingPage = () => {
                                 Experience the power of audio learning like never before.
                             </p>
                             <Link href="/signup" className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink}>
-                                
                                 <button className="btn btn-secondary">Get Started</button>
                             </Link>
                         </div>
