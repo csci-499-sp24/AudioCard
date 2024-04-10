@@ -74,34 +74,38 @@ const LandingPage = () => {
                     </div>
                 </div>
 
+                <div className="row d-flex align-items-center" id={styles.uniqueSectionTitle}>
+                    <h1 className="text-center">Things that makes AudioCard unique</h1>
+                </div>
+
                 <div className="row d-flex align-items-center" id={styles.uniqueSection}>
-                    <div className="col-md-4 d-flex flex-column gap-4">
+                    <div className="col-md-4 d-flex flex-column gap-4 px-5">
+                        <div className='mx-auto'>
+                            {isDarkMode ? <i className="fa-regular fa-pen-to-square" id={styles.navIconModeLanding}></i> : <i className="fa-regular fa-pen-to-square" id={styles.navIconModeLanding}></i>}
+                        </div>
+                        <div>
+                            <h4 className="text-center fw-bold">Multilingual Support</h4>
+                            <p className="text-center text-muted">Learn the material efficiently in a language that you feel the most comfortable with.</p>
+                        </div>
+                    </div>
+
+                    <div className="col-md-4 d-flex flex-column gap-4 px-5">
                         <div className='mx-auto'>
                             {isDarkMode ? <i className="fa-regular fa-pen-to-square " id={styles.navIconModeLanding}></i> : <i className="fa-regular fa-pen-to-square" id={styles.navIconModeLanding}></i>}
                         </div>
                         <div>
-                            <h5 className="text-center fw-bold">Lorem Ipsum</h5>
-                            <p className="text-center text-muted">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                            <h4 className="text-center fw-bold">Voice Commands and ASR</h4>
+                            <p className="text-center text-muted">Level up your study game using voice commands to learn your flashcards at a comfortable pace.</p>
                         </div>
                     </div>
 
-                    <div className="col-md-4 d-flex flex-column gap-4">
+                    <div className="col-md-4 d-flex flex-column gap-4 px-5">
                         <div className='mx-auto'>
                             {isDarkMode ? <i className="fa-regular fa-pen-to-square" id={styles.navIconModeLanding}></i> : <i className="fa-regular fa-pen-to-square" id={styles.navIconModeLanding}></i>}
                         </div>
                         <div>
-                            <h5 className="text-center fw-bold">Lorem Ipsum</h5>
-                            <p className="text-center text-muted">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                        </div>
-                    </div>
-
-                    <div className="col-md-4 d-flex flex-column gap-4">
-                        <div className='mx-auto'>
-                            {isDarkMode ? <i className="fa-regular fa-pen-to-square" id={styles.navIconModeLanding}></i> : <i className="fa-regular fa-pen-to-square" id={styles.navIconModeLanding}></i>}
-                        </div>
-                        <div>
-                            <h5 className="text-center fw-bold">Lorem Ipsum</h5>
-                            <p className="text-center text-muted">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                            <h4 className="text-center fw-bold">Test Mode</h4>
+                            <p className="text-center text-muted">Set up your test in a way that makes the most sense to you and get practice in wherever you go.</p>
                         </div>
                     </div>
                 </div>
