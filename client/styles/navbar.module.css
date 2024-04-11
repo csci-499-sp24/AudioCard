@@ -10,14 +10,6 @@
     color: black !important;
 }
 
-#navLinkLogoLanding {
-    font-weight: 500;
-}
-
-#navLinkLogoLanding:hover {
-    color: #1d62b4ba !important;
-}
-
 #mobileExploreLink {
     display: none !important;
 }
@@ -25,10 +17,6 @@
 #navIconUser,
 #navIconMode {
     font-size: 1.5em;
-}
-
-#navIconModeLanding {
-    font-size: 1em;
 }
 
 .navUserAvatar {
@@ -85,6 +73,33 @@
     background: #333;
     cursor: pointer;
 }
+
+/* Landing Page Navbar*/
+
+#navbarContainer {
+    padding: 0 28px;
+}
+
+#navLinkLogoLanding {
+    font-weight: 500;
+}
+
+#navLinkLogoLanding:hover {
+    color: #1d62b4ba !important;
+}
+
+#navIconModeLanding {
+    font-size: 1em;
+}
+
+#navLinkLanding {
+    padding-right: 0px;
+}
+
+#navLinkLanding:hover {
+    color: #1d62b4ba !important;
+}
+
 
 @media (max-width: 991px) {
 

@@ -29,7 +29,7 @@ const LandingPageNavbar = () => {
 
     return (
         <nav className={`navbar navbar-expand-lg ${isDarkMode ? 'bg-dark' : 'bg-body-tertiary'}`} id={styles.navbar}>
-            <div className="container">
+            <div className="container" id={styles.navbarContainer}>
                 
                 <a class="navbar-brand" href="#" className={`navbar-brand text-dark font-weight-bold ${isDarkMode && 'text-white'}`} id={styles.navLinkLogoLanding}>AudioCard</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,13 +39,13 @@ const LandingPageNavbar = () => {
                 <div className="navbar-collapse collapse w-100 order-3 dual-collapse2" id="navbarScroll">
                     <ul className="navbar-nav ms-auto d-flex align-items-center">
                         <li className="nav-item">
-                            <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink} onClick={toggleDarkMode}>
+                            <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLinkLanding} onClick={toggleDarkMode}>
                                 {isDarkMode ? <i className="bi bi-sun" id={styles.navIconModeLanding}></i> : <i className="bi bi-moon" id={styles.navIconModeLanding}></i>}
                             </button>
                         </li>
 
                         <li className="nav-item">
-                            <Link href="/login" className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink}>
+                            <Link href="/login" className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLinkLanding}>
                                 Login
                             </Link>
                         </li>

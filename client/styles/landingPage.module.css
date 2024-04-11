@@ -13,7 +13,10 @@
 }
 
 #heroSection {
-    margin-top: 90px;
+    padding: 90px 0;
+    margin: 0 15px 90px;
+    background-image: url("../assets/images/back.png");
+    background-size: cover;
 }
 
 #uniqueSectionTitle{
@@ -25,7 +28,7 @@
     border: 1px solid #6996bf;
     border-radius: 5px;
     padding: 45px 25px;
-    margin: 0px 15px 90px;
+    margin: 0px 15px 140px;
 }
 
 #footerSection {
@@ -70,8 +73,21 @@
 }
 
 @media (max-width: 991px) { 
+    #heroSection {
+        background-image: url("../assets/images/back-vertical.png") !important;
+        background-size: cover;
+    }
+
     #heroSectionText {
         margin-bottom: 40px;
+    }
+
+    #welcomeText {
+        font-size: 2.5rem !important;
+    }
+
+    #welcomeSubText {
+        font-size: 1.1rem;
     }
 
     #uniqueSectionTitle {

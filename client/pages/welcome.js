@@ -81,6 +81,7 @@ const LandingPage = () => {
                     </div>
                 </div>
 
+                {/* Unique Section */}
                 <div className="row d-flex align-items-center" id={styles.uniqueSectionTitle}>
                     <h1 className="text-center">Things that makes AudioCard unique</h1>
                 </div>
@@ -124,6 +125,7 @@ const LandingPage = () => {
                     </div>
                 </div>
 
+                {/* Footer */}
                 <div className="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 mt-5 border-top" id={styles.footerSection}>
                     <div className="col mb-3 text-white" id={styles.footerColLogo}>
                         <h3 className="text-white">AudioCard</h3>
@@ -187,22 +189,7 @@ const LandingPage = () => {
                         </ul>
                     </div>
                 </div>
-
-
             </div>
-
-
-
-
-
-            {/* <div className={`${styles.row} ${styles.welcomeMessageContainer}`}> 
-                <div className={`${styles.col} ${styles.welcomeMessage}`}>
-                    <h1>Welcome to AudioCard</h1>
-                    <p>Experience the power of audio learning like never before.</p>
-                    <div className={styles.wave}></div>
-                </div>
-            </div> */}
-
             
             {/* {showCardset && cardset && (
                 <div className="container d-flex justify-content-center"> 
