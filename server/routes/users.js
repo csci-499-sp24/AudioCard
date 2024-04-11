@@ -43,7 +43,7 @@ router.route('/usernameCheck')
 router.route('/changePassword')
     .post(async(req, res) => {
         try {
-
+            const { currentPassword, updatedPassword, updatedPasswordRef } = req.body;
         } catch (error) {
 
         }
