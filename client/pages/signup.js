@@ -80,15 +80,29 @@ const SignUp = () => {
         const auth = getAuth();
         try {
           const result = await signInWithPopup(auth, provider);
-          // The signed-in user info.
-          const user = result.user;
+            // The signed-in user info.
+            const user = result.user;
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/getuserbyemail`, {params:{email: user.email}});
+            if (!response.data.user){
+                const createNewUser = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/signup`, {
+                    username: user.displayName,
+                    email: user.email,
+                    firebaseId: user.uid
+                });
+                if (createNewUser){
+                    console.log("User entry created in DB");
+                } else {
+                    console.log("Error creating user DB entry");
+                }
+            }
           //  the Google Auth token.
           const credential = GoogleAuthProvider.credentialFromResult(result);
           const token = credential.accessToken;
     
           // Redirect to the dashboard page after successful sign up
-          router.push('/dashboard');
-          
+          if (user) {
+            router.push('/dashboard');
+            }
         } catch (error) {
           // Handle Errors 
           const errorCode = error.code;
