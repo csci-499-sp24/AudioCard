@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import style from '../../styles/flashcardtestmode.module.css';
-import { RotatingCardTest } from '../Cards/RotatingCardTest';
+import { RotatingCardTestLanding } from '../Cards/RotatingCardTestLandingPage';
 import {checkAnswerSTT} from '../ASR/speechToText';
 import {TTS} from '../ASR/textToSpeech';
 import { useDarkMode } from '../../utils/darkModeContext';
@@ -8,7 +8,7 @@ import {TestOptions} from './testOptions';
 import TimerComponent from './timerComponent';
 import { getTranslation } from '@/utils/translations';
 
-export const ASRTestMode = ({ cardData}) => {
+export const ASRTestModeLandingPage = ({ cardData }) => {
     const {isDarkMode} = useDarkMode();
     const [index, setIndex] = useState(0);
     const [flashcards, setFlashcards] = useState([]);
@@ -206,55 +206,67 @@ export const ASRTestMode = ({ cardData}) => {
         setTimeLimit(event);
     }
     return (
-        <div className="container">
+        <div className="">
+             {/* settings */}
             <div className="d-flex justify-content-end">
-                <button className={style.optionButton} onClick={() => setShowOptions(true)}><i className={`fa-solid fa-gear ${style.gearIcon}`}></i></button>
+                <div onClick={() => setShowOptions(true)} id="gearIconLandingContainer">
+                    <i className={`fa-solid fa-gear fa-lg ${style.gearIconLanding}`}></i>
+                </div>
             </div>
+            
             {showOptions && (
                 <div className={style.optionsOverlay}>
                     <div className={style.optionsModal} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white' }}>
-                    <TestOptions isSpeakMode={true} attempts={maxAttempts} handleAttemptChange={handleAttemptChange}
-                    timeLimit={timeLimit} handleTimeLimit={handleTimeLimit}
-                    voiceGender={voiceGender} setVoiceGender={setVoiceGender}
-                    language={language} setLanguage={setLanguage}
-                    speakingRate={speakingRate} setSpeakingRate={setSpeakingRate}/>
-                    <div className={style.closeButtonContainer}>
-                        <button className={style.closeButton} onClick={() => {
-                        setShowOptions(false);
-                    }}
-                    >Close</button>
-                    </div>
+                        <TestOptions isSpeakMode={true} attempts={maxAttempts} handleAttemptChange={handleAttemptChange}
+                        timeLimit={timeLimit} handleTimeLimit={handleTimeLimit}
+                        voiceGender={voiceGender} setVoiceGender={setVoiceGender}
+                        language={language} setLanguage={setLanguage}
+                        speakingRate={speakingRate} setSpeakingRate={setSpeakingRate}/>
+                        <div className={style.closeButtonContainer}>
+                            <button className={style.closeButton} onClick={() => {
+                                setShowOptions(false);
+                            }}
+                            >Close
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
-            {showTestResult ? (
-                <div className={style.testCompleteContainer}>
-                    <h2>Your Test Result</h2>
+
+            { showTestResult ? (
+                <div className="d-flex flex-column align-items-center" id={style.resutlsLanding}>
+                    <h2>Your Test Results:</h2>
                     <p>You got {score} out of {flashcards.length} correct!</p>
                     <button className={'btn btn-primary'} onClick={handleRestartTest}>Try Again</button>
                 </div>
             ) : (
                 <>
-                    <div className={style.progressBarContainer}>
+                     {/* progres */}
+                    <div className={style.progressBarContainerLanding}>
                         <div className={style.progressBar} style={{ width: `${progress}%` }}></div>
-                        <div className={style.completionBar} style={{ width: `${completion}%` }}></div>
                     </div>
-                    <TimerComponent
+                    
+                     {/* timer */}
+                    {/* <TimerComponent
                         timeLimit={timeLimit}
                         showTestResult={showTestResult}
                         isFlipped={isFlipped}
                         isSpeakMode={true}
                         restartFlag={restartFlag}
-                        isPaused={isPaused}/>
+                        isPaused={isPaused}
+                    /> */}
+
                     <div className={style.flashcard}>
-                        <RotatingCardTest
+
+                        <RotatingCardTestLanding
                             flashcards={flashcards}
                             index={index}
                             isFlipped={isFlipped}
                             borderClass={borderClass}
                         />
 
-                        <div className='row mx-auto mt-3 mb-5' id={style.optionButtons}>
+                        {/* buttons */}
+                        {/* <div className='row mx-auto mt-3 mb-5' id={style.optionButtons}>
                             <div className="d-flex justify-content-between">
                                 <div className=''>
                                     <button className='btn btn-secondary' title='Restart Test' onClick={handleRestartTest}><i class="fa fa-refresh"></i></button>
@@ -264,13 +276,15 @@ export const ASRTestMode = ({ cardData}) => {
                                 </div>
 
                             </div>
-                        </div>
-                        <div className='row d-flex justify-content-center'>
-                        <div className={`${style.micRing} ${style[ringSize]}`}></div>
-                        <div className='container'>
-                        <i className={`bi bi-mic-fill ${isDarkMode ? style.micIconDark : style.micIconLight} ${ringSize==='scaleUp' ? style.micIconPulse : null}`}></i>
-                        </div>
-                        </div>
+                        </div> */}
+
+                        {/* mic over */}
+                        {/* <div className='row d-flex justify-content-center'>
+                            <div className={`${style.micRing} ${style[ringSize]}`}></div>
+                            <div className='container'>
+                            <i className={`bi bi-mic-fill ${isDarkMode ? style.micIconDark : style.micIconLight} ${ringSize==='scaleUp' ? style.micIconPulse : null}`}></i>
+                            </div>
+                        </div> */}
 
                     </div>
                 </>

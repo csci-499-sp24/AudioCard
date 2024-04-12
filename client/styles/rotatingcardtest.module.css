@@ -60,6 +60,18 @@
     color: white;
 }
 
+
+/* Landing Page Card */
+#containerLanding {
+    position: relative;
+    height: 350px;
+    margin: 0 auto;
+    border: 10px solid transparent;
+}
+
+
+
+
 @keyframes flash-green {
 
     0%,

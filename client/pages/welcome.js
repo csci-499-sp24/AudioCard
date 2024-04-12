@@ -6,6 +6,7 @@ import styles from "../styles/landingPage.module.css";
 import { LandingPageCardSet } from '@/components/Cards/LandingPageCardSet';
 import axios from 'axios';
 import { ASRTestMode } from '../components/Test Mode/ASRTestMode';
+import { ASRTestModeLandingPage } from '../components/Test Mode/ASRTestModeLandingPage';
 import LandingPageNavbar from '../components/Navbar/LandingPageNavbar';
 import Image from "next/image"; 
 import voiceDark from '../assets/images/voice-dark.png';
@@ -34,7 +35,10 @@ const LandingPage = () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${42}/cardsets/${345}/flashcards`);
             setCardset(response.data.flashcards); // Set the fetched cardset
+            console.log(" showCardset ", showCardset)
             setShowCardset(true); // Show the cardset
+
+            console.log(" showCardset 2", showCardset)
         } catch (error) {
             console.error('Error fetching cardset:', error);
         }
@@ -74,8 +78,11 @@ const LandingPage = () => {
                     <div className="col-lg-6">
                         <div className="mt-6">
                             {/* Placeholder for Rotating card */}
-                            <div className="mx-auto" id={styles.card}>
-
+                            <div className="mx-auto" id={styles.card} onClick={handleTryItOut}>
+                                { showCardset && (
+                                    <ASRTestModeLandingPage cardData={cardset}/>
+                                    // <ASRTestMode cardData={cardset}/>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -190,22 +197,6 @@ const LandingPage = () => {
                     </div>
                 </div>
             </div>
-            
-            {/* {showCardset && cardset && (
-                <div className="container d-flex justify-content-center"> 
-                     <ASRTestMode cardData={cardset}/>
-                </div>
-            )} */}
-
-            {/* {!showCardset && (
-                <div className="container">
-                    <div className="row">
-                        <div className="col text-center mt-4"> 
-                            <button className="btn btn-primary" onClick={handleTryItOut}>Become a Quiz Master!</button>
-                        </div>
-                    </div>
-                </div>
-            )} */}
         </div>
     );
 };

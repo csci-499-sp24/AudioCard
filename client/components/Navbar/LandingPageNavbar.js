@@ -30,10 +30,9 @@ const LandingPageNavbar = () => {
     return (
         <nav className={`navbar navbar-expand-lg ${isDarkMode ? 'bg-dark' : 'bg-body-tertiary'}`} id={styles.navbar}>
             <div className="container" id={styles.navbarContainer}>
-                
-                <a class="navbar-brand" href="#" className={`navbar-brand text-dark font-weight-bold ${isDarkMode && 'text-white'}`} id={styles.navLinkLogoLanding}>AudioCard</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                {isDarkMode ? <a className="navbar-brand text-dark font-weight-bold text-white" href="#" id={styles.navLinkLogoLanding}>AudioCard</a> : <a className="navbar-brand text-dark font-weight-bold" href="#" id={styles.navLinkLogoLanding}>AudioCard</a>}
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
                 </button>
 
                 <div className="navbar-collapse collapse w-100 order-3 dual-collapse2" id="navbarScroll">
