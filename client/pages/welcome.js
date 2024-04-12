@@ -35,10 +35,8 @@ const LandingPage = () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${42}/cardsets/${345}/flashcards`);
             setCardset(response.data.flashcards); // Set the fetched cardset
-            console.log(" showCardset ", showCardset)
             setShowCardset(true); // Show the cardset
 
-            console.log(" showCardset 2", showCardset)
         } catch (error) {
             console.error('Error fetching cardset:', error);
         }

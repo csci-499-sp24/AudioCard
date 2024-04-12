@@ -3,7 +3,7 @@ import style from '../../styles/rotatingcardtest.module.css';
 import { useEffect } from 'react';
 import { useDarkMode } from '@/utils/darkModeContext';
 
-export const RotatingCardTestLanding = ({ flashcards, index, isFlipped, borderClass }) => {
+export const RotatingCardTestLandingPage = ({ flashcards, index, isFlipped, borderClass }) => {
     const {isDarkMode} = useDarkMode();
      
     return (

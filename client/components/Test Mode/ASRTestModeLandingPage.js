@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import style from '../../styles/flashcardtestmode.module.css';
-import { RotatingCardTestLanding } from '../Cards/RotatingCardTestLandingPage';
+import { RotatingCardTestLandingPage } from '../Cards/RotatingCardTestLandingPage';
 import {checkAnswerSTT} from '../ASR/speechToText';
 import {TTS} from '../ASR/textToSpeech';
 import { useDarkMode } from '../../utils/darkModeContext';
@@ -174,7 +174,6 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
         }, 2000);
     };
 
-
     const handleRestartTest = () => {
         setIndex(0);
         setScore(0);
@@ -194,6 +193,7 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
             const j = Math.floor(Math.random() * (i + 1));
             [shuffledCards[i], shuffledCards[j]] = [shuffledCards[j], shuffledCards[i]];
         }
+        
         setFlashcards(shuffledCards);
         handleRestartTest();
         setShowOptions(false);
@@ -205,11 +205,22 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
     const handleTimeLimit = async (event) => {
         setTimeLimit(event);
     }
+
     return (
         <div className="">
              {/* settings */}
             <div className="d-flex justify-content-end">
-                <div onClick={() => setShowOptions(true)} id="gearIconLandingContainer">
+                 {/* timer */}
+                {/* <TimerComponent
+                    timeLimit={timeLimit}
+                    showTestResult={showTestResult}
+                    isFlipped={isFlipped}
+                    isSpeakMode={true}
+                    restartFlag={restartFlag}
+                    isPaused={isPaused}
+                /> */}
+
+                <div onClick={() => setShowOptions(true)} id={style.gearIconLandingContainer}>
                     <i className={`fa-solid fa-gear fa-lg ${style.gearIconLanding}`}></i>
                 </div>
             </div>
@@ -221,12 +232,15 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
                         timeLimit={timeLimit} handleTimeLimit={handleTimeLimit}
                         voiceGender={voiceGender} setVoiceGender={setVoiceGender}
                         language={language} setLanguage={setLanguage}
-                        speakingRate={speakingRate} setSpeakingRate={setSpeakingRate}/>
+                        speakingRate={speakingRate} setSpeakingRate={setSpeakingRate}
+                        />
+                       
                         <div className={style.closeButtonContainer}>
                             <button className={style.closeButton} onClick={() => {
                                 setShowOptions(false);
                             }}
-                            >Close
+                            >
+                                Close
                             </button>
                         </div>
                     </div>
@@ -235,9 +249,9 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
 
             { showTestResult ? (
                 <div className="d-flex flex-column align-items-center" id={style.resutlsLanding}>
-                    <h2>Your Test Results:</h2>
-                    <p>You got {score} out of {flashcards.length} correct!</p>
-                    <button className={'btn btn-primary'} onClick={handleRestartTest}>Try Again</button>
+                    <h2 class={isDarkMode ? "text-white": "text-dark"} id={style.resutlTextLanding} >Your Test Result:</h2>
+                    <p class={isDarkMode ? "text-white": "text-dark"}>You got {score} out of {flashcards.length} correct!</p>
+                    <button className={'btn btn-dark'} onClick={handleRestartTest}>Try Again</button>
                 </div>
             ) : (
                 <>
@@ -246,27 +260,25 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
                         <div className={style.progressBar} style={{ width: `${progress}%` }}></div>
                     </div>
                     
-                     {/* timer */}
-                    {/* <TimerComponent
-                        timeLimit={timeLimit}
-                        showTestResult={showTestResult}
-                        isFlipped={isFlipped}
-                        isSpeakMode={true}
-                        restartFlag={restartFlag}
-                        isPaused={isPaused}
-                    /> */}
+                    <div className={style.flashcard} id={style.RotatingCardSectionLanding}>
 
-                    <div className={style.flashcard}>
-
-                        <RotatingCardTestLanding
+                        <RotatingCardTestLandingPage
                             flashcards={flashcards}
                             index={index}
                             isFlipped={isFlipped}
                             borderClass={borderClass}
                         />
 
+                        {/* mic over */}
+                        <div className='row d-flex justify-content-center' id={style.MicLandingContainer}>
+                            <div className={`${style.micRing} ${style[ringSize]}`}></div>
+                            <div className='container'>
+                            <i className={`bi bi-mic-fill ${isDarkMode ? style.micIconDark : style.micIconLight} ${ringSize==='scaleUp' ? style.micIconPulse : style.micIconPulse}`}></i>
+                            </div>
+                        </div>
+
                         {/* buttons */}
-                        {/* <div className='row mx-auto mt-3 mb-5' id={style.optionButtons}>
+                        <div className='row mx-auto mt-2' id={style.optionButtons}>
                             <div className="d-flex justify-content-between">
                                 <div className=''>
                                     <button className='btn btn-secondary' title='Restart Test' onClick={handleRestartTest}><i class="fa fa-refresh"></i></button>
@@ -274,18 +286,8 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
                                 <div className=''>
                                     <button className='btn btn-secondary' title='Shuffle Cards' onClick={shuffleCards}><i class="fas fa-random"></i></button>
                                 </div>
-
                             </div>
-                        </div> */}
-
-                        {/* mic over */}
-                        {/* <div className='row d-flex justify-content-center'>
-                            <div className={`${style.micRing} ${style[ringSize]}`}></div>
-                            <div className='container'>
-                            <i className={`bi bi-mic-fill ${isDarkMode ? style.micIconDark : style.micIconLight} ${ringSize==='scaleUp' ? style.micIconPulse : null}`}></i>
-                            </div>
-                        </div> */}
-
+                        </div>
                     </div>
                 </>
             )}
