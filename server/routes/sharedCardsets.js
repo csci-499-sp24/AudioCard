@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-const { Cardset, User, SharedCardset } = require('../models/modelRelations');
+const { Cardset, User, SharedCardset, Notification } = require('../models/modelRelations');
 const { checkCardsetAuthority } = require('./functions');
 
 //Cardsets shared with user
@@ -81,10 +81,20 @@ router.route('/:cardsetid/share')
                 const sharedCardset = await SharedCardset.findOne({
                     where: {
                         userId: req.query.userid,
-                        cardsetId: req.params.cardsetid
+                        cardsetId: req.params.cardsetid,
+                        include: ['id']
                     }
                 })
                 if (sharedCardset) {
+                    const sharedNotif = await Notification.findOne({
+                        where:{
+                            type: 'sharedCardset',
+                            sourceId: sharedCardset.id
+                        }
+                    });
+                    if (sharedNotif){
+                        await sharedNotif.destroy();
+                    }
                     await cardset.removeSharedWithUser(user);
                     res.status(200).send(`User ${user.username}'s access to cardset ${cardset.title} has been revoked`);
                 } else {
@@ -183,11 +193,18 @@ router.route('/:cardsetid/:userId/authority')
                     userId: userId,
                 }
             });
-
             if (!sharedCardset) {
                 return res.status(404).json({ error: 'User not authorized for this cardset' });
             }
-
+            const sharedNotif = await Notification.findOne({
+                where:{
+                    type: 'sharedCardset',
+                    sourceId: sharedCardset.dataValues.id
+                }
+            });
+            if (sharedNotif){
+                await sharedNotif.destroy();
+            }
             await sharedCardset.destroy(); // Delete the sharedCardset record
 
             res.status(200).json({ message: 'Authority deleted successfully' });

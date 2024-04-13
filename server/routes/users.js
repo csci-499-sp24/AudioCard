@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Cardset, User, Flashcard, Notification } = require('../models/modelRelations');
+const { Cardset, User, Flashcard, Notification, SharedCardset, Friend } = require('../models/modelRelations');
 const flashcards = require ('./flashcards');
 const sharedCardsets = require ('./sharedCardsets');
 const friends = require ('./friends');
@@ -292,15 +292,58 @@ router.route('/:userid/notifications')
 .get(async (req, res) => {
     try {
         const userWithNotifs = await User.findByPk(req.params.userid, {
-            include: Notification
+            include: {
+                model: Notification,
+                include: [
+                    {
+                        model: SharedCardset,
+                        required: false,
+                        where: Sequelize.literal('`notifications`.`type` = "sharedCardset"'),
+                        as: 'sharedCardsetItem', // Alias for the association
+                        include: [
+                            {
+                                model: Cardset,
+                                required: false,
+                                as: 'cardset'
+                            }
+                        ]
+                    },
+                    {
+                        model: Friend,
+                        required: false,
+                        where: Sequelize.literal('`notifications`.`type` = "friend"'),
+                        as: 'friendItem', // Alias for the association
+                        include: [
+                            {
+                                model: User,
+                                required: false,
+                                as: 'requestor',
+                                attributes: ['id', 'username', 'email']
+                            }
+                        ]
+                    }
+                ]
+            }
         });
-        const notifications = userWithNotifs.notifications
+        const notifications = userWithNotifs.notifications;
         return res.status(200).json({notifications});
     } catch (error) {
         console.error("Error getting user's notifications:", error);
         return res.status(500).json({ error: "Internal Server Error" });
     }
-});
+})
+.delete(async (req, res) => {
+    try { //Currently for deleting shared cardset notifications
+        const {notificationId} = req.body;
+        const notification = await Notification.findByPk(notificationId);
+        await notification.destroy();
+        res.status(200).send('Notification deleted');
+    } catch (error) {
+        console.error("Error getting user's notifications:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+})
+;
 
 
 
