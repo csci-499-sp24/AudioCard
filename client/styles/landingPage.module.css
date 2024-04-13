@@ -110,12 +110,14 @@
     color: white !important;
 }
 
+
+
+
 @media (min-width: 1201px) and (max-width: 1399px) { 
     #dummyCardButton {
         left: 83%;
     }
 }
-
 
 @media (min-width: 992px) and (max-width: 1200px) { 
     #dummyCardButton {

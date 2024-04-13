@@ -168,7 +168,6 @@
     padding: 0.3rem; /* Optional: adjust padding as needed */
 }
 
-
 .optionButton {
     justify-content: center;
     display: flex;
@@ -187,7 +186,7 @@
 
 .flashcardContainer {
     position: relative; 
-  }
+}
   
 .restartButtonContainer {
     position: absolute;
@@ -324,8 +323,26 @@
     }
 }
 
+
+
+@media (min-width: 1201px) and (max-width: 1399px) { 
+    #optionButtons {
+        width: 40%;
+    }
+}
+
 @media (min-width: 992px) and (max-width: 1199.98px) { 
      #resutlTextLanding {
         font-size: 1.7rem !important;
+    }
+
+    #optionButtons {
+        width: 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    #optionButtons {
+        width: 50%;
     }
 }

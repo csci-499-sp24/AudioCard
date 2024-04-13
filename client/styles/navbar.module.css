@@ -94,6 +94,9 @@
 
 #navLinkLanding {
     padding-right: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block !important;
 }
 
 #navLinkLanding:hover {
@@ -106,5 +109,10 @@
     #mobileExploreLink {
         display: inline-block !important;
     }
+
+    #navigationItem {
+        width: 100%;
+        border-bottom: 1px solid;
+    }    
 
 }

@@ -207,7 +207,7 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
     }
 
     return (
-        <div className="">
+        <div>
              {/* settings */}
             <div className="d-flex justify-content-end">
                  {/* timer */}
@@ -219,7 +219,6 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
                     restartFlag={restartFlag}
                     isPaused={isPaused}
                 />
-
             
                 <div onClick={() => setShowOptions(true)} id={style.gearIconLandingContainer}>
                     <i className={`fa-solid fa-gear fa-lg ${style.gearIconLanding}`}></i>
@@ -262,7 +261,7 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
                     </div>
                     
                     <div className={style.flashcard} id={style.RotatingCardSectionLanding}>
-
+                        {/* card */}
                         <RotatingCardTestLandingPage
                             flashcards={flashcards}
                             index={index}
@@ -282,10 +281,10 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
                         <div className='row mx-auto mt-2' id={style.optionButtons}>
                             <div className="d-flex justify-content-between">
                                 <div className=''>
-                                    <button className='btn btn-secondary' title='Restart Test' onClick={handleRestartTest}><i class="fa fa-refresh"></i></button>
+                                    <button className='btn btn-secondary' title='Restart Test' onClick={handleRestartTest}><i className="fa fa-refresh"></i></button>
                                 </div>
                                 <div className=''>
-                                    <button className='btn btn-secondary' title='Shuffle Cards' onClick={shuffleCards}><i class="fas fa-random"></i></button>
+                                    <button className='btn btn-secondary' title='Shuffle Cards' onClick={shuffleCards}><i className="fas fa-random"></i></button>
                                 </div>
                             </div>
                         </div>

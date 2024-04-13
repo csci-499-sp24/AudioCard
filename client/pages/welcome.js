@@ -48,7 +48,7 @@ const LandingPage = () => {
     const fetchCardset = async (cardsetId) => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/cardsets/${cardsetId}`);
-            setCardsetData(response.data); 
+            setCardset(response.data); 
         } catch (error) {
             console.error('Error fetching cardset:', error);
         }

@@ -37,7 +37,7 @@ const LandingPageNavbar = () => {
 
                 <div className="navbar-collapse collapse w-100 order-3 dual-collapse2" id="navbarScroll">
                     <ul className="navbar-nav ms-auto d-flex align-items-center">
-                        <li className="nav-item">
+                        <li className="nav-item" id={styles.navigationItem}>
                             <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLinkLanding} onClick={toggleDarkMode}>
                                 {isDarkMode ? <i className="bi bi-sun" id={styles.navIconModeLanding}></i> : <i className="bi bi-moon" id={styles.navIconModeLanding}></i>}
                             </button>

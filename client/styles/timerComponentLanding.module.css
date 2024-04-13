@@ -1,4 +1,10 @@
 #countDown {
+    z-index: 1000;
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -55%); 
     width: 75px;
     height: 75px;
     border-radius: 50%;
@@ -6,12 +12,6 @@
     justify-content: center;
     align-items: center;
     font-size: 20px;
-    z-index: 1000;
-    position: absolute;
-    left: 50%;
-    top: 55%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -55%); 
 }
 
 #countDownNumber {
