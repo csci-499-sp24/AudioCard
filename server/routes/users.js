@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Cardset, User, Flashcard } = require('../models/modelRelations');
+const { Cardset, User, Flashcard, Notification } = require('../models/modelRelations');
 const flashcards = require ('./flashcards');
 const sharedCardsets = require ('./sharedCardsets');
 const friends = require ('./friends');
@@ -71,6 +71,9 @@ router.route('/getuserbyemail')
     try{
         const { email } = req.query;
         const user = await User.findOne({ where: { email }});
+        if(!user){
+            return res.status(404).json({ error: 'User Not Found'});
+        }
         res.status(200).json({ user });
     } catch (error) {
         console.error('Error fetching database user:', error);
@@ -285,6 +288,19 @@ router.route('/userCheck/:identifier')
         }
     });
 
+router.route('/:userid/notifications')
+.get(async (req, res) => {
+    try {
+        const userWithNotifs = await User.findByPk(req.params.userid, {
+            include: Notification
+        });
+        const notifications = userWithNotifs.notifications
+        return res.status(200).json({notifications});
+    } catch (error) {
+        console.error("Error getting user's notifications:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+});
 
 
 

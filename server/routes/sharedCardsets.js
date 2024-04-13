@@ -52,8 +52,10 @@ router.route('/:cardsetid/share')
                 const user = await User.findOne({ where: { id: req.query.userid } });
                 const cardset = await Cardset.findOne({ where: { id: req.params.cardsetid } });
                 const sharedCardset = await cardset.addSharedWithUser(user, {
-                    through: { authority: req.query.authority }
+                    through: { authority: req.query.authority },
+                    attributes: ['id']
                 });
+                user.createNotification({userId: user.userid, type: 'sharedCardset', sourceId: sharedCardset[0].dataValues.id})
                 if (!sharedCardset) {
                     res.status(409).json('User already has access to the cardset');
                     return;
