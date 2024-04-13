@@ -75,11 +75,17 @@ const LandingPage = () => {
 
                     <div className="col-lg-6">
                         <div className="mt-6">
-                            {/* Placeholder for Rotating card */}
-                            <div className="mx-auto" id={styles.card} onClick={handleTryItOut}>
-                                { showCardset && (
+                            {/* <div className="mx-auto" id={`${isDarkMode ? styles.cardDark : styles.card}`} onClick={handleTryItOut}> */}
+                            <div className="mx-auto" id={`${isDarkMode ? styles.cardDark : styles.card}`}>
+                                
+                                {/* Rotating and dummy card */}
+                                { showCardset && cardset ? (
                                     <ASRTestModeLandingPage cardData={cardset}/>
-                                    // <ASRTestMode cardData={cardset}/>
+                                ) : (
+                                    <div className='d-flex justify-content-center'>
+                                        <button  onClick={handleTryItOut}>Click Me!</button>
+                                        <h2 id={styles.dummyCardText}>What is 2+2?</h2>
+                                    </div>
                                 )}
                             </div>
                         </div>
