@@ -68,6 +68,60 @@
     border: 10px solid transparent;
 }
 
+#frontLanding,
+#backLanding,
+#frontDarkLanding,
+#backDarkLanding {
+    backface-visibility: hidden;
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    font-size: 2em;
+    box-shadow: none;
+}
+
+#frontLanding {
+    background-color: white;
+    color: black;
+}
+
+#frontDarkLanding {
+    background-color: #252526;
+    color: white;
+}
+
+#backLanding {
+    transform: rotateX(180deg);
+
+    background-color: white;
+    color: black;
+}
+
+#backDarkLanding {
+    transform: rotateX(180deg);
+
+    background-color: #252526;
+    color: white;
+}
+
+#frontLanding,
+#backLanding {
+    border: 1px solid #d7d7d7
+}
+
+#frontDarkLanding, #backDarkLanding {
+    border: 1px solid #747373;
+}
+
+
+
 @keyframes flash-green {
 
     0%,

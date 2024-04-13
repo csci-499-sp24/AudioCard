@@ -30,7 +30,6 @@ const LandingPage = () => {
         router.push('/signup');
     };
 
-
     const handleTryItOut = async () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${42}/cardsets/${345}/flashcards`);
@@ -75,16 +74,17 @@ const LandingPage = () => {
 
                     <div className="col-lg-6">
                         <div className="mt-6">
-                            {/* <div className="mx-auto" id={`${isDarkMode ? styles.cardDark : styles.card}`} onClick={handleTryItOut}> */}
                             <div className="mx-auto" id={`${isDarkMode ? styles.cardDark : styles.card}`}>
                                 
-                                {/* Rotating and dummy card */}
+                                {/* Rotating and dummy cards */}
                                 { showCardset && cardset ? (
                                     <ASRTestModeLandingPage cardData={cardset}/>
                                 ) : (
                                     <div className='d-flex justify-content-center'>
-                                        <button  onClick={handleTryItOut}>Click Me!</button>
-                                        <h2 id={styles.dummyCardText}>What is 2+2?</h2>
+                                        <button id={styles.dummyCardButton} onClick={handleTryItOut}>
+                                            <span id={styles.dummyCardButtonText}>Click here to try</span>
+                                        </button>
+                                        <h2 id={styles.dummyCardTextQuestion}>What is 2+2?</h2>
                                     </div>
                                 )}
                             </div>

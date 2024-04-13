@@ -9,10 +9,10 @@ export const RotatingCardTestLandingPage = ({ flashcards, index, isFlipped, bord
     return (
         <div className={`d-flex justify-content-center ${style[borderClass]}`} id={style.containerLanding}>
             <div id={style.card} className={isFlipped ? style.isFlipped : ''}>
-                <div id={`${isDarkMode ? style.frontDark : style.front}`}>
+                <div id={`${isDarkMode ? style.frontDarkLanding : style.frontLanding}`}>
                     {flashcards[index] ? flashcards[index].term : "Loading"}
                 </div>
-                <div id={`${isDarkMode ? style.backDark : style.back}`}>{flashcards[index] ? flashcards[index].definition : "Loading"}
+                <div id={`${isDarkMode ? style.backDarkLanding : style.backLanding}`}>{flashcards[index] ? flashcards[index].definition : "Loading"}
                 </div>
             </div>
         </div>

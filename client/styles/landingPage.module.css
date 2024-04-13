@@ -20,7 +20,29 @@
     position: relative;;
 }
 
-#dummyCardText {
+#dummyCardButton {
+    position: absolute;
+    left: 86%;
+    top: 7%;
+    transform: translate(-50%, -50%);
+    background: #dcff7f;
+    padding: 30px;
+    border-radius: 50px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    font-size: 30px;
+    color: black;
+    text-align: center;
+    border: none;
+}
+
+#dummyCardButtonText {
+    display: inline-block;
+    transform: rotate(15deg);
+}
+
+#dummyCardTextQuestion {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -88,6 +110,19 @@
     color: white !important;
 }
 
+@media (min-width: 1201px) and (max-width: 1399px) { 
+    #dummyCardButton {
+        left: 83%;
+    }
+}
+
+
+@media (min-width: 992px) and (max-width: 1200px) { 
+    #dummyCardButton {
+        left: 79%;
+    }
+}
+
 @media (max-width: 991px) { 
     #heroSection {
         background-image: url("../assets/images/back-vertical.png") !important;
@@ -130,5 +165,12 @@
 
     #footerIcon {
         margin: 0 3px;
+    }
+}
+
+@media (max-width: 768px) {
+    #dummyCardButton {
+        left: 80%;
+        top: 11%;
     }
 }

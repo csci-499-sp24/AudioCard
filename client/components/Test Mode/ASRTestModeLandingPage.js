@@ -119,7 +119,7 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
             setBorderClass('');
         }, 2000);
     
-      let isCorrect = await checkAnswerSTT(answer, timeLimit, language, handleRestartTest, shuffleCards, voiceCommands, setRingSize);
+        let isCorrect = await checkAnswerSTT(answer, timeLimit, language, handleRestartTest, shuffleCards, voiceCommands, setRingSize);
     
         if (isCorrect) {
             setBorderClass('correct');
@@ -249,9 +249,9 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
 
             { showTestResult ? (
                 <div className="d-flex flex-column align-items-center" id={style.resutlsLanding}>
-                    <h2 class={isDarkMode ? "text-white": "text-dark"} id={style.resutlTextLanding} >Your Test Result:</h2>
-                    <p class={isDarkMode ? "text-white": "text-dark"}>You got {score} out of {flashcards.length} correct!</p>
-                    <button className={'btn btn-dark'} onClick={handleRestartTest}>Try Again</button>
+                    <h2 className={isDarkMode ? "text-white": "text-dark"} id={style.resutlTextLanding} >Your Test Result:</h2>
+                    <p className={isDarkMode ? "text-white": "text-dark"}>You got {score} out of {flashcards.length} correct!</p>
+                    <button className={isDarkMode ? "btn btn-light": "btn btn-dark"} onClick={handleRestartTest}>Try Again</button>
                 </div>
             ) : (
                 <>
