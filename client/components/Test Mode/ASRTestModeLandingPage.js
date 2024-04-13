@@ -5,7 +5,7 @@ import {checkAnswerSTT} from '../ASR/speechToText';
 import {TTS} from '../ASR/textToSpeech';
 import { useDarkMode } from '../../utils/darkModeContext';
 import {TestOptions} from './testOptions';
-import TimerComponent from './timerComponent';
+import TimerComponentLanding from './timerComponentLanding';
 import { getTranslation } from '@/utils/translations';
 
 export const ASRTestModeLandingPage = ({ cardData }) => {
@@ -211,15 +211,16 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
              {/* settings */}
             <div className="d-flex justify-content-end">
                  {/* timer */}
-                {/* <TimerComponent
+                <TimerComponentLanding
                     timeLimit={timeLimit}
                     showTestResult={showTestResult}
                     isFlipped={isFlipped}
                     isSpeakMode={true}
                     restartFlag={restartFlag}
                     isPaused={isPaused}
-                /> */}
+                />
 
+            
                 <div onClick={() => setShowOptions(true)} id={style.gearIconLandingContainer}>
                     <i className={`fa-solid fa-gear fa-lg ${style.gearIconLanding}`}></i>
                 </div>

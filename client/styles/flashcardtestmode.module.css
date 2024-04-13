@@ -302,7 +302,7 @@
         box-shadow: 0 0 0 0 rgba(255, 0, 255, 0.7); /* Start with no shadow */
     }
     100% {
-        box-shadow: 0 0 0 20px rgba(255, 0, 255, 0); /* End with larger shadow */
+        box-shadow: 0 0 0 13px rgba(255, 0, 255, 0); /* End with larger shadow */
     }
 }
 
