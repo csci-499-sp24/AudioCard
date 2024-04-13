@@ -4,6 +4,7 @@ import { RotatingCardTest } from '../Cards/RotatingCardTest';
 import { useDarkMode } from '../../utils/darkModeContext'
 import { TestOptions } from './testOptions';
 import TimerComponent from './timerComponent';
+import { TestResults } from './TestResults';
 
 export const FlashcardTestMode = ({ cardData, userId}) => {
     const {isDarkMode} = useDarkMode();
@@ -194,11 +195,7 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                 </div>
             )}
             {showTestResult ? (
-                <div className={style.testCompleteContainer}>
-                    <h2>Your Test Result</h2>
-                    <p>You got {score} out of {flashcards.length} correct!</p>
-                    <button className={'btn btn-primary'} onClick={handleRestartTest}>Try Again</button>
-                </div>
+                <TestResults score={score} flashcards = {flashcards} handleRestartTest = { handleRestartTest}/>
             ) : (
                 <>
                 <div className={style.progressBarContainer}>
