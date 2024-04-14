@@ -9,10 +9,8 @@ import FriendRequestButton from '@/components/FriendRequestButton';
 import FriendList from '@/components/FriendList';
 import { useDarkMode } from '../../utils/darkModeContext';
 import Link from 'next/link';
-import { useMediaQuery } from 'react-responsive';
 
 const Profile = () => {
-    const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
     const router = useRouter();
     const { id } = router.query;
     const { isDarkMode } = useDarkMode();
