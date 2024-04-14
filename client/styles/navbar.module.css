@@ -74,10 +74,45 @@
     cursor: pointer;
 }
 
+/* Landing Page Navbar*/
+
+#navbarContainer {
+    padding: 0 28px;
+}
+
+#navLinkLogoLanding {
+    font-weight: 500;
+}
+
+#navLinkLogoLanding:hover {
+    color: #1d62b4ba !important;
+}
+
+#navIconModeLanding {
+    font-size: 1em;
+}
+
+#navLinkLanding {
+    padding-right: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block !important;
+}
+
+#navLinkLanding:hover {
+    color: #1d62b4ba !important;
+}
+
+
 @media (max-width: 991px) {
 
     #mobileExploreLink {
         display: inline-block !important;
     }
+
+    #navigationItem {
+        width: 100%;
+        border-bottom: 1px solid;
+    }    
 
 }

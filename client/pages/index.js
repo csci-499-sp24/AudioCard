@@ -15,7 +15,7 @@ function Index() {
         router.push('/dashboard');
       } else {
         // No user is signed in, redirect to the landing page
-        router.push('/LandingPage');
+        router.push('/welcome');
       }
     });
 
