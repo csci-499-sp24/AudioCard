@@ -1,0 +1,19 @@
+#countDown {
+    z-index: 1000;
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -55%); 
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+#countDownNumber {
+    font-size: 14rem;
+}
