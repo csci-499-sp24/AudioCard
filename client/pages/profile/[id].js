@@ -9,8 +9,10 @@ import FriendRequestButton from '@/components/FriendRequestButton';
 import FriendList from '@/components/FriendList';
 import { useDarkMode } from '../../utils/darkModeContext';
 import Link from 'next/link';
+import { useMediaQuery } from 'react-responsive';
 
 const Profile = () => {
+    const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
     const router = useRouter();
     const { id } = router.query;
     const { isDarkMode } = useDarkMode();
@@ -95,7 +97,7 @@ useEffect(() => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${currentUser.id}/friends/${profileUser.id}`);
             if (response.data.status=='accepted'){
-                setIsFriends(true);http://localhost:3000/cardsets/166
+                setIsFriends(true);
                 fetchFriendCardsets(id);
             } 
         } catch (error) {
@@ -148,7 +150,7 @@ useEffect(() => {
         <Navbar userId={currentUser?.id} />
         <div className="mt-4">
             <div className="row d-flex">
-                <div className="col-2">
+                <div className="col-lg-2 col-md-2 col-sm-12" style={{marginRight: '10vh'}}>
                     <div className={styles.profileContainer}>
                         <div className={styles.profileSidebar}>
                             <h1 className={styles.cardSetTitle}>{`${profileUser?.username}`} </h1>
@@ -165,14 +167,14 @@ useEffect(() => {
                         </div>
                     </div>
                 </div>
-                <div className="col">
+                <div className="col" style={{marginTop: '10vh'}}>
                     <div className="container">
                         <div className='row d-flex justify-content-center'>
                             <h1 className={styles.cardSetTitle}>Public Card Sets <span className="bi bi-globe"></span></h1>
                         </div>
                         <div className="row">
                             {publicCardsets.map(cardset => (
-                                <div className='col-6' key={cardset.id}>
+                                <div className='col-lg-6 mb-4' key={cardset.id}>
                                     <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{ textDecoration: 'none', width: '100%' }}>
                                         <CardProfile key={cardset.id} cardset={cardset} />
                                     </Link>
@@ -187,7 +189,7 @@ useEffect(() => {
                                 {friendCardsets
                                     .filter(cardset => cardset.title != null)
                                     .map(cardset => (
-                                        <div className='col-6' key={cardset.id}>
+                                        <div className='col-lg-6 mb-4' key={cardset.id}>
                                             <Link href={`/cardsets/${cardset.id}`} style={{ textDecoration: 'none', width: '100%' }}>
                                                 <CardProfile key={cardset.id} cardset={cardset} />
                                             </Link>
