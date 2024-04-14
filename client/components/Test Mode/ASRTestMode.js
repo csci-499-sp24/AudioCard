@@ -7,6 +7,7 @@ import { useDarkMode } from '../../utils/darkModeContext';
 import {TestOptions} from './testOptions';
 import TimerComponent from './timerComponent';
 import { getTranslation } from '@/utils/translations';
+import { TestResults } from './TestResults';
 
 export const ASRTestMode = ({ cardData}) => {
     const {isDarkMode} = useDarkMode();
@@ -228,11 +229,8 @@ export const ASRTestMode = ({ cardData}) => {
                 </div>
             )}
             {showTestResult ? (
-                <div className={style.testCompleteContainer}>
-                    <h2>Your Test Result</h2>
-                    <p>You got {score} out of {flashcards.length} correct!</p>
-                    <button className={'btn btn-primary'} onClick={handleRestartTest}>Try Again</button>
-                </div>
+                //sharing data via props to TestResults component
+                <TestResults score={score} flashcards = {flashcards} handleRestartTest = { handleRestartTest}/>
             ) : (
                 <>
                     <div className={style.progressBarContainer}>
