@@ -3,6 +3,7 @@ import axios from 'axios';
 import { auth } from '../utils/firebase';
 import AvatarChangeModal from '../components/AvatarChangeModal';
 import Navbar from '@/components/Navbar/Navbar';
+import Link from 'next/link';
 import { useDarkMode } from '../utils/darkModeContext';
 import styles from '../styles/settings.module.css';
 
@@ -124,6 +125,13 @@ const Settings = () => {
                 <button onClick={handleAvatarChangeClick} className={styles.uploadButton}>
                     Upload Your Avatar
                 </button>
+                <div  className={styles.container}>
+                    <button className={styles.uploadButton}>
+                        <Link href="/update-password" className='text-light link-secondary link-underline-opacity-0'>
+                            Update Your Password
+                        </Link>
+                    </button>
+                </div>
             </div>
         </div>
     );

@@ -39,6 +39,16 @@ router.route('/usernameCheck')
         }
     })
 
+// change user password
+router.route('/changePassword')
+    .post(async(req, res) => {
+        try {
+            const { currentPassword, updatedPassword, updatedPasswordRef } = req.body;
+        } catch (error) {
+
+        }
+    })
+
 //Get all Users
 router.route('/')
     .get(async (req, res) => {
