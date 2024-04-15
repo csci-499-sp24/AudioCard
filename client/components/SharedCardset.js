@@ -5,7 +5,7 @@ import { ShareCard } from '@/components/Cards/sharedCard';
 import { useDarkMode } from '../utils/darkModeContext';
 import styles from '../styles/dashboard.module.css';
 
-const SharedCardset = ({ userid, sortBy, searchQuery, onSearchChange, subjectFilter, onSubjectFilterChange }) => {
+const SharedCardset = ({ userid, searchQuery, onSearchChange, subjectFilter, onSubjectFilterChange }) => {
     const [sharedData, setSharedData] = useState(null);
     const [error, setError] = useState(null);
     const { isDarkMode } = useDarkMode();
@@ -55,21 +55,12 @@ const SharedCardset = ({ userid, sortBy, searchQuery, onSearchChange, subjectFil
                 }));
                 let filteredCardsets = fetchedCardsets.filter(cardset => cardset !== null); // Filter out null values
 
-                // Apply sorting based on the sortBy prop
-                if (sortBy === 'alphabetical') {
-                    filteredCardsets.sort((a, b) => a.title.localeCompare(b.title));
-                } else if (sortBy === 'newest') {
-                    filteredCardsets.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                } else if (sortBy === 'oldest') {
-                    filteredCardsets.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-                }
-
                 setCardsets(filteredCardsets);
             }
         };
 
         fetchCardsets();
-    }, [sharedData, sortBy]); // Run the effect whenever sharedData or sortBy changes
+    }, [sharedData]); // Run the effect whenever sharedData or sortBy changes
 
     const filteredSharedCardsets = cardsets.filter((cardset) =>
         cardset.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -89,7 +80,8 @@ const SharedCardset = ({ userid, sortBy, searchQuery, onSearchChange, subjectFil
     // Render the shared cardsets once they're available
     return (
         <div className="container">
-            <div className="mb-3 d-flex">
+            <div className="row mb-3 d-flex">
+                <div className='col-6'>
                 <input
                     type="text"
                     className="form-control me-2"
@@ -97,7 +89,9 @@ const SharedCardset = ({ userid, sortBy, searchQuery, onSearchChange, subjectFil
                     value={searchQuery}
                     onChange={onSearchChange}
                 />
-                <select className="form-select" value={subjectFilter} onChange={onSubjectFilterChange}>
+                </div>
+                <div className='col-3'>
+                <select className="form-select" style={{backgroundColor: isDarkMode ? 'black' : 'white', color: isDarkMode? 'white': 'black'}} value={subjectFilter} onChange={onSubjectFilterChange}>
                     <option value="">All Subjects</option>
                     <option value="History">History</option>
                     <option value="Math">Math</option>
@@ -111,6 +105,7 @@ const SharedCardset = ({ userid, sortBy, searchQuery, onSearchChange, subjectFil
                     <option value="Health">Health</option>
                     <option value="Other">Other</option>
                 </select>
+                </div>
             </div>
             <div className="row row row-cols-1 row-cols-md-3 g-4">
                 {filteredSharedCardsets.map((cardset, index) => (

@@ -137,38 +137,36 @@ const Dashboard = () => {
                                         id={`${activeTab === 'SharedWithYou' ? styles.inlineNavItemActive : styles.inlineNavItemNotActive}`}
                                         aria-current="page" href="#" onClick={() => setActiveTab('SharedWithYou')}>Shared Card Sets</a>
                                 </li>
+                                <li>
+                                </li>
                             </ul>
                         </div>
                     </div>
+                    {activeTab === 'YourFlashcardSets' && (
+                                <div className='d-flex justify-content-end'>
+                                    <button className="btn btn-secondary" onClick={toggleCreateCardsetForm}><i className="bi bi-plus" style={{color: 'lightgreen'}}></i> New Set</button>
+                                </div>
+                            )}
 
-                    <div className="col-12 my-3">
                         <div className="d-flex justify-content-between align-items-center mb-3">
                             <h4 className="m-0" style={{ color: isDarkMode ? 'white' : 'black' }}>{activeTab === 'YourFlashcardSets' ? 'Your Card Sets' : 'Shared With You'}</h4>
-                            <div className="d-flex align-items-center">
-                                <select className="form-select me-2" value={sortBy} onChange={handleSortChange} style={{ width: '150px' }}>
-                                    <option value="">Sort by</option>
-                                    <option value="alphabetical">Alphabetical</option>
-                                    <option value="newest">Newest First</option>
-                                    <option value="oldest">Oldest First</option>
-                                </select>
-                                {activeTab === 'YourFlashcardSets' && (
-                                    <button className="btn btn-secondary" onClick={toggleCreateCardsetForm}>Create New Set</button>
-                                )}
-                            </div>
                         </div>
                         {activeTab === 'YourFlashcardSets' && (
                             <>
                                 {showCreateCardsetForm &&
                                     <CreateCardset userId={userData.id} onCreateCardset={handleCreateCardset} onClickToggle={toggleCreateCardsetForm} isDarkMode={isDarkMode} />}
-                                <div className="mb-3 d-flex">
+                                <div className="row d-flex">
+                                    <div className='col-6'>
                                     <input
                                         type="text"
-                                        className="form-control me-2"
+                                        className="form-control me-2" // Set the width to col-6 (half the width)
                                         placeholder="Search card sets"
                                         value={searchQuery}
                                         onChange={handleSearchChange}
                                     />
-                                    <select className="form-select" value={subjectFilter} onChange={handleSubjectFilterChange}>
+                                    </div>
+                                    <div className='col-md-3'>
+                                    <select className="form-select" style={{backgroundColor: isDarkMode ? 'black' : 'white', color: isDarkMode? 'white': 'black'}} value={subjectFilter} onChange={handleSubjectFilterChange}>
                                         <option value="">All Subjects</option>
                                         <option value="History">History</option>
                                         <option value="Math">Math</option>
@@ -182,7 +180,17 @@ const Dashboard = () => {
                                         <option value="Health">Health</option>
                                         <option value="Other">Other</option>
                                     </select>
+                                    </div>
+                                    <div className='col-md-3 d-flex justify-content-end'>
+                                <select className="form-select me-2" value={sortBy} onChange={handleSortChange} style={{ width: '150px', backgroundColor: 'transparent', color: isDarkMode? 'white': 'black'}}>
+                                    <option value="">Sort by</option>
+                                    <option value="alphabetical">Alphabetical</option>
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                </select>
+                                    </div>
                                 </div>
+
                                 {selectedCardset && <CardsetView cardset={selectedCardset} />}
                                 <div className="row row-cols-1 row-cols-md-3 g-4 mb-4">
                                     {filteredCardsets.map((cardset, index) => (
@@ -204,11 +212,9 @@ const Dashboard = () => {
                                 </div>
                             </>
                         )}
-
                         {activeTab === 'SharedWithYou' && (
                             <SharedCardset
                                 userid={userData?.id}
-                                sortBy={sortBy}
                                 searchQuery={searchQuery}
                                 onSearchChange={handleSearchChange}
                                 subjectFilter={subjectFilter}
@@ -219,7 +225,6 @@ const Dashboard = () => {
                     <BackToTopButton />
                 </div>
             </div>
-        </div>
     );
 };
 
