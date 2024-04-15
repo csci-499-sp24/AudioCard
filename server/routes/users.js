@@ -298,7 +298,7 @@ router.route('/:userid/notifications')
                     {
                         model: SharedCardset,
                         required: false,
-                        where: Sequelize.literal('`notifications`.`type` = "sharedCardset"'),
+                        where: Sequelize.literal('`notifications`.`type` = "sharedCardset" OR `notifications`.`type` = "unSharedCardset"'),
                         as: 'sharedCardsetItem', // Alias for the association
                         include: [
                             {
@@ -333,9 +333,17 @@ router.route('/:userid/notifications')
     }
 })
 .delete(async (req, res) => {
-    try { //Currently for deleting shared cardset notifications
+    try { //Currently only for deleting shared cardset notifications
         const {notificationId} = req.body;
         const notification = await Notification.findByPk(notificationId);
+        const sharedCardset = await SharedCardset.findOne({
+            where: {
+                id: notification.dataValues.sourceId,
+            }
+        });
+        if (sharedCardset.dataValues.authority === 'revoked'){
+            sharedCardset.destroy();
+        }
         await notification.destroy();
         res.status(200).send('Notification deleted');
     } catch (error) {

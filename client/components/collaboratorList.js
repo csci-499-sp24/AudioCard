@@ -35,7 +35,7 @@ export const CollaboratorList = ({ cardsetId, isOwner, isadmin }) => {
 
     const deleteAccess = async (id) => {
         try {
-            const response = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${cardsetId}/${id}/authority`);
+            const response = await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${cardsetId}/${id}/authority`);
             setUserEmailsWithAuth(prevUsers => prevUsers.filter(user => user.id !== id));
             return response
         } catch (error) {

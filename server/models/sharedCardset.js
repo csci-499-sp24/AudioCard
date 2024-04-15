@@ -17,13 +17,16 @@ const SharedCardset = db.define('sharedCardset',{
         allowNull: false
     },
     authority: {
-        type: DataTypes.ENUM('read-only', 'edit', 'admin'),
+        type: DataTypes.ENUM('revoked', 'read-only', 'edit', 'admin'),
         allowNull: false,
         defaultValue: 'read-only'
     }
 }, {
     validate: {
         async checkDuplicate(){
+            if (this.constructor.findOne({ where: { id: this.id } })) {
+                return;
+            }
             const existingEntry = await SharedCardset.findOne({
                 where: {
                     userId: this.userId,
