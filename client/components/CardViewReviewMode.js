@@ -184,6 +184,14 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
                                 <div className=''>
                                     <button className='btn btn-secondary' title='Restart Test' onClick={handleRestartTest}><i class="fa fa-refresh"></i></button>
                                 </div>
+                                {isVoiceCommandsEnabled && (
+                                <div className='d-flex justify-content-center mt-4 mb-2'>
+                                <div className={`${style.micRing} ${style.scaleUp}`}></div>
+                                    <div className='container'>
+                                            <i className={`bi bi-mic-fill ${isDarkMode ? style.micIconDark : style.micIconLight} ${style.micIconPulse}`}></i>
+                                    </div>
+                                </div>
+                                )}
                                 <div className=''>
                                     <button className='btn btn-secondary' title='Shuffle Cards' onClick={shuffleCards}><i class="fas fa-random"></i></button>
                                 </div>
@@ -193,16 +201,7 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
                         <ListenForVoiceCommands isVoiceCommandsEnabled={isVoiceCommandsEnabled}
                         shuffleCards={shuffleCards}
                         handleRestartTest={handleRestartTest}
-                        voiceCommands={voiceCommands}/>
-                        {isVoiceCommandsEnabled && (
-                            <div className='row d-flex justify-content-center'>
-                                <div className={`${style.micRing} ${style.scaleUp}`}></div>
-                                    <div className='container'>
-                                            <i className={`bi bi-mic-fill ${isDarkMode ? style.micIconDark : style.micIconLight} ${style.micIconPulse}`}></i>
-                                    </div>
-                                </div>
-                        )
-                        }       
+                        voiceCommands={voiceCommands}/>   
             </div>
         )}
         </div>

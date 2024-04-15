@@ -257,17 +257,17 @@ export const ASRTestMode = ({ cardData}) => {
                                 <div className=''>
                                     <button className='btn btn-secondary' title='Restart Test' onClick={handleRestartTest}><i class="fa fa-refresh"></i></button>
                                 </div>
+                                <div className='d-flex justify-content-center mt-4 mb-2'>
+                                    <div className={`${style.micRing} ${style[ringSize]}`}></div>
+                                    <div className='container'>
+                                    <i className={`bi bi-mic-fill ${isDarkMode ? style.micIconDark : style.micIconLight} ${ringSize==='scaleUp' ? style.micIconPulse : null}`}></i>
+                                    </div>
+                                    </div>
                                 <div className=''>
                                     <button className='btn btn-secondary' title='Shuffle Cards' onClick={shuffleCards}><i class="fas fa-random"></i></button>
                                 </div>
 
                             </div>
-                        </div>
-                        <div className='row d-flex justify-content-center'>
-                        <div className={`${style.micRing} ${style[ringSize]}`}></div>
-                        <div className='container'>
-                        <i className={`bi bi-mic-fill ${isDarkMode ? style.micIconDark : style.micIconLight} ${ringSize==='scaleUp' ? style.micIconPulse : null}`}></i>
-                        </div>
                         </div>
 
                     </div>
