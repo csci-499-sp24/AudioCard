@@ -13,7 +13,7 @@ const Notification = ({ userId }) => {
 
     useEffect(() => {
         if (userId) {
-            fetchFriendRequests();
+            fetchNotifications();
         }
     }, [userId]);
     
@@ -29,13 +29,13 @@ const Notification = ({ userId }) => {
         };
     }, []);
 
-    const fetchFriendRequests = async () => {
+    const fetchNotifications = async () => {
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/friends/requests`);
-            const incomingRequests = response.data.filter(request => request.requestDirection === 'incoming');
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/notifications`);
+            const incomingRequests = response.data.notifications;//.filter(request => request.requestDirection === 'incoming');
             setFriendRequests(incomingRequests);
         } catch (error) {
-            console.error('Error fetching friend requests:', error);
+            console.error('Error fetching notifications:', error);
         }
     };
 
@@ -44,7 +44,7 @@ const Notification = ({ userId }) => {
             await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/friends`, {
                 friendId: friendId
             });
-            fetchFriendRequests();
+            fetchNotifications();
         } catch (error) {
             console.error('Error accepting friend request:', error);
         }
@@ -55,11 +55,56 @@ const Notification = ({ userId }) => {
             await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/friends`, {
                 data: { friendId: friendId }
             });
-            fetchFriendRequests();
+            fetchNotifications();
         } catch (error) {
             console.error('Error declining friend request:', error);
         }
     };
+
+    const deleteCardsetNotification = async (notificationId) => {
+        try {
+            await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/notifications`, {
+                data: { notificationId: notificationId }
+            });
+            fetchNotifications();
+        } catch (error) {
+            console.error('Error deleting notification:', error);
+        }
+    };
+
+    const cardsetNotification = (request) =>{
+        return(
+            <li key={request.id} className={styles.notificationItem}>
+                {
+                request.sharedCardsetItem.authority === 'revoked' ? 
+                <span className={styles.notificationText}>{`Your access to cardset '${request.sharedCardsetItem.cardset.title}' has been revoked`}</span>
+                :
+                <span className={styles.notificationText}>{`You have been granted ${request.sharedCardsetItem.authority} access to cardset '${request.sharedCardsetItem.cardset.title}'`}</span>
+                }
+                <div className={styles.buttonGroup}>
+                <button onClick={() => deleteCardsetNotification(request.id)} className={styles.acceptButton}>
+                        <i className="bi bi-check"></i>
+                    </button>
+                </div>
+            </li>
+        );
+    }
+
+    const friendNotification = (request) =>{
+        return(
+            <li key={request.id} className={styles.notificationItem}>
+                <span className={styles.notificationText}>{`${request.friendItem.requestor.username} wants to be your friend`}</span>
+                <div className={styles.buttonGroup}>
+                    <button onClick={() => acceptFriendRequest(request.friendItem.requestor.id)} className={styles.acceptButton}>
+                        <i className="bi bi-check"></i>
+                    </button>
+                    <button onClick={() => declineFriendRequest(request.friendItem.requestor.id)} className={styles.declineButton}>
+                        <i className="bi bi-x"></i>
+                    </button>
+                </div>
+            </li>
+        );
+    }
 
     return (
         <div style={{ padding: '5px' }}>
@@ -75,17 +120,10 @@ const Notification = ({ userId }) => {
                         {friendRequests.length > 0 ? (
                             <ul className={styles.notificationList}>
                                 {friendRequests.map((request) => (
-                                    <li key={request.id} className={styles.notificationItem}>
-                                        <span className={styles.notificationText}>{`${request.username} wants to be your friend`}</span>
-                                        <div className={styles.buttonGroup}>
-                                            <button onClick={() => acceptFriendRequest(request.id)} className={styles.acceptButton}>
-                                                <i className="bi bi-check"></i>
-                                            </button>
-                                            <button onClick={() => declineFriendRequest(request.id)} className={styles.declineButton}>
-                                                <i className="bi bi-x"></i>
-                                            </button>
-                                        </div>
-                                    </li>
+                                    request.type === 'friend' ? 
+                                    friendNotification(request)
+                                    :
+                                    cardsetNotification(request)
                                 ))}
                             </ul>
                         ) : (

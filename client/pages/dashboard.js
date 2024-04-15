@@ -18,7 +18,10 @@ const Dashboard = () => {
     const [userData, setUserData] = useState(null);
     const [cardsets, setCardsets] = useState([]);
     const [selectedCardset, setSelectedCardset] = useState(null);
-    const [activeTab, setActiveTab] = useState('YourFlashcardSets'); // State to track active tab
+    const [activeTab, setActiveTab] = useState('YourFlashcardSets');
+    const [sortBy, setSortBy] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [subjectFilter, setSubjectFilter] = useState('');
 
     const router = useRouter();
 
@@ -38,7 +41,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         fetchCardsets();
-    }, [userData]);
+    }, [userData, sortBy]);
 
     const fetchCardsets = async () => {
         if (!userData || !userData.id) {
@@ -47,7 +50,16 @@ const Dashboard = () => {
         }
         try {
             const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets`, { params: { userId: userData.id } });
-            const cardsetsData = response.data.cardsets;
+            let cardsetsData = response.data.cardsets;
+
+            if (sortBy === 'alphabetical') {
+                cardsetsData.sort((a, b) => a.title.localeCompare(b.title));
+            } else if (sortBy === 'newest') {
+                cardsetsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            } else if (sortBy === 'oldest') {
+                cardsetsData.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            }
+
             setCardsets(cardsetsData);
         } catch (error) {
             console.error('Error fetching card sets:', error);
@@ -59,7 +71,7 @@ const Dashboard = () => {
             return;
         }
         try {
-            const firebaseId = user?.uid
+            const firebaseId = user?.uid;
             const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/users/getuser', { params: { firebaseId: firebaseId } });
             const userData = response.data.user;
             setUserData(userData);
@@ -83,10 +95,26 @@ const Dashboard = () => {
 
     const [showCreateCardsetForm, setShowCreateCardsetForm] = useState(false);
 
-    // Function to toggle the visibility of the CreateCardset form
     const toggleCreateCardsetForm = () => {
         setShowCreateCardsetForm(!showCreateCardsetForm);
     };
+
+    const handleSortChange = (event) => {
+        setSortBy(event.target.value);
+    };
+
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
+    const handleSubjectFilterChange = (event) => {
+        setSubjectFilter(event.target.value);
+    };
+
+    const filteredCardsets = cardsets.filter((cardset) =>
+        cardset.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        (subjectFilter === '' || cardset.subject === subjectFilter)
+    );
 
     return (
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
@@ -98,58 +126,97 @@ const Dashboard = () => {
                     </div>
                     <div className="col-12 my-3">
                         <div className="d-flex justify-start" id={styles.navigation}>
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a class={isDarkMode ? "nav-link text-white": "nav-link text-dark"}
-                                    id={`${activeTab === 'YourFlashcardSets' ? styles.inlineNavItemActive : styles.inlineNavItemNotActive}`} 
-                                    aria-current="page" href="#" onClick={() => setActiveTab('YourFlashcardSets')}>Your Card Sets</a>
+                            <ul className="nav">
+                                <li className="nav-item">
+                                    <a className={isDarkMode ? "nav-link text-white" : "nav-link text-dark"}
+                                        id={`${activeTab === 'YourFlashcardSets' ? styles.inlineNavItemActive : styles.inlineNavItemNotActive}`}
+                                        aria-current="page" href="#" onClick={() => setActiveTab('YourFlashcardSets')}>Your Card Sets</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class={isDarkMode ? "nav-link text-white": "nav-link text-dark"}
-                                    id={`${activeTab === 'SharedWithYou' ? styles.inlineNavItemActive : styles.inlineNavItemNotActive}`} 
-                                    aria-current="page" href="#" onClick={() => setActiveTab('SharedWithYou')}>Shared Card Sets</a>
+                                <li className="nav-item">
+                                    <a className={isDarkMode ? "nav-link text-white" : "nav-link text-dark"}
+                                        id={`${activeTab === 'SharedWithYou' ? styles.inlineNavItemActive : styles.inlineNavItemNotActive}`}
+                                        aria-current="page" href="#" onClick={() => setActiveTab('SharedWithYou')}>Shared Card Sets</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
 
-                    {activeTab === 'YourFlashcardSets' && (
-                        <div className="col-12 my-3">
-                            <div className="d-flex justify-content-between align-items-center mb-3">
-                                <h4 className="m-0" style={{color: isDarkMode ? 'white' : 'black'}}>Your Card Sets</h4>
-                                <button className="btn btn-secondary" onClick={toggleCreateCardsetForm}>Create New Set</button>
-                            </div>
-                            {showCreateCardsetForm && 
-                             <CreateCardset userId={userData.id} onCreateCardset={handleCreateCardset} onClickToggle={toggleCreateCardsetForm} isDarkMode={isDarkMode} /> } 
-                            {selectedCardset && <CardsetView cardset={selectedCardset} />}
-                            <div className="row row-cols-1 row-cols-md-3 g-4 mb-4">
-                                {cardsets.map((cardset, index) => (
-                                    <Link
-                                        id={styles.dashboardCardLink}
-                                        href={{
-                                            pathname: `/cardsets/${cardset.id}`,
-                                            query: {
-                                                cardsetTitle: cardset.title,
-                                                cardsetSubject: cardset.subject,
-                                                cardsetIsPublic: cardset.isPublic
-                                            }
-                                        }}
-                                        key={index}
-                                    >
-                                        <DashboardCard key={index} cardset={cardset} onClick={() => selectCardset(cardset)} isDarkMode={isDarkMode} />
-                                    </Link>
-                                ))}
+                    <div className="col-12 my-3">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <h4 className="m-0" style={{ color: isDarkMode ? 'white' : 'black' }}>{activeTab === 'YourFlashcardSets' ? 'Your Card Sets' : 'Shared With You'}</h4>
+                            <div className="d-flex align-items-center">
+                                <select className="form-select me-2" value={sortBy} onChange={handleSortChange} style={{ width: '150px' }}>
+                                    <option value="">Sort by</option>
+                                    <option value="alphabetical">Alphabetical</option>
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                </select>
+                                {activeTab === 'YourFlashcardSets' && (
+                                    <button className="btn btn-secondary" onClick={toggleCreateCardsetForm}>Create New Set</button>
+                                )}
                             </div>
                         </div>
-                    )}
+                        {activeTab === 'YourFlashcardSets' && (
+                            <>
+                                {showCreateCardsetForm &&
+                                    <CreateCardset userId={userData.id} onCreateCardset={handleCreateCardset} onClickToggle={toggleCreateCardsetForm} isDarkMode={isDarkMode} />}
+                                <div className="mb-3 d-flex">
+                                    <input
+                                        type="text"
+                                        className="form-control me-2"
+                                        placeholder="Search card sets"
+                                        value={searchQuery}
+                                        onChange={handleSearchChange}
+                                    />
+                                    <select className="form-select" value={subjectFilter} onChange={handleSubjectFilterChange}>
+                                        <option value="">All Subjects</option>
+                                        <option value="History">History</option>
+                                        <option value="Math">Math</option>
+                                        <option value="Science">Science</option>
+                                        <option value="English">English</option>
+                                        <option value="Programming">Programming</option>
+                                        <option value="Fine Arts">Fine Arts</option>
+                                        <option value="Foreign Languages">Foreign Languages</option>
+                                        <option value="Nature">Nature</option>
+                                        <option value="Humanities">Humanities</option>
+                                        <option value="Health">Health</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                {selectedCardset && <CardsetView cardset={selectedCardset} />}
+                                <div className="row row-cols-1 row-cols-md-3 g-4 mb-4">
+                                    {filteredCardsets.map((cardset, index) => (
+                                        <Link
+                                            id={styles.dashboardCardLink}
+                                            href={{
+                                                pathname: `/cardsets/${cardset.id}`,
+                                                query: {
+                                                    cardsetTitle: cardset.title,
+                                                    cardsetSubject: cardset.subject,
+                                                    cardsetIsPublic: cardset.isPublic
+                                                }
+                                            }}
+                                            key={index}
+                                        >
+                                            <DashboardCard key={index} cardset={cardset} onClick={() => selectCardset(cardset)} isDarkMode={isDarkMode} />
+                                        </Link>
+                                    ))}
+                                </div>
+                            </>
+                        )}
 
-                    {activeTab === 'SharedWithYou' && (
-                        <div className="col-12 my-3">
-                            <h4>Shared With You</h4>
-                            <SharedCardset userid={userData?.id} />
-                        </div>
-                    )}
-                    <BackToTopButton/> 
+                        {activeTab === 'SharedWithYou' && (
+                            <SharedCardset
+                                userid={userData?.id}
+                                sortBy={sortBy}
+                                searchQuery={searchQuery}
+                                onSearchChange={handleSearchChange}
+                                subjectFilter={subjectFilter}
+                                onSubjectFilterChange={handleSubjectFilterChange}
+                            />
+                        )}
+                    </div>
+                    <BackToTopButton />
                 </div>
             </div>
         </div>
