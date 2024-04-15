@@ -5,6 +5,7 @@ import { RotatingCardTest } from './Cards/RotatingCardTest';
 import { TTS } from './ASR/textToSpeech';
 import { useDarkMode } from '../utils/darkModeContext';
 import { ReviewOptions } from './ReviewOptions';
+import { ListenForVoiceCommands } from './ASR/speechToText';
 
 export const CardViewReviewMode = ({ userId, cardset }) => {
     const { isDarkMode } = useDarkMode();
@@ -20,7 +21,15 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
     const [delay, setDelay] = useState(4);
     const [willLoop, setWillLoop] = useState(false);
     const [speakingRate, setSpeakingRate] = useState(1.0);
-    const [isReviewDone, setIsReviewDone ] = useState(false); 
+    const [isReviewDone, setIsReviewDone ] = useState(false);
+    const [isVoiceCommandsEnabled, setIsVoiceCommandsEnabled] = useState(false);
+    const [voiceCommands, setVoiceCommands] = useState(
+        {
+            shuffle: 'shuffle',
+            restart: 'restart',
+            exit: 'exit',
+        }
+    )
 
     useEffect(() => {
         mounted.current = true;
@@ -137,6 +146,8 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
                             setWillLoop={setWillLoop}
                             speakingRate={speakingRate}
                             setSpeakingRate={setSpeakingRate}
+                            isVoiceCommandsEnabled={isVoiceCommandsEnabled}
+                            setIsVoiceCommandsEnabled={setIsVoiceCommandsEnabled}
                         />
                         <div className={style.closeButtonContainer}>
                             <button className={style.closeButton} onClick={handleCloseOptions}>
@@ -179,6 +190,19 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
 
                             </div>
                         </div>
+                        <ListenForVoiceCommands isVoiceCommandsEnabled={isVoiceCommandsEnabled}
+                        shuffleCards={shuffleCards}
+                        handleRestartTest={handleRestartTest}
+                        voiceCommands={voiceCommands}/>
+                        {isVoiceCommandsEnabled && (
+                            <div className='row d-flex justify-content-center'>
+                                <div className={`${style.micRing} ${style.scaleUp}`}></div>
+                                    <div className='container'>
+                                            <i className={`bi bi-mic-fill ${isDarkMode ? style.micIconDark : style.micIconLight} ${style.micIconPulse}`}></i>
+                                    </div>
+                                </div>
+                        )
+                        }       
             </div>
         )}
         </div>
