@@ -1,7 +1,7 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const router = express.Router({ mergeParams: true });
-const { Friend, User  } = require('../models/modelRelations');
+const { Friend, User, Notification  } = require('../models/modelRelations');
 
 async function getAllFriends (currentUserId) {
     try{
@@ -74,6 +74,15 @@ async function getExistingFriendEntry (user1Id, user2Id) {
 
 async function deleteFriendEntry (existingEntry) {
     try {
+        const friendNotif = await Notification.findOne({
+            where:{
+                type: 'friend',
+                sourceId: existingEntry.id
+            }
+        });
+        if (friendNotif){
+            friendNotif.destroy();
+        }
         await existingEntry.destroy();
         return { success: true, message: 'Entry deleted successfully' };
     } catch (error) {
@@ -83,6 +92,15 @@ async function deleteFriendEntry (existingEntry) {
 
 async function acceptFriendRequest (existingRequest) {
     try{
+        const friendNotif = await Notification.findOne({
+            where:{
+                type: 'friend',
+                sourceId: existingRequest.id
+            }
+        });
+        if (friendNotif){
+            friendNotif.destroy();
+        }
         const updatedRequest = await existingRequest.update({status: 'accepted'});
         return updatedRequest;
     } catch (error) {
@@ -95,6 +113,7 @@ async function createFriendRequest (user1Id, user2Id) {
         const user = await User.findByPk(user1Id);
         const user2 = await User.findByPk(user2Id);
         const newRequest = await user.addFriend(user2);
+        user2.createNotification({type: 'friend', sourceId: newRequest[0].dataValues.id})
         return newRequest;
     } catch (error) {
         throw new Error('Error creating friend request: ' + error.message);

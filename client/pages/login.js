@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router'; // Import the useRouter hook
 import { auth } from '../utils/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import axios from 'axios'; // Import Axios for making HTTP requests
 import Link from 'next/link';
 import Image from "next/image"; 
 import logo from '../assets/images/logo.png';
@@ -51,6 +52,19 @@ const Login = () => {
             const result = await signInWithPopup(auth, provider);
             // The signed-in user info.
             const user = result.user;
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/getuserbyemail`, {params:{email: user.email}});
+            if (!response.data.user){
+                const createNewUser = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/signup`, {
+                    username: user.displayName,
+                    email: user.email,
+                    firebaseId: user.uid
+                });
+                if (createNewUser){
+                    console.log("User entry created in DB");
+                } else {
+                    console.log("Error creating user DB entry");
+                }
+            }
             // Redirect to the dashboard page after successful login
             if (user) {
             router.push('/dashboard');

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Cardset, User, Flashcard } = require('../models/modelRelations');
+const { Cardset, User, Flashcard, Notification, SharedCardset, Friend } = require('../models/modelRelations');
 const flashcards = require ('./flashcards');
 const sharedCardsets = require ('./sharedCardsets');
 const friends = require ('./friends');
@@ -71,6 +71,9 @@ router.route('/getuserbyemail')
     try{
         const { email } = req.query;
         const user = await User.findOne({ where: { email }});
+        if(!user){
+            return res.status(404).json({ error: 'User Not Found'});
+        }
         res.status(200).json({ user });
     } catch (error) {
         console.error('Error fetching database user:', error);
@@ -285,6 +288,70 @@ router.route('/userCheck/:identifier')
         }
     });
 
+router.route('/:userid/notifications')
+.get(async (req, res) => {
+    try {
+        const userWithNotifs = await User.findByPk(req.params.userid, {
+            include: {
+                model: Notification,
+                include: [
+                    {
+                        model: SharedCardset,
+                        required: false,
+                        where: Sequelize.literal('`notifications`.`type` = "sharedCardset" OR `notifications`.`type` = "unSharedCardset"'),
+                        as: 'sharedCardsetItem', // Alias for the association
+                        include: [
+                            {
+                                model: Cardset,
+                                required: false,
+                                as: 'cardset'
+                            }
+                        ]
+                    },
+                    {
+                        model: Friend,
+                        required: false,
+                        where: Sequelize.literal('`notifications`.`type` = "friend"'),
+                        as: 'friendItem', // Alias for the association
+                        include: [
+                            {
+                                model: User,
+                                required: false,
+                                as: 'requestor',
+                                attributes: ['id', 'username', 'email']
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+        const notifications = userWithNotifs.notifications;
+        return res.status(200).json({notifications});
+    } catch (error) {
+        console.error("Error getting user's notifications:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+})
+.delete(async (req, res) => {
+    try { //Currently only for deleting shared cardset notifications
+        const {notificationId} = req.body;
+        const notification = await Notification.findByPk(notificationId);
+        const sharedCardset = await SharedCardset.findOne({
+            where: {
+                id: notification.dataValues.sourceId,
+            }
+        });
+        if (sharedCardset.dataValues.authority === 'revoked'){
+            sharedCardset.destroy();
+        }
+        await notification.destroy();
+        res.status(200).send('Notification deleted');
+    } catch (error) {
+        console.error("Error getting user's notifications:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+})
+;
 
 
 
