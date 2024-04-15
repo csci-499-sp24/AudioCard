@@ -1,45 +1,39 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { auth } from '../utils/firebase';
-import { sendPasswordResetEmail } from 'firebase/auth';
 import axios from 'axios';
 import Link from 'next/link';
 import Image from "next/image"; 
 import logo from '../assets/images/logo.png';
 import { getAuth, updatePassword } from "firebase/auth";
-import { useDarkMode } from '@/utils/darkModeContext';
 
 const UpdatePassword = () => {
-    const [username, setUsername] = useState('');
-    const [currentPassword, setcurrentPassword] = useState('');
     const [updatedPassword, setupdatedPassword] = useState('');
+    const [confirmUpdatedPassword, setConfirmedPassword] = useState('');
     const [error, setError] = useState(null);
     const [isAlertVisible, setIsAlertVisible] = useState(false);
-    const [updatedPasswordRef, setPasswordRef] = useState('');
-    const [user, setUser] = useState(null);
-    const [userData, setUserData] = useState(null);
-    const { isDarkMode } = useDarkMode();
-
-    const closeModal = () => {
-        setEditorOpen(false);
-        setSelectedFile(null);
-        setScaleValue(1);
-    };
+    const router = useRouter(); // Initialize useRouter hook
 
     const handleUpdatePassword = async (e) => {
         e.preventDefault();
         const auth = getAuth();
         const user = auth.currentUser;
-        
-        // await updatePassword(user, currentPassword, updatedPassword, updatedPasswordRef).then(() => {
-        //     axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/changePassword`, { currentPassword, updatedPassword, updatedPasswordRef })
-        // });
-        
-        updatePassword(user, updatedPassword).then(() => {
-            console.log('Password updated successfully');
-        }).catch((error) => {
-            console.log('Password couldn\'t be updated');
-        });
+
+        if (updatedPassword.length < 6) {
+            // alert("Password should be at least 6 characters");
+            setError("Password should be at least 6 characters");
+        } else if (updatedPassword === confirmUpdatedPassword) {
+            updatePassword(user, updatedPassword).then(() => {
+                console.log('Password updated successfully');
+                alert("Password updated successfully");
+                router.push('/settings');
+            }).catch((error) => {
+                console.log('Password couldn\'t be updated');
+            });
+        } else {
+            // in case password field doesn't match the confirm password field it will show an error message
+            // alert("Passwords don't match");
+            setError("Passwords don't match");
+        }
     };
 
     return (
@@ -67,16 +61,31 @@ const UpdatePassword = () => {
                             <label className="mb-1" htmlFor="exampleInputEmail1">New Password</label>
                             <input
                                 type="password"
-                                placeholder="password"
+                                placeholder="Password"
                                 value={updatedPassword}
                                 className="form-control"
                                 onChange={(e) => setupdatedPassword(e.target.value)}
                             />                        
                         </div>
+
+                        <div className="form-group mb-3">
+                            <label className="mb-1" htmlFor="exampleInputPassword1">Confirm New Password</label>
+                            <input
+                                type="password"
+                                placeholder="Confirm New Password"
+                                value={confirmUpdatedPassword}
+                                className="form-control"
+                                onChange={(e) => setConfirmedPassword(e.target.value)}
+                            />                    
+                        </div>
+
+                        <div className='text-center mt-4'>
+                            <button type="submit" className="btn btn-secondary">Update Password</button>
+                        </div>
                     </form>
                     
                     <div className='text-center mt-4'>
-                        <Link href="/login" className="link-dark link-offset-2">Back to Login</Link> 
+                        <Link href="/settings" className="link-dark link-offset-2">Back to Settings</Link> 
                     </div>
                 </div>
             </div>
