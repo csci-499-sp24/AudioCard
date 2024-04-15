@@ -1,5 +1,36 @@
 import { numberSpellings } from "@/utils/translations";
 
+export const ListenForVoiceCommands = ({ isVoiceCommandsEnabled, shuffleCards, handleRestartTest, voiceCommands }) => {
+    const recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    let voiceCommandTriggered = false;
+
+    recognition.onresult = (event) => {
+        const interimTranscript = event.results[event.results.length - 1][0].transcript;
+        if (interimTranscript.toLowerCase().includes(voiceCommands.shuffle) && !voiceCommandTriggered) {
+            voiceCommandTriggered = true;
+            recognition.stop();
+            shuffleCards();
+        }
+        if (interimTranscript.toLowerCase().includes(voiceCommands.restart) && !voiceCommandTriggered) {
+            voiceCommandTriggered = true;
+            recognition.stop();
+            handleRestartTest();
+        }
+        if (interimTranscript.toLowerCase().includes(voiceCommands.exit) && !voiceCommandTriggered) {
+            voiceCommandTriggered = true;
+            recognition.stop();
+            window.location.reload();
+        }
+    };
+
+    recognition.start();
+    if (!isVoiceCommandsEnabled){
+        recognition.stop(); 
+    }
+};
+
 export const checkAnswerSTT = (answer, timeLimit, language, handleRestartTest, shuffleCards, voiceCommands, setRingSize) => {
     return new Promise(async (resolve, reject) => {
         try {

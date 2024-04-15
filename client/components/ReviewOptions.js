@@ -1,8 +1,9 @@
 import React from 'react';
 import { useDarkMode } from '@/utils/darkModeContext';
 import { getLanguage } from '@/utils/languageCodes';
+import { Tooltip } from 'react-tooltip'
 
-export const ReviewOptions = ({voiceGender, setVoiceGender, language, setLanguage, delay, setDelay, willLoop, setWillLoop, speakingRate, setSpeakingRate}) => {
+export const ReviewOptions = ({voiceGender, setVoiceGender, language, setLanguage, delay, setDelay, willLoop, setWillLoop, speakingRate, setSpeakingRate, isVoiceCommandsEnabled, setIsVoiceCommandsEnabled}) => {
   const { isDarkMode } = useDarkMode();
 
   return (
@@ -109,6 +110,25 @@ export const ReviewOptions = ({voiceGender, setVoiceGender, language, setLanguag
                                 ))}
                             </ul>
       </div>
+     </div>
+     <div className='row flex d-flex align-items-center mt-2'>
+        <div className='col-6 d-flex justify-content-end'>
+          <div>Voice Commands:</div>
+        </div>
+        <div className='col d-flex justify-content-begin'>
+          <div className={`form-check form-switch d-flex align-items-center justify-content-center`} onClick={() => setIsVoiceCommandsEnabled(!isVoiceCommandsEnabled)}>
+                    <input className="form-check-input" type="checkbox" id="toggleTimeLimit" checked={isVoiceCommandsEnabled} onChange={() => {}} />
+          </div>
+        </div>
+        <div className='col d-flex justify-content-begin'>
+                    <div>
+                    <i className="bi bi-question-circle-fill" 
+                    data-tooltip-id="voiceCommandTip"
+                    data-tooltip-content="Say &quot;shuffle&quot;, &quot;restart&quot;, or &quot;exit&quot;"
+                    data-tooltip-place='bottom'></i>
+                    <Tooltip id = "voiceCommandTip" /> 
+                    </div>
+                </div> 
      </div>
     </div>
   );

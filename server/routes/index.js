@@ -15,4 +15,5 @@ app.use('/speechIncoming', speechRoutes);
 app.use('/textToSpeech',textToSpeechRoutes);
 app.use('/shared', sharedRoutes)
 app.use('/userAvatar', userAvatarRoutes);
+
 module.exports = app;

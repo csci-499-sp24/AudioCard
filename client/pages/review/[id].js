@@ -89,13 +89,16 @@ const ReviewPage = () => {
                             <div className='row' style={{color:'green'}}>
                                 <p style={{paddingLeft: '40px'}}>The app will speak out your flashcard terms and definitions, all you have to do is listen! &#128266;</p>
                             </div>
-                            <div className='row mt-5' style={{color: '#FFA500'}}>
+                            <div className='row' style={{color: '#FFA500'}}>
                                 <div>	&#x2699; Settings:</div>
                             </div>
-                            <div className='row mb-5' style={{color:'#FFA500'}}>
+                            <div className='row' style={{color:'#FFA500'}}>
                                 <p style={{paddingLeft: '40px'}}><i className="bi bi-arrow-clockwise"></i> Loop: put your card set on an endless loop</p>
                                 <p style={{paddingLeft: '40px'}}>&#127911;: set the gender, language, and speaking rate!</p>
                                 <p style={{paddingLeft: '40px'}}><i className="bi bi-clock"></i> Delay: seconds between question and answer</p>
+                            </div>
+                            <div className='row mb-5' style={{color:'#FFA500'}}>
+                            <p style={{paddingLeft: '40px'}}>&#128483; Enable Voice Commands: say &apos;shuffle&apos;, &apos;restart&apos;, or &apos;exit&apos;</p>
                             </div>
                         </div>
                         <div className='row mb-5'>
