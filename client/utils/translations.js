@@ -68,7 +68,7 @@ export const getTranslation = (phrase, language) => {
                         translation = "Правильный ответ";
                         break;
                     case 'Correct.':
-                        translation = "правильно";
+                        translation = "Правильно";
                         break;
                     default:
                         translation = phrase;

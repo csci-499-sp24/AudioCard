@@ -1,105 +1,178 @@
-/* Styles for the landing page container */
-.landingPage {
-    padding: 20px;
+#welcomeText {
+    font-size: 3rem !important;
 }
 
-/* Styles for the logo */
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #000; /* Default text color */
-    text-align: center; /* Center align the text */}
-
-
-/* Styles for the authentication buttons, vertical */
-.authButtons {
-    margin-top: 20px;
-    margin-left: 20px;
+#welcomeSubText {
+    font-size: 1.3rem;
 }
 
-/* Styles for the login and signup buttons */
-.authButtons button {
-    background-color: #6996bf; /* Change to your desired color */
+#card {
+    width: 95%;
+    height: 433px;
+    background-color: white;
+    position: relative;
+}
+
+#cardDark {
+    width: 95%;
+    height: 433px;
+    background-color: #252526;
+    position: relative;;
+}
+
+#dummyCardButton {
+    position: absolute;
+    left: 86%;
+    top: 7%;
+    transform: translate(-50%, -50%);
+    background: #dcff7f;
+    padding: 30px;
+    border-radius: 50px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    font-size: 30px;
+    color: black;
+    text-align: center;
+    border: none;
+}
+
+#dummyCardButtonText {
+    display: inline-block;
+    transform: rotate(15deg);
+}
+
+#dummyCardTextQuestion {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+#heroSection {
+    padding: 90px 0;
+    margin: 0 15px 90px;
+    background-image: url("../assets/images/back.png");
+    background-size: cover;
+}
+
+#uniqueSectionTitle{
+    padding: 45px 25px;
+    margin: 90px 15px 0;
+}
+
+#uniqueSection {
+    border: 1px solid #6996bf;
+    border-radius: 5px;
+    padding: 45px 25px;
+    margin: 0px 15px 140px;
+}
+
+#footerSection {
+    background-color: black;
+    padding: 45px 25px;
+    margin: 50px 15px 0;
+}
+
+#footerList {
+    list-style-type: none;
+}
+
+#footerListMain {
+    color: #8c8888;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+#footerListItem > a {
+    text-decoration: none;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    margin-right: 10px;
-    cursor: pointer;
+} 
+
+#footerListItem:hover {
+    color: #8c8888;
 }
 
-/* Hover effect for the login and signup buttons */
-.authButtons button:hover {
-    background-color: #14171b; /* Change to your desired hover color */
+#footerIconFirst {
+    margin: 0 10px 0 0;
+    color: #8c8888 !important;
 }
 
-/* Styles for the dark mode toggle button */
-.darkModeToggle {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
+#footerIcon {
+    margin: 0 10px;
+    color: #8c8888 !important;
 }
 
-/* Welcome to AudioCard */
-.welcomeMessage h1 {
-    font-size: 32px;
-    font-weight: bold;
-    color: #000; /* Default text color */
-    animation: shimmer 2s infinite linear; /* Add shimmering effect */
-    text-align: center; /* Center align the text */
+#footerIconFirst:hover, 
+#footerIcon:hover {
+    color: white !important;
 }
 
-/* Style for the Welcome to Audiocard*/
-@keyframes shimmer {
-    0% {
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px #7ed6df, 0 0 30px #7ed6df, 0 0 40px #7ed6df, 0 0 50px #7ed6df;
-    }
-    50% {
-        text-shadow: none;
-    }
-    100% {
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px #7ed6df, 0 0 30px #7ed6df, 0 0 40px #7ed6df, 0 0 50px #7ed6df;
+
+
+
+@media (min-width: 1201px) and (max-width: 1399px) { 
+    #dummyCardButton {
+        left: 83%;
     }
 }
 
-
-/* Styles for the welcome message paragraph */
-.welcomeMessage p {
-    font-size: 16px;
-    color: #000; /* Default text color */
-    font-style: italic; /* Make the text italic */
-    text-transform: uppercase; /* Convert text to uppercase */
-    letter-spacing: 2px; /* Add letter spacing */
-    line-height: 1.5; /* Adjust line height */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow */
-    animation: glow 2s infinite alternate, flicker 2s infinite; /* Add glowing and flicker effect */
-    text-align: center; /* Center align the text */
-}
-
-/* Define animation keyframes for glowing effect */
-@keyframes glow {
-    0% {
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px #7ed6df, 0 0 30px #7ed6df, 0 0 40px #7ed6df, 0 0 50px #7ed6df;
-    }
-    50% {
-        text-shadow: none;
-    }
-    100% {
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px #7ed6df, 0 0 30px #7ed6df, 0 0 40px #7ed6df, 0 0 50px #7ed6df;
+@media (min-width: 992px) and (max-width: 1200px) { 
+    #dummyCardButton {
+        left: 79%;
     }
 }
 
-/* Define animation keyframes for flicker effect */
-@keyframes flicker {
-    0% { opacity: 0; }
-    50% { opacity: 1; }
-    100% { opacity: 0; }
+@media (max-width: 991px) { 
+    #heroSection {
+        background-image: url("../assets/images/back-vertical.png") !important;
+        background-size: cover;
+    }
+
+    #heroSectionText {
+        margin-bottom: 40px;
+    }
+
+    #welcomeText {
+        font-size: 2.5rem !important;
+    }
+
+    #welcomeSubText {
+        font-size: 1.1rem;
+    }
+
+    #uniqueSectionTitle {
+        margin: 40px 15px 0;
+    }
+
+    #footerColLogo {
+        padding-bottom: 30px;
+    }
+
+    #footerCol {
+        justify-content: flex-start !important;
+    }
+
+    #footerCol > ul{
+        padding: 0px;
+    }
 }
 
-/* Dark mode styles */
-.dark-mode .landingPage * {
-    color: #fff; /* Change text color to white in dark mode */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    #footerIconFirst {
+        margin: 0 3px 0 0;
+    }
+
+    #footerIcon {
+        margin: 0 3px;
+    }
 }
 
-.dark-mode .pages {
-    background-color: #000; /* Change background color to black in dark mode */
+@media (max-width: 768px) {
+    #dummyCardButton {
+        left: 80%;
+        top: 11%;
+    }
 }
