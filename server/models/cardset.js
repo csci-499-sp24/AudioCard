@@ -10,6 +10,10 @@ const Cardset = db.define('cardset',{
         type: DataTypes.STRING,
         allowNull: false
     },
+    language: {
+        type: DataTypes.STRING,
+        default: 'English (US)',
+    },
     isPublic: {
         type: DataTypes.BOOLEAN,
         allowNull: false
