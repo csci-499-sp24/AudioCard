@@ -55,6 +55,17 @@ router.route('/:cardsetid/share')
                 }
                 const user = await User.findOne({ where: { id: req.query.userid } });
                 const cardset = await Cardset.findOne({ where: { id: req.params.cardsetid } });
+                const existingSharedCardset = await SharedCardset.findOne({
+                    where: {
+                        userId: user.id,
+                        cardsetId: cardset.id
+                    }
+                });
+
+                if (existingSharedCardset) {
+                    res.status(409).json('User already has access to the cardset');
+                    return;
+                }
                 const sharedCardset = await cardset.addSharedWithUser(user, {
                     through: { authority: req.query.authority },
                     attributes: ['id']
@@ -255,7 +266,7 @@ router.route('/:cardsetid/:userId/authority')
                 await user.createNotification({type: 'sharedCardset', sourceId: sharedCardset.dataValues.id})
             }
 
-            //await sharedCardset.destroy(); // Delete the sharedCardset record
+            await sharedCardset.destroy(); // Delete the sharedCardset record
 
             res.status(200).json({ message: 'Authority deleted successfully' });
         } catch (error) {
