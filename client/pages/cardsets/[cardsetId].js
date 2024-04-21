@@ -11,7 +11,7 @@ import { useDarkMode } from '../../utils/darkModeContext';
 import { getSubjectStyle } from '@/utils/getSubjectStyles';
 import { CollaboratorList } from '@/components/collaboratorList';
 import Image from 'next/image';
-import exam from '../../assets/images/exam.png'; 
+import exam from '../../assets/images/exam2.png'; 
 import styles from '../../styles/navbar.module.css';
 import Link from 'next/link';
 
@@ -23,12 +23,12 @@ export default function CardsetPage() {
     const [userData, setUserData] = useState(null);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [isEditPageOpen, setIsEditPageOpen] = useState(false);
-    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [cardset, setCardset] = useState([]);
     const [access, setAccess] = useState(true);
     const [loading, setLoading] = useState(false);
     const [isadmin, setadmin] = useState(false);
     const [showSharePopup, setShowSharePopup] = useState(false);
+    const [showDeletePopup, setShowDeletePopup] = useState(false);
     const [canEdit, setCanEdit] = useState(false);
     const [txtColor, setTxtColor] = useState('');
     const [isOwner, setIsOwner] = useState(false);
@@ -85,6 +85,10 @@ export default function CardsetPage() {
 
     const toggleSharePopup = () => {
         setShowSharePopup(!showSharePopup);
+    };
+
+    const toggleDeletePopup = () => {
+        setShowDeletePopup(!showDeletePopup);
     };
 
     const fetchuserAvatar = async (username) => {
@@ -166,7 +170,7 @@ export default function CardsetPage() {
     }
 
     const handleDelete = () => {
-        setShowDeleteConfirmation(true);
+        toggleDeletePopup();
     };
 
     const confirmDelete = () => {
@@ -177,7 +181,6 @@ export default function CardsetPage() {
         try {
             await axios.delete(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}`);
             setCurrentCardsetData([]);
-            setShowDeleteConfirmation(false);
             router.push('/dashboard');
         } catch (error) {
             console.error('Error deleting cardset:', error);
@@ -217,7 +220,7 @@ export default function CardsetPage() {
                             <div className="row">
                                 <div className="row d-flex align-items-center">
                                     <div className='col d-flex justify-content-center mb-4 mt-3'>
-                                        <button className="btn btn-lg testButton" style={{backgroundColor: isDarkMode? '#377ec9':'white', color: isDarkMode? 'white' : 'black'}} onClick={navigateToTestPage}> <Image style={{height: '1.5em', width: '1.5em'}}src={exam}/> Test</button>
+                                        <button className="btn btn-lg testButton" style={{backgroundColor: isDarkMode? '#377ec9':'white', color: isDarkMode? 'white' : 'black'}} onClick={navigateToTestPage}> <Image style={{height: '20px', width: '20px'}}src={exam}/> Test</button>
                                         <button className="btn btn-lg ReviewButton"  style={{backgroundColor: isDarkMode? '#377ec9':'white', color: isDarkMode? 'white' : 'black'}} onClick={navigateToReviewPage}>
                                             <i className="bi bi-headphones"></i> Review</button>
                                     </div>
@@ -293,19 +296,31 @@ export default function CardsetPage() {
                             )}
 
                             {/* Delete message */}
-                            {showDeleteConfirmation && (
-                                <div className="row">
-                                    <div className="col d-flex justify-content-end">
-                                        <div className="delete-confirmation">
-                                            <p>Are you sure you want to delete this set: {cardset.title}?</p>
-                                            <div className="d-flex justify-content-center">
-                                                <button onClick={confirmDelete} className="btn btn-danger">Yes</button>
-                                                <button onClick={() => setShowDeleteConfirmation(false)} className="btn btn-secondary">No</button>
+                            {
+                                <div>
+                                    {showDeletePopup && (
+                                        <div className="modal-content " style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white', color: isDarkMode ? 'white' : 'black' }}>
+                                            <div className='row'>
+                                                <div className='col d-flex justify-content-center'>
+                                                    <div className="delete-confirmation">
+                                                        <p>Are you sure you want to delete this set: {cardset.title}?</p>
+                                                        <div className="d-flex justify-content-center">
+                                                            <button onClick={confirmDelete} className="btn btn-danger">Yes</button>
+                                                            <button onClick={toggleDeletePopup} className="btn btn-secondary">No</button>
+                                                        </div>
+                                                    </div>
+                                        
+
+                                                    <button className="close-btn" style={{ color: isDarkMode ? 'white' : 'black' }} onClick={toggleDeletePopup}>
+                                                        &times;
+                                                    </button>
+                                                </div>
                                             </div>
+                                            
                                         </div>
-                                    </div>
+                                    )}
                                 </div>
-                            )}
+                            }
 
                             {isadmin && (
                                 <div>
