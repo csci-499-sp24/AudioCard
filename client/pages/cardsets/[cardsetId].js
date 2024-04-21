@@ -229,8 +229,12 @@ export default function CardsetPage() {
                     {!access || loading ? (
                         <div className='text-center'><h5>Loading...</h5></div>
                     ) : (
-                        <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards} canEdit={canEdit} />
+                        <div>
+                            <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards} canEdit={canEdit} />
+                            <hr />
+                        </div>
                     )}
+                
                     {/* All Flashcards in the set  */}
                     <div className="container">
                         <div className="row">
@@ -242,9 +246,11 @@ export default function CardsetPage() {
                                         <div> Subject: <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
                                         <div> {currentCardsetData.length} flashcards </div>
                                         <Link href={`/profile/${ownerId}`}  style={{textDecoration: 'none'}}>
-                                            <h5>
-                                            Creator: {Owner} <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} style={{borderColor: isDarkMode ? 'white': 'black'}} />
-                                            </h5>
+                                            <div className={`${isDarkMode ? 'text-light' : 'text-dark'}`}>
+                                                Creator: 
+                                                <span style={{ fontWeight: 'bold', margin: '0 5px' }}>{Owner}</span>
+                                                <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} style={{borderColor: isDarkMode ? 'white': 'black'}} />
+                                            </div>
                                         </Link>
                                         {cardset.isPublic ?
                                             <div>
