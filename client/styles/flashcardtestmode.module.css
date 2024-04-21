@@ -274,23 +274,43 @@
 
 /* Test Results Page */
 
+#resultCard {
+    padding: 0 !important;
+}
+
+#resultCardDark {
+    padding: 0 !important;
+    background-color: #252526;
+    color: white;
+    border: 1px solid #d3d3d340;
+    border-radius: 0.375rem;
+}
+
+
 #testResultContainer {
-    width: 60%;
+    width: 50%;
     margin: 0 auto;
 }
 
-#testResultDataContainer {
-    width: 60%;
-    margin: 0 auto;
-}
-
-#testResultData {
+#testResultDataLight {
     background-image: url("../assets/images/confetti.jpeg") !important;
     background-size: cover;
+    padding: 30px 0;
+    border-bottom: 2px solid #f0f0f0;
+    border-top-left-radius: 0.375rem !important;
+    border-top-right-radius: 0.375rem !important;
+}
 
-    padding: 15px;
-    border: 2px solid #f0f0f0;
-    border-radius: 25px;
+#testResultDataDark {
+    background-image: url("../assets/images/confetti_dark.png") !important;
+    background-size: cover;
+    padding: 30px 0;
+    border-top-left-radius: 0.375rem !important;
+    border-top-right-radius: 0.375rem !important;
+}
+
+#testResultItem {
+    font-size: 1.2rem;
 }
 
 #testCompletion,
@@ -318,6 +338,47 @@
 #testWrong {
     color: red;
     font-weight: bold;
+}
+
+#testTryButton {
+    /* margin: 10px auto; */
+    border-color: #8b83ea !important;
+    background: #8b83ea;
+    width: 35%;
+    margin: 10px auto;
+    font-size: 20px;
+}
+
+#testTryButton:hover {
+    background: #6f68c4;
+    color: white;
+}
+
+#testFinishButton {
+    border-color: #8b83ea !important;
+    color: #8b83ea;;
+    width: 35%;
+    margin: 10px auto;
+    font-size: 20px;
+}
+
+#testFinishButton:hover {
+    background: #6f68c4;
+    color: white;
+}
+
+@media (max-width: 991px) { 
+    #testTryButton,
+    #testFinishButton {
+        width: 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    #testTryButton,
+    #testFinishButton {
+        width: 70%;
+    }
 }
 
 
