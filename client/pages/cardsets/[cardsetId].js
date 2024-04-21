@@ -11,7 +11,8 @@ import { useDarkMode } from '../../utils/darkModeContext';
 import { getSubjectStyle } from '@/utils/getSubjectStyles';
 import { CollaboratorList } from '@/components/collaboratorList';
 import Image from 'next/image';
-import exam from '../../assets/images/exam2.png'; 
+import examDark from '../../assets/images/exam2_dark.png'; 
+import examLight from '../../assets/images/exam2_light.png'; 
 import styles from '../../styles/navbar.module.css';
 import Link from 'next/link';
 
@@ -220,7 +221,7 @@ export default function CardsetPage() {
                             <div className="row">
                                 <div className="row d-flex align-items-center">
                                     <div className='col d-flex justify-content-center mb-4 mt-3'>
-                                        <button className="btn btn-lg testButton" style={{backgroundColor: isDarkMode? '#377ec9':'white', color: isDarkMode? 'white' : 'black'}} onClick={navigateToTestPage}> <Image style={{height: '20px', width: '20px'}}src={exam}/> Test</button>
+                                        <button className="btn btn-lg testButton" style={{backgroundColor: isDarkMode? '#377ec9':'white', color: isDarkMode? 'white' : 'black'}} onClick={navigateToTestPage}> <Image style={{height: '20px', width: '20px'}} src={isDarkMode ? examLight : examDark}/> Test</button>
                                         <button className="btn btn-lg ReviewButton"  style={{backgroundColor: isDarkMode? '#377ec9':'white', color: isDarkMode? 'white' : 'black'}} onClick={navigateToReviewPage}>
                                             <i className="bi bi-headphones"></i> Review</button>
                                     </div>

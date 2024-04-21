@@ -38,48 +38,25 @@
 }
 
 .transparentInput {
-    border: none; 
+    color: white;
+    border: none;
     border-bottom: 3px solid lightskyblue;
-    background-color: transparent; 
     outline: none;
     width: 50%;
-    padding: 5px 0; 
-    font-size: 40px;
-    font-family: Exo; 
-    background-image: linear-gradient(to right, blue, white, lightskyblue);
-    background-size: 100%; 
-    background-clip: text; 
-    -webkit-background-clip: text;
-    -moz-background-clip: text;
-    -o-background-clip: text;
-    -ms-background-clip: text; 
-    -webkit-text-fill-color: transparent; 
-    -moz-text-fill-color: transparent;
-    -o-text-fill-color: transparent;
-    -ms-text-fill-color: transparent;
-    caret-color: white;
+    padding: 5px 0;
+    font-size: 30px;
+    background-clip: text;
 }
 
 .transparentInputLight {
-    border: none; 
+    color: black;
+    border: none;
     border-bottom: 3px solid lightskyblue;
-    background-color: transparent; 
     outline: none;
     width: 50%;
-    padding: 5px 0; 
-    font-size: 40px;
-    font-family: Exo; 
-    background-image: linear-gradient(to right, blue, rgb(0, 0, 0), lightskyblue);
-    background-clip: text ; 
-    -webkit-background-clip: text;
-    -moz-background-clip: text;
-    -o-background-clip: text;
-    -ms-background-clip: text; 
-    -webkit-text-fill-color: transparent; 
-    -moz-text-fill-color: transparent;
-    -o-text-fill-color: transparent;
-    -ms-text-fill-color: transparent;
-    caret-color: black; 
+    padding: 5px 0;
+    font-size: 30px;
+    background-clip: text;
 }
 
 .transparentInput::placeholder {
@@ -95,8 +72,8 @@
 
 .btnOutlinePurple:hover {
     color: #fff;
-    background-color: #000dff; 
-    border-color: #000000;
+    background-color: lightskyblue; 
+    border-color: none !important;
 }
 
 .centeredButton {
