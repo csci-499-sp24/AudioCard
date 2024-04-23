@@ -83,8 +83,6 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage, ca
                     </div>
                     : null
                 }
-
-                <hr />
             </div>
         </div>
     )
