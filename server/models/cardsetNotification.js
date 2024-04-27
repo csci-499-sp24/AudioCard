@@ -1,4 +1,4 @@
-/*const { DataTypes, Op } = require('sequelize');
+const { DataTypes, Op } = require('sequelize');
 const db = require('../config/db');
 
 const CardsetNotification = db.define('cardsetNotification',{
@@ -8,7 +8,7 @@ const CardsetNotification = db.define('cardsetNotification',{
         primaryKey: true,
         autoIncrement: true
     },
-    userId: {
+    recipientId: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
@@ -21,7 +21,7 @@ const CardsetNotification = db.define('cardsetNotification',{
         allowNull: false
     },
     type: {
-        type: DataTypes.ENUM('grant', 'update', 'request'),
+        type: DataTypes.ENUM('grant', 'revoke', 'request', 'requestDenied'),
         allowNull: false
     },
     authority: {
@@ -30,4 +30,4 @@ const CardsetNotification = db.define('cardsetNotification',{
     }
 });
 
-module.exports = CardsetNotification;*/
+module.exports = CardsetNotification;
