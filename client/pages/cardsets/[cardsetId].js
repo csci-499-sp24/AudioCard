@@ -260,7 +260,7 @@ export default function CardsetPage() {
 
                                         {canEdit  ?
                                             <div>
-                                                <CollaboratorList cardsetId={cardset.id} isOwner={isOwner} isadmin={isadmin}/>
+                                                <CollaboratorList currentUserId={userData.id} cardsetId={cardset.id} isOwner={isOwner} isadmin={isadmin}/>
                                             </div>
                                             : null}
 
