@@ -178,6 +178,8 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
             <div className="d-flex justify-content-end">
                 <button className={style.optionButton} onClick={() => setShowOptions(true)}><i className={`fa-solid fa-gear ${style.gearIcon}`}></i></button>
             </div>
+
+            {/* Options  */}
             {showOptions && (
                 <div className={style.optionsOverlay}>
                     <div className={style.optionsModal} style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white'}}>
@@ -194,14 +196,16 @@ export const FlashcardTestMode = ({ cardData, userId}) => {
                     </div>
                 </div>
             )}
+
+            {/* Result  and main test component */}
             {showTestResult ? (
-                <TestResults score={score} flashcards = {flashcards} handleRestartTest = { handleRestartTest}/>
+                <TestResults score={score} flashcards={flashcards} handleRestartTest={ handleRestartTest} />
             ) : (
                 <>
-                <div className={style.progressBarContainer}>
-                    <div className={style.progressBar} style={{ width: `${progress}%` }}></div>
-                    <div className={style.completionBar} style={{ width: `${completion}%` }}></div>
-                </div>
+                    <div className={style.progressBarContainer}>
+                        <div className={style.progressBar} style={{ width: `${progress}%` }}></div>
+                        <div className={style.completionBar} style={{ width: `${completion}%` }}></div>
+                    </div>
                     {(timeLimit!==Infinity) && (
                     <TimerComponent
                         timeLimit={timeLimit}

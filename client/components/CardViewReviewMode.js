@@ -41,11 +41,20 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
     }, [cardset]);
 
     useEffect(() => {
+        const controller = new AbortController(); 
+        const fetchData = async () => {
+            if (flashcards.length > 0 && index < flashcards.length) {
+                await speakCard(controller.signal);
+            }
+        };
         if (dataFetched && index < flashcards.length) {
             fetchData();
         }
         if (dataFetched && index >= flashcards.length){
             setIsReviewDone(true);
+        }
+        return() => {
+            controller.abort(); 
         }
     }, [index, dataFetched]);
 
@@ -61,14 +70,9 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
         }
     };
 
-    const fetchData = async () => {
-        if (flashcards.length > 0 && index < flashcards.length) {
-            await speakCard();
-        }
-    };
 
-    const speakCard = async () => {
-        if (!mounted.current) return;
+    const speakCard = async (signal) => {
+        if (!mounted.current || signal.aborted) return;
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
         let _duration;
         const currentIndex = index;
@@ -80,6 +84,7 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
     
         await speakAndPause(flashcards[currentIndex].term);
         await new Promise(resolve => setTimeout(resolve, delay * 1000));
+        if (!mounted.current || signal.aborted) return;
         setIsFlipped(true); 
         await speakAndPause(flashcards[currentIndex].definition);
         
