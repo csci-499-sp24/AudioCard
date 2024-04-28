@@ -15,8 +15,6 @@ const FriendList = ({userId}) => {
         }
     }, [userId]);
 
-    console.log('friends --- ', friends)
-
     const fetchFriends = async () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/friends`);
@@ -62,8 +60,15 @@ const FriendList = ({userId}) => {
 
                             <div>
                                 <div>{friend.username}</div>
-                                <span>{friend.publicCardsets.length} public card set</span>
-                               
+                                { friend.publicCardsets.length ? 
+                                    <span id={isDarkMode ? styles.friendListItemSetsDark : styles.friendListItemSets }>
+                                        {friend.publicCardsets.length} public card set{friend.publicCardsets.length > 1 ? "s" : ""}
+                                    </span> 
+                                    :
+                                    <span id={isDarkMode ? styles.friendListItemSetsDark : styles.friendListItemSets }>
+                                        No public card sets
+                                    </span>
+                                }
                             </div>
                         </li>
                     ))}

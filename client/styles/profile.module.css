@@ -146,7 +146,6 @@
 #darkFriendListItem {
     background-color: #252526;
     border: 1px solid #d3d3d340;
-    border-radius: 5px;
     color: white;
     cursor: pointer;
 }
@@ -156,6 +155,13 @@
     color: white;
 }
 
+#friendListItemSetsDark {
+    color: #8f8e8e;
+}
+
+#friendListItemSets {
+    color: #808080bf;
+}
 
 .friendAvatar {
     width: 40px; 
