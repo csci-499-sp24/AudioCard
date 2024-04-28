@@ -1,10 +1,23 @@
 #UserInfoCol {
     background: white;
+    border: 1px solid #0000002d;
+    border-radius: 5px;
+}
+
+#UserInfoColDark {
+    background-color: #252526;
+    border: 1px solid #d3d3d340;
     border-radius: 5px;
 }
 
 #UserInfoContainer {
     background: #eeeeee;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+#UserInfoContainerDark {
+    background: #38383a;
     padding: 15px;
     border-radius: 5px;
 }
@@ -37,7 +50,6 @@
     object-fit: cover;
     margin-bottom: 10px;
     margin-top: 1rem;
-    border: 3px solid #333;
 }
 
 .friendList {
@@ -49,7 +61,7 @@
 }
 
 .addButton {
-    margin-top: 10px;
+    margin: 15px 0;
     padding: 10px 20px;
     cursor: pointer;
     background-color: #007bff;
@@ -59,7 +71,7 @@
 }
 
 .deleteButton {
-    margin-top: 10px;
+    margin: 15px 0;
     padding: 10px 20px;
     cursor: pointer;
     background-color: #ff0000;
@@ -76,7 +88,11 @@
 }
 
 .cardSetTitle {
-    margin-top: 0;
+    margin: 0;
+}
+
+#userEmail {
+    color: #76787a;
 }
 
 .container {
@@ -96,7 +112,7 @@
     margin: 0;
 }
 
-.friendListItem {
+#friendListItem {
     display: flex;
     align-items: center;
     padding: 10px;
@@ -105,23 +121,23 @@
     transition: background-color 0.3s; 
 }
 
-.friendListItem:hover {
-    background-color: #dddde7; 
+#friendListItem:hover {
+    background-color: #89b0e433; 
 }
 
-.darkFriendListItem {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    cursor: pointer; 
-    transition: background-color 0.3s; 
+#darkFriendListItem {
+    background-color: #252526;
+    border: 1px solid #d3d3d340;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
 }
 
-.darkFriendListItem:hover {
-    background-color: #dddde7; 
-    color: black;
+#darkFriendListItem:hover {
+    background-color: #1e1f1f; 
+    color: white;
 }
+
 
 .friendAvatar {
     width: 50px; 
@@ -135,7 +151,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border: 1px solid black; 
 }
 
 .friendName {

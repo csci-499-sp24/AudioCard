@@ -149,11 +149,11 @@ const Profile = () => {
             <Navbar userId={currentUser?.id} />
             <div className="container">
                 <div className="row d-flex px-2 mt-5 g-5">
-                    <div className="col-md-5 col-lg-4 order-md-first" id={styles.UserInfoCol}>
-                        <div className="text-center" id={styles.UserInfoContainer}>
+                    <div className="col-md-5 col-lg-4 order-md-first mb-5" id={`${isDarkMode ? styles.UserInfoColDark : styles.UserInfoCol}`}>
+                        <div className="text-center mt-4 mb-5" id={`${isDarkMode ? styles.UserInfoContainerDark : styles.UserInfoContainer}`}>
                             <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} style={{ borderColor: isDarkMode ? 'white' : 'black' }} />
-                            <h4 className={styles.cardSetTitle}>{`${profileUser?.username}`} </h4>
-                            <p>{profileUser.email} </p>
+                            <h4 className={styles.cardSetTitle}>{`${profileUser?.username}`}</h4>
+                            <p className={styles.userEmail}>{`${profileUser?.email}`}</p>
                             {shouldShowFriendRequestButton && (
                                 <FriendRequestButton
                                     currentUserId={currentUser.id}
@@ -162,11 +162,9 @@ const Profile = () => {
                             )}
                         </div>
                        
-
-                        {/* <div className={styles.friendList}> */}
                         <FriendList userId={profileUser?.id} />
-                        {/* </div> */}
                     </div>
+
                     <div class="col-md-7 col-lg-8">
 
                     </div>
