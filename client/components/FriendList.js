@@ -42,19 +42,31 @@ const FriendList = ({userId}) => {
     };
 
     return (
-        <div className={styles.friendList}>
-        <h2>Friends</h2>
-        <ul className={styles.friendListUl}>
-            {friends.map((friend) => (
-                <li key={friend.id} className={isDarkMode ? styles.darkFriendListItem : styles.friendListItem } onClick={() => navigateToUserProfile(friend.id)}>
-                    <div className={styles.friendAvatar} style={{borderColor: isDarkMode ? 'white': 'black'}}>
-                        <img src={friend.avatar} onError={setDefaultAvatar} alt={`${friend.username}'s avatar`}/>
-                    </div>
-                    <span className={styles.friendName} style={{}}>{friend.username}</span>
-                </li>
-            ))}
-        </ul>
-    </div>
+        friends ? 
+            <div className={styles.friendList}>
+                <h3>Friends</h3>
+                <ul className="list-group mb-3">
+                    {friends.map((friend) => (
+                        <li key={friend.id} className="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <img src={friend.avatar} onError={setDefaultAvatar} alt={`${friend.username}'s avatar`}/>
+                            </div>
+                            <span className={styles.friendName} style={{}}>{friend.username}</span>
+                        </li>
+                    ))}
+                </ul>
+                {/* <ul className={styles.friendListUl}>
+                    {friends.map((friend) => (
+                        <li key={friend.id} className={isDarkMode ? styles.darkFriendListItem : styles.friendListItem } onClick={() => navigateToUserProfile(friend.id)}>
+                            <div className={styles.friendAvatar} style={{borderColor: isDarkMode ? 'white': 'black'}}>
+                                <img src={friend.avatar} onError={setDefaultAvatar} alt={`${friend.username}'s avatar`}/>
+                            </div>
+                            <span className={styles.friendName} style={{}}>{friend.username}</span>
+                        </li>
+                    ))}
+                </ul> */}
+            </div>
+            : null
     );
 }
 
