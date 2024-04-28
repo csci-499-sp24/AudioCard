@@ -10,6 +10,20 @@
     border-radius: 5px;
 }
 
+#CardsetsInfoCol {
+    background: white;
+    border: 1px solid #0000002d;
+    border-radius: 5px;
+    margin: 0;
+}
+
+#CardsetsInfoColDark {
+    background-color: #252526;
+    border: 1px solid #d3d3d340;
+    border-radius: 5px;
+    margin: 0;
+}
+
 #UserInfoContainer {
     background: #eeeeee;
     padding: 15px;
@@ -95,6 +109,10 @@
     color: #626262;
 }
 
+#userEmailDark {
+    color: #bdbdbd;
+}
+
 .container {
     padding-right: 15px;
     padding-left: 15px;
@@ -140,8 +158,8 @@
 
 
 .friendAvatar {
-    width: 50px; 
-    height: 50px;
+    width: 40px; 
+    height: 40px;
     border-radius: 50%;
     overflow: hidden;
     margin-right: 10px; 

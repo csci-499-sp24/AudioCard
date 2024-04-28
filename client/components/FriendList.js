@@ -46,8 +46,8 @@ const FriendList = ({userId}) => {
 
     if(friends.length != 0){
         return (
-            <div className="mt-5">
-                <h4 className="text-center">Friends</h4>
+            <div className="mt-4 p-4">
+                <h4 className="text-center mb-3">Friends</h4>
                 <ul className="list-group overflow-auto">
                     {friends.map((friend) => (
                         <li 
@@ -59,7 +59,12 @@ const FriendList = ({userId}) => {
                             <div className={styles.friendAvatar} >
                                 <img src={friend.avatar} onError={setDefaultAvatar} alt={`${friend.username}'s avatar`}/>
                             </div>
-                            <span className={styles.friendName} style={{}}>{friend.username}</span>
+
+                            <div>
+                                <div>{friend.username}</div>
+                                <span>{friend.publicCardsets.length} public card set</span>
+                               
+                            </div>
                         </li>
                     ))}
             </ul>

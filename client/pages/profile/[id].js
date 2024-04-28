@@ -154,7 +154,7 @@ const Profile = () => {
                             <div className="text-center m-4" id={`${isDarkMode ? styles.UserInfoContainerDark : styles.UserInfoContainer}`}>
                                 <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} style={{ borderColor: isDarkMode ? 'white' : 'black' }} />
                                 <h4 className={styles.cardSetTitle}>{`${profileUser?.username}`}</h4>
-                                <p id={styles.userEmail}>{`${profileUser?.email}`}</p>
+                                <p id={`${isDarkMode ? styles.userEmailDark : styles.userEmail}`} >{`${profileUser?.email}`}</p>
                                 {shouldShowFriendRequestButton && (
                                     <FriendRequestButton
                                         currentUserId={currentUser.id}
@@ -162,15 +162,23 @@ const Profile = () => {
                                     />
                                 )}
                             </div>
+
+                            <FriendList userId={profileUser?.id} />
                         </div>
-                       
-                        <FriendList userId={profileUser?.id} />
                     </div>
 
                     <div class="col-md-7 col-lg-8 mb-5">
-                        <div className="row flex-column h-100" id={`${isDarkMode ? styles.UserInfoColDark : styles.UserInfoCol}`}>
+                        <div className="row flex-column h-100" id={`${isDarkMode ? styles.CardsetsInfoColDark : styles.CardsetsInfoCol}`}>
                             <div className="text-center m-4">
                                 <h4 className={styles.cardSetTitle}>Public Card Sets <span className="bi bi-globe"></span></h4>
+
+                                {publicCardsets.map(cardset => (
+                                    <div className='col-lg-6 mb-4' key={cardset.id}>
+                                        <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{ textDecoration: 'none', width: '100%' }}>
+                                            <CardProfile key={cardset.id} cardset={cardset} />
+                                        </Link>
+                                    </div>
+                                ))}
                             </div>
 
                             <div className="text-center m-4">
