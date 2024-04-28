@@ -15,6 +15,8 @@ const FriendList = ({userId}) => {
         }
     }, [userId]);
 
+    console.log('friends --- ', friends)
+
     const fetchFriends = async () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/friends`);
@@ -33,6 +35,7 @@ const FriendList = ({userId}) => {
             console.error('Error fetching friends:', error);
         }
     };
+
     const navigateToUserProfile = (friendId) => {
         router.push(`/profile/${friendId}`);
     };
@@ -41,11 +44,11 @@ const FriendList = ({userId}) => {
         event.target.src = '/userAvatar.jpg';
     };
 
-    return (
-        friends ? 
+    if(friends.length != 0){
+        return (
             <div className="mt-5">
                 <h4 className="text-center">Friends</h4>
-                <ul className="list-group mb-3 overflow-auto">
+                <ul className="list-group overflow-auto">
                     {friends.map((friend) => (
                         <li 
                             key={friend.id} 
@@ -59,10 +62,12 @@ const FriendList = ({userId}) => {
                             <span className={styles.friendName} style={{}}>{friend.username}</span>
                         </li>
                     ))}
-                </ul>
-            </div>
-            : null
-    );
+            </ul>
+        </div>
+        )}
+    else {
+        return null;
+    }
 }
 
 export default FriendList;
