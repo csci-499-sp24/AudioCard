@@ -165,7 +165,7 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    <div className="col-md-7 col-lg-8 mb-5">
+                    <div class="col-md-7 col-lg-8 mb-5">
                         <div className="row flex-column h-100" id={`${isDarkMode ? styles.CardsetsInfoColDark : styles.CardsetsInfoCol}`}>
                             {/* Public Card sets */}
                             <div className="text-center">
@@ -174,7 +174,7 @@ const Profile = () => {
                                 
                                 {
                                     publicCardsets && (
-                                        <div className="row" id={styles.cardsetsContainerScrollable}>
+                                        <div className="row" id={`${publicCardsets && publicCardsets.length <=4 ? styles.cardsetsContainer : styles.cardsetsContainerScrollable}`}>
                                             { publicCardsets.map(cardset => (
                                                 <div className='col-lg-6 mb-4' key={cardset.id}>
                                                     <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{ textDecoration: 'none', width: '100%' }}>
@@ -189,10 +189,10 @@ const Profile = () => {
                             
                             {/* Friends Only Card sets */}
                             {(isFriends || isUser) && ( 
-                                <div className="text-center mb-2" id={styles.cardsetsContainerScrollable}>
+                                <div className="text-center mb-2" id={`${publicCardsets && publicCardsets.length <=4 ? styles.cardsetsContainer : styles.cardsetsContainerScrollable}`}>
                                     <h4 className="mt-4 mb-3" id={styles.cardSetTitle}>Friends Only Card Sets <span className="bi bi-lock"></span></h4>
                                     {
-                                        friendCardsets ? 
+                                        friendCardsets && friendCardsets.length !== 0 ? 
                                             <div className="row">
                                                 {friendCardsets
                                                     .filter(cardset => cardset.title != null)

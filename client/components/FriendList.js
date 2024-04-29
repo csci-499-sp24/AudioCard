@@ -42,7 +42,7 @@ const FriendList = ({userId}) => {
         event.target.src = '/userAvatar.jpg';
     };
 
-    if(friends.length != 0){
+    if(friends && friends.length != 0){
         return (
             <div className="mt-4 p-4">
                 <h4 className="text-center mb-3">Friends</h4>
@@ -60,7 +60,7 @@ const FriendList = ({userId}) => {
 
                             <div>
                                 <div>{friend.username}</div>
-                                { friend.publicCardsets.length ? 
+                                { friend.publicCardsets && friend.publicCardsets.length ? 
                                     <span id={isDarkMode ? styles.friendListItemSetsDark : styles.friendListItemSets }>
                                         {friend.publicCardsets.length} public card set{friend.publicCardsets.length > 1 ? "s" : ""}
                                     </span> 
