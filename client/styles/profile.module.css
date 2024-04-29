@@ -200,6 +200,23 @@
     overflow: scroll;
 }
 
+#cardsetsContainerScrollable::-webkit-scrollbar { 
+    width: 8px; 
+} 
+
+#cardsetsContainerScrollable::-webkit-scrollbar-thumb { 
+    background: #888; 
+    border-radius: 20px;
+} 
+
+#cardsetsContainerScrollable::-webkit-scrollbar-thumb:hover { 
+    background: #555; 
+} 
+
+#cardsetsContainerScrollable::-webkit-scrollbar-button { 
+    display: none; 
+} 
+
 @media (max-width: 1300px) {
 
     .profileCol {

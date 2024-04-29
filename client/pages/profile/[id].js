@@ -174,7 +174,7 @@ const Profile = () => {
                                 
                                 {
                                     publicCardsets && (
-                                        <div className="row" id={`${publicCardsets && publicCardsets.length <=4 ? styles.cardsetsContainer : styles.cardsetsContainerScrollable}`}>
+                                        <div className="row" id={styles.cardsetsContainerScrollable}>
                                             { publicCardsets.map(cardset => (
                                                 <div className='col-lg-6 mb-4' key={cardset.id}>
                                                     <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{ textDecoration: 'none', width: '100%' }}>
@@ -189,7 +189,7 @@ const Profile = () => {
                             
                             {/* Friends Only Card sets */}
                             {(isFriends || isUser) && ( 
-                                <div className="text-center mb-2" id={`${publicCardsets && publicCardsets.length <=4 ? styles.cardsetsContainer : styles.cardsetsContainerScrollable}`}>
+                                <div className="text-center mb-2" id={styles.cardsetsContainerScrollable}>
                                     <h4 className="mt-4 mb-3" id={styles.cardSetTitle}>Friends Only Card Sets <span className="bi bi-lock"></span></h4>
                                     {
                                         friendCardsets && friendCardsets.length !== 0 ? 
