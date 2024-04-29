@@ -143,7 +143,7 @@ const Profile = () => {
     };
 
     const shouldShowFriendRequestButton = currentUser && profileUser && currentUser.id !== Number(profileUser.id);
-
+    console.log('friendCardsets ', friendCardsets)
     return (
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={currentUser?.id} />
@@ -169,60 +169,64 @@ const Profile = () => {
 
                     <div class="col-md-7 col-lg-8 mb-5">
                         <div className="row flex-column h-100" id={`${isDarkMode ? styles.CardsetsInfoColDark : styles.CardsetsInfoCol}`}>
-                            <div className="text-center m-4">
-                                <h4 className={styles.cardSetTitle}>Public Card Sets <span className="bi bi-globe"></span></h4>
+                            {/* Public Card sets */}
+                            <div className="text-center">
+                                <h4 className="mt-4 mb-3" id={styles.cardSetTitle}>Public Card Sets <span className="bi bi-globe"></span></h4>
+    
+                                
 
-                                {publicCardsets.map(cardset => (
-                                    <div className='col-lg-6 mb-4' key={cardset.id}>
-                                        <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{ textDecoration: 'none', width: '100%' }}>
-                                            <CardProfile key={cardset.id} cardset={cardset} />
-                                        </Link>
-                                    </div>
-                                ))}
+                                <div className="row" id={`${publicCardsets.length <=4 ? styles.cardsetsContainer : styles.cardsetsContainerScrollable}`}>
+                                    { publicCardsets.map(cardset => (
+                                        <div className='col-lg-6 mb-4' key={cardset.id}>
+                                            <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{ textDecoration: 'none', width: '100%' }}>
+                                                <CardProfile key={cardset.id} cardset={cardset} />
+                                            </Link>
+                                        </div>
+                                    ))}
+                                </div>
+                                
                             </div>
+                            
+                            {/* Friends Only Card sets */}
+                            {(isFriends || isUser) && ( 
+                                <div className="text-center" id={`${publicCardsets.length <=4 ? styles.cardsetsContainer : styles.cardsetsContainerScrollable}`}>
+                                    <h4 className="mt-4 mb-3" id={styles.cardSetTitle}>Friends Only Card Sets <span className="bi bi-lock"></span></h4>
 
-                            <div className="text-center m-4">
-                                <h4 className={styles.cardSetTitle}>Friends Only Card Sets <span className="bi bi-lock"></span></h4>
-                            </div>
+                                    {
+                                        friendCardsets.length !== 0 ? 
+                                            <div className="row">
+                                                {friendCardsets
+                                                    .filter(cardset => cardset.title != null)
+                                                    .map(cardset => (
+                                                        <div className='col-lg-6 mb-4' key={cardset.id}>
+                                                            <Link href={`/cardsets/${cardset.id}`} style={{ textDecoration: 'none', width: '100%' }}>
+                                                                <CardProfile key={cardset.id} cardset={cardset} />
+                                                            </Link>
+                                                        </div>
+                                                    ))}
+                                            </div>
+                                        : 
+                                        <div className="row">
+                                            <p>No card sets</p>
+                                        </div>
+                                    }
+                                </div>
+                            )}
+
+                            
+
+                            {/* {
+                                friendCardsets.length !== 0 ? 
+                                    
+                                : null
+                            } */}
                         </div>
                     </div>
                 </div>
 
                 
-                {/* <div className="row d-flex px-2">
-                    <div className="col-lg-2 col-md-2 col-sm-12" style={{marginRight: '10vh'}}>
-                        <div className={styles.profileContainer}>
-                            <div className={styles.profileSidebar}>
-                                <h3 className={styles.cardSetTitle}>{`${profileUser?.username}`} </h3>
-                                <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} style={{ borderColor: isDarkMode ? 'white' : 'black' }} />
-                                    {shouldShowFriendRequestButton && (
-                                        <FriendRequestButton
-                                            currentUserId={currentUser.id}
-                                            profileUserId={profileUser.id}
-                                        />
-                                    )}
-                                <div className={styles.friendList}>
-                                    <FriendList userId={profileUser?.id} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                {/* 
                     
-                    <div className="col" style={{marginTop: '10vh'}}>
-                        <div className="container">
-                            <div className='row d-flex justify-content-center'>
-                                <h3 className={styles.cardSetTitle}>Public Card Sets <span className="bi bi-globe"></span></h3>
-                            </div>
-                            <div className="row">
-                                {publicCardsets.map(cardset => (
-                                    <div className='col-lg-6 mb-4' key={cardset.id}>
-                                        <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{ textDecoration: 'none', width: '100%' }}>
-                                            <CardProfile key={cardset.id} cardset={cardset} />
-                                        </Link>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
 
                         {(isFriends || isUser) && (
                             <div className="container mt-4">

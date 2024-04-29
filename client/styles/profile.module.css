@@ -1,3 +1,5 @@
+/* Left Side of the Page*/
+
 #UserInfoCol {
     background: white;
     border: 1px solid #0000002d;
@@ -101,7 +103,7 @@
     height: 100px;
 }
 
-.cardSetTitle {
+#cardSetTitle {
     margin: 0;
 }
 
@@ -182,6 +184,16 @@
     line-height: 1.5; 
     display: flex;
     align-items: center;
+}
+
+/* Right Side of the Page*/
+
+#cardsetsContainer {
+}
+
+#cardsetsContainerScrollable {
+    max-height: 380px;
+    overflow: scroll;
 }
 
 @media (max-width: 1300px) {
