@@ -58,7 +58,7 @@ export const CardViewTestMode = ({ userId, cardset }) => {
                         </ul>
                     </div>
                 </div>
-                {selectedMode === 'speak' && <ASRTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} />}
+                {selectedMode === 'speak' && <ASRTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} cardsetLanguage={cardset.language}/>}
                 {selectedMode === 'type' && <FlashcardTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} />}
                 {!selectedMode &&
                 <div className='container d-flex justify-content-center mt-5' style={{backgroundColor: isDarkMode? '#252526' : 'white', width: '70%', borderRadius: '10px',}}>

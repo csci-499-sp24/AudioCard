@@ -8,8 +8,9 @@ import {TestOptions} from './testOptions';
 import TimerComponent from './timerComponent';
 import { getTranslation } from '@/utils/translations';
 import { TestResults } from './TestResults';
+import { getLanguageCode } from '@/utils/languageCodes';
 
-export const ASRTestMode = ({ cardData}) => {
+export const ASRTestMode = ({ cardData, cardsetLanguage}) => {
     const {isDarkMode} = useDarkMode();
     const [index, setIndex] = useState(0);
     const [flashcards, setFlashcards] = useState([]);
@@ -28,7 +29,7 @@ export const ASRTestMode = ({ cardData}) => {
     const mounted = useRef(false);
     const [timeLimit, setTimeLimit] = useState(7);
     const [voiceGender, setVoiceGender] = useState('NEUTRAL');
-    const [language, setLanguage] = useState('en-US');
+    const [language, setLanguage] = useState(getLanguageCode(cardsetLanguage));
     const [ringSize, setRingSize] = useState('scaleDown');
     const [micBorder, setMicBorder] = useState('');
     const [phrases, setPhrases] = useState(

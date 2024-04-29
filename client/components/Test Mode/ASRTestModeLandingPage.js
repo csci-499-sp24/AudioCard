@@ -7,6 +7,7 @@ import { useDarkMode } from '../../utils/darkModeContext';
 import {TestOptions} from './testOptions';
 import TimerComponentLanding from './timerComponentLanding';
 import { getTranslation } from '@/utils/translations';
+import { getLanguageCode } from '@/utils/languageCodes';
 
 export const ASRTestModeLandingPage = ({ cardData }) => {
     const {isDarkMode} = useDarkMode();
@@ -27,7 +28,7 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
     const mounted = useRef(false);
     const [timeLimit, setTimeLimit] = useState(7);
     const [voiceGender, setVoiceGender] = useState('NEUTRAL');
-    const [language, setLanguage] = useState('en-US');
+    const [language, setLanguage] = useState(getLanguageCode(cardData.language));
     const [ringSize, setRingSize] = useState('scaleDown');
     const [micBorder, setMicBorder] = useState('');
     const [phrases, setPhrases] = useState(
