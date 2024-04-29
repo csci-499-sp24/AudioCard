@@ -145,7 +145,7 @@ const Profile = () => {
     return (
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={currentUser?.id} />
-            <div className="container d-flex">
+            <div className="container d-flex h-100">
                 <div className="row flex-fill px-2 g-5 mt-5">
                     <div className="col-md-5 col-lg-4 order-md-first pb-3 h-100">
                         <div className="row flex-column h-100" id={`${isDarkMode ? styles.UserInfoColDark : styles.UserInfoCol}`}>
