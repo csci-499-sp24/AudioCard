@@ -44,7 +44,7 @@ const FriendList = ({userId}) => {
 
     if(friends && friends.length != 0){
         return (
-            <div className="mt-4 p-4">
+            <div className="mt-3 p-4">
                 <h4 className="text-center mb-3">Friends</h4>
                 <ul className="list-group" id={styles.friendListScrollable}>
                     {friends.map((friend) => (
