@@ -165,24 +165,26 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    <div class="col-md-7 col-lg-8 mb-5">
+                    <div className="col-md-7 col-lg-8 mb-5">
                         <div className="row flex-column h-100" id={`${isDarkMode ? styles.CardsetsInfoColDark : styles.CardsetsInfoCol}`}>
                             {/* Public Card sets */}
                             <div className="text-center">
                                 <h4 className="mt-4 mb-3" id={styles.cardSetTitle}>Public Card Sets <span className="bi bi-globe"></span></h4>
     
                                 
-
-                                <div className="row" id={`${publicCardsets.length <=4 ? styles.cardsetsContainer : styles.cardsetsContainerScrollable}`}>
-                                    { publicCardsets.map(cardset => (
-                                        <div className='col-lg-6 mb-4' key={cardset.id}>
-                                            <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{ textDecoration: 'none', width: '100%' }}>
-                                                <CardProfile key={cardset.id} cardset={cardset} />
-                                            </Link>
+                                {
+                                    publicCardsets && (
+                                        <div className="row" id={`${publicCardsets.length <=4 ? styles.cardsetsContainer : styles.cardsetsContainerScrollable}`}>
+                                            { publicCardsets.map(cardset => (
+                                                <div className='col-lg-6 mb-4' key={cardset.id}>
+                                                    <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{ textDecoration: 'none', width: '100%' }}>
+                                                        <CardProfile key={cardset.id} cardset={cardset} />
+                                                    </Link>
+                                                </div>
+                                            ))}
                                         </div>
-                                    ))}
-                                </div>
-                                
+                                    )
+                                }
                             </div>
                             
                             {/* Friends Only Card sets */}
