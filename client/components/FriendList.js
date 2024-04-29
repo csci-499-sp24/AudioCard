@@ -46,7 +46,7 @@ const FriendList = ({userId}) => {
         return (
             <div className="mt-4 p-4">
                 <h4 className="text-center mb-3">Friends</h4>
-                <ul className="list-group overflow-auto">
+                <ul className="list-group" id={`${friends.length <=4 ? styles.friendListContainer : styles.friendListScrollable}`}>
                     {friends.map((friend) => (
                         <li 
                             key={friend.id} 

@@ -126,6 +126,11 @@
     width: 100%;
 }
 
+#friendListScrollable {
+    max-height: 240px;
+    overflow: scroll;
+}
+
 .friendListUl {
     list-style-type: none;
     padding: 0;
@@ -188,8 +193,7 @@
 
 /* Right Side of the Page*/
 
-#cardsetsContainer {
-}
+#cardsetsContainer {}
 
 #cardsetsContainerScrollable {
     max-height: 360px;
@@ -202,4 +206,25 @@
         margin-right: 10vw; 
     }
 
+}
+
+@media (min-width: 992px) and (max-width: 1200px) { 
+    #cardsetsContainerScrollable {
+        max-height: 380px;
+        overflow: scroll;
+    }
+}
+
+@media (max-width: 991px) { 
+    #cardsetsContainerScrollable {
+        max-height: 340px;
+        overflow: scroll;
+    }
+}
+
+@media (max-width: 768px) {
+    #cardsetsContainerScrollable {
+        max-height: 360px;
+        overflow: scroll;
+    }
 }
