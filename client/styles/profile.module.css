@@ -127,7 +127,7 @@
 }
 
 #friendListScrollable {
-    max-height: 240px;
+    max-height: 260px;
     overflow: scroll;
 }
 
