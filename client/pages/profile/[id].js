@@ -22,8 +22,6 @@ const Profile = () => {
     const [isFriends, setIsFriends] = useState(false);
     const [userAvatar, setUserAvatar] = useState('');
 
-    console.log('user:: ', profileUser)
-
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
             if (user) {
@@ -143,7 +141,7 @@ const Profile = () => {
     };
 
     const shouldShowFriendRequestButton = currentUser && profileUser && currentUser.id !== Number(profileUser.id);
-    console.log('friendCardsets ', friendCardsets)
+
     return (
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={currentUser?.id} />
@@ -189,9 +187,8 @@ const Profile = () => {
                             
                             {/* Friends Only Card sets */}
                             {(isFriends || isUser) && ( 
-                                <div className="text-center" id={`${publicCardsets.length <=4 ? styles.cardsetsContainer : styles.cardsetsContainerScrollable}`}>
+                                <div className="text-center mb-2" id={`${publicCardsets.length <=4 ? styles.cardsetsContainer : styles.cardsetsContainerScrollable}`}>
                                     <h4 className="mt-4 mb-3" id={styles.cardSetTitle}>Friends Only Card Sets <span className="bi bi-lock"></span></h4>
-
                                     {
                                         friendCardsets.length !== 0 ? 
                                             <div className="row">
@@ -212,40 +209,9 @@ const Profile = () => {
                                     }
                                 </div>
                             )}
-
-                            
-
-                            {/* {
-                                friendCardsets.length !== 0 ? 
-                                    
-                                : null
-                            } */}
                         </div>
                     </div>
                 </div>
-
-                
-                {/* 
-                    
-
-                        {(isFriends || isUser) && (
-                            <div className="container mt-4">
-                                <h3 className={styles.cardSetTitle}>Friends Only Card Sets <span className="bi bi-lock"></span></h3>
-                                <div className="row">
-                                    {friendCardsets
-                                        .filter(cardset => cardset.title != null)
-                                        .map(cardset => (
-                                            <div className='col-lg-6 mb-4' key={cardset.id}>
-                                                <Link href={`/cardsets/${cardset.id}`} style={{ textDecoration: 'none', width: '100%' }}>
-                                                    <CardProfile key={cardset.id} cardset={cardset} />
-                                                </Link>
-                                            </div>
-                                        ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div> */}
             </div>
         </div>
     );

@@ -72,8 +72,8 @@ const FriendList = ({userId}) => {
                             </div>
                         </li>
                     ))}
-            </ul>
-        </div>
+                </ul>
+            </div>
         )}
     else {
         return null;
