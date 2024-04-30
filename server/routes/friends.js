@@ -2,6 +2,9 @@ const express = require('express');
 const { Op } = require('sequelize');
 const router = express.Router({ mergeParams: true });
 const { Friend, User, Notification  } = require('../models/modelRelations');
+const { Cardset, Flashcard } = require('../models/modelRelations');
+
+const { Sequelize } = require('sequelize');
 
 async function getAllFriends (currentUserId) {
     try{
@@ -126,6 +129,26 @@ async function restructureFriendData(friends, currentUserId){
             const { user1Id, user2Id, status, createdAt } = friendData;
             const otherUserId = user1Id === currentUserId ? user2Id : user1Id;
             const otherUser = await User.findByPk(otherUserId);
+            
+            // get the other user public cardsets
+            const publicCardsets = await Cardset.findAll({
+                where: {
+                    userId: otherUserId,
+                    isPublic: true
+                },
+                include: [{
+                    model: Flashcard,
+                    attributes: [],
+                    duplicating: false,
+                }],
+                attributes: {
+                    include: [
+                        [Sequelize.fn("COUNT", Sequelize.col("flashcards.id")), "flashcardCount"]
+                    ]
+                },
+                group: ['cardsetId']
+            });
+
             let requestDirection = 'completed';
             if (status !== 'accepted') {
                 requestDirection = user1Id === currentUserId ? 'outgoing' : 'incoming';
@@ -136,7 +159,8 @@ async function restructureFriendData(friends, currentUserId){
                 email: otherUser.email,
                 requestDirection,
                 status,
-                createdAt
+                createdAt,
+                publicCardsets
             };
         }));
         return restructuredData;

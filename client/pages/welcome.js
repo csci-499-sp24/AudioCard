@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import logo from '../assets/images/logo.png';
 import { useDarkMode } from '@/utils/darkModeContext';
 import styles from "../styles/landingPage.module.css";
 import { LandingPageCardSet } from '@/components/Cards/LandingPageCardSet';
@@ -94,7 +95,7 @@ const LandingPage = () => {
 
                 {/* Unique Section */}
                 <div className="row d-flex align-items-center" id={styles.uniqueSectionTitle}>
-                    <h1 className="text-center">Things that makes AudioCard unique</h1>
+                    <h1 className="text-center">Things that make AudioCard unique</h1>
                 </div>
 
                 <div className="row d-flex align-items-stretch" id={styles.uniqueSection}>
@@ -138,13 +139,20 @@ const LandingPage = () => {
 
                 {/* Footer */}
                 <div className="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 mt-5 border-top" id={styles.footerSection}>
-                    <div className="col mb-3 text-white" id={styles.footerColLogo}>
-                        <h3 className="text-white">AudioCard</h3>
-                        <div className="" id={styles.footerIcons}> 
-                            {isDarkMode ? <i className="fa-brands fa-facebook fa-lg" id={styles.footerIconFirst}></i> : <i className="fa-brands fa-facebook fa-lg text-white" id={styles.footerIconFirst}></i>}
-                            {isDarkMode ? <i className="fa-brands fa-square-x-twitter fa-lg" id={styles.footerIcon}></i> : <i className="fa-brands fa-square-x-twitter fa-lg text-white" id={styles.footerIcon}></i>}
-                            {isDarkMode ? <i className="fa-brands fa-instagram fa-lg" id={styles.footerIcon}></i> : <i className="fa-brands fa-instagram fa-lg text-white" id={styles.footerIcon}></i>}
-                            {isDarkMode ? <i className="fa-brands fa-pinterest fa-lg" id={styles.footerIcon}></i> : <i className="fa-brands fa-pinterest fa-lg text-white" id={styles.footerIcon}></i>}
+                    <div className="col d-flex mb-3 text-white" id={styles.footerColLogo}>
+                        <Link href="/" className="text-white">
+                            <Image src={logo} alt="logo"/>
+                        </Link>
+                        
+                        <div id={styles.footerIconContainer}>
+                            <span id={styles.footerName}>AudioCard</span> 
+                            <div className="" id={styles.footerIcons}>
+                                
+                                {isDarkMode ? <i className="fa-brands fa-facebook fa-lg" id={styles.footerIconFirst}></i> : <i className="fa-brands fa-facebook fa-lg text-white" id={styles.footerIconFirst}></i>}
+                                {isDarkMode ? <i className="fa-brands fa-square-x-twitter fa-lg" id={styles.footerIcon}></i> : <i className="fa-brands fa-square-x-twitter fa-lg text-white" id={styles.footerIcon}></i>}
+                                {isDarkMode ? <i className="fa-brands fa-instagram fa-lg" id={styles.footerIcon}></i> : <i className="fa-brands fa-instagram fa-lg text-white" id={styles.footerIcon}></i>}
+                                {isDarkMode ? <i className="fa-brands fa-pinterest fa-lg" id={styles.footerIcon}></i> : <i className="fa-brands fa-pinterest fa-lg text-white" id={styles.footerIcon}></i>}
+                            </div>
                         </div>
                     </div>
                     <div className="col mb-3 text-white"></div>
