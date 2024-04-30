@@ -6,6 +6,7 @@ import { TTS } from './ASR/textToSpeech';
 import { useDarkMode } from '../utils/darkModeContext';
 import { ReviewOptions } from './ReviewOptions';
 import { ListenForVoiceCommands } from './ASR/speechToText';
+import { getLanguageCode } from '@/utils/languageCodes';
 
 export const CardViewReviewMode = ({ userId, cardset }) => {
     const { isDarkMode } = useDarkMode();
@@ -13,7 +14,7 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
     const [index, setIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
     const [voiceGender, setVoiceGender] = useState('NEUTRAL');
-    const [language, setLanguage] = useState('en-US');
+    const [language, setLanguage] = useState(getLanguageCode(cardset.language));
     const [dataFetched, setDataFetched] = useState(false);
     const mounted = useRef(true);
     const timeoutRef = useRef(null);
