@@ -8,9 +8,8 @@ import {TestOptions} from './testOptions';
 import TimerComponent from './timerComponent';
 import { getTranslation } from '@/utils/translations';
 import { TestResults } from './TestResults';
-import { getLanguageCode } from '@/utils/languageCodes';
 
-export const ASRTestMode = ({ cardData, cardsetLanguage}) => {
+export const ASRTestMode = ({ cardData}) => {
     const {isDarkMode} = useDarkMode();
     const [index, setIndex] = useState(0);
     const [flashcards, setFlashcards] = useState([]);
@@ -29,7 +28,7 @@ export const ASRTestMode = ({ cardData, cardsetLanguage}) => {
     const mounted = useRef(false);
     const [timeLimit, setTimeLimit] = useState(7);
     const [voiceGender, setVoiceGender] = useState('NEUTRAL');
-    const [language, setLanguage] = useState(getLanguageCode(cardsetLanguage));
+    const [language, setLanguage] = useState('en-US');
     const [ringSize, setRingSize] = useState('scaleDown');
     const [micBorder, setMicBorder] = useState('');
     const [phrases, setPhrases] = useState(
@@ -59,15 +58,21 @@ export const ASRTestMode = ({ cardData, cardsetLanguage}) => {
         return ()=>{mounted.current = false;}
       }, []);
     
-    useEffect (() => {
-        if (language !== 'en-US' && language !== 'en-GB'){
-            setPhrases({
-                tryAgain: getTranslation('Try again.', language),
-                correct: getTranslation('Correct.', language),
-                theCorrectAnswerIs: getTranslation('The correct answer is', language)
-            })
+      useEffect(() => {
+        if (language !== 'en-US' && language !== 'en-GB') {
+          setPhrases({
+            tryAgain: getTranslation('Try again.', language),
+            correct: getTranslation('Correct.', language),
+            theCorrectAnswerIs: getTranslation('The correct answer is', language)
+          });
+          setVoiceCommands({
+            shuffle: getTranslation('shuffle', language),
+            restart: getTranslation('restart', language),
+            exit: getTranslation('exit', language)
+          });
         }
-    }, [language])
+      }, [language]);
+      
     
     useEffect(() => {
         console.log('Is Paused: ', isPaused);
