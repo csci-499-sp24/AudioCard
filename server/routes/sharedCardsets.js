@@ -66,6 +66,7 @@ router.route('/:cardsetid/share')
                     res.status(409).json('User already has access to the cardset');
                     return;
                 }
+                //
                 const sharedCardset = await cardset.addSharedWithUser(user, {
                     through: { authority: req.query.authority },
                     attributes: ['id']
