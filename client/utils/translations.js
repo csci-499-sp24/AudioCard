@@ -19,6 +19,9 @@ export const getTranslation = (phrase, language) => {
                 case 'restart':
                     translation = "redémarre";
                     break;
+                case 'Say "shuffle", "restart", or "exit"':
+                    translation = "Dites mélange , redémarre ou quitte";
+                    break;
                 default:
                     translation = phrase;
             }
@@ -42,6 +45,9 @@ export const getTranslation = (phrase, language) => {
                     break;
                 case 'restart':
                     translation = "reinicia";
+                    break;
+                case 'Say "shuffle", "restart", or "exit"':
+                    translation = "Di baraja, reinicia o salida";
                     break;
                 default:
                     translation = phrase;
@@ -67,6 +73,9 @@ export const getTranslation = (phrase, language) => {
                     case 'restart':
                         translation = "আবার শুরু";
                         break;
+                    case 'Say "shuffle", "restart", or "exit"':
+                        translation = "বলুন অদলবদল, আবার শুরু বা প্রস্থান";
+                        break;
                     default:
                         translation = phrase;
                 }
@@ -91,6 +100,10 @@ export const getTranslation = (phrase, language) => {
                     case 'restart':
                         translation = "重新开始";
                         break;
+                    case 'Say "shuffle", "restart", or "exit"':
+                        translation = "说 打乱 重新开始 或 退出";
+                        break;
+                    
                     default:
                         translation = phrase;
                 }
@@ -114,6 +127,9 @@ export const getTranslation = (phrase, language) => {
                         break;
                     case 'restart':
                         translation = "перезапуск";
+                        break;
+                    case 'Say "shuffle", "restart", or "exit"':
+                        translation = "сказать перемешать, перезапуск или выход";
                         break;
                     default:
                         translation = phrase;

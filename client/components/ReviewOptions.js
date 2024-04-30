@@ -2,9 +2,12 @@ import React from 'react';
 import { useDarkMode } from '@/utils/darkModeContext';
 import { getLanguage } from '@/utils/languageCodes';
 import { Tooltip } from 'react-tooltip'
+import { getTranslation } from '@/utils/translations';
 
 export const ReviewOptions = ({voiceGender, setVoiceGender, language, setLanguage, delay, setDelay, willLoop, setWillLoop, speakingRate, setSpeakingRate, isVoiceCommandsEnabled, setIsVoiceCommandsEnabled}) => {
   const { isDarkMode } = useDarkMode();
+
+   const voiceCommandsTooltip = getTranslation('Say "shuffle", "restart", or "exit"', language);
 
   return (
     <div className='container'>
@@ -123,9 +126,9 @@ export const ReviewOptions = ({voiceGender, setVoiceGender, language, setLanguag
         <div className='col d-flex justify-content-begin'>
                     <div>
                     <i className="bi bi-question-circle-fill" 
-                    data-tooltip-id="voiceCommandTip"
-                    data-tooltip-content="Say &quot;shuffle&quot;, &quot;restart&quot;, or &quot;exit&quot;"
-                    data-tooltip-place='bottom'></i>
+                      data-tooltip-id="voiceCommandTip"
+                      data-tooltip-content={voiceCommandsTooltip}
+                      data-tooltip-place='bottom'></i>
                     <Tooltip id = "voiceCommandTip" /> 
                     </div>
                 </div> 
