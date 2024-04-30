@@ -145,31 +145,29 @@ const Profile = () => {
     return (
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={currentUser?.id} />
-            <div className="container d-flex h-100">
-                <div className="row flex-fill px-2 g-5 mt-5">
-                    <div className="col-md-5 col-lg-4 order-md-first pb-3 h-100">
-                        <div className="row flex-column h-100" id={`${isDarkMode ? styles.UserInfoColDark : styles.UserInfoCol}`}>
-                            <div className="text-center">
-                                <div id={`${isDarkMode ? styles.UserInfoContainerDark : styles.UserInfoContainer}`}>
-                                    <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} style={{ borderColor: isDarkMode ? 'white' : 'black' }} />
-                                    <h4 className={styles.cardSetTitle}>{`${profileUser?.username}`}</h4>
-                                    <p id={`${isDarkMode ? styles.userEmailDark : styles.userEmail}`} >{`${profileUser?.email}`}</p>
-                                    {shouldShowFriendRequestButton && (
-                                        <FriendRequestButton
-                                            currentUserId={currentUser.id}
-                                            profileUserId={profileUser.id}
-                                        />
-                                    )}
-                                </div>
-                                
+
+            <div class="container min-vh-100 d-flex flex-column">
+                <div class="row flex-grow-1 px-2 mb-5 mt-5">
+                    <div class="col-md-5 col-lg-4 order-md-first mb-5">
+                        <div id={`${isDarkMode ? styles.UserInfoColDark : styles.UserInfoCol}`}>
+                            <div className="text-center m-4" id={`${isDarkMode ? styles.UserInfoContainerDark : styles.UserInfoContainer}`}>
+                                <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} style={{Color: isDarkMode ? 'white' : 'black' }} />
+                                <h4 className={styles.cardSetTitle}>{`${profileUser?.username}`}</h4>
+                                <p id={`${isDarkMode ? styles.userEmailDark : styles.userEmail}`} >{`${profileUser?.email}`}</p>
+                                {shouldShowFriendRequestButton && (
+                                    <FriendRequestButton
+                                        currentUserId={currentUser.id}
+                                        profileUserId={profileUser.id}
+                                    />
+                                )}
                             </div>
 
                             <FriendList userId={profileUser?.id} />
                         </div>
                     </div>
 
-                    <div class="col-md-7 col-lg-8 pb-3 h-100">
-                        <div className="row flex-column h-100" id={`${isDarkMode ? styles.CardsetsInfoColDark : styles.CardsetsInfoCol}`}>
+                    <div class="col-md-7 col-lg-8 mb-5">
+                        <div className="row flex-column mb-5 h-100" id={`${isDarkMode ? styles.CardsetsInfoColDark : styles.CardsetsInfoCol}`}>
                             {/* Public Card sets */}
                             <div className="text-center">
                                 <h4 className="mt-4 mb-3" id={styles.cardSetTitle}>Public Card Sets <span className="bi bi-globe"></span></h4>
