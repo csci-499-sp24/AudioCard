@@ -10,6 +10,15 @@ export const getTranslation = (phrase, language) => {
                 case 'The correct answer is':
                     translation = "La réponse correcte est";
                     break;
+                case 'shuffle':
+                    translation = "mélange";
+                    break;
+                case 'exit':
+                    translation = "quitte";
+                    break;
+                case 'restart':
+                    translation = "redémarre";
+                    break;
                 default:
                     translation = phrase;
             }
@@ -24,6 +33,15 @@ export const getTranslation = (phrase, language) => {
                     break;
                 case 'Correct.':
                     translation = "Correcto";
+                    break;
+                case 'shuffle':
+                    translation = "baraja";
+                    break;
+                case 'exit':
+                    translation = "salida";
+                    break;
+                case 'restart':
+                    translation = "reinicia";
                     break;
                 default:
                     translation = phrase;
@@ -40,6 +58,15 @@ export const getTranslation = (phrase, language) => {
                     case 'Correct.':
                         translation = "সঠিক";
                         break;
+                    case 'shuffle':
+                        translation = "অদলবদল";
+                        break;
+                    case 'exit':
+                        translation = "প্রস্থান";
+                        break;
+                    case 'restart':
+                        translation = "আবার শুরু";
+                        break;
                     default:
                         translation = phrase;
                 }
@@ -55,6 +82,15 @@ export const getTranslation = (phrase, language) => {
                     case 'Correct.':
                         translation = "正确的";
                         break;
+                    case 'shuffle': 
+                        translation = "打乱";
+                        break;
+                    case 'exit':
+                        translation = "退出";
+                        break;
+                    case 'restart':
+                        translation = "重新开始";
+                        break;
                     default:
                         translation = phrase;
                 }
@@ -69,6 +105,15 @@ export const getTranslation = (phrase, language) => {
                         break;
                     case 'Correct.':
                         translation = "Правильно";
+                        break;
+                    case 'shuffle':
+                        translation = "перемешать";
+                        break;
+                    case 'exit':
+                        translation = "выход";
+                        break;
+                    case 'restart':
+                        translation = "перезапуск";
                         break;
                     default:
                         translation = phrase;

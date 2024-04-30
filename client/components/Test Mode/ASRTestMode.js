@@ -59,15 +59,21 @@ export const ASRTestMode = ({ cardData, cardsetLanguage}) => {
         return ()=>{mounted.current = false;}
       }, []);
     
-    useEffect (() => {
-        if (language !== 'en-US' && language !== 'en-GB'){
-            setPhrases({
-                tryAgain: getTranslation('Try again.', language),
-                correct: getTranslation('Correct.', language),
-                theCorrectAnswerIs: getTranslation('The correct answer is', language)
-            })
+      useEffect(() => {
+        if (language !== 'en-US' && language !== 'en-GB') {
+          setPhrases({
+            tryAgain: getTranslation('Try again.', language),
+            correct: getTranslation('Correct.', language),
+            theCorrectAnswerIs: getTranslation('The correct answer is', language)
+          });
+          setVoiceCommands({
+            shuffle: getTranslation('shuffle', language),
+            restart: getTranslation('restart', language),
+            exit: getTranslation('exit', language)
+          });
         }
-    }, [language])
+      }, [language]);
+      
     
     useEffect(() => {
         console.log('Is Paused: ', isPaused);
