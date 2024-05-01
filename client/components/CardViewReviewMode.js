@@ -217,7 +217,8 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
                         <ListenForVoiceCommands isVoiceCommandsEnabled={isVoiceCommandsEnabled}
                         shuffleCards={shuffleCards}
                         handleRestartTest={handleRestartTest}
-                        voiceCommands={voiceCommands}/>   
+                        voiceCommands={voiceCommands}
+                        language={language}/>   
             </div>
         )}
         </div>
