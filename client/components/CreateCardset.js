@@ -60,11 +60,14 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
                     <select class="form-select" aria-label="Default select example"id="language">
                         <option value="English (US)" selected>English (US)</option>
                         <option value="English (UK)">English (UK)</option>
-                        <option value="Spanish">Spanish</option>
+                        <option value = "Arabic (Standard)">Arabic (Standard)</option>
                         <option value="Chinese (Mandarin)">Chinese (Mandarin)</option>
                         <option value="Bengali">Bengali</option>
                         <option value="French">French</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Portuguese">Portuguese</option>
                         <option value="Russian">Russian</option>
+                        <option value="Spanish">Spanish</option>
                     </select>
                 </div>
 

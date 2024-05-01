@@ -166,11 +166,14 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                                         <option selected>Language</option>
                                         <option value="English (US)">English (US)</option>
                                         <option value="English (UK)">English (UK)</option>
-                                        <option value="Spanish">Spanish</option>
+                                        <option value = "Arabic (Standard)">Arabic (Standard)</option>
                                         <option value="Chinese (Mandarin)">Chinese (Mandarin)</option>
                                         <option value="Bengali">Bengali</option>
                                         <option value="French">French</option>
+                                        <option value="Hindi">Hindi</option>
+                                        <option value="Portuguese">Portuguese</option>
                                         <option value="Russian">Russian</option>
+                                        <option value="Spanish">Spanish</option>
                                     </select>
                                 </div>
                                 <div className="flex flex-row mt-2">

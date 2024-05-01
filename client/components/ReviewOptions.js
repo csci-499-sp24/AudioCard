@@ -69,15 +69,18 @@ export const ReviewOptions = ({voiceGender, setVoiceGender, language, setLanguag
           >
             {getLanguage(language)}
           </button>
-          <ul className='dropdown-menu'>
-          <li><a className="dropdown-item" onClick={() => setLanguage('en-US')}>English (US)</a></li>
+          <ul className="dropdown-menu">
+                        <li><a className="dropdown-item" onClick={() => setLanguage('en-US')}>English (US)</a></li>
                         <li><a className="dropdown-item" onClick={() => setLanguage('en-GB')}>English (UK)</a></li>
+                        <li><a className="dropdown-item" onClick={() => setLanguage('ar-XA')}>Arabic (Standard)</a></li>
                         <li><a className="dropdown-item" onClick={() => setLanguage('bn-IN')}>Bengali</a></li>
                         <li><a className="dropdown-item" onClick={() => setLanguage('cmn-CN')}>Chinese (Mandarin)</a></li>
                         <li><a className="dropdown-item" onClick={() => setLanguage('fr-FR')}>French</a></li>
+                        <li><a className="dropdown-item" onClick={() => setLanguage('hi-IN')}>Hindi</a></li>
+                        <li><a className="dropdown-item" onClick={() => setLanguage('pt-BR')}>Portuguese</a></li>
                         <li><a className="dropdown-item" onClick={() => setLanguage('ru-RU')}>Russian</a></li>
                         <li><a className="dropdown-item" onClick={() => setLanguage('es-ES')}>Spanish</a></li>
-          </ul>
+                    </ul>
         </div>
       </div>
     <div className='row flex d-flex align-items-center mt-2'>
