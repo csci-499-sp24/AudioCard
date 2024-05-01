@@ -7,6 +7,7 @@ import { useDarkMode } from '../utils/darkModeContext';
 import { ReviewOptions } from './ReviewOptions';
 import { ListenForVoiceCommands } from './ASR/speechToText';
 import { getLanguageCode } from '@/utils/languageCodes';
+import { getTranslation } from '@/utils/translations';
 
 export const CardViewReviewMode = ({ userId, cardset }) => {
     const { isDarkMode } = useDarkMode();
@@ -59,6 +60,15 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
         }
     }, [index, dataFetched]);
 
+    useEffect(() => {
+        if (language !== 'en-US' && language !== 'en-GB') {
+          setVoiceCommands({
+            shuffle: getTranslation('shuffle', language),
+            restart: getTranslation('restart', language),
+            exit: getTranslation('exit', language)
+          });
+        }
+    }, [language]);
 
     const fetchFlashCards = async () => {
         try {
@@ -207,7 +217,8 @@ export const CardViewReviewMode = ({ userId, cardset }) => {
                         <ListenForVoiceCommands isVoiceCommandsEnabled={isVoiceCommandsEnabled}
                         shuffleCards={shuffleCards}
                         handleRestartTest={handleRestartTest}
-                        voiceCommands={voiceCommands}/>   
+                        voiceCommands={voiceCommands}
+                        language={language}/>   
             </div>
         )}
         </div>
