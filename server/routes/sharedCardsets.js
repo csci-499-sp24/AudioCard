@@ -113,7 +113,7 @@ router.route('/:cardsetid/share')
                         await sharedNotif.destroy();
                     }
                     //create un sharing notif
-                    user.createNotification({ userId: user.userid, type: 'unSharedCardset', sourceId: sharedCardset[0].dataValues.id })
+                    //user.createNotification({userId: user.userid, type: 'unSharedCardset', sourceId: sharedCardset[0].dataValues.id})
                     await sharedCardset.update({
                         authority: 'no-access'
                     })
@@ -262,9 +262,13 @@ router.route('/:cardsetid/:userId/authority')
                     sourceId: sharedCardset.dataValues.id
                 }
             });
-            if (!sharedNotif) {
-                await user.createNotification({ type: 'sharedCardset', sourceId: sharedCardset.dataValues.id })
+
+            if (sharedNotif){
+            await sharedNotif.destroy()
             }
+            /*if (!sharedNotif){
+                await user.createNotification({type: 'sharedCardset', sourceId: sharedCardset.dataValues.id})
+            }*/
 
             await sharedCardset.destroy(); // Delete the sharedCardset record
 

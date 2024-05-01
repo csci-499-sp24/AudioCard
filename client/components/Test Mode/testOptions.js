@@ -3,6 +3,7 @@ import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from 'react-tooltip'
 import { useDarkMode } from '@/utils/darkModeContext';
 import { getLanguage } from '@/utils/languageCodes';
+import { getTranslation } from '@/utils/translations';
 
 export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange, 
     timeLimit, handleTimeLimit,
@@ -31,6 +32,7 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange,
         setTimeLimitUnlocked(prevState => !prevState);
     };
 
+    const voiceCommandsTooltip = getTranslation('Say "shuffle", "restart", or "exit"', language);
 
     return (
         <div className='container'>
@@ -127,9 +129,9 @@ export const TestOptions = ({isSpeakMode, attempts, handleAttemptChange,
                 <div className='col d-flex justify-content-begin'>
                     <div>
                     <i className="bi bi-question-circle-fill" 
-                    data-tooltip-id="voiceCommandTip"
-                    data-tooltip-content="Say &quot;shuffle&quot;, &quot;restart&quot;, or &quot;exit&quot;"
-                    data-tooltip-place='bottom'></i>
+                        data-tooltip-id="voiceCommandTip"
+                        data-tooltip-content={voiceCommandsTooltip}
+                        data-tooltip-place='bottom'></i>
                     <Tooltip id = "voiceCommandTip" /> 
                     </div>
                 </div> 
