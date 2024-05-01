@@ -9,7 +9,7 @@ router.route('/')
   .post(async (req, res) => {
     try {
       const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
-      if (authLevel === 'read-only' || authLevel === 'no-access'){
+      if (authLevel === 'read-only' || authLevel === 'no-access' || authLevel === 'friend-only'){
         res.status(403).send('User is not authorized to make this request');
         return;
       }
@@ -46,7 +46,7 @@ router.route('/:flashcardid')
   .put(async (req, res) => {
     try {
       const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
-      if (authLevel === 'read-only' || authLevel === 'no-access'){
+      if (authLevel === 'read-only' || authLevel === 'no-access'|| authLevel === 'friend-only'){
         res.status(403).send('User is not authorized to make this request');
         return;
       }
@@ -61,7 +61,7 @@ router.route('/:flashcardid')
   .delete(async (req, res) => {
     try {
       const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
-      if (authLevel === 'read-only' || authLevel === 'no-access'){
+      if (authLevel === 'read-only' || authLevel === 'no-access'|| authLevel === 'friend-only'){
         res.status(403).send('User is not authorized to make this request');
         return;
       }
@@ -81,7 +81,7 @@ router.route('/:flashcardid')
 router.delete('/:cardsetid/flashcards/:flashcardid', async (req, res) => {
   try {
     const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
-    if (authLevel === 'read-only' || authLevel === 'no-access' ){
+    if (authLevel === 'read-only' || authLevel === 'no-access'|| authLevel === 'friend-only' ){
       res.status(403).send('User is not authorized to make this request');
       return;
     }
@@ -101,7 +101,7 @@ router.delete('/:cardsetid/flashcards/:flashcardid', async (req, res) => {
 router.post('/updateflashcard/:flashcardId', async (req, res) => {
   try {
       const authLevel = await checkCardsetAuthority(req.params.userid, req.params.cardsetid);
-      if (authLevel === 'read-only' || authLevel === 'no-access'){
+      if (authLevel === 'read-only' || authLevel === 'no-access'|| authLevel === 'friend-only'){
         res.status(403).send('User is not authorized to make this request');
         return;
       }

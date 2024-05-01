@@ -1,7 +1,7 @@
 const { Cardset, SharedCardset } = require('../models/modelRelations');
 
 async function checkCardsetAuthority(userid, cardsetid) {
-    try{ 
+    try {
         const sharedCardset = await SharedCardset.findOne({
             where: {
                 userId: userid,
@@ -25,6 +25,8 @@ async function checkCardsetAuthority(userid, cardsetid) {
                 return 'edit';
             case sharedCardset.authority === 'admin':
                 return 'admin';
+            case sharedCardset.authority === 'friend-only':
+                return 'friend-only';
             default:
                 return 'no-access';
         }

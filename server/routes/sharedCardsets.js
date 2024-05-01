@@ -282,7 +282,8 @@ router.route('/:cardsetid/delete')
             const { cardsetid } = req.params;
             const deletedRows = await SharedCardset.destroy({
                 where: {
-                    cardsetId: cardsetid
+                    cardsetId: cardsetid,
+                    authority: 'friend-only'
                 }
             });
             res.status(200).json({ message: `Deleted ${deletedRows} rows associated with cardsetid ${cardsetid}` });
