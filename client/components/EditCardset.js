@@ -82,6 +82,16 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
             }
         }
     };
+
+    const deleteShareset = async() =>{
+        try{
+            await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${cardsetId}/delete`);
+
+        }
+        catch (error) {
+            console.error('Error deleting rows associated with cardsetid:', error);
+        }
+    };
     
     const handleDelete = (flashcard) => {
         setShowDeleteConfirmation(true);
@@ -183,7 +193,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                                         {newFriendsOnlyStatus ? 'Friends Only': 'Only Me'} <i className="fas fa-caret-down"></i>
                                         </button>
                                     <ul className="dropdown-menu">
-                                        <li><a className="dropdown-item" onClick={() => setNewFriendsOnlyStatus(false)}>Only Me</a></li>
+                                        <li><a className="dropdown-item" onClick={() => {setNewFriendsOnlyStatus(false);deleteShareset();}}>Only Me</a></li>
                                         <li><a className="dropdown-item" onClick={() => setNewFriendsOnlyStatus(true)}>Friends Only</a></li>
                                         </ul>
                                         </div>

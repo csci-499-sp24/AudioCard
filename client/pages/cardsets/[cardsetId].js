@@ -93,13 +93,12 @@ export default function CardsetPage() {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userData.id}/friends/${id}`);
 
             if (response.data.status !== 'pending' && friendshiponly == true) {
-                const shareresponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}/cardsets/${cardsetId}/shared/${cardsetId}/share?userid=${userData.id}&authority=read-only`);
+                const shareresponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}/cardsets/${cardsetId}/shared/${cardsetId}/share?userid=${userData.id}&authority=friend-only`);
                 console.log('Sharing response:', shareresponse.data);
                 setAccess(true);
                 window.location.reload();
                 return;
             }
-            
         } catch (error) {
             console.error('Error checking friendship status:', error);
         }

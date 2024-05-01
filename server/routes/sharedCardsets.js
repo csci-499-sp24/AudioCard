@@ -70,7 +70,7 @@ router.route('/:cardsetid/share')
                     through: { authority: req.query.authority },
                     attributes: ['id']
                 });
-                user.createNotification({userId: user.userid, type: 'sharedCardset', sourceId: sharedCardset[0].dataValues.id})
+                user.createNotification({ userId: user.userid, type: 'sharedCardset', sourceId: sharedCardset[0].dataValues.id })
                 if (!sharedCardset) {
                     res.status(409).json('User already has access to the cardset');
                     return;
@@ -104,12 +104,12 @@ router.route('/:cardsetid/share')
                 if (sharedCardset) {
                     //deleted sharing notif if user hasn't deleted it themselves
                     const sharedNotif = await Notification.findOne({
-                        where:{
+                        where: {
                             type: 'sharedCardset',
                             sourceId: sharedCardset.id
                         }
                     });
-                    if (sharedNotif){
+                    if (sharedNotif) {
                         await sharedNotif.destroy();
                     }
                     //create un sharing notif
@@ -222,12 +222,12 @@ router.route('/:cardsetid/:userId/authority')
                 return res.status(404).json({ error: 'User not authorized for this cardset' });
             }
             const sharedNotif = await Notification.findOne({
-                where:{
+                where: {
                     type: 'sharedCardset',
                     sourceId: sharedCardset.dataValues.id
                 }
             });
-            if (sharedNotif){
+            if (sharedNotif) {
                 await sharedNotif.destroy();
             }
             await sharedCardset.destroy(); // Delete the sharedCardset record
@@ -257,11 +257,12 @@ router.route('/:cardsetid/:userId/authority')
             });
             const user = await User.findOne({ where: { id: userId } });
             const sharedNotif = await Notification.findOne({
-                where:{
+                where: {
                     type: 'sharedCardset',
                     sourceId: sharedCardset.dataValues.id
                 }
             });
+
             if (sharedNotif){
             await sharedNotif.destroy()
             }
@@ -275,6 +276,24 @@ router.route('/:cardsetid/:userId/authority')
         } catch (error) {
             console.error('Error deleting authority associated with user and cardset:', error);
             res.status(500).json({ error: 'Error deleting authority associated with user and cardset' });
+        }
+    });
+
+
+router.route('/:cardsetid/delete')
+    .delete(async (req, res) => {
+        try {
+            const { cardsetid } = req.params;
+            const deletedRows = await SharedCardset.destroy({
+                where: {
+                    cardsetId: cardsetid,
+                    authority: 'friend-only'
+                }
+            });
+            res.status(200).json({ message: `Deleted ${deletedRows} rows associated with cardsetid ${cardsetid}` });
+        } catch (error) {
+            console.error('Error deleting rows associated with cardsetid:', error);
+            res.status(500).json({ error: 'Error deleting rows associated with cardsetid' });
         }
     });
 
