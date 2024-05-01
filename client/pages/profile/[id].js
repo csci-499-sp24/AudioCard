@@ -54,17 +54,16 @@ const Profile = () => {
     },[currentUser, profileUser, isUser])
 
     //if user is viewing own profile, fetch cardsets
-useEffect(() => {
-    if (currentUser && profileUser && currentUser.id && profileUser.id){ 
-        if (currentUser.id == Number(profileUser.id)){
-            setIsUser(true); 
-            fetchFriendCardsets(currentUser.id);
-        } else {
-            setIsUser(false);
+    useEffect(() => {
+        if (currentUser && profileUser && currentUser.id && profileUser.id){ 
+            if (currentUser.id == Number(profileUser.id)){
+                setIsUser(true); 
+                fetchFriendCardsets(currentUser.id);
+            } else {
+                setIsUser(false);
+            }
         }
-    }
-}, [currentUser, profileUser]);
-
+    }, [currentUser, profileUser]);
 
     const fetchCurrentUserData = async (firebaseId) => {
         try {
@@ -92,17 +91,17 @@ useEffect(() => {
 
     const checkFriendship = async () => {
         if (!isUser){
-        try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${currentUser.id}/friends/${profileUser.id}`);
-            if (response.data.status=='accepted'){
-                setIsFriends(true);
-                fetchFriendCardsets(id);
-            } 
-        } catch (error) {
-            console.error('Error checking friendship status:', error);
-            setIsFriends(false);
+            try {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${currentUser.id}/friends/${profileUser.id}`);
+                if (response.data.status=='accepted'){
+                    setIsFriends(true);
+                    fetchFriendCardsets(id);
+                } 
+            } catch (error) {
+                console.error('Error checking friendship status:', error);
+                setIsFriends(false);
+            }
         }
-    }
     };
 
     const fetchPublicCardsets = async (userId) => {
@@ -145,61 +144,78 @@ useEffect(() => {
 
     return (
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
-        <Navbar userId={currentUser?.id} />
-        <div className="mt-4">
-            <div className="row d-flex">
-                <div className="col-lg-2 col-md-2 col-sm-12" style={{marginRight: '10vh'}}>
-                    <div className={styles.profileContainer}>
-                        <div className={styles.profileSidebar}>
-                            <h1 className={styles.cardSetTitle}>{`${profileUser?.username}`} </h1>
-                            <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} style={{ borderColor: isDarkMode ? 'white' : 'black' }} />
-                            {shouldShowFriendRequestButton && (
-                                <FriendRequestButton
-                                    currentUserId={currentUser.id}
-                                    profileUserId={profileUser.id}
-                                />
-                            )}
-                            <div className={styles.friendList}>
-                                <FriendList userId={profileUser?.id} />
+            <Navbar userId={currentUser?.id} />
+
+            <div class="container min-vh-100 d-flex flex-column">
+                <div class="row flex-grow-1 px-2 mb-5 mt-5">
+                    <div class="col-md-5 col-lg-4 order-md-first mb-5">
+                        <div id={`${isDarkMode ? styles.UserInfoColDark : styles.UserInfoCol}`}>
+                            <div className="text-center m-4" id={`${isDarkMode ? styles.UserInfoContainerDark : styles.UserInfoContainer}`}>
+                                <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.avatarImage} style={{Color: isDarkMode ? 'white' : 'black' }} />
+                                <h4 className={styles.cardSetTitle}>{`${profileUser?.username}`}</h4>
+                                <p id={`${isDarkMode ? styles.userEmailDark : styles.userEmail}`} >{`${profileUser?.email}`}</p>
+                                {shouldShowFriendRequestButton && (
+                                    <FriendRequestButton
+                                        currentUserId={currentUser.id}
+                                        profileUserId={profileUser.id}
+                                    />
+                                )}
                             </div>
+
+                            <FriendList userId={profileUser?.id} />
                         </div>
                     </div>
-                </div>
-                <div className="col" style={{marginTop: '10vh'}}>
-                    <div className="container">
-                        <div className='row d-flex justify-content-center'>
-                            <h1 className={styles.cardSetTitle}>Public Card Sets <span className="bi bi-globe"></span></h1>
-                        </div>
-                        <div className="row">
-                            {publicCardsets.map(cardset => (
-                                <div className='col-lg-6 mb-4' key={cardset.id}>
-                                    <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{ textDecoration: 'none', width: '100%' }}>
-                                        <CardProfile key={cardset.id} cardset={cardset} />
-                                    </Link>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                    {(isFriends || isUser) && (
-                        <div className="container mt-4">
-                            <h1 className={styles.cardSetTitle}>Friends Only Card Sets <span className="bi bi-lock"></span></h1>
-                            <div className="row">
-                                {friendCardsets
-                                    .filter(cardset => cardset.title != null)
-                                    .map(cardset => (
-                                        <div className='col-lg-6 mb-4' key={cardset.id}>
-                                            <Link href={`/cardsets/${cardset.id}`} style={{ textDecoration: 'none', width: '100%' }}>
-                                                <CardProfile key={cardset.id} cardset={cardset} />
-                                            </Link>
+
+                    <div class="col-md-7 col-lg-8 mb-5">
+                        <div className="row flex-column mb-5 h-100" id={`${isDarkMode ? styles.CardsetsInfoColDark : styles.CardsetsInfoCol}`}>
+                            {/* Public Card sets */}
+                            <div className="text-center">
+                                <h4 className="mt-4 mb-3" id={styles.cardSetTitle}>Public Card Sets <span className="bi bi-globe"></span></h4>
+                                {
+                                    publicCardsets && (
+                                        <div className="row" id={styles.cardsetsContainerScrollable}>
+                                            { publicCardsets.map(cardset => (
+                                                <div className='col-lg-6 mb-4' key={cardset.id}>
+                                                    <Link href={`/cardsets/${cardset.id}`} key={cardset.id} style={{ textDecoration: 'none', width: '100%' }}>
+                                                        <CardProfile key={cardset.id} cardset={cardset} />
+                                                    </Link>
+                                                </div>
+                                            ))}
                                         </div>
-                                    ))}
+                                    )
+                                }
                             </div>
+                            
+                            {/* Friends Only Card sets */}
+                            {(isFriends || isUser) && ( 
+                                <div className="text-center mb-2" id={styles.cardsetsContainerScrollable}>
+                                    <h4 className="mt-4 mb-3" id={styles.cardSetTitle}>Friends Only Card Sets <span className="bi bi-lock"></span></h4>
+                                    {
+                                        friendCardsets && friendCardsets.length !== 0 ? 
+                                            <div className="row">
+                                                {friendCardsets
+                                                    .filter(cardset => cardset.title != null)
+                                                    .map(cardset => (
+                                                        <div className='col-lg-6 mb-4' key={cardset.id}>
+                                                            <Link href={`/cardsets/${cardset.id}`} style={{ textDecoration: 'none', width: '100%' }}>
+                                                                <CardProfile key={cardset.id} cardset={cardset} />
+                                                            </Link>
+                                                        </div>
+                                                    ))}
+                                            </div>
+                                        : 
+                                        <div className="row">
+                                            <p>No card sets</p>
+                                        </div>
+                                    }
+                                </div>
+                            )}
                         </div>
-                    )}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>);
+    );
 };
 
 export default Profile;

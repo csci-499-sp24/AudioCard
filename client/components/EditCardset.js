@@ -6,7 +6,7 @@ import { useDarkMode } from '@/utils/darkModeContext';
 import { getSubjectStyle } from '@/utils/getSubjectStyles';
 import { Tooltip } from 'react-tooltip'
 
-export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubject, cardsetIsPublic, cardsetIsFriendsOnly}) => {
+export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubject, cardsetLanguage, cardsetIsPublic, cardsetIsFriendsOnly}) => {
     const {isDarkMode} = useDarkMode();
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
@@ -14,6 +14,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
     const [isEditingSet, setisEditingSet] = useState(false);
     const [newTitle, setNewTitle] = useState(cardsetTitle);
     const [newSubject, setNewSubject] = useState(cardsetSubject);
+    const [newLanguage, setNewLanguage] = useState(cardsetLanguage);
     const [newPublicStatus, setNewPublicStatus] = useState(cardsetIsPublic);
     const [newFriendsOnlyStatus, setNewFriendsOnlyStatus] = useState(cardsetIsFriendsOnly);
     const [isAddingCard, setIsAddingCard] = useState(false);
@@ -48,6 +49,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
         const updatedData = {
             title: newTitle,
             subject: newSubject,
+            language: newLanguage,
             isPublic: newPublicStatus,
             isFriendsOnly: newFriendsOnlyStatus
         }
@@ -78,6 +80,16 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
             } else {
                 console.error('Error deleting flashcard: ', error.message);
             }
+        }
+    };
+
+    const deleteShareset = async() =>{
+        try{
+            await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${cardsetId}/delete`);
+
+        }
+        catch (error) {
+            console.error('Error deleting rows associated with cardsetid:', error);
         }
     };
     
@@ -148,6 +160,22 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                                         <option value="Other">Other</option>
                                     </select>
                                 </div>
+                                <div className="flex flex-row">
+                                <label htmlFor="answer" className="basis-1/2">Language: </label>
+                                    <select class="form-select" aria-label="Default select example"id="language" onChange={(e) => setNewLanguage(e.target.value)}>
+                                        <option selected>Language</option>
+                                        <option value="English (US)">English (US)</option>
+                                        <option value="English (UK)">English (UK)</option>
+                                        <option value = "Arabic (Standard)">Arabic (Standard)</option>
+                                        <option value="Chinese (Mandarin)">Chinese (Mandarin)</option>
+                                        <option value="Bengali">Bengali</option>
+                                        <option value="French">French</option>
+                                        <option value="Hindi">Hindi</option>
+                                        <option value="Portuguese">Portuguese</option>
+                                        <option value="Russian">Russian</option>
+                                        <option value="Spanish">Spanish</option>
+                                    </select>
+                                </div>
                                 <div className="flex flex-row mt-2">
                                     <input
                                         className="form-check-input"
@@ -168,7 +196,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                                         {newFriendsOnlyStatus ? 'Friends Only': 'Only Me'} <i className="fas fa-caret-down"></i>
                                         </button>
                                     <ul className="dropdown-menu">
-                                        <li><a className="dropdown-item" onClick={() => setNewFriendsOnlyStatus(false)}>Only Me</a></li>
+                                        <li><a className="dropdown-item" onClick={() => {setNewFriendsOnlyStatus(false);deleteShareset();}}>Only Me</a></li>
                                         <li><a className="dropdown-item" onClick={() => setNewFriendsOnlyStatus(true)}>Friends Only</a></li>
                                         </ul>
                                         </div>
@@ -188,6 +216,8 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                             <div className='col'>
                                 <h2>Set Name: {newTitle} </h2>
                                 <h2 style={{ color: `${txtColor}` }}>Subject: {newSubject} </h2>
+                                <h2 style={{ color: `${txtColor}` }}>Language: {newLanguage} </h2>
+
                             </div>
                             <div className='col d-flex justify-content-end'>
                                 <button className={`btn ${isDarkMode ? 'light-btn' : ''}`} onClick={handleEdit}><i className="bi bi-pencil-fill"></i></button>

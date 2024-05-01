@@ -33,6 +33,7 @@ const FriendList = ({userId}) => {
             console.error('Error fetching friends:', error);
         }
     };
+
     const navigateToUserProfile = (friendId) => {
         router.push(`/profile/${friendId}`);
     };
@@ -41,21 +42,42 @@ const FriendList = ({userId}) => {
         event.target.src = '/userAvatar.jpg';
     };
 
-    return (
-        <div className={styles.friendList}>
-        <h2>Friends</h2>
-        <ul className={styles.friendListUl}>
-            {friends.map((friend) => (
-                <li key={friend.id} className={isDarkMode ? styles.darkFriendListItem : styles.friendListItem } onClick={() => navigateToUserProfile(friend.id)}>
-                    <div className={styles.friendAvatar} style={{borderColor: isDarkMode ? 'white': 'black'}}>
-                        <img src={friend.avatar} onError={setDefaultAvatar} alt={`${friend.username}'s avatar`}/>
-                    </div>
-                    <span className={styles.friendName} style={{}}>{friend.username}</span>
-                </li>
-            ))}
-        </ul>
-    </div>
-    );
+    if(friends && friends.length != 0){
+        return (
+            <div className="mt-3 p-4">
+                <h4 className="text-center mb-3">Friends</h4>
+                <ul className="list-group" id={styles.friendListScrollable}>
+                    {friends.map((friend) => (
+                        <li 
+                            key={friend.id} 
+                            className="list-group-item d-flex justify-content-start lh-sm"
+                            id={isDarkMode ? styles.darkFriendListItem : styles.friendListItem }
+                            onClick={() => navigateToUserProfile(friend.id)}
+                        >
+                            <div className={styles.friendAvatar} >
+                                <img src={friend.avatar} onError={setDefaultAvatar} alt={`${friend.username}'s avatar`}/>
+                            </div>
+
+                            <div>
+                                <div>{friend.username}</div>
+                                { friend.publicCardsets && friend.publicCardsets.length ? 
+                                    <span id={isDarkMode ? styles.friendListItemSetsDark : styles.friendListItemSets }>
+                                        {friend.publicCardsets.length} public card set{friend.publicCardsets.length > 1 ? "s" : ""}
+                                    </span> 
+                                    :
+                                    <span id={isDarkMode ? styles.friendListItemSetsDark : styles.friendListItemSets }>
+                                        No public card sets
+                                    </span>
+                                }
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        )}
+    else {
+        return null;
+    }
 }
 
 export default FriendList;

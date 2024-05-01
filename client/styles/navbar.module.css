@@ -20,13 +20,10 @@
 }
 
 .navUserAvatar {
-    position: relative;
-    top: -3px;
     overflow: hidden;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
+    width: 30px;
+    height: 30px;
     border: 1px solid #333;
 }
 
@@ -86,6 +83,18 @@
 
 #navLinkLogoLanding:hover {
     color: #1d62b4ba !important;
+}
+
+#navLinkLogoLanding {
+    font-weight: 500;
+}
+
+#navLinkLogoLanding:hover {
+    color: #1d62b4ba !important;
+}
+
+#navLinkLogoTextLanding {
+    padding-left: 5px;
 }
 
 #navIconModeLanding {

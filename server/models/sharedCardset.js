@@ -17,7 +17,7 @@ const SharedCardset = db.define('sharedCardset',{
         allowNull: false
     },
     authority: {
-        type: DataTypes.ENUM('read-only', 'edit', 'admin'),
+        type: DataTypes.ENUM('revoked', 'read-only', 'edit', 'admin','friend-only'),
         allowNull: false,
         defaultValue: 'read-only'
     }

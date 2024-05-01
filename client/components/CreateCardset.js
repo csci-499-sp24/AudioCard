@@ -12,6 +12,7 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
             const newSetData = {
                 title: event.target.title.value,
                 subject: event.target.subject.value,
+                language: event.target.language.value,
                 isPublic: event.target.isPublic.checked,
                 isFriendsOnly: isFriendsOnly
             }
@@ -52,6 +53,21 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
                         <option value="Entertainment">Entertainment</option>
                         <option value="Health">Health</option>
                         <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div className="col-12">
+                    <label className="visually-hidden" htmlFor="language">Language</label>
+                    <select class="form-select" aria-label="Default select example"id="language">
+                        <option value="English (US)" selected>English (US)</option>
+                        <option value="English (UK)">English (UK)</option>
+                        <option value = "Arabic (Standard)">Arabic (Standard)</option>
+                        <option value="Chinese (Mandarin)">Chinese (Mandarin)</option>
+                        <option value="Bengali">Bengali</option>
+                        <option value="French">French</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Portuguese">Portuguese</option>
+                        <option value="Russian">Russian</option>
+                        <option value="Spanish">Spanish</option>
                     </select>
                 </div>
 
