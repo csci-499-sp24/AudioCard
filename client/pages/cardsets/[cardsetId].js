@@ -15,11 +15,11 @@ import examDark from '../../assets/images/exam2_dark.png';
 import examLight from '../../assets/images/exam2_light.png';
 import styles from '../../styles/navbar.module.css';
 import Link from 'next/link';
-import useAuth from '@/hooks/useAuth';
+
 
 
 export default function CardsetPage() {
-    const {userData:_user} = useAuth()
+   
     const { isDarkMode } = useDarkMode();
     const [user, setUser] = useState(null);
     const router = useRouter();
@@ -196,7 +196,7 @@ export default function CardsetPage() {
         fetchFlashCards();
     }
 
-    console.log(cardset.userId,_user?.id)
+
 
 
 
@@ -318,7 +318,7 @@ export default function CardsetPage() {
                                                 </button>
                                                 : null}
                                             <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
-                                            {isadmin && <button className="btn deleteButton" onClick={() => {
+                                            {isOwner && <button className="btn deleteButton" onClick={() => {
 handleDelete()
                                             }}>
                                                 <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
