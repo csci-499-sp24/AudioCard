@@ -89,13 +89,13 @@ const Notification = ({ userId }) => {
             <li key={notification.id} className={styles.notificationItem}>
                 {
                 notification.type === 'revoke' ? 
-                <span className={styles.notificationText}>{`Your access to cardset '${notification.cardset.title}' has been revoked`}</span>
+                <span className={styles.notificationText}>{`Your access to card set '${notification.cardset.title}' has been revoked`}</span>
                 : notification.type === 'requestDenied' ? 
                 <span className={styles.notificationText}>{`Your request for access to card set '${notification.cardset.title}' has been denied`}</span>
                 : notification.type === 'request' ? 
-                <span className={styles.notificationText}>{`User ${notification.requestor} has requested ${notification.authority} access to cardset '${notification.cardset.title}'`}</span>
+                <span className={styles.notificationText}>{`User ${notification.requestor} has requested ${notification.authority} access to card set '${notification.cardset.title}'`}</span>
                 : notification.type === 'grant' &&
-                <span className={styles.notificationText}>{`You have been granted ${notification.authority} access to cardset '${notification.cardset.title}'`}</span>
+                <span className={styles.notificationText}>{`You have been granted ${notification.authority} access to card set '${notification.cardset.title}'`}</span>
                 }
                 <div className={styles.buttonGroup}>
                 <button onClick={() => deleteCardsetNotification(notification.id)} className={styles.acceptButton}>
