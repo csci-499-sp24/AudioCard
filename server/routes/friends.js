@@ -257,11 +257,9 @@ router.route('/')
         const { friendId } = req.body;
         const existingEntry = await getExistingFriendEntry(req.params.userid, friendId);
         if (existingEntry) {
-            console.log(existingEntry.status);
             if (existingEntry.status === 'accepted') {
-                console.log("RUNNING");
                 await createFriendNotif(friendId, req.params.userid, 'unfriended');
-            } else if (existingEntry.user1Id !== req.params.userid && existingEntry.status === 'pending'){
+            } else if (parseInt(existingEntry.user1Id) !== parseInt(req.params.userid) && existingEntry.status === 'pending'){
                 await createFriendNotif(friendId, req.params.userid, 'denied');
             }
             await deleteFriendEntry(existingEntry);
@@ -272,6 +270,25 @@ router.route('/')
     } catch (error) {
         console.error('Error deleting friend entry: ', error);
         res.status(500).json({ error: 'Error deleting friend entry' });
+    }
+});
+
+router.route('/accept')
+.post(async (req, res) => {
+    try{
+        const { friendId } = req.body;
+        const existingEntry = await getExistingFriendEntry(req.params.userid, friendId);
+        if (existingEntry && existingEntry.status !== 'accepted' && existingEntry.user1Id != parseInt(req.params.userid)) {
+            const updatedEntry = await acceptFriendRequest(existingEntry);
+            await createFriendNotif(friendId, req.params.userid, 'confirmed');
+            return res.status(200).json(updatedEntry);
+        }
+        else if (!existingEntry) {
+            return res.status(404).json({message: "Friend request doesn't exist, perhaps it was cancelled"});
+        } 
+    } catch (error) {
+        console.error('Error accepting friend request: ', error);
+        res.status(500).json({ error: 'Error accepting friend request' });
     }
 });
 

@@ -9,7 +9,10 @@ const Notification = ({ userId }) => {
     const { isDarkMode } = useDarkMode();
 
     const notificationRef = useRef(null);
-    const toggleNotification = () => setIsNotificationOpen(!isNotificationOpen);
+    const toggleNotification = () => {
+        fetchNotifications();
+        setIsNotificationOpen(!isNotificationOpen);
+    }
 
     useEffect(() => {
         if (userId) {
@@ -32,7 +35,7 @@ const Notification = ({ userId }) => {
     const fetchNotifications = async () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/notifications`);
-            const incomingNotifications = response.data.userNotifications;//.filter(request => request.requestDirection === 'incoming');
+            const incomingNotifications = response.data;
             setNotifications(incomingNotifications);
         } catch (error) {
             console.error('Error fetching notifications:', error);
@@ -41,12 +44,14 @@ const Notification = ({ userId }) => {
 
     const acceptFriendRequest = async (friendId) => {
         try {
-            await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/friends`, {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/friends/accept`, {
                 friendId: friendId
             });
             fetchNotifications();
         } catch (error) {
             console.error('Error accepting friend request:', error);
+        } finally {
+            fetchNotifications();
         }
     };
 
@@ -83,9 +88,13 @@ const Notification = ({ userId }) => {
         return(
             <li key={notification.id} className={styles.notificationItem}>
                 {
-                notification.authority === 'revoked' ? 
+                notification.type === 'revoke' ? 
                 <span className={styles.notificationText}>{`Your access to cardset '${notification.cardset.title}' has been revoked`}</span>
-                :
+                : notification.type === 'requestDenied' ? 
+                <span className={styles.notificationText}>{`Your request for access to card set '${notification.cardset.title}' has been denied`}</span>
+                : notification.type === 'request' ? 
+                <span className={styles.notificationText}>{`User ${notification.requestor} has requested ${notification.authority} access to cardset '${notification.cardset.title}'`}</span>
+                : notification.type === 'grant' &&
                 <span className={styles.notificationText}>{`You have been granted ${notification.authority} access to cardset '${notification.cardset.title}'`}</span>
                 }
                 <div className={styles.buttonGroup}>
@@ -113,20 +122,20 @@ const Notification = ({ userId }) => {
                         </button>
                     </div>
                 </div>
-                : notification.type === 'confirmed' ?   
+                : notification.type === 'confirmed' ?
                 <div>
                     <span className={styles.notificationText}>{`${notification.sender.username} has accepted your friend request`}</span>
                     <div className={styles.buttonGroup}>
-                        <button onClick={() => deleteFriendNotification(notification.id)} className={styles.declineButton}>
+                        <button onClick={() => deleteFriendNotification(notification.id)} className={styles.acceptButton}>
                             <i className="bi bi-x"></i>
                         </button>
                     </div>
                 </div>
-                : notification.type === 'denied' ?  
+                : notification.type === 'denied' ?
                 <div>
                     <span className={styles.notificationText}>{`${notification.sender.username} has declined your friend request`}</span>
                     <div className={styles.buttonGroup}>
-                        <button onClick={() => deleteFriendNotification(notification.id)} className={styles.declineButton}>
+                        <button onClick={() => deleteFriendNotification(notification.id)} className={styles.acceptButton}>
                             <i className="bi bi-x"></i>
                         </button>
 
@@ -136,21 +145,18 @@ const Notification = ({ userId }) => {
                 <div>
                     <span className={styles.notificationText}>{`${notification.sender.username} has unfriended you`}</span>
                     <div className={styles.buttonGroup}>
-                        <button onClick={() => deleteFriendNotification(notification.id)} className={styles.declineButton}>
+                        <button onClick={() => deleteFriendNotification(notification.id)} className={styles.acceptButton}>
                             <i className="bi bi-x"></i>
                         </button>
                     </div>
                 </div>
                 }
-
-
             </li>
         );
     }
 
     return (
         <div style={{ padding: '5px' }}>
-            {console.log(notifications)}
             <div className={styles.bellWrapper} onClick={toggleNotification}>
                 <i className={`bi bi-bell ${styles.bellIcon}`}></i>
                 {notifications.length > 0 && (
@@ -160,18 +166,11 @@ const Notification = ({ userId }) => {
             <div ref={notificationRef}>
                 {isNotificationOpen && (
                     <div className={`${isDarkMode ? styles.notificationDropdownDark : styles.notificationDropdownLight}`}>
-                        {notifications.friendNotifications.length > 0 ? (
+                        {notifications.length > 0 ? (
                             <ul className={styles.notificationList}>
-                                {notifications.friendNotifications.map((notification) => (
-                                    friendNotification(notification)
-                                ))}
-                            </ul>
-                        ) : (
-                            <div className={styles.noNotifications} style={{ color: isDarkMode ? 'white' : '#666' }}>No new notifications</div>
-                        )}
-                        {notifications.cardsetNotifications.length > 0 ? (
-                            <ul className={styles.notificationList}>
-                                {notifications.cardsetNotifications.map((notification) => (
+                                {notifications.map((notification) => (
+                                    !notification.hasOwnProperty('authority') ? //Only cardset notifications have authority data field
+                                    friendNotification(notification) :
                                     cardsetNotification(notification)
                                 ))}
                             </ul>

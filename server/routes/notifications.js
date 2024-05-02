@@ -10,11 +10,13 @@ router.route('/')
             include: [
                 {
                     model: FriendNotification,
+                    attributes: ['id', 'type', 'createdAt'],
                     include: [
                         {
                             model: User,
                             required: true,
                             as: 'sender',
+                            attributes: ['id', 'username']
                         },
                     ]
                 },
@@ -38,7 +40,9 @@ router.route('/')
                 }
             ]
         });
-        return res.status(200).json({userNotifications});
+        const mergedNotifications = [...userNotifications.friendNotifications, ...userNotifications.cardsetNotifications]
+        mergedNotifications.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
+        return res.status(200).json(mergedNotifications.reverse());
     } catch (error) {
         console.error("Error getting user's notifications:", error);
         return res.status(500).json({ error: "Internal Server Error" });
