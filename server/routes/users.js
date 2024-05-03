@@ -49,6 +49,18 @@ router.route('/changePassword')
         }
     })
 
+    // change username
+router.route('/changeUsername')
+.post(async(req, res) => {
+    try {
+        const { updatedUsername } = req.body;
+        return res.status(200).json({ success: true });
+    } catch (error) {
+
+    }
+})
+
+
 //Get all Users
 router.route('/')
     .get(async (req, res) => {

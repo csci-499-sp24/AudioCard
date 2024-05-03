@@ -126,12 +126,17 @@ const Settings = () => {
                     Upload Your Avatar
                 </button>
                 <div  className={styles.container}>
-                    <button className={styles.uploadButton}>
-                        <Link href="/update-password" className='text-light link-secondary link-underline-opacity-0'>
-                            Update Your Password
-                        </Link>
-                    </button>
+                    <Link href="/update-password" className={`${styles.uploadButton} text-light link-secondary link-underline-opacity-0`}>
+                        Update Your Password
+                    </Link>                
                 </div>
+
+                <div  className={styles.container}>
+                    <Link href="/update-username" className={`${styles.uploadButton} text-light link-secondary link-underline-opacity-0`}>
+                        Update Your Username
+                    </Link>
+                </div>
+
             </div>
         </div>
     );
