@@ -62,13 +62,19 @@ const Navbar = ({ userId }) => {
         event.target.src = '/userAvatar.jpg';
     };
 
+    const handleExploreLinkClick = () => {
+        if (router.pathname === '/explore') {
+            router.refresh();
+        }
+    }
+
     return (
         <nav className={`navbar navbar-expand-lg ${isDarkMode ? 'bg-dark' : 'bg-body-tertiary'}`} id={styles.navbar}>
             <div className="container">
                 <div className="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <Link href="/explore" className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink}>
+                            <Link href="/explore" className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink} onClick={handleExploreLinkClick}>
                                 Explore
                             </Link>
                         </li>
