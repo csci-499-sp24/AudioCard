@@ -23,3 +23,9 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+
+const DefaultComponent = () => {
+    return <div>This is the default component for AuthContext</div>;
+};
+
+export default DefaultComponent;
