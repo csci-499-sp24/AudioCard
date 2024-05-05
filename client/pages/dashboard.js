@@ -11,10 +11,11 @@ import SharedCardset from '@/components/SharedCardset';
 import Navbar from '@/components/Navbar/Navbar';
 import { useDarkMode } from '../utils/darkModeContext';
 import BackToTopButton from '@/components/BackToTopButton';
+import { AuthContext } from  "./authcontext"
+import React, { useContext } from 'react';
 
 const Dashboard = () => {
     const { isDarkMode } = useDarkMode();
-    const [user, setUser] = useState(null);
     const [userData, setUserData] = useState(null);
     const [cardsets, setCardsets] = useState([]);
     const [selectedCardset, setSelectedCardset] = useState(null);
@@ -22,22 +23,10 @@ const Dashboard = () => {
     const [sortBy, setSortBy] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [subjectFilter, setSubjectFilter] = useState('');
-
+    const user = useContext(AuthContext).user;
     const router = useRouter();
 
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(null);
-            }
-        });
-        if (!userData) {
-            fetchUserData();
-        }
-        return () => unsubscribe();
-    }, [user, userData]);
+ 
 
     useEffect(() => {
         fetchCardsets();

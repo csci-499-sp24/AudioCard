@@ -15,11 +15,13 @@ import examDark from '../../assets/images/exam2_dark.png';
 import examLight from '../../assets/images/exam2_light.png';
 import styles from '../../styles/navbar.module.css';
 import Link from 'next/link';
+import { AuthContext } from  "../authcontext"
+import { useContext } from 'react';
 
 
 export default function CardsetPage() {
     const { isDarkMode } = useDarkMode();
-    const [user, setUser] = useState(null);
+    const user = useContext(AuthContext).user;
     const router = useRouter();
     const [userData, setUserData] = useState(null);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
@@ -51,17 +53,11 @@ export default function CardsetPage() {
     }, [Owner])
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(null);
-            }
-        });
+
         if (!userData) {
             fetchUserData();
         }
-        return () => unsubscribe();
+    
     }, [user, userData]);
 
     useEffect(() => {
