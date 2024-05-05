@@ -15,7 +15,7 @@ import examDark from '../../assets/images/exam2_dark.png';
 import examLight from '../../assets/images/exam2_light.png';
 import styles from '../../styles/navbar.module.css';
 import Link from 'next/link';
-import { AuthContext } from  "../authcontext"
+import { AuthContext } from  "../../utils/authcontext"
 import { useContext } from 'react';
 
 

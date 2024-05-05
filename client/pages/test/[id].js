@@ -6,7 +6,7 @@ import axios from 'axios';
 import { auth } from '@/utils/firebase';
 import styles from '../../styles/testmode.module.css';
 import { useDarkMode } from '@/utils/darkModeContext';
-import { AuthContext } from  "../authcontext"
+import { AuthContext } from  "../../utils/authcontext"
 import React, { useContext } from 'react';
 const TestPage = () => {
     const {isDarkMode} = useDarkMode(); 

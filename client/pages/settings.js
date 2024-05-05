@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar/Navbar';
 import Link from 'next/link';
 import { useDarkMode } from '../utils/darkModeContext';
 import styles from '../styles/settings.module.css';
-import { AuthContext } from  "./authcontext"
+import { AuthContext } from  "../utils/authcontext"
 import  { useContext } from 'react';
 
 const Settings = () => {

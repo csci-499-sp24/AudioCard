@@ -1,6 +1,6 @@
 // AuthContext.js
 import { createContext, useState, useEffect, useContext } from 'react';
-import { auth } from '../utils/firebase';
+import { auth } from './firebase';
 
 export const AuthContext = createContext();
 
@@ -24,8 +24,3 @@ export const AuthProvider = ({ children }) => {
 
 export const useAuth = () => useContext(AuthContext);
 
-const DefaultComponent = () => {
-    return <div>This is the default component for AuthContext</div>;
-};
-
-export default DefaultComponent;
