@@ -9,7 +9,7 @@ import { CardsetSearchBar } from "@/components/Explore/CardsetSearchBar";
 import { UserSearchBar } from "@/components/Explore/UserSearchBar";
 import { UserCard } from "@/components/Cards/UserCard";
 import BackToTopButton from "@/components/BackToTopButton";
-import { AuthContext } from  "../utils/authcontext"
+import { AuthContext } from  "../utils/authcontext";
 import React, { useContext } from 'react';
 const Explore = () => {
     const { isDarkMode} = useDarkMode();

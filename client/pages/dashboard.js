@@ -11,7 +11,7 @@ import SharedCardset from '@/components/SharedCardset';
 import Navbar from '@/components/Navbar/Navbar';
 import { useDarkMode } from '../utils/darkModeContext';
 import BackToTopButton from '@/components/BackToTopButton';
-import { AuthContext } from  "../utils/authcontext"
+import { AuthContext } from  "../utils/authcontext";
 import React, { useContext } from 'react';
 
 const Dashboard = () => {

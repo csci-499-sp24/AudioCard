@@ -1,4 +1,3 @@
-// AuthContext.js
 import { createContext, useState, useEffect, useContext } from 'react';
 import { auth } from './firebase';
 
