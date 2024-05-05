@@ -1,9 +1,7 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const router = express.Router({ mergeParams: true });
-const { Friend, User, Notification  } = require('../models/modelRelations');
-const { Cardset, Flashcard } = require('../models/modelRelations');
-
+const { Friend, User, FriendNotification, Cardset, Flashcard } = require('../models/modelRelations');
 const { Sequelize } = require('sequelize');
 
 async function getAllFriends (currentUserId) {
@@ -77,10 +75,20 @@ async function getExistingFriendEntry (user1Id, user2Id) {
 
 async function deleteFriendEntry (existingEntry) {
     try {
-        const friendNotif = await Notification.findOne({
+        const friendNotif = await FriendNotification.findOne({
             where:{
-                type: 'friend',
-                sourceId: existingEntry.id
+                [Op.or]: [
+                {
+                    recipientId: existingEntry.user1Id,
+                    senderId: existingEntry.user2Id,
+                    type: 'pending'
+                },
+                {
+                    recipientId: existingEntry.user2Id,
+                    senderId: existingEntry.user1Id,
+                    type: 'pending'
+                },
+                ]
             }
         });
         if (friendNotif){
@@ -95,10 +103,10 @@ async function deleteFriendEntry (existingEntry) {
 
 async function acceptFriendRequest (existingRequest) {
     try{
-        const friendNotif = await Notification.findOne({
+        const friendNotif = await FriendNotification.findOne({
             where:{
-                type: 'friend',
-                sourceId: existingRequest.id
+                recipientId: existingRequest.user2Id,
+                senderId: existingRequest.user1Id
             }
         });
         if (friendNotif){
@@ -116,10 +124,19 @@ async function createFriendRequest (user1Id, user2Id) {
         const user = await User.findByPk(user1Id);
         const user2 = await User.findByPk(user2Id);
         const newRequest = await user.addFriend(user2);
-        user2.createNotification({type: 'friend', sourceId: newRequest[0].dataValues.id})
         return newRequest;
     } catch (error) {
         throw new Error('Error creating friend request: ' + error.message);
+    }
+}
+
+async function createFriendNotif (recipientId, senderId, type) {
+    try{
+        const recipient = await User.findByPk(recipientId);
+        await recipient.createFriendNotification({type: type, senderId: senderId})
+        return;
+    } catch (error) {
+        throw new Error('Error creating friend notification: ' + error.message);
     }
 }
 
@@ -216,11 +233,13 @@ router.route('/')
         //If request exists from other user, accept the existing request
         if (existingEntry && existingEntry.status !== 'accepted' && existingEntry.user1Id != parseInt(req.params.userid)) {
             const updatedEntry = await acceptFriendRequest(existingEntry);
+            await createFriendNotif(friendId, req.params.userid, 'confirmed');
             return res.status(200).json(updatedEntry);
         }
         //If request doesn't exist, create one 
         else if (!existingEntry) {
             const newEntry = await createFriendRequest(req.params.userid, friendId);
+            await createFriendNotif(friendId, req.params.userid, 'pending');
             return res.status(201).json(newEntry);
         } 
         //Otherwise, users are already friends.
@@ -238,6 +257,11 @@ router.route('/')
         const { friendId } = req.body;
         const existingEntry = await getExistingFriendEntry(req.params.userid, friendId);
         if (existingEntry) {
+            if (existingEntry.status === 'accepted') {
+                await createFriendNotif(friendId, req.params.userid, 'unfriended');
+            } else if (parseInt(existingEntry.user1Id) !== parseInt(req.params.userid) && existingEntry.status === 'pending'){
+                await createFriendNotif(friendId, req.params.userid, 'denied');
+            }
             await deleteFriendEntry(existingEntry);
             return res.status(204).send();
         } else {
@@ -246,6 +270,25 @@ router.route('/')
     } catch (error) {
         console.error('Error deleting friend entry: ', error);
         res.status(500).json({ error: 'Error deleting friend entry' });
+    }
+});
+
+router.route('/accept')
+.post(async (req, res) => {
+    try{
+        const { friendId } = req.body;
+        const existingEntry = await getExistingFriendEntry(req.params.userid, friendId);
+        if (existingEntry && existingEntry.status !== 'accepted' && existingEntry.user1Id != parseInt(req.params.userid)) {
+            const updatedEntry = await acceptFriendRequest(existingEntry);
+            await createFriendNotif(friendId, req.params.userid, 'confirmed');
+            return res.status(200).json(updatedEntry);
+        }
+        else if (!existingEntry) {
+            return res.status(404).json({message: "Friend request doesn't exist, perhaps it was cancelled"});
+        } 
+    } catch (error) {
+        console.error('Error accepting friend request: ', error);
+        res.status(500).json({ error: 'Error accepting friend request' });
     }
 });
 

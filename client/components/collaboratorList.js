@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { auth } from '@/utils/firebase';
 
-export const CollaboratorList = ({ cardsetId, isOwner, isadmin }) => {
+export const CollaboratorList = ({ currentUserId, cardsetId, isOwner, isadmin }) => {
     const [userEmailsWithAuth, setUserEmailsWithAuth] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -35,7 +35,11 @@ export const CollaboratorList = ({ cardsetId, isOwner, isadmin }) => {
 
     const deleteAccess = async (id) => {
         try {
-            const response = await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${cardsetId}/${id}/authority`);
+            const response = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${cardsetId}/${id}/authority`, { 
+            data: {
+                currentUserId: currentUserId
+            }
+            });
             setUserEmailsWithAuth(prevUsers => prevUsers.filter(user => user.id !== id));
             return response
         } catch (error) {
