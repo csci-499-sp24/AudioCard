@@ -5,7 +5,6 @@ import { auth } from '../utils/firebase';
 function Index() {
   const [userEmail, setUserEmail] = useState(null);
   const router = useRouter();
-  const user = useContext(AuthContext).user;
   useEffect(() => {
     // Check if user is signed in
     const unsubscribe = auth.onAuthStateChanged(user => {
