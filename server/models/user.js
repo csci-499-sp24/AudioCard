@@ -15,6 +15,10 @@ const User = db.define('user', {
     allowNull: false,
     unique: true
   },
+  prefLanguage: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
 
 });
 

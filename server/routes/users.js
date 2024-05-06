@@ -300,6 +300,66 @@ router.route('/userCheck/:identifier')
         }
     });
 
+router.route('/:userid/prefLanguage')
+    .get(async (req, res) => {
+        try {
+            const { userid } = req.params; 
+            const user = await User.findOne({
+                attributes: ['prefLanguage'], 
+                where: { id: userid }
+            });
+            
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+
+            res.status(200).json({ prefLanguage: user.prefLanguage });
+        } catch (error) {
+            console.error('Error fetching user\'s preferred language:', error);
+            res.status(500).json({ error: 'Error fetching user\'s preferred language' });
+        }
+    })
+    .post(async (req, res) => {
+        try {
+            const { userid } = req.params;
+            const { prefLanguage } = req.body;
+
+            const user = await User.findOne({ where: { id: userid } });
+
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+
+            user.prefLanguage = prefLanguage;
+            await user.save();
+
+            res.status(201).json({ message: 'Preferred language created successfully' });
+        } catch (error) {
+            console.error('Error creating user\'s preferred language:', error);
+            res.status(500).json({ error: 'Error creating user\'s preferred language' });
+        }
+    })
+    .put(async (req, res) => {
+        try {
+            const { userid } = req.params;
+            const { prefLanguage } = req.body;
+
+            const user = await User.findOne({ where: { id: userid } });
+
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+
+            user.prefLanguage = prefLanguage;
+            await user.save();
+
+            res.status(200).json({ message: 'Preferred language updated successfully' });
+        } catch (error) {
+            console.error('Error updating user\'s preferred language:', error);
+            res.status(500).json({ error: 'Error updating user\'s preferred language' });
+        }
+    });
+
 
 
 
