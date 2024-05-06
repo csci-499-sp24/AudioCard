@@ -51,6 +51,8 @@ const Navbar = ({ userId }) => {
 
     const fetchUserData = async (userId) => {
         try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}`);
+            const user = response.data.user;
             setUserData(user);
             await fetchUserAvatar(user.username);
         } catch (error) {
