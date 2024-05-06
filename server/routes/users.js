@@ -319,26 +319,6 @@ router.route('/:userid/prefLanguage')
             res.status(500).json({ error: 'Error fetching user\'s preferred language' });
         }
     })
-    .post(async (req, res) => {
-        try {
-            const { userid } = req.params;
-            const { prefLanguage } = req.body;
-
-            const user = await User.findOne({ where: { id: userid } });
-
-            if (!user) {
-                return res.status(404).json({ error: 'User not found' });
-            }
-
-            user.prefLanguage = prefLanguage;
-            await user.save();
-
-            res.status(201).json({ message: 'Preferred language created successfully' });
-        } catch (error) {
-            console.error('Error creating user\'s preferred language:', error);
-            res.status(500).json({ error: 'Error creating user\'s preferred language' });
-        }
-    })
     .put(async (req, res) => {
         try {
             const { userid } = req.params;

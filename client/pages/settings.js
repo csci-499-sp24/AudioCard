@@ -5,8 +5,8 @@ import AvatarChangeModal from '../components/AvatarChangeModal';
 import Navbar from '@/components/Navbar/Navbar';
 import Link from 'next/link';
 import { useDarkMode } from '../utils/darkModeContext';
-import { useLanguage } from '../utils/languageContext';
 import styles from '../styles/settings.module.css';
+import { getLanguageCode, getLanguage } from '../utils/languageCodes';
 
 const Settings = () => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -17,7 +17,21 @@ const Settings = () => {
     const [editorOpen, setEditorOpen] = useState(false);
     const [scaleValue, setScaleValue] = useState(1);
     const { isDarkMode } = useDarkMode();
-    const { language, changeLanguage } = useLanguage();
+    const [prefLanguage, setPrefLanguage] = useState('');
+    const [selectedLanguage, setSelectedLanguage] = useState(prefLanguage);
+    const languages = [
+        { name: 'English (US)', code: 'en-US' },
+        { name: 'English (UK)', code: 'en-GB' },
+        { name: 'French', code: 'fr-FR' },
+        { name: 'Spanish', code: 'es-ES' },
+        { name: 'Bengali', code: 'bn-IN' },
+        { name: 'Chinese (Mandarin)', code: 'cmn-CN' },
+        { name: 'Russian', code: 'ru-RU' },
+        { name: 'Hindi', code: 'hi-IN' },
+        { name: 'Arabic (Standard)', code: 'ar-XA' },
+        { name: 'Portuguese', code: 'pt-BR' }
+    ];
+
 
     const closeModal = () => {
         setEditorOpen(false);
@@ -55,6 +69,11 @@ const Settings = () => {
         return () => unsubscribe();
     }, [user, userData, username]);
 
+    useEffect(() => {
+        if (userData) {
+            fetchPreferredLanguage();
+        }
+    }, [userData]);
 
     const fetchUserData = async () => {
         if (!user || !user.uid) {
@@ -93,10 +112,33 @@ const Settings = () => {
                 { headers: { 'Content-Type': 'multipart/form-data' } }
             );
             console.log('Avatar uploaded successfully:', response.data);
-            closeModal(); 
+            closeModal();
             fetchUserAvatar(); //fetch user avatar after uploading
         } catch (error) {
             console.error('Avatar upload failed:', error);
+        }
+    };
+
+    const fetchPreferredLanguage = async () => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userData.id}/prefLanguage`);
+            const languageName = response.data.prefLanguage ? getLanguage(response.data.prefLanguage) : 'No preferred language';
+            setPrefLanguage(languageName);
+        } catch (error) {
+            console.error('Error fetching preferred language:', error);
+        }
+    };
+
+    const updatePreferredLanguage = async () => {
+        const languageCode = selectedLanguage ? getLanguageCode(selectedLanguage) : null;
+        try {
+            await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userData.id}/prefLanguage`, {
+                prefLanguage: languageCode
+            });
+            fetchPreferredLanguage();
+            console.log('Preferred language updated successfully');
+        } catch (error) {
+            console.error('Error updating preferred language:', error);
         }
     };
 
@@ -104,8 +146,8 @@ const Settings = () => {
         event.target.src = '/userAvatar.jpg';
     };
 
-    const handleLanguageChange = (newLanguage) => {
-        changeLanguage(newLanguage);
+    const handleLanguageSelection = (event) => {
+        setSelectedLanguage(event.target.value);
     };
 
     return (
@@ -121,7 +163,7 @@ const Settings = () => {
                     username={username}
                     isDarkMode={isDarkMode}
                 />
-                    <img src={userAvatar} alt="User Avatar" onError={setDefaultAvatar} className={styles.avatarImage} />
+                <img src={userAvatar} alt="User Avatar" onError={setDefaultAvatar} className={styles.avatarImage} />
                 <input
                     id="avatarUploadInput"
                     type="file"
@@ -131,24 +173,23 @@ const Settings = () => {
                 <button onClick={handleAvatarChangeClick} className={styles.uploadButton}>
                     Upload Your Avatar
                 </button>
-                <div  className={styles.container}>
+                <div className={styles.container}>
                     <button className={styles.uploadButton}>
                         <Link href="/update-password" className='text-light link-secondary link-underline-opacity-0'>
                             Update Your Password
                         </Link>
                     </button>
                 </div>
-                <div>
-                    <label htmlFor="language-select">Choose a language:</label>
-                    <select id="language-select" value={language} onChange={e => handleLanguageChange(e.target.value)}>
-                        <option value="">Select Language</option>
-                        <option value="en-US">English (US)</option>
-                        <option value="es-ES">Español (Spain)</option>
-                        <option value="fr-FR">Français (France)</option>
-                        <option value="ru-RU">Русский (Russia)</option>
-                        <option value="cmn-CN">普通话 (China)</option>
 
+                <div>
+                    <h2>Preferred Language: {prefLanguage}</h2>
+                    <select value={selectedLanguage} onChange={handleLanguageSelection}>
+                        <option value="">No preferred language</option>
+                        {languages.map(lang => (
+                            <option key={lang.code} value={lang.name}>{lang.name}</option>
+                        ))}
                     </select>
+                    <button onClick={updatePreferredLanguage}>Update Language</button>
                 </div>
             </div>
         </div>
