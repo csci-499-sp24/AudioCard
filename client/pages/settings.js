@@ -5,6 +5,7 @@ import AvatarChangeModal from '../components/AvatarChangeModal';
 import Navbar from '@/components/Navbar/Navbar';
 import Link from 'next/link';
 import { useDarkMode } from '../utils/darkModeContext';
+import { useLanguage } from '../utils/languageContext';
 import styles from '../styles/settings.module.css';
 
 const Settings = () => {
@@ -16,6 +17,7 @@ const Settings = () => {
     const [editorOpen, setEditorOpen] = useState(false);
     const [scaleValue, setScaleValue] = useState(1);
     const { isDarkMode } = useDarkMode();
+    const { language, changeLanguage } = useLanguage();
 
     const closeModal = () => {
         setEditorOpen(false);
@@ -102,6 +104,10 @@ const Settings = () => {
         event.target.src = '/userAvatar.jpg';
     };
 
+    const handleLanguageChange = (newLanguage) => {
+        changeLanguage(newLanguage);
+    };
+
     return (
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={userData?.id} />
@@ -131,6 +137,18 @@ const Settings = () => {
                             Update Your Password
                         </Link>
                     </button>
+                </div>
+                <div>
+                    <label htmlFor="language-select">Choose a language:</label>
+                    <select id="language-select" value={language} onChange={e => handleLanguageChange(e.target.value)}>
+                        <option value="">Select Language</option>
+                        <option value="en-US">English (US)</option>
+                        <option value="es-ES">Español (Spain)</option>
+                        <option value="fr-FR">Français (France)</option>
+                        <option value="ru-RU">Русский (Russia)</option>
+                        <option value="cmn-CN">普通话 (China)</option>
+
+                    </select>
                 </div>
             </div>
         </div>
