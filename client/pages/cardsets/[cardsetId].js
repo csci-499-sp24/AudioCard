@@ -15,6 +15,7 @@ import examDark from '../../assets/images/exam2_dark.png';
 import examLight from '../../assets/images/exam2_light.png';
 import styles from '../../styles/navbar.module.css';
 import Link from 'next/link';
+import modalStyles from '../../styles/requestModal.module.css';
 
 
 export default function CardsetPage() {
@@ -36,7 +37,14 @@ export default function CardsetPage() {
     const [Owner, SetOwner] = useState('');
     const [ownerId, setOwnerId] = useState(0);
     const [userAvatar, setUserAvatar] = useState('');
+
+    const [testCardsetData, setTestCardsetData] = useState();
     const cardsetId = router.query.cardsetId;
+
+    useEffect(() => {
+        fetchCardsetData();
+    }, []);
+
     useEffect(() => {
         if (cardset.subject) {
             const { bgColor, txtColor } = getSubjectStyle(cardset.subject);
@@ -79,6 +87,16 @@ export default function CardsetPage() {
             const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/users/getuser', { params: { firebaseId: firebaseId } });
             const userData = await response.data.user;
             setUserData(userData);
+        } catch (error) {
+            console.error('Error fetching card sets:', error);
+        }
+    };
+
+    const fetchCardsetData = async () => {
+        try {
+            const resp = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/cardsets/${cardsetId}`);
+            const cardsetData = resp.data;
+            setTestCardsetData(cardsetData);
         } catch (error) {
             console.error('Error fetching card sets:', error);
         }
@@ -129,7 +147,7 @@ export default function CardsetPage() {
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
             // get current cardset's info - for edits
-            const resp = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}`);
+            const resp = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/cardsets/${cardsetId}`);
             const cardsetData = resp.data;
             setCardset(cardsetData);
             setLoading(false);
@@ -144,7 +162,8 @@ export default function CardsetPage() {
             const resp = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}`);
             const cardsetData = resp.data;
             const id = cardsetData.userId;
-            const ispublic = cardsetData.isPublic
+            const ispublic = cardsetData.isPublic;
+            setTestCardsetData(cardsetData);
 
             const owner = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}`);
             SetOwner(owner.data.user.username)
@@ -220,6 +239,45 @@ export default function CardsetPage() {
         event.target.src = '/userAvatar.jpg';
     };
 
+    const requestAccessModal = () => {
+        return(
+            <div>
+                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Request card set access
+                </button>
+
+                <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content text-center" id={`${isDarkMode ? modalStyles.modalDark : modalStyles.modaLight}`}>
+                        <div className="">
+                            <h1 className="modal-title fs-3" id="staticBackdropLabel">
+                                Private Cardset
+                            </h1>
+                        </div>
+                        <div className="modal-body">
+                            Request access or return to the explore page
+                        </div>
+                        <div className="modal-body">
+                            Request 
+                            <select className='mx-2' >
+                                <option value="read-only">Viewing</option>
+                                <option value="edit">Editing</option>
+                            </select>
+                            access to this cardset {/*"{testCardsetData?.title}" from user "{Owner}"*/}
+                            <br/>
+                            <button type="button" className="btn btn-primary">Request Access</button>
+                        </div>
+
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Return</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
 
     // Render flashcard data
     return (
@@ -234,9 +292,10 @@ export default function CardsetPage() {
                         <h1 className="text-center">{cardset.title}</h1>
                     </div>
                     {!access ? (
-                        <div>
-                            This card set is NOT PUBLIC.
-                        </div>
+                            <div>
+                                This card set is NOT PUBLIC.
+                                {requestAccessModal()}
+                            </div>
                     ) : (
                         <div className="container">
                             <div className="row">
