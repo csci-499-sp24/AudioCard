@@ -9,6 +9,8 @@ import Notification from '../Notification'
 import userDark from '../../assets/images/user-dark-24.png';
 import userLight from '../../assets/images/user-light-24.png';
 import axios from 'axios';
+import { AuthContext } from  "../../utils/authcontext"
+import { useContext } from 'react';
 
 const Navbar = ({ userId }) => {
     const { isDarkMode, toggleDarkMode } = useDarkMode();
@@ -16,7 +18,7 @@ const Navbar = ({ userId }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [userAvatar, setUserAvatar] = useState('/userAvatar.jpg');
     const [userData, setUserData] = useState(null);
-
+    const user = useContext(AuthContext).user;
     const dropdownRef = useRef(null);
 
     useEffect(() => {
@@ -49,8 +51,6 @@ const Navbar = ({ userId }) => {
 
     const fetchUserData = async (userId) => {
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}`);
-            const user = response.data.user;
             setUserData(user);
             await fetchUserAvatar(user.username);
         } catch (error) {
