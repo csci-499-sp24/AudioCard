@@ -60,7 +60,6 @@ export const ASRTestMode = ({ cardData, cardsetLanguage}) => {
       }, []);
     
       useEffect(() => {
-        if (language !== 'en-US' && language !== 'en-GB') {
           setPhrases({
             tryAgain: getTranslation('Try again.', language),
             correct: getTranslation('Correct.', language),
@@ -71,17 +70,14 @@ export const ASRTestMode = ({ cardData, cardsetLanguage}) => {
             restart: getTranslation('restart', language),
             exit: getTranslation('exit', language)
           });
-        }
       }, [language]);
       
     
     useEffect(() => {
-        console.log('Is Paused: ', isPaused);
     }, [isPaused]);
 
     useEffect(() => {
         setFlashcards(cardData);
-        console.log("cardData--> ", cardData)
     }, [cardData]);
 
     useEffect(() => {
@@ -110,12 +106,10 @@ export const ASRTestMode = ({ cardData, cardsetLanguage}) => {
     const speakCard = async () => {
         if (!showTestResult){
             let _duration = await TTS(flashcards[index].term, voiceGender, language, speakingRate);
-            console.log(_duration); 
             if (_duration >= 3) {
                 setIsPaused(true);
                 let difference = _duration - 3;
                 await new Promise(resolve => setTimeout(resolve, difference * 1000));
-                console.log('Paused for', difference, 'seconds');
             }
             setIsPaused(false);
         }
