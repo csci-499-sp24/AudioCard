@@ -69,7 +69,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
     };
 
     const handleEdit = () => {
-        setisEditingSet(true);
+        setisEditingSet(!isEditingSet);
     }
     
     const deleteFlashcard = async (flashcard) => {
@@ -133,86 +133,94 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
             <div className="mt-5 mb-5" id={style.setInfoContainer}>
                 <div className='row d-flex align-items-center'>
                         {isEditingSet ? (
-                            <>
-                            <form className="display flex flex-col" onSubmit={(e) => onSubmitCardset(e)}>
-                                <div className="flex flex-row">
-                                    <label htmlFor="question">Title: </label>
-                                    <input
-                                        type="text"
-                                        id="title"
-                                        name="title"
-                                        value={newTitle}
-                                        onChange={(e) => setNewTitle(e.target.value)}
-                                    />
-                                </div>
-                                <div className="flex flex-row">
-                                    <label htmlFor="answer" className="basis-1/2">Subject: </label>
-                                    <select class="form-select" aria-label="Default select example"id="subject"  onChange={(e) => setNewSubject(e.target.value)}>
-                                        <option selected>Subject</option>
-                                        <option value="History">History</option>
-                                        <option value="Math">Math</option>
-                                        <option value="Science">Science</option>
-                                        <option value="English">English</option>
-                                        <option value="Programming">Programming</option>
-                                        <option value="Fine Arts">Fine Arts</option>
-                                        <option value="Foreign Languages">Foreign Languages</option>
-                                        <option value="Nature">Nature</option>
-                                        <option value="Humanities">Humanities</option>
-                                        <option value="Health">Health</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
-                                <div className="flex flex-row">
-                                <label htmlFor="answer" className="basis-1/2">Language: </label>
-                                    <select class="form-select" aria-label="Default select example"id="language" onChange={(e) => setNewLanguage(e.target.value)}>
-                                        <option selected>Language</option>
-                                        <option value="English (US)">English (US)</option>
-                                        <option value="English (UK)">English (UK)</option>
-                                        <option value = "Arabic (Standard)">Arabic (Standard)</option>
-                                        <option value="Chinese (Mandarin)">Chinese (Mandarin)</option>
-                                        <option value="Bengali">Bengali</option>
-                                        <option value="French">French</option>
-                                        <option value="Hindi">Hindi</option>
-                                        <option value="Portuguese">Portuguese</option>
-                                        <option value="Russian">Russian</option>
-                                        <option value="Spanish">Spanish</option>
-                                    </select>
-                                </div>
-                                <div className="flex flex-row mt-2">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        id="isPublic"
-                                        checked={newPublicStatus}
-                                        onChange={(e) => setNewPublicStatus(e.target.checked)}
-                                    />
-                                    <label className="form-check-label" htmlFor="isPublic">
-                                        Make publicly viewable?
-                                    </label>
-                                </div>
-                                {!newPublicStatus && 
-                                <div className='flex flex-row mt-2 mb-2 d-flex align-items-center'>
-                                    <div className='me-2'><i className="bi bi-lock-fill"></i>:</div>
-                                    <div className='me-2'>
-                                    <button className="btn" style={{ backgroundColor: 'white', color: 'black'}} type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        {newFriendsOnlyStatus ? 'Friends Only': 'Only Me'} <i className="fas fa-caret-down"></i>
-                                        </button>
-                                    <ul className="dropdown-menu">
-                                        <li><a className="dropdown-item" onClick={() => {setNewFriendsOnlyStatus(false);deleteShareset();}}>Only Me</a></li>
-                                        <li><a className="dropdown-item" onClick={() => setNewFriendsOnlyStatus(true)}>Friends Only</a></li>
-                                        </ul>
+                            <div id={style.editPageViewContainer}>
+                                <div id={`${isDarkMode ? style.editPageViewDark : style.editPageViewLight}`}>
+                                    <div className="d-flex justify-content-end">
+                                        <button className="btn" onClick={handleEdit}>X</button>
+                                    </div>
+
+                                    <h5 className="text-center">Edit Card Set</h5>
+
+                                    <form className="display flex flex-col" onSubmit={(e) => onSubmitCardset(e)}>
+                                        <div className="flex flex-row">
+                                            <label htmlFor="question">Title: </label>
+                                            <input
+                                                type="text"
+                                                id="title"
+                                                name="title"
+                                                value={newTitle}
+                                                onChange={(e) => setNewTitle(e.target.value)}
+                                            />
                                         </div>
-                                        <div>
-                                        <i className="bi bi-exclamation-circle" 
-                                        data-tooltip-id="privacyTip"
-                                        data-tooltip-place='right'
-                                        data-tooltip-html="Collaborators will still be able to view this set until removed."></i>
-                                    <Tooltip id = "privacyTip"/> 
-                                    </div> 
-                                </div>}
-                                <button className="btn btn-secondary btn-large mb-1" type="submit">Save</button>
-                            </form>
-                            </>
+                                        <div className="flex flex-row">
+                                            <label htmlFor="answer" className="basis-1/2">Subject: </label>
+                                            <select class="form-select" aria-label="Default select example"id="subject"  onChange={(e) => setNewSubject(e.target.value)}>
+                                                <option selected>Subject</option>
+                                                <option value="History">History</option>
+                                                <option value="Math">Math</option>
+                                                <option value="Science">Science</option>
+                                                <option value="English">English</option>
+                                                <option value="Programming">Programming</option>
+                                                <option value="Fine Arts">Fine Arts</option>
+                                                <option value="Foreign Languages">Foreign Languages</option>
+                                                <option value="Nature">Nature</option>
+                                                <option value="Humanities">Humanities</option>
+                                                <option value="Health">Health</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+                                        <div className="flex flex-row">
+                                        <label htmlFor="answer" className="basis-1/2">Language: </label>
+                                            <select class="form-select" aria-label="Default select example"id="language" onChange={(e) => setNewLanguage(e.target.value)}>
+                                                <option selected>Language</option>
+                                                <option value="English (US)">English (US)</option>
+                                                <option value="English (UK)">English (UK)</option>
+                                                <option value = "Arabic (Standard)">Arabic (Standard)</option>
+                                                <option value="Chinese (Mandarin)">Chinese (Mandarin)</option>
+                                                <option value="Bengali">Bengali</option>
+                                                <option value="French">French</option>
+                                                <option value="Hindi">Hindi</option>
+                                                <option value="Portuguese">Portuguese</option>
+                                                <option value="Russian">Russian</option>
+                                                <option value="Spanish">Spanish</option>
+                                            </select>
+                                        </div>
+                                        <div className="flex flex-row mt-2">
+                                            <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                id="isPublic"
+                                                checked={newPublicStatus}
+                                                onChange={(e) => setNewPublicStatus(e.target.checked)}
+                                            />
+                                            <label className="form-check-label" htmlFor="isPublic">
+                                                Make publicly viewable?
+                                            </label>
+                                        </div>
+                                        {!newPublicStatus && 
+                                        <div className='flex flex-row mt-2 mb-2 d-flex align-items-center'>
+                                            <div className='me-2'><i className="bi bi-lock-fill"></i>:</div>
+                                            <div className='me-2'>
+                                            <button className="btn" style={{ backgroundColor: 'white', color: 'black'}} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                {newFriendsOnlyStatus ? 'Friends Only': 'Only Me'} <i className="fas fa-caret-down"></i>
+                                                </button>
+                                            <ul className="dropdown-menu">
+                                                <li><a className="dropdown-item" onClick={() => {setNewFriendsOnlyStatus(false);deleteShareset();}}>Only Me</a></li>
+                                                <li><a className="dropdown-item" onClick={() => setNewFriendsOnlyStatus(true)}>Friends Only</a></li>
+                                                </ul>
+                                                </div>
+                                                <div>
+                                                <i className="bi bi-exclamation-circle" 
+                                                data-tooltip-id="privacyTip"
+                                                data-tooltip-place='right'
+                                                data-tooltip-html="Collaborators will still be able to view this set until removed."></i>
+                                            <Tooltip id = "privacyTip"/> 
+                                            </div> 
+                                        </div>}
+                                        <button className="btn btn-secondary btn-large mb-1" type="submit">Save</button>
+                                    </form>
+                                </div>
+                            </div>
                         ) : ( 
                             <>
                             <div className='col'>
@@ -290,3 +298,4 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
         </div>
     );
 }
+
