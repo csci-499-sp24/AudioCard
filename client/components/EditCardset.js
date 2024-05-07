@@ -279,8 +279,8 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                                                 <div className="delete-confirmation">
                                                     <p>Are you sure you want to delete this flashcard?</p>
                                                     <div className="d-flex justify-content-center">
-                                                        <button onClick={() => confirmDelete(flashcard)} className="btn btn-danger">Yes</button>
-                                                        <button onClick={() => {setShowDeleteConfirmation(false); setSelectedFlashcard(null);}} className="btn btn-secondary">No</button>
+                                                        <button onClick={() => confirmDelete(flashcard)} className="btn btn-danger m-1">Yes</button>
+                                                        <button onClick={() => {setShowDeleteConfirmation(false); setSelectedFlashcard(null);}} className="btn btn-secondary m-1">No</button>
                                                     </div>
                                                 </div>
                                             ) : (
