@@ -7,6 +7,19 @@
     font-size: 1.2em;
 }
 
+
+/* Edit Flashcard*/
+#editSingleFlashcardContainer {
+    width: 60%;
+    margin: 0 auto;
+
+}
+
+#bgNone {
+    background: none;
+}
+
+
 #darkTrash {
     font-size: 1.2em;
 }

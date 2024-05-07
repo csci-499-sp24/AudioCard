@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import axios from 'axios';
+import style from '../styles/editCardset.module.css';
 
-export const CreateFlashcard = ({userId, cardsetId, onCreateFlashcard}) => {
+export const CreateFlashcard = ({userId, cardsetId, onCreateFlashcard, toggleIsAddingCard}) => {
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     
@@ -31,20 +32,35 @@ export const CreateFlashcard = ({userId, cardsetId, onCreateFlashcard}) => {
         }
     }
 
-  return (
-    <div className="bg-slate-500 w-min">
-        <div>Add a flashcard</div>
-        <form className="display flex flex-col" onSubmit={(e) => onSubmit(e)}>
-            <div className="flex flex-row">
-                <label htmlFor="question" className='me-2' >Question: </label>
-                <input type="text" id="question" name="question" value={question} onChange={(e) => setQuestion(e.target.value)} />
+    return (
+        <div className="p-3" id={style.editSingleFlashcardContainer}>
+            <div className="d-flex justify-content-end">
+                <button className="btn" onClick={toggleIsAddingCard}>X</button>
             </div>
-            <div className="flex flex-row">
-                <label htmlFor="answer" className="me-2">Answer: </label>
-                <input type="text" id="answer" name="answer" value={answer} onChange={(e) => setAnswer(e.target.value)} />
-            </div>
-            <button className="btn btn-secondary btn-large" type="submit">Add</button>
-        </form>
-    </div>
-  )
+
+            <h3 className="text-center">Add a flashcard</h3>
+
+            <form className="form-group row d-flex flex-column align-items-center" onSubmit={(e) => onSubmit(e)}>
+                <div className="form-group row mt-3">
+                    <label for="question" className="col-sm-2 col-form-label">Question:</label>
+                    <div className="col-sm-10">
+                        <input type="text" id="question" name="question" class="form-control" value={question} onChange={(e) => setQuestion(e.target.value)}/>
+                    </div>
+                </div>
+
+                <div className="form-group row mt-3">
+                    <label for="answer" className="col-sm-2 col-form-label">Answer:</label>
+                    <div className="col-sm-10">
+                        <input type="text" id="answer" name="answer" className="form-control" value={answer} onChange={(e) => setAnswer(e.target.value)}/>
+                    </div>
+                </div>
+
+                <div className="form-group row mt-3 d-flex justify-content-center">
+                    <div className="col-sm-10 d-flex justify-content-center">
+                        <button className="btn btn-secondary btn-large" type="submit">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    )
 }

@@ -133,7 +133,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
             <div className="mt-5 mb-5" id={style.setInfoContainer}>
                 <div className='row d-flex align-items-center'>
                         {isEditingSet ? (
-                            <div id={style.editPageViewContainer}>
+                            <div>
                                 <div id={`${isDarkMode ? style.editPageViewDark : style.editPageViewLight}`}>
                                     <div className="d-flex justify-content-end">
                                         <button className="btn" onClick={handleEdit}>X</button>
@@ -141,7 +141,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
 
                                     <h5 className="text-center">Edit Card Set</h5>
 
-                                    <form className="form-group row d-flex flex-column align-items-center" onSubmit={(e) => onSubmitCardset(e)}>
+                                    <form className="form-group row d-flex flex-column align-items-center" id={style.editPageViewContainer} onSubmit={(e) => onSubmitCardset(e)}>
                                         <div class="form-group row mt-3">
                                             <label for="title" class="col-sm-2 col-form-label">Title:</label>
                                             <div class="col-sm-10">
@@ -247,8 +247,8 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                             <>
                             <div className='col'>
                                 <h2>Set Name: {newTitle} </h2>
-                                <h2 style={{ color: `${txtColor}` }}>Subject: {newSubject} </h2>
-                                <h2 style={{ color: `${txtColor}` }}>Language: {newLanguage} </h2>
+                                <h2>Subject: {newSubject} </h2>
+                                <h2>Language: {newLanguage} </h2>
 
                             </div>
                             <div className='col d-flex justify-content-end'>
@@ -266,7 +266,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                     <div key={flashcard.id} className="mb-3" id={`${isDarkMode ? styles.flashcardDark : styles.flashcard}`}>
                         <div className='row'>
                             {selectedFlashcard === flashcard && isEditingCard && !showDeleteConfirmation ? (                                        
-                                <EditFlashcard userId={userId} cardsetId={cardsetId} flashcard={selectedFlashcard} onEditFlashcard={handleEditFlashcard}/>
+                                <EditFlashcard userId={userId} cardsetId={cardsetId} flashcard={selectedFlashcard} onEditFlashcard={handleEditFlashcard} handleEditCard={handleEditCard}/>
                             ) : (
                                 <>
                                     <div className='col'>
@@ -312,8 +312,8 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
 
             <div className='addingContainer'>
                 {isAddingCard && (
-                    <div className=" row flashcard" style={{backgroundColor: isDarkMode?'#2e3956':'white', color: isDarkMode ? 'white' : 'black'}}>
-                        <CreateFlashcard userId={userId} cardsetId={cardsetId} onCreateFlashcard={handleCreateFlashcard} />
+                    <div className="row flashcard mx-1 m-3" style={{backgroundColor: isDarkMode?'#2e3956':'white', color: isDarkMode ? 'white' : 'black'}}>
+                        <CreateFlashcard userId={userId} cardsetId={cardsetId} onCreateFlashcard={handleCreateFlashcard} toggleIsAddingCard={toggleIsAddingCard}/>
                     </div>
                 )}
 
