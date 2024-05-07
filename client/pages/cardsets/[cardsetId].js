@@ -14,11 +14,10 @@ import Image from 'next/image';
 import examDark from '../../assets/images/exam2_dark.png';
 import examLight from '../../assets/images/exam2_light.png';
 import styles from '../../styles/navbar.module.css';
+import style from '@/styles/editCardset.module.css';
 import Link from 'next/link';
 import { AuthContext } from  "../../utils/authcontext"
 import { useContext } from 'react';
-
-
 
 export default function CardsetPage() {
    
@@ -379,7 +378,7 @@ handleDelete()
                             </div>
                             {/* Edit Flashcards set */}
                             {isEditPageOpen && (
-                                <div className="edit-page-view" style={{ backgroundColor: isDarkMode ? '#0a092d' : '#ADD8E6' }}>
+                                <div className="edit-page-view" id={`${isDarkMode ? style.editPageViewDark: style.editPageViewLight}`}>
                                     <div className="edit-page-content">
                                         <button className="close-btn" style={{ color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseEditPage}>
                                             &times;

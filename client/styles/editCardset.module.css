@@ -1,0 +1,9 @@
+#editPageViewDark {
+    background-color: black;
+    padding: 20px;
+}
+
+#editPageViewLight {
+   background-color: white;
+   padding: 20px;
+}
