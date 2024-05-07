@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import style from '../styles/editCardset.module.css';
+import {useDarkMode} from '../utils/darkModeContext';
 
 export const EditFlashcard = ({ userId, cardsetId, flashcard, onEditFlashcard, handleEditCard, onCancel }) => {
     const [question, setQuestion] = useState(flashcard.term);
     const [answer, setAnswer] = useState(flashcard.definition);
+    const {isDarkMode} = useDarkMode();
 
     const onSubmit = async (event) => {
         event.preventDefault();
@@ -27,7 +29,7 @@ export const EditFlashcard = ({ userId, cardsetId, flashcard, onEditFlashcard, h
     return (
         <div id={style.editSingleFlashcardContainer}>
             <div className="d-flex justify-content-end">
-                <button className="btn" onClick={onCancel ? onCancel : handleEditCard}>X</button>
+                <button className="btn" style={{color: isDarkMode ? 'white' : 'gray' }} onClick={onCancel ? onCancel : handleEditCard}>X</button>
             </div>
 
             <h3 className="text-center">Editing flashcard</h3>

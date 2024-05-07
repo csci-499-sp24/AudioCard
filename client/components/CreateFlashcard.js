@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import style from '../styles/editCardset.module.css';
+import {useDarkMode} from '../utils/darkModeContext';
 
-export const CreateFlashcard = ({userId, cardsetId, onCreateFlashcard, toggleIsAddingCard}) => {
+export const CreateFlashcard = ({userId, cardsetId, onCreateFlashcard, toggleIsAddingCard, toggleCreateFlashcardForm}) => {
+    const {isDarkMode} = useDarkMode();
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     
@@ -35,7 +37,7 @@ export const CreateFlashcard = ({userId, cardsetId, onCreateFlashcard, toggleIsA
     return (
         <div className="p-3" id={style.editSingleFlashcardContainer}>
             <div className="d-flex justify-content-end">
-                <button className="btn" onClick={toggleIsAddingCard}>X</button>
+                <button className="btn" style={{color: isDarkMode ? 'white' : 'gray' }} onClick={toggleCreateFlashcardForm ? toggleCreateFlashcardForm : toggleIsAddingCard}>X</button>
             </div>
 
             <h3 className="text-center">Add a flashcard</h3>

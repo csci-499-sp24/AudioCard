@@ -8,3 +8,13 @@
     display: flex;
     justify-content: center;
 }
+
+#createFlashcarLight {
+    background-color: #252526;
+    padding: 20px;
+}
+
+#createFlashcarDark {
+   background-color: white;
+   padding: 20px;
+}
