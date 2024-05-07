@@ -5,6 +5,8 @@ import { EditFlashcard } from '@/components/EditFlashcard';
 import { useDarkMode } from '@/utils/darkModeContext';
 import { getSubjectStyle } from '@/utils/getSubjectStyles';
 import { Tooltip } from 'react-tooltip'
+import styles from '../styles/termCard.module.css';
+import style from '../styles/editCardset.module.css';
 
 export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubject, cardsetLanguage, cardsetIsPublic, cardsetIsFriendsOnly}) => {
     const {isDarkMode} = useDarkMode();
@@ -128,7 +130,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
 
     return (
         <div className="container">
-            <div className="setInfoContainer mt-3">
+            <div className="mt-5 mb-5" id={style.setInfoContainer}>
                 <div className='row d-flex align-items-center'>
                         {isEditingSet ? (
                             <>
@@ -229,10 +231,10 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
 
             <div className="flashcardContainer">
                 {currentCardsetData.map(flashcard => (
-                    <div key={flashcard.id} className="flashcard" style={{ backgroundColor: isDarkMode ? '#2e3956' : '#FFFFFF' }}>
+                    <div key={flashcard.id} className="mb-3" id={`${isDarkMode ? styles.flashcardDark : styles.flashcard}`}>
                         <div className='row'>
                             {selectedFlashcard === flashcard && isEditingCard && !showDeleteConfirmation ? (                                        
-                                    <EditFlashcard userId={userId} cardsetId={cardsetId} flashcard={selectedFlashcard} onEditFlashcard={handleEditFlashcard}/>
+                                <EditFlashcard userId={userId} cardsetId={cardsetId} flashcard={selectedFlashcard} onEditFlashcard={handleEditFlashcard}/>
                             ) : (
                                 <>
                                     <div className='col'>
@@ -285,27 +287,6 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                     </button>
                 </div>
             </div>
-            <style jsx>{`         
-                .flashcardContainer {
-                    display: grid;
-                    grid-gap: 20px; 
-                }
-
-                .flashcard {
-                    padding: 20px; 
-                    border: 1px solid black;
-                }
-                .btn-danger{
-                    margin-right: 10px;
-                }
-                
-                .addingContainer{
-                    padding: 20px; 
-                }
-                .light-btn {
-                    color: #FFFFFF;
-                }`}
-            </style>
         </div>
     );
 }
