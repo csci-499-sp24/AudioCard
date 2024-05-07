@@ -121,7 +121,7 @@ const SignUp = () => {
                 <div className="col col-md-4 col-sm-12">
                     <div className="d-flex justify-content-center">
                         <Link href="/">
-                            <Image src={logo} alt="logo"/>
+                            <Image src={logo} alt="logo" width="150"/>
                         </Link>
                     </div>
 

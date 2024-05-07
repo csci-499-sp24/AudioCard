@@ -141,7 +141,7 @@ const LandingPage = () => {
                 <div className="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 mt-5 border-top" id={styles.footerSection}>
                     <div className="col d-flex mb-3 text-white" id={styles.footerColLogo}>
                         <Link href="/" className="text-white">
-                            <Image src={logo} alt="logo"/>
+                            <Image src={logo} alt="logo" width="128"/>
                         </Link>
                         
                         <div id={styles.footerIconContainer}>

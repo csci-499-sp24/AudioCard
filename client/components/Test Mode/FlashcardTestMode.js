@@ -6,7 +6,7 @@ import { TestOptions } from './testOptions';
 import TimerComponent from './timerComponent';
 import { TestResults } from './TestResults';
 
-export const FlashcardTestMode = ({ cardData, userId}) => {
+export const FlashcardTestMode = ({ cardData}) => {
     const {isDarkMode} = useDarkMode();
     const [index, setIndex] = useState(0);
     const [flashcards, setFlashcards] = useState([]);

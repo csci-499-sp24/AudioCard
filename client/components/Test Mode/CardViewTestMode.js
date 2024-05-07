@@ -5,13 +5,13 @@ import { ASRTestMode } from './ASRTestMode';
 import styles from '../../styles/CardSet.module.css';
 import { useDarkMode } from '@/utils/darkModeContext';
 
-export const CardViewTestMode = ({ userId, cardset }) => {
+export const CardViewTestMode = ({ cardset, userId }) => {
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [selectedMode, setSelectedMode] = useState(null); 
     const {isDarkMode} = useDarkMode();
     const [preferredLanguage, setPreferredLanguage] = useState('');
 
-    useEffect(() => {
+  useEffect(() => {
         fetchFlashCards();
     }, [cardset]);
 
@@ -27,7 +27,7 @@ export const CardViewTestMode = ({ userId, cardset }) => {
                 console.error('Error fetching flashcards: ', error.message);
             }
         }
-    }
+    } 
 
     useEffect(() => {
         if(userId) {
@@ -70,8 +70,10 @@ export const CardViewTestMode = ({ userId, cardset }) => {
                         </ul>
                     </div>
                 </div>
-                {selectedMode === 'speak' && <ASRTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} cardsetLanguage={preferredLanguage ? preferredLanguage : cardset.language}/>}
-                {selectedMode === 'type' && <FlashcardTestMode cardData={currentCardsetData} userId={userId} cardsetId={cardset.id} />}
+                
+                {selectedMode === 'speak' && currentCardsetData.length > 0 && <ASRTestMode cardData={currentCardsetData} cardsetLanguage={preferredLanguage ? preferredLanguage : cardset.language}/>}
+                {selectedMode === 'type' && currentCardsetData.length > 0 &&  <FlashcardTestMode cardData={currentCardsetData}  />}
+                
                 {!selectedMode &&
                 <div className='container d-flex justify-content-center mt-5' style={{backgroundColor: isDarkMode? '#252526' : 'white', width: '70%', borderRadius: '10px',}}>
                     <div className='container2'>

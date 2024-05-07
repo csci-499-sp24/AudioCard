@@ -33,12 +33,12 @@ const LandingPageNavbar = () => {
             <div className="container" id={styles.navbarContainer}>
                 {isDarkMode ? 
                     <a className="navbar-brand text-dark font-weight-bold text-white" href="#" id={styles.navLinkLogoLanding}>
-                        <Image src={logo} alt="logo"class="d-inline-block align-top"  width="30" height="30"/>
+                        <Image src={logo} alt="logo"class="d-inline-block align-top"  width="50"/>
                         <span id={styles.navLinkLogoTextLanding}>AudioCard</span>
                     </a> 
                     : 
                     <a className="navbar-brand text-dark font-weight-bold" href="#" id={styles.navLinkLogoLanding}>
-                        <Image src={logo} alt="logo"class="d-inline-block align-top"  width="30" height="30"/>
+                                                <Image src={logo} alt="logo"class="d-inline-block align-top"  width="50"/>
                         <span id={styles.navLinkLogoTextLanding}>AudioCard</span>
                     </a> 
                 }
