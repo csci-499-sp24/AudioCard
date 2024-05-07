@@ -378,7 +378,7 @@ handleDelete()
                             </div>
                             {/* Edit Flashcards set */}
                             {isEditPageOpen && (
-                                <div className="edit-page-view" id={`${isDarkMode ? style.editPageViewDark: style.editPageViewLight}`}>
+                                <div className="edit-page-view" style={{ backgroundColor: isDarkMode ? 'black' : '#F2F5F6' }}>
                                     <div className="edit-page-content">
                                         <button className="close-btn" style={{ color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseEditPage}>
                                             &times;

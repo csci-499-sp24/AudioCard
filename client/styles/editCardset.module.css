@@ -1,9 +1,31 @@
+#lightPencil {
+    color: white !important;
+}
+
+#lightTrash {
+    color: white !important;
+    font-size: 1.2em;
+}
+
+#darkTrash {
+    font-size: 1.2em;
+}
+
+#editPageViewContainer {
+    width: 60%;
+    margin: 0 auto;
+}
+
 #editPageViewDark {
-    background-color: black;
+    background-color: #252526;
     padding: 20px;
 }
 
 #editPageViewLight {
    background-color: white;
    padding: 20px;
+}
+
+#privacyTip {
+    margin-left: 10px;
 }
