@@ -7,9 +7,28 @@
     display: block !important;
 }
 
+#editContainerDark {
+    background-color: #252526;
+    padding: 20px;
+}
+
+#editContainerLight {
+   background-color: white;
+   padding: 20px;
+}
+
+#ButtonsSmallNoScreen {
+    display: none !important;
+}
+
+
 @media (max-width: 991px) { 
     #ButtonsSmallScreen {
         display: flex !important;
+    }
+
+    #ButtonsSmallNoScreen {
+        display: none !important;
     }
 
     #Previous,
