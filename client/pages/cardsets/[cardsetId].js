@@ -162,6 +162,7 @@ export default function CardsetPage() {
 
             try {
                 // Make a GET request to fetch shared cardsets for the user
+                if (!isOwner){
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${userData.id}/cardsets/${cardsetId}/shared`);
                 // Handle successful response
                 const role = response.data[0].authority;
@@ -173,7 +174,7 @@ export default function CardsetPage() {
                 if (role == 'edit') {
                     setCanEdit(true)
                 }
-
+            }
 
             } catch (error) {
                 // Handle error
