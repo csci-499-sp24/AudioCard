@@ -4,12 +4,14 @@ import axios from 'axios';
 import Link from 'next/link';
 import Image from "next/image"; 
 import logo from '../assets/images/logo.png';
+import { auth } from '@/utils/firebase';
 
 const UpdateUsername = () => {
     const [updatedUsername, setupdatedUsername] = useState('');
     const [error, setError] = useState(null);
     const [isAlertVisible, setIsAlertVisible] = useState(false);
     const router = useRouter(); // Initialize useRouter hook
+    const firebaseId = auth.currentUser?.uid;    
 
     const handleUpdateUsername = async (e) => {
         e.preventDefault();
@@ -35,8 +37,17 @@ const UpdateUsername = () => {
         setError(null);
 
         // add username to DB
-        const result = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/changeUsername`, { updatedUsername });
-        console.log(result);
+        try {
+            await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/changeUsername`, { updatedUsername, firebaseId });
+
+            alert('Username updated successfully');
+            router.push('/settings');
+        }
+        catch(e) {
+            console.log('Error updating username', e);
+            setError('Error updating username');
+        }
+        
     };
 
     return (

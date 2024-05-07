@@ -53,10 +53,13 @@ router.route('/changePassword')
 router.route('/changeUsername')
 .post(async(req, res) => {
     try {
-        const { updatedUsername } = req.body;
+        const { updatedUsername, firebaseId } = req.body;
+        const user = await User.findOne({ where: { firebaseId }});
+        await user.update({ username: updatedUsername });
         return res.status(200).json({ success: true });
     } catch (error) {
-
+        console.error('Error updating username:', error);
+        res.status(500).json({ error: 'Error updating username' });
     }
 })
 
@@ -79,7 +82,7 @@ router.route('/getuser')
 .get(async(req, res) => {
     try{
         const { firebaseId } = req.query;
-        const user = await User.findOne({ where: { firebaseId }});
+        const user = await User.findOne({ where: { id: req.params.userid }});
         res.status(200).json({ user });
     } catch (error) {
         console.error('Error fetching database user:', error);
