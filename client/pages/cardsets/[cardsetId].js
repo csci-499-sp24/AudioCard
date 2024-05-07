@@ -314,7 +314,7 @@ export default function CardsetPage() {
                                                 : null}
                                             <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
                                             {isOwner && <button className="btn deleteButton" onClick={() => {
-handleDelete()
+                                                handleDelete()
                                             }}>
                                                 <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
                                             </button>

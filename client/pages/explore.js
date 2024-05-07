@@ -11,6 +11,8 @@ import { UserCard } from "@/components/Cards/UserCard";
 import BackToTopButton from "@/components/BackToTopButton";
 import { AuthContext } from  "../utils/authcontext";
 import React, { useContext } from 'react';
+import styles from '@/styles/explore.module.css';
+
 const Explore = () => {
     const { isDarkMode} = useDarkMode();
     const [cardsets, setCardsets] = useState([]);
@@ -136,8 +138,9 @@ const Explore = () => {
                     }
                 </div>
                 {isDetailedViewOpen && (
-                    <div className="detailed-cardset-view" style={{ backgroundColor: isDarkMode ? '#0a092d' : '#ADD8E6' }}>
-                        <div className="detailed-cardset-content">
+
+                    <div id={`${isDarkMode ? styles.modalDark : styles.modalLight}`}>
+                        <div id={styles.detailedCardsetContent} className="detailedCardsetContent ">
                             <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseDetailedView}>
                                 &times;
                             </button>
@@ -147,12 +150,25 @@ const Explore = () => {
                             )}
                         </div>
                     </div>
+
+                    // <div className="detailed-cardset-view" style={{ backgroundColor: isDarkMode ? '#0a092d' : '#ADD8E6' }}>
+                    //     <div className="detailed-cardset-content">
+                    //         <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseDetailedView}>
+                    //             &times;
+                    //         </button>
+                    //         {selectedCardset && (
+                    //             <CardsetView cardset={selectedCardset} isDarkMode={isDarkMode}
+                    //             />
+                    //         )}
+                    //     </div>
+                    // </div>
                 )}
                 <BackToTopButton /> 
+
+                {isDetailedViewOpen && <div id={`${isDarkMode ? styles.backdropDark : styles.backdropLight}`} ></div>}
             </div>
             <style jsx>{`
                     .container {
-                    margin-right: ${isDetailedViewOpen ? "50%" : "auto"};
                     transition: margin-right 0.3s ease;
                   }
                 .card:hover {
