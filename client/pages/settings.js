@@ -18,6 +18,21 @@ const Settings = () => {
     const [editorOpen, setEditorOpen] = useState(false);
     const [scaleValue, setScaleValue] = useState(1);
     const { isDarkMode } = useDarkMode();
+    const [prefLanguage, setPrefLanguage] = useState('');
+    const [selectedLanguage, setSelectedLanguage] = useState(prefLanguage);
+    const languages = [
+        { name: 'English (US)' },
+        { name: 'English (UK)' },
+        { name: 'French' },
+        { name: 'Spanish' },
+        { name: 'Bengali' },
+        { name: 'Chinese (Mandarin)' },
+        { name: 'Russian' },
+        { name: 'Hindi', },
+        { name: 'Arabic (Standard)' },
+        { name: 'Portuguese' }
+    ];
+
 
     const closeModal = () => {
         setEditorOpen(false);
@@ -72,6 +87,19 @@ const Settings = () => {
         }
     };
 
+    useEffect(() => {
+        const fetchPreferredLanguage = async () => {
+            if (userData) {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userData.id}/prefLanguage`);
+                const prefLanguage = response.data.prefLanguage;
+                setPrefLanguage(prefLanguage || "No preferred language");
+                setSelectedLanguage(prefLanguage || ''); 
+            }
+        };
+    
+        fetchPreferredLanguage();
+    }, [userData]);
+
     //API call to PUT the avatar image in S3
     const handleSaveAvatar = async (blob) => {
         const formData = new FormData();
@@ -85,15 +113,31 @@ const Settings = () => {
                 { headers: { 'Content-Type': 'multipart/form-data' } }
             );
             console.log('Avatar uploaded successfully:', response.data);
-            closeModal(); 
+            closeModal();
             fetchUserAvatar(); //fetch user avatar after uploading
         } catch (error) {
             console.error('Avatar upload failed:', error);
         }
     };
 
+    const updatePreferredLanguage = async () => {
+        const newPreferredLanguage = selectedLanguage || null;  
+        try {
+            await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userData.id}/prefLanguage`, {
+                prefLanguage: newPreferredLanguage
+            });
+            setPrefLanguage(newPreferredLanguage || "No preferred language");
+        } catch (error) {
+            console.error('Error updating preferred language:', error);
+        }
+    };
+
     const setDefaultAvatar = (event) => {
         event.target.src = '/userAvatar.jpg';
+    };
+
+    const handleLanguageSelection = (event) => {
+        setSelectedLanguage(event.target.value);
     };
 
     return (
@@ -109,7 +153,7 @@ const Settings = () => {
                     username={username}
                     isDarkMode={isDarkMode}
                 />
-                    <img src={userAvatar} alt="User Avatar" onError={setDefaultAvatar} className={styles.avatarImage} />
+                <img src={userAvatar} alt="User Avatar" onError={setDefaultAvatar} className={styles.avatarImage} />
                 <input
                     id="avatarUploadInput"
                     type="file"
@@ -119,12 +163,23 @@ const Settings = () => {
                 <button onClick={handleAvatarChangeClick} className={styles.uploadButton}>
                     Upload Your Avatar
                 </button>
-                <div  className={styles.container}>
+                <div className={styles.container}>
                     <button className={styles.uploadButton}>
                         <Link href="/update-password" className='text-light link-secondary link-underline-opacity-0'>
                             Update Your Password
                         </Link>
                     </button>
+                </div>
+
+                <div className={styles.container}>
+                    <h3>Preferred Language: {prefLanguage}</h3>
+                    <select value={selectedLanguage} onChange={handleLanguageSelection} className={styles.selectDropdown}>
+                        <option value="">No preferred language</option>
+                        {languages.map(lang => (
+                            <option key={lang.code} value={lang.name}>{lang.name}</option>
+                        ))}
+                    </select>
+                    <button className={styles.updateButton} onClick={updatePreferredLanguage}>Update Language</button>
                 </div>
             </div>
         </div>
