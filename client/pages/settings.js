@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar/Navbar';
 import Link from 'next/link';
 import { useDarkMode } from '../utils/darkModeContext';
 import styles from '../styles/settings.module.css';
+import { Dropdown } from 'bootstrap';
 
 const Settings = () => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -98,7 +99,7 @@ const Settings = () => {
             if (userData) {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userData.id}/prefLanguage`);
                 const prefLanguage = response.data.prefLanguage;
-                setPrefLanguage(prefLanguage || "No preferred language set");
+                setPrefLanguage(prefLanguage || "No preferred language");
                 setSelectedLanguage(prefLanguage || ''); 
             }
         };
@@ -132,7 +133,7 @@ const Settings = () => {
             await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userData.id}/prefLanguage`, {
                 prefLanguage: newPreferredLanguage
             });
-            setPrefLanguage(newPreferredLanguage);
+            setPrefLanguage(newPreferredLanguage || "No preferred language");
         } catch (error) {
             console.error('Error updating preferred language:', error);
         }
@@ -177,15 +178,15 @@ const Settings = () => {
                     </button>
                 </div>
 
-                <div>
-                    <h2>Preferred Language: {prefLanguage}</h2>
-                    <select value={selectedLanguage} onChange={handleLanguageSelection}>
+                <div className={styles.container}>
+                    <h3>Preferred Language: {prefLanguage}</h3>
+                    <select value={selectedLanguage} onChange={handleLanguageSelection} className={styles.selectDropdown}>
                         <option value="">No preferred language</option>
                         {languages.map(lang => (
                             <option key={lang.code} value={lang.name}>{lang.name}</option>
                         ))}
                     </select>
-                    <button onClick={updatePreferredLanguage}>Update Language</button>
+                    <button className={styles.updateButton} onClick={updatePreferredLanguage}>Update Language</button>
                 </div>
             </div>
         </div>
