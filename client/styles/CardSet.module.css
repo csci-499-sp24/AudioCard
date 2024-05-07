@@ -18,3 +18,16 @@
    background-color: white;
    padding: 20px;
 }
+
+/* CreateCardset */
+@media (max-width: 991px) { 
+    #creatBtn {
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    #creatBtn {
+        text-align: center;
+    }
+}

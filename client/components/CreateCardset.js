@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
+import styles from '../styles/CardSet.module.css';
 import {useDarkMode} from '../utils/darkModeContext'
 
 export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
@@ -104,7 +105,7 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
                     </div>
                 </div>
             )}
-                <div className="col-12">
+                <div className="col-12" id={styles.creatBtn}>
                     <button type="submit" className="btn btn-secondary">
                         Create
                     </button>
