@@ -8,7 +8,8 @@ import { useDarkMode } from '@/utils/darkModeContext';
 export const CardViewTestMode = ({ cardset, userId }) => {
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
     const [selectedMode, setSelectedMode] = useState(null); 
-    const {isDarkMode} = useDarkMode(); 
+    const {isDarkMode} = useDarkMode();
+    const [preferredLanguage, setPreferredLanguage] = useState('');
 
   useEffect(() => {
         fetchFlashCards();
@@ -27,6 +28,17 @@ export const CardViewTestMode = ({ cardset, userId }) => {
             }
         }
     } 
+
+    useEffect(() => {
+        if(userId) {
+            const fetchPreferredLanguage = async () => {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}/prefLanguage`);
+                setPreferredLanguage(response.data.prefLanguage);
+            };
+        
+            fetchPreferredLanguage();
+        }
+    }, [userId]);
 
 
     return (
@@ -58,8 +70,10 @@ export const CardViewTestMode = ({ cardset, userId }) => {
                         </ul>
                     </div>
                 </div>
-                {selectedMode === 'speak' && currentCardsetData.length > 0 && <ASRTestMode cardData={currentCardsetData} cardsetLanguage={cardset.language}/>}
+                
+                {selectedMode === 'speak' && currentCardsetData.length > 0 && <ASRTestMode cardData={currentCardsetData} cardsetLanguage={preferredLanguage ? preferredLanguage : cardset.language}/>}
                 {selectedMode === 'type' && currentCardsetData.length > 0 &&  <FlashcardTestMode cardData={currentCardsetData}  />}
+                
                 {!selectedMode &&
                 <div className='container d-flex justify-content-center mt-5' style={{backgroundColor: isDarkMode? '#252526' : 'white', width: '70%', borderRadius: '10px',}}>
                     <div className='container2'>

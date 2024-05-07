@@ -9,13 +9,13 @@ import { ListenForVoiceCommands } from './ASR/speechToText';
 import { getLanguageCode } from '@/utils/languageCodes';
 import { getTranslation } from '@/utils/translations';
 
-export const CardViewReviewMode = ({ userId, cardset }) => {
+export const CardViewReviewMode = ({ userId, cardset, preferredLanguage }) => {
     const { isDarkMode } = useDarkMode();
     const [flashcards, setFlashcards] = useState([]);
     const [index, setIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
     const [voiceGender, setVoiceGender] = useState('NEUTRAL');
-    const [language, setLanguage] = useState(getLanguageCode(cardset.language));
+    const [language, setLanguage] = useState(getLanguageCode(preferredLanguage));
     const [dataFetched, setDataFetched] = useState(false);
     const mounted = useRef(true);
     const timeoutRef = useRef(null);
