@@ -273,7 +273,7 @@ export default function CardsetPage() {
                                         <h3>Flashcard Set: {cardset.title}</h3>
                                         <div> Subject: <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
                                         <div> Language: {cardset.language} </div>
-                                        <div> {currentCardsetData.length} flashcards </div>
+                                        <div> Flashcards: {currentCardsetData.length} </div>
                                         <Link href={`/profile/${ownerId}`} style={{ textDecoration: 'none' }}>
                                             <div className={`${isDarkMode ? 'text-light' : 'text-dark'}`}>
                                                 Creator:
