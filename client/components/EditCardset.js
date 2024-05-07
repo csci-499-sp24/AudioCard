@@ -319,7 +319,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
 
                 <div className='row d-flex justify-content-center'>
                     <button className={`btn ${isDarkMode ? 'light-btn' : ''}`} onClick={() => toggleIsAddingCard()}>
-                        <i className="bi bi-plus-square" style={{ fontSize: '2em' }}></i>
+                        <i className="bi bi-plus-square" id={isDarkMode ? style.lightPlus : style.darkPlus}></i>
                     </button>
                 </div>
             </div>

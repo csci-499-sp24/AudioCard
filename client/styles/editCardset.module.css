@@ -7,6 +7,15 @@
     font-size: 1.2em;
 }
 
+#lightPlus {
+    color: white !important;
+    font-size: 2em;
+}
+
+#darkPlus {
+    font-size: 2em;
+}
+
 
 /* Edit Flashcard*/
 #editSingleFlashcardContainer {
@@ -41,4 +50,14 @@
 
 #privacyTip {
     margin-left: 10px;
+}
+
+@media (max-width: 768px) {
+    #editPageViewContainer {
+        width: 100%;
+    }
+
+    #editSingleFlashcardContainer {
+        width: 100%;
+    }    
 }
