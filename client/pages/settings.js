@@ -6,7 +6,6 @@ import Navbar from '@/components/Navbar/Navbar';
 import Link from 'next/link';
 import { useDarkMode } from '../utils/darkModeContext';
 import styles from '../styles/settings.module.css';
-import { getLanguageCode, getLanguage } from '../utils/languageCodes';
 
 const Settings = () => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -20,16 +19,16 @@ const Settings = () => {
     const [prefLanguage, setPrefLanguage] = useState('');
     const [selectedLanguage, setSelectedLanguage] = useState(prefLanguage);
     const languages = [
-        { name: 'English (US)', code: 'en-US' },
-        { name: 'English (UK)', code: 'en-GB' },
-        { name: 'French', code: 'fr-FR' },
-        { name: 'Spanish', code: 'es-ES' },
-        { name: 'Bengali', code: 'bn-IN' },
-        { name: 'Chinese (Mandarin)', code: 'cmn-CN' },
-        { name: 'Russian', code: 'ru-RU' },
-        { name: 'Hindi', code: 'hi-IN' },
-        { name: 'Arabic (Standard)', code: 'ar-XA' },
-        { name: 'Portuguese', code: 'pt-BR' }
+        { name: 'English (US)' },
+        { name: 'English (UK)' },
+        { name: 'French' },
+        { name: 'Spanish' },
+        { name: 'Bengali' },
+        { name: 'Chinese (Mandarin)' },
+        { name: 'Russian' },
+        { name: 'Hindi', },
+        { name: 'Arabic (Standard)' },
+        { name: 'Portuguese' }
     ];
 
 
@@ -69,11 +68,6 @@ const Settings = () => {
         return () => unsubscribe();
     }, [user, userData, username]);
 
-    useEffect(() => {
-        if (userData) {
-            fetchPreferredLanguage();
-        }
-    }, [userData]);
 
     const fetchUserData = async () => {
         if (!user || !user.uid) {
@@ -99,6 +93,19 @@ const Settings = () => {
         }
     };
 
+    useEffect(() => {
+        const fetchPreferredLanguage = async () => {
+            if (userData) {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userData.id}/prefLanguage`);
+                const prefLanguage = response.data.prefLanguage;
+                setPrefLanguage(prefLanguage || "No preferred language set");
+                setSelectedLanguage(prefLanguage || ''); 
+            }
+        };
+    
+        fetchPreferredLanguage();
+    }, [userData]);
+
     //API call to PUT the avatar image in S3
     const handleSaveAvatar = async (blob) => {
         const formData = new FormData();
@@ -119,24 +126,13 @@ const Settings = () => {
         }
     };
 
-    const fetchPreferredLanguage = async () => {
-        try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userData.id}/prefLanguage`);
-            const languageName = response.data.prefLanguage ? getLanguage(response.data.prefLanguage) : 'No preferred language';
-            setPrefLanguage(languageName);
-        } catch (error) {
-            console.error('Error fetching preferred language:', error);
-        }
-    };
-
     const updatePreferredLanguage = async () => {
-        const languageCode = selectedLanguage ? getLanguageCode(selectedLanguage) : null;
+        const newPreferredLanguage = selectedLanguage || null;  
         try {
             await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userData.id}/prefLanguage`, {
-                prefLanguage: languageCode
+                prefLanguage: newPreferredLanguage
             });
-            fetchPreferredLanguage();
-            console.log('Preferred language updated successfully');
+            setPrefLanguage(newPreferredLanguage);
         } catch (error) {
             console.error('Error updating preferred language:', error);
         }
