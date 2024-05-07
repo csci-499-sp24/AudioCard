@@ -5,28 +5,23 @@ import axios from 'axios';
 import { auth } from '@/utils/firebase';
 import styles from '../../styles/testmode.module.css';
 import { useDarkMode } from '@/utils/darkModeContext';
+import { AuthContext } from  "../../utils/authcontext"
+import React, { useContext } from 'react';
 
 const ReviewPage = () => {
     const {isDarkMode} = useDarkMode();
     const router = useRouter();
     const { id } = router.query; // This is the ID of the cardset
-    const [user, setUser] = useState(null);
+    const user = useContext(AuthContext).user;
     const [userData, setUserData] = useState(null);
     const [cardsetData, setCardsetData] = useState(null);
     const [startReview, setStartReview] = useState(false); 
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(null);
-            }
-        });
         if (!userData) {
             fetchUserData();
         }
-        return () => unsubscribe();
+       
     }, [user, userData]);
 
     useEffect(() => {

@@ -6,11 +6,13 @@ import Navbar from '@/components/Navbar/Navbar';
 import Link from 'next/link';
 import { useDarkMode } from '../utils/darkModeContext';
 import styles from '../styles/settings.module.css';
+import { AuthContext } from  "../utils/authcontext"
+import  { useContext } from 'react';
 
 const Settings = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [username, setUsername] = useState('');
-    const [user, setUser] = useState(null);
+    const user = useContext(AuthContext).user;
     const [userData, setUserData] = useState(null);
     const [userAvatar, setUserAvatar] = useState('');
     const [editorOpen, setEditorOpen] = useState(false);
@@ -37,20 +39,12 @@ const Settings = () => {
 
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(null);
-            }
-        });
         if (user && !userData) {
             fetchUserData();
         }
         if (username) {
             fetchUserAvatar();
         }
-        return () => unsubscribe();
     }, [user, userData, username]);
 
 
