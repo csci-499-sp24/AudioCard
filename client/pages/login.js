@@ -17,7 +17,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const router = useRouter(); // Initialize useRouter hook
-
+    
     const handleLogin = async (e) => {
         e.preventDefault();
         try {

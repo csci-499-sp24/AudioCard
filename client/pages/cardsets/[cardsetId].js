@@ -15,11 +15,15 @@ import examDark from '../../assets/images/exam2_dark.png';
 import examLight from '../../assets/images/exam2_light.png';
 import styles from '../../styles/navbar.module.css';
 import Link from 'next/link';
+import { AuthContext } from  "../../utils/authcontext"
+import { useContext } from 'react';
+
 
 
 export default function CardsetPage() {
+   
     const { isDarkMode } = useDarkMode();
-    const [user, setUser] = useState(null);
+    const user = useContext(AuthContext).user;
     const router = useRouter();
     const [userData, setUserData] = useState(null);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
@@ -50,18 +54,14 @@ export default function CardsetPage() {
         }
     }, [Owner])
 
+    console.log(cardset)
+
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(null);
-            }
-        });
+
         if (!userData) {
             fetchUserData();
         }
-        return () => unsubscribe();
+    
     }, [user, userData]);
 
     useEffect(() => {
@@ -191,6 +191,10 @@ export default function CardsetPage() {
         fetchFlashCards();
     }
 
+
+
+
+
     const handleDelete = () => {
         toggleDeletePopup();
     };
@@ -310,9 +314,13 @@ export default function CardsetPage() {
                                                 </button>
                                                 : null}
                                             <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
-                                            <button className="btn deleteButton" onClick={() => handleDelete()}>
+                                            {isOwner && <button className="btn deleteButton" onClick={() => {
+handleDelete()
+                                            }}>
                                                 <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
                                             </button>
+                                            }
+                                            
                                         </div>
                                     </div>
                                 </>
@@ -357,7 +365,7 @@ export default function CardsetPage() {
                                                 </div>
                                             </div>
                                             <div className='row'>
-                                                <ShareFunction userid={userData?.id} cardsetId={cardsetId} isOwner={isOwner} />
+                                                <ShareFunction isPublic={cardset.isPublic} userid={userData?.id} cardsetId={cardsetId} isOwner={isOwner} />
                                             </div>
                                         </div>
                                     )}

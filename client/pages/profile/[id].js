@@ -9,6 +9,8 @@ import FriendRequestButton from '@/components/FriendRequestButton';
 import FriendList from '@/components/FriendList';
 import { useDarkMode } from '../../utils/darkModeContext';
 import Link from 'next/link';
+import { AuthContext } from  "../../utils/authcontext";
+import React, { useContext } from 'react';
 
 const Profile = () => {
     const router = useRouter();
@@ -21,9 +23,9 @@ const Profile = () => {
     const [isUser, setIsUser] = useState(false);
     const [isFriends, setIsFriends] = useState(false);
     const [userAvatar, setUserAvatar] = useState('');
-
+    const user = useContext(AuthContext).user;
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(async (user) => {
+        const unsubscribe = auth.onAuthStateChanged(async () => {
             if (user) {
                 await fetchCurrentUserData(user.uid);
             } else {
