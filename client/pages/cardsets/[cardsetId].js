@@ -30,7 +30,7 @@ export default function CardsetPage() {
     const [isEditPageOpen, setIsEditPageOpen] = useState(false);
     const [cardset, setCardset] = useState([]);
     const [access, setAccess] = useState(true);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [isadmin, setadmin] = useState(false);
     const [showSharePopup, setShowSharePopup] = useState(false);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
@@ -41,6 +41,7 @@ export default function CardsetPage() {
     const [ownerId, setOwnerId] = useState(0);
     const [userAvatar, setUserAvatar] = useState('');
     const [isRequestPending, setIsRequestPending] = useState(false);
+    const [openModal , setOpenModal] = useState(false);
     const cardsetId = router.query.cardsetId;
 
     useEffect(() => {
@@ -59,8 +60,6 @@ export default function CardsetPage() {
             fetchuserAvatar(Owner);
         }
     }, [Owner])
-
-    console.log(cardset)
 
     useEffect(() => {
 
@@ -167,7 +166,6 @@ export default function CardsetPage() {
             setLoading(false);
         } catch (error) {
             console.error('Error fetching flashcards:', error);
-            setLoading(false);
         }
     }
 
@@ -181,7 +179,6 @@ export default function CardsetPage() {
             const owner = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}`);
             SetOwner(owner.data.user.username)
             setOwnerId(owner.data.user.id)
-
             if (!ispublic) {
                 setAccess(false)
             }
@@ -191,22 +188,26 @@ export default function CardsetPage() {
                 setCanEdit(true);
                 setIsOwner(true);
             }
-
             try {
                 // Make a GET request to fetch shared cardsets for the user
                 if (!isOwner){
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${userData.id}/cardsets/${cardsetId}/shared`);
-                // Handle successful response
-                const role = response.data[0].authority;
-                setAccess(true)
-                if (role == 'admin') {
-                    setadmin(true)
-                    setCanEdit(true)
+                    const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${userData.id}/cardsets/${cardsetId}/shared`);
+                    // Handle successful response
+                    if(response.data[0] === undefined){
+                        setOpenModal(true);
+                    }
+                    const role = response.data[0].authority;
+
+                    setAccess(true)
+                    if (role == 'admin') {
+                        setadmin(true)
+                        setCanEdit(true)
+                    }
+                    if (role == 'edit') {
+                        setCanEdit(true)
+                    }
                 }
-                if (role == 'edit') {
-                    setCanEdit(true)
-                }
-            }
+
 
             } catch (error) {
                 // Handle error
@@ -223,10 +224,6 @@ export default function CardsetPage() {
         setIsEditPageOpen(false);
         fetchFlashCards();
     }
-
-
-
-
 
     const handleDelete = () => {
         toggleDeletePopup();
@@ -276,6 +273,7 @@ export default function CardsetPage() {
     return (
         <>
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
+
             <Navbar userId={userData?.id} />
             <div className="container">
                 <div className="row mt-5">
@@ -288,9 +286,9 @@ export default function CardsetPage() {
                     <div className="row">
                         <h1 className="text-center">{cardset.title}</h1>
                     </div>
-                    {!access  && !loading ? (
+                    {openModal  ? (
                             <div>
-                                <PrivateCardsetModal handleRequestAccess={handleRequestAccess} userId={userData?.id} cardsetId={cardsetId}/>
+                                <PrivateCardsetModal handleRequestAccess={handleRequestAccess} userId={userData?.id} cardsetId={cardsetId} access={access}/>
                             </div>
                     ) : (
                         <div className="container">

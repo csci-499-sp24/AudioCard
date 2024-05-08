@@ -4,18 +4,24 @@ import modalStyles from '@/styles/requestModal.module.css';
 import axios from 'axios';
 import { useDarkMode } from '@/utils/darkModeContext';
 
-export const PrivateCardsetModal = ({ handleRequestAccess, userId, cardsetId }) => {
+export const PrivateCardsetModal = ({ handleRequestAccess, userId, cardsetId, access }) => {
     const { isDarkMode } = useDarkMode();
     const router = useRouter();
     const [requestedAuthority, setRequestedAuthority] = useState('read-only');
     const [isRequestPending, setIsRequestPending] = useState(false);
     const [requestMade, setRequestMade] = useState(false);
+    const [modalVisible, setModalVisible] = useState(true);
 
     useEffect(() => {
         checkIfRequested();
         const myModal = new bootstrap.Modal('#staticBackdrop');
-        myModal.show();
-    },[requestMade]);
+        console.log(access);
+        if (access) {
+            
+        } else {
+            myModal.show();
+        }
+    },[requestMade, access]);
 
     const checkIfRequested = async () => {
         await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/cardsets/${cardsetId}/request?requestorId=${userId}`)
@@ -38,7 +44,7 @@ export const PrivateCardsetModal = ({ handleRequestAccess, userId, cardsetId }) 
     };
 
     return (
-            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">            
+            <div className="modal" id="staticBackdrop" data-bs-backdrop="staticBackdrop" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">            
             <div className="modal-dialog">
                 <div className="modal-content text-center" id={`${isDarkMode ? modalStyles.modalDark : modalStyles.modaLight}`}>
                 <div className="">
