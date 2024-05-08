@@ -14,12 +14,11 @@ import Image from 'next/image';
 import examDark from '../../assets/images/exam2_dark.png';
 import examLight from '../../assets/images/exam2_light.png';
 import styles from '../../styles/navbar.module.css';
+import style from '@/styles/editCardset.module.css';
 import Link from 'next/link';
 import { PrivateCardsetModal } from '@/components/PrivateCardsetModal';
 import { AuthContext } from  "../../utils/authcontext"
 import { useContext } from 'react';
-
-
 
 export default function CardsetPage() {
    
@@ -326,7 +325,7 @@ export default function CardsetPage() {
                                         <h3>Flashcard Set: {cardset.title}</h3>
                                         <div> Subject: <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
                                         <div> Language: {cardset.language} </div>
-                                        <div> {currentCardsetData.length} flashcards </div>
+                                        <div> Flashcards: {currentCardsetData.length} </div>
                                         <Link href={`/profile/${ownerId}`} style={{ textDecoration: 'none' }}>
                                             <div className={`${isDarkMode ? 'text-light' : 'text-dark'}`}>
                                                 Creator:
@@ -367,7 +366,7 @@ export default function CardsetPage() {
                                                 : null}
                                             <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
                                             {isOwner && <button className="btn deleteButton" onClick={() => {
-handleDelete()
+                                                handleDelete()
                                             }}>
                                                 <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
                                             </button>
@@ -444,7 +443,7 @@ handleDelete()
                             </div>
                             {/* Edit Flashcards set */}
                             {isEditPageOpen && (
-                                <div className="edit-page-view" style={{ backgroundColor: isDarkMode ? '#0a092d' : '#ADD8E6' }}>
+                                <div className="edit-page-view" style={{ backgroundColor: isDarkMode ? 'black' : '#F2F5F6' }}>
                                     <div className="edit-page-content">
                                         <button className="close-btn" style={{ color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseEditPage}>
                                             &times;

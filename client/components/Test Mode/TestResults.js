@@ -13,7 +13,7 @@ export const TestResults = ({ score, flashcards, handleRestartTest }) => {
         <div className='row justify-content-center pb-5' id={style.testResultContainer}>
             <div class="card" id={isDarkMode ? style.resultCardDark : style.resultCard}>
                 <div className="text-center" id={isDarkMode ? style.testResultDataDark : style.testResultDataLight}>
-                    <h2 className={isDarkMode ? 'card-title text-light' : 'card-title text-dark'}>Quiz compeleted!</h2>
+                    <h2 className={isDarkMode ? 'card-title text-light' : 'card-title text-dark'}>Quiz Completed!</h2>
 
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
                         <div style={{ height: "200px", width: "200px", fontSize: "26px", borderRadius: '50%', position: 'relative', backgroundColor: '#8b83ea', color: 'white', marginBottom: '24px', boxShadow: '0px 5px 10px 0px rgba(0,0,0,0.5)' }}>

@@ -202,6 +202,16 @@
     overflow: scroll;
 }
 
+#cardsetsContainerScrollable::-webkit-scrollbar-corner { 
+    background: transparent;
+    width: 0;
+    height: 0;
+    border-left: 16px solid transparent;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    border-right: 16px solid transparent;
+}
+
 #cardsetsContainerScrollable::-webkit-scrollbar { 
     width: 8px; 
 } 

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
+import styles from '../styles/CardSet.module.css';
 import {useDarkMode} from '../utils/darkModeContext'
 
 export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
@@ -23,13 +24,13 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
     }
 
     return (
-        <div className="mb-5 p-4" style={{ borderRadius: '10px', backgroundColor: isDarkMode ? '#252526':'white', color: isDarkMode? 'white':'black', width: '75%'}}>
+        <div className="mb-5 p-4" style={{ borderRadius: '10px', backgroundColor: isDarkMode ? '#252526':'white', color: isDarkMode? 'white':'black' }}>
             <div className="d-flex justify-content-end">
                 <button className="btn" style={{color: isDarkMode ? 'white' : 'gray' }} onClick={onClickToggle}>X</button>
             </div>
-            <h5>Create a new card set</h5>
+            <h5 className="text-center">Create a new card set</h5>
 
-            <form className="row row-cols-lg-auto g-3 align-items-center" onSubmit={(e) => onSubmit(e)}>
+            <form className="row row-cols-lg-auto g-3 mt-2 mb-2 justify-content-center" onSubmit={(e) => onSubmit(e)}>
                 <div className="col-12">
                     <label className="visually-hidden" htmlFor="title">Title</label>
                     <div className="input-group">
@@ -71,7 +72,7 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
                     </select>
                 </div>
 
-                <div className="col-12">
+                <div className="col-12 d-flex align-items-center">
                     <div className="form-check">
                         <input className="form-check-input" type="checkbox" id="isPublic" checked={isPublicChecked} onChange={() => setIsPublicChecked(!isPublicChecked)}/>
                         <label className="form-check-label" htmlFor="isPublic">
@@ -104,7 +105,7 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
                     </div>
                 </div>
             )}
-                <div className="col-12">
+                <div className="col-12" id={styles.creatBtn}>
                     <button type="submit" className="btn btn-secondary">
                         Create
                     </button>

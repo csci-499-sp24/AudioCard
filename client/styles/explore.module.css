@@ -1,0 +1,105 @@
+#backdropDark,
+#backdropLight {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+}
+
+#backdropLight {
+    background-color: rgb(0 0 0 / 40%);
+}
+
+#backdropDark {
+    background-color: rgb(0 0 0 / 50%);
+}
+
+#detailedCardsetContent {
+    padding: 20px;
+}
+
+#modalDark,
+#modalLight {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%; 
+    z-index: 1000; 
+    max-height: 80vh;
+}
+
+#modalDark {
+    background-color: rgb(46, 57, 86);
+    color: white;
+}
+
+#modalLight {
+    background-color: #F2F5F6;
+    color: black;
+}
+
+#bntClose {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+#cardsetsContainerScrollable {
+    max-height: 330px;
+    overflow: scroll;
+}
+
+#cardsetsContainerScrollable::-webkit-scrollbar { 
+    width: 8px; 
+} 
+
+#cardsetsContainerScrollable::-webkit-scrollbar-corner { 
+    background: transparent;
+    width: 0;
+    height: 0;
+    border-left: 16px solid transparent;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    border-right: 16px solid transparent;
+}
+
+#cardsetsContainerScrollable::-webkit-scrollbar-thumb { 
+    background: #888; 
+    border-radius: 20px;
+} 
+
+#cardsetsContainerScrollable::-webkit-scrollbar-thumb:hover { 
+    background: #555; 
+} 
+
+#cardsetsContainerScrollable::-webkit-scrollbar-button { 
+    display: none; 
+} 
+
+#copyBtnDark {
+    background-color: #1765B4;
+    border: none;
+}  
+    
+#copyBtnDark:hover {
+    background-color: #153f67;
+}
+
+#copyBtnLight {
+    background: #618dc8;
+    border: none;
+}
+
+#copyBtnLight:hover {
+    background: #1765B4;
+}
