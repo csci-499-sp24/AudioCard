@@ -5,28 +5,24 @@ import axios from 'axios';
 import { auth } from '@/utils/firebase';
 import styles from '../../styles/testmode.module.css';
 import { useDarkMode } from '@/utils/darkModeContext';
+import { AuthContext } from  "../../utils/authcontext"
+import React, { useContext } from 'react';
 
 const ReviewPage = () => {
     const {isDarkMode} = useDarkMode();
     const router = useRouter();
     const { id } = router.query; // This is the ID of the cardset
-    const [user, setUser] = useState(null);
+    const user = useContext(AuthContext).user;
     const [userData, setUserData] = useState(null);
     const [cardsetData, setCardsetData] = useState(null);
-    const [startReview, setStartReview] = useState(false); 
-
+    const [startReview, setStartReview] = useState(false);
+    const [preferredLanguage, setPreferredLanguage] = useState('');
+    
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(null);
-            }
-        });
         if (!userData) {
             fetchUserData();
         }
-        return () => unsubscribe();
+       
     }, [user, userData]);
 
     useEffect(() => {
@@ -58,6 +54,17 @@ const ReviewPage = () => {
         }
     };
 
+    useEffect(() => {
+        if(userData) {
+            const fetchPreferredLanguage = async () => {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userData.id}/prefLanguage`);
+                setPreferredLanguage(response.data.prefLanguage);
+            };
+        
+            fetchPreferredLanguage();
+        }
+    }, [userData]);
+
     return (
         <div className='container'>
             <h1 className="text-center mt-5">Review Mode</h1>
@@ -71,7 +78,7 @@ const ReviewPage = () => {
                     </div>
                 </div>
             <hr style={{borderColor: isDarkMode ? 'white' : 'black', borderWidth: '2px'}}/>
-            {cardsetData && startReview && <CardViewReviewMode userId={userData?.id} cardset={cardsetData} isDarkMode={isDarkMode} />}
+            {cardsetData && startReview && <CardViewReviewMode userId={userData?.id} cardset={cardsetData} isDarkMode={isDarkMode} preferredLanguage={preferredLanguage ? preferredLanguage : cardsetData.language} />}
             {!startReview &&  <div className='container d-flex justify-content-center mt-5' style={{backgroundColor: isDarkMode? '#252526' : 'white', width: '70%', borderRadius: '10px',}}>
                     <div className='container2'>
                         <div className='headingContainer mt-5' style={{paddingLeft: '10%'}}>

@@ -2,6 +2,13 @@ export const getTranslation = (phrase, language) => {
     let translation = '';
 
     switch (language) {
+        case 'en-US':
+            case 'en-GB':
+                switch (phrase) {
+                    default:
+                        translation = phrase;
+                }
+                break;
         case 'fr-FR':
             switch (phrase) {
                 case 'Try again.':

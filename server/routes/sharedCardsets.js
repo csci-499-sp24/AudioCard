@@ -72,6 +72,7 @@ router.route('/:cardsetid/share')
                         await existingSharedCardset.destroy();
                     }
                 }
+                //
                 const sharedCardset = await cardset.addSharedWithUser(user, {
                     through: { authority: req.query.authority },
                     attributes: ['id']

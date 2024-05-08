@@ -62,20 +62,32 @@ const Navbar = ({ userId }) => {
         event.target.src = '/userAvatar.jpg';
     };
 
+    const handleExploreLinkClick = () => {
+        if (router.pathname === '/explore') {
+            router.refresh();
+        }
+    }
+
+    const handleDashbordLinkClick = () => {
+        if (router.pathname === '/dashboard') {
+            router.refresh();
+        }
+    }
+
     return (
         <nav className={`navbar navbar-expand-lg ${isDarkMode ? 'bg-dark' : 'bg-body-tertiary'}`} id={styles.navbar}>
             <div className="container">
                 <div className="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <Link href="/explore" className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink}>
+                            <Link href="/explore" className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink} onClick={handleExploreLinkClick}>
                                 Explore
                             </Link>
                         </li>
                     </ul>
                 </div>
                 <div className="mx-auto order-0">
-                    <Link href="/dashboard" className={`navbar-brand text-white font-weight-bold ${isDarkMode && 'text-light'}`} id={styles.navLinkLogo}>
+                    <Link href="/dashboard" className={`navbar-brand text-white font-weight-bold ${isDarkMode && 'text-light'}`} id={styles.navLinkLogo}  onClick={handleDashbordLinkClick}>
                         AudioCard
                     </Link>
                     <button className={`navbar-toggler ${isDarkMode && 'navbar-dark'}`} type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">

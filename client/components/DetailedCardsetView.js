@@ -9,7 +9,7 @@ import styles from '../styles/navbar.module.css';
 export const CardsetView = ({ cardset }) => {
     const { isDarkMode } = useDarkMode();
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
-    const firebaseId = auth.currentUser.uid;
+    const firebaseId = auth.currentUser?.uid;
     const [userData, setUserData] = useState(null);
     const [copyCreated, setCopyCreated] = useState(false);
     const [userAvatar, setUserAvatar] = useState(''); 

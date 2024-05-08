@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Tooltip } from 'react-tooltip'
 import axios from 'axios';
 
-const ShareFunction = ({ userid, cardsetId, isOwner }) => {
+const ShareFunction = ({ userid, cardsetId, isOwner,isPublic }) => {
     const [emailOrUsername, setEmailOrUsername] = useState('');
     const [role, setRole] = useState('');
     const [curuserId, setcurUserId] = useState(null); // State to store the user ID
@@ -25,7 +25,7 @@ const ShareFunction = ({ userid, cardsetId, isOwner }) => {
             setError(error.message);
         }
     };
-
+//
     const handleShareLogic = async (userId) => {
         try {
             const shareresponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userid}/cardsets/${cardsetId}/shared/${cardsetId}/share?userid=${userId}&authority=${role}`);
@@ -52,7 +52,8 @@ const ShareFunction = ({ userid, cardsetId, isOwner }) => {
                 <label className='me-2'>Role: </label>
                 <select className='me-2' value={role} onChange={(e) => setRole(e.target.value)}>
                     <option value="">Select Role</option>
-                    <option value="read-only">Viewer</option>
+                   
+                 {isPublic === false &&  <option value="read-only">Viewer</option> }
                     <option value="edit">Editor</option>
                     {isOwner ?
                         <option value="admin">Admin</option>
