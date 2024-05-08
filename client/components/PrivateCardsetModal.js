@@ -44,7 +44,7 @@ export const PrivateCardsetModal = ({ handleRequestAccess, userId, cardsetId, ac
     };
 
     return (
-            <div className="modal" id="staticBackdrop" data-bs-backdrop="staticBackdrop" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">            
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content text-center" id={`${isDarkMode ? modalStyles.modalDark : modalStyles.modaLight}`}>
                 <div className="">
