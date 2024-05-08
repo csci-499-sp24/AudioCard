@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const dotenv = require('dotenv');
 const sharp = require('sharp');
-const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand, GetObjectCommand, CopyObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
 const app = express();
@@ -80,6 +80,34 @@ router.get('/avatar/:username', async (req, res) => {
         console.error('Error generating presigned URL:', error);
         res.status(500).send({ message: 'Error generating presigned URL', error: error.message });
     }
+});
+
+router.post('/avatar/updateUsername', async (req, res) => {
+  const { currentUsername, updatedUsername } = req.body; 
+
+  try {
+    const currentKey = `${currentUsername}_avatar.jpg`; 
+    const newKey = `${updatedUsername}_avatar.jpg`;
+
+    const copyParams = {
+      Bucket: BUCKET_NAME,
+      CopySource: `/${BUCKET_NAME}/${currentKey}`,
+      Key: newKey
+    };
+
+    await s3.send(new CopyObjectCommand(copyParams));
+
+    // Delete the old object
+    await s3.send(new DeleteObjectCommand({
+      Bucket: BUCKET_NAME,
+      Key: currentKey
+    }));
+
+    res.status(200).send({ message: 'Username updated for avatar' });
+  } catch (error) {
+    console.error('Error updating username in avatars', error); 
+    res.status(500).send({ message: 'Error updating username for avatar', error: error.message }); 
+  }
 });
 
 module.exports = router;

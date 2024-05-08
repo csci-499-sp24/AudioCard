@@ -6,7 +6,7 @@ import Image from "next/image";
 import logo from '../assets/images/logo.png';
 import { auth } from '@/utils/firebase';
 
-const UpdateUsername = () => {
+const UpdateUsername = ({username}) => {
     const [updatedUsername, setupdatedUsername] = useState('');
     const [error, setError] = useState(null);
     const [isAlertVisible, setIsAlertVisible] = useState(false);
@@ -38,8 +38,11 @@ const UpdateUsername = () => {
 
         // add username to DB
         try {
+            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/users/getuser', { params: { firebaseId: firebaseId } });
+            const userData = response.data.user;
+            const currentUsername = userData.username; 
             await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/changeUsername`, { updatedUsername, firebaseId });
-
+            await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/userAvatar/avatar/updateUsername`, { currentUsername, updatedUsername}); 
             alert('Username updated successfully');
             router.push('/settings');
         }
