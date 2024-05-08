@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Cardset, User, Flashcard, SharedCardset, CardsetNotification } = require('../models/modelRelations');
+const { Cardset, User, Flashcard, CardsetNotification } = require('../models/modelRelations');
 const flashcards = require ('./flashcards');
 const { Sequelize } = require('sequelize');
 

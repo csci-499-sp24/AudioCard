@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-const { Cardset, User, SharedCardset } = require('../models/modelRelations');
+const { Cardset, User, SharedCardset, CardsetNotification } = require('../models/modelRelations');
 const { checkCardsetAuthority } = require('./functions');
 const { Sequelize } = require('sequelize');
 
@@ -63,8 +63,14 @@ router.route('/:cardsetid/share')
                 });
 
                 if (existingSharedCardset) {
-                    res.status(409).json('User already has access to the cardset');
-                    return;
+                    if (existingSharedCardset.authority === req.params.authority){
+                        return res.status(409).json('User already has access to the cardset');
+                    } else {
+                        await existingSharedCardset.update({
+                            authority: req.query.authority
+                        });
+                        await existingSharedCardset.destroy();
+                    }
                 }
                 const sharedCardset = await cardset.addSharedWithUser(user, {
                     through: { authority: req.query.authority },
@@ -74,7 +80,17 @@ router.route('/:cardsetid/share')
                     res.status(409).json('User already has access to the cardset');
                     return;
                 }
-                user.createCardsetNotification({
+                const existingRequestNotification = await CardsetNotification.findOne({
+                    where: {
+                        senderId: user.id,
+                        cardsetId: req.params.cardsetid, 
+                        type: 'request', 
+                    }
+                });
+                if (existingRequestNotification){
+                    await existingRequestNotification.destroy();
+                }
+                await user.createCardsetNotification({
                     senderId: req.params.userid, 
                     cardsetId: req.params.cardsetid, 
                     type: 'grant', 
