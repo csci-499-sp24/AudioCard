@@ -68,15 +68,9 @@ export const CardsetView = ({ userId, cardset, cardsetId, fetchFlachcardPage, ca
                 {showCreateFlashcardForm ?
                     <div className='row'>
                         <hr />
-                        <div className="col-12 mb-2" id={styles.greeting}>
-                            <div className="d-flex justify-content-end">
-                                <button className="btn" style={{color: isDarkMode ? 'white' : 'gray' }} onClick={toggleCreateFlashcardForm}>X</button>
-                            </div>
-                        </div>
-
-                        <div className="col-12 my-2">
+                        <div className="col-12 my-2" id={isDarkMode ? styles.createFlashcarLight : styles.createFlashcarDark}>
                             <div className="d-flex justify-content-center">
-                                <CreateFlashcard userId={userId} cardsetId={cardsetId} onCreateFlashcard={handleCreateFlashcard} />
+                                <CreateFlashcard userId={userId} cardsetId={cardsetId} onCreateFlashcard={handleCreateFlashcard} toggleCreateFlashcardForm={toggleCreateFlashcardForm}/>
                             </div>
                         </div>
 
