@@ -35,20 +35,24 @@ const UpdateUsername = ({username}) => {
         }
 
         setError(null);
+        const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/users/getuser', { params: { firebaseId: firebaseId } });
+        const userData = response.data.user;
+        const currentUsername = userData.username; 
 
         // add username to DB
         try {
-            const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/users/getuser', { params: { firebaseId: firebaseId } });
-            const userData = response.data.user;
-            const currentUsername = userData.username; 
             await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/changeUsername`, { updatedUsername, firebaseId });
-            await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/userAvatar/avatar/updateUsername`, { currentUsername, updatedUsername}); 
             alert('Username updated successfully');
             router.push('/settings');
         }
         catch(e) {
             console.log('Error updating username', e);
             setError('Error updating username');
+        }
+        try {
+        await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/userAvatar/avatar/updateUsername`, { currentUsername, updatedUsername}); 
+        } catch (e) {
+            console.log('Error updating user avatar, its possible user avatar does not exist.'); 
         }
         
     };
