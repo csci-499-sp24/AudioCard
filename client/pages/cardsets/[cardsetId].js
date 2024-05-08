@@ -291,6 +291,13 @@ export default function CardsetPage() {
                                 <PrivateCardsetModal handleRequestAccess={handleRequestAccess} userId={userData?.id} cardsetId={cardsetId} access={access}/>
                             </div>
                     ) : (
+                        null
+                    )}
+                    {/* Main Flashcard  */}
+                    {!access || loading ? (
+                        <div className='text-center'><h5>Loading...</h5></div>
+                    ) : (
+                        <div>
                         <div className="container">
                             <div className="row">
                                 <div className="row d-flex align-items-center">
@@ -302,12 +309,6 @@ export default function CardsetPage() {
                                 </div>
                             </div>
                         </div>
-                    )}
-                    {/* Main Flashcard  */}
-                    {!access || loading ? (
-                        <div className='text-center'><h5>Loading...</h5></div>
-                    ) : (
-                        <div>
                             <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards} canEdit={canEdit} />
                             <hr />
                         </div>
