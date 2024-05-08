@@ -81,7 +81,8 @@
 }
 
 .acceptButton,
-.declineButton {
+.declineButton,
+.deleteButton {
     border: none;
     cursor: pointer;
     font-size: 1rem;
@@ -109,7 +110,24 @@
     background-color: #d32f2f;
 }
 
+.notificationContainer {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
 .notificationText{
     overflow-wrap: break-word;
-    max-width: 70%; 
+    flex-grow: 2;
+}
+
+.deleteButton {
+    background-color: transparent; 
+    border: none; 
+    color: black; 
+}
+
+.deleteButton:hover {
+    background-color: #ccc;
+    border-radius: 20%;
 }

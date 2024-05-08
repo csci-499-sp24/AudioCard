@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Cardset, User, Flashcard, SharedCardset } = require('../models/modelRelations');
+const { Cardset, User, Flashcard, CardsetNotification } = require('../models/modelRelations');
 const flashcards = require ('./flashcards');
 const { Sequelize } = require('sequelize');
 
@@ -72,6 +72,69 @@ router.route('/:cardsetId')
         }
 
         res.status(200).json(cardset);
+    } catch (error) {
+        console.error('Error fetching cardset:', error);
+        res.status(500).json({ error: 'Error fetching cardset' });
+        
+    }
+});
+
+router.route('/:cardsetId/request')
+.get(async (req, res) => {
+    try {
+        const { cardsetId } = req.params;
+        const requestorId = req.query.requestorId;
+        
+        const notification = await CardsetNotification.findOne({
+            where: { 
+                senderId: requestorId,
+                cardsetId: cardsetId,
+                type: "request" 
+            }
+            
+        });
+        if (notification) {
+            res.status(200).json(notification);
+        } else {
+            res.status(404).json({ message: 'Notification not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching users card set request:', error);
+        res.status(500).json({ error: 'Error fetching users card set request' });
+    }
+})
+.post(async (req, res) => {
+    try {
+        const { cardsetId } = req.params;
+        const { requestorId, requestedAuthority } = req.body;
+        const cardset = await Cardset.findByPk(cardsetId, {
+            include: [
+                {
+                    model: Flashcard,
+                    attributes: ['id', 'term', 'definition'], 
+                    duplicating: false,
+                },
+                {
+                    model: User,
+                    attributes: ['id', 'username'] 
+                }
+            ]
+        });
+        if (!cardset) {
+            return res.status(404).json({ error: 'Cardset not found' });
+        }
+        const cardsetOwner = await User.findByPk(cardset.userId);
+        if (!cardsetOwner) {
+            return res.status(404).json({ error: 'Cardset owner not found' });
+        }
+        const newNotification = await cardsetOwner.createCardsetNotification({
+            senderId: requestorId, 
+            cardsetId: cardset.id, 
+            type: 'request', 
+            authority: requestedAuthority
+        })
+
+        res.status(200).json(newNotification);
     } catch (error) {
         console.error('Error fetching cardset:', error);
         res.status(500).json({ error: 'Error fetching cardset' });

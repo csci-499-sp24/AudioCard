@@ -55,7 +55,7 @@ router.route('/cardsetNotifications/:notificationid')
         const {notificationid} = req.params;
         const notification = await CardsetNotification.findByPk(notificationid);
         if (notification.type === 'request') {
-            const user = User.findByPk(notification.senderId);
+            const user = await User.findByPk(notification.senderId);
             await user.createCardsetNotification({
                 senderId: req.params.userid, 
                 cardsetId: notification.cardsetId, 

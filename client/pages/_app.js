@@ -16,16 +16,16 @@ function MyApp({ Component, pageProps }) {
 }
 
 function AppContent({ Component, pageProps }) {
-  const { user } = useAuth();
+  /* const { user } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!user && router.pathname !== '/login' && router.pathname !== '/signup' && router.pathname !== '/welcome') {
       router.push('/welcome');
     }
-  }, [user, router]);
+  }, [user, router]); */ 
 
   return <Component {...pageProps} />;
-}
+} 
 
 export default MyApp;

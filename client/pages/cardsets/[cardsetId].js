@@ -16,6 +16,7 @@ import examLight from '../../assets/images/exam2_light.png';
 import styles from '../../styles/navbar.module.css';
 import style from '@/styles/editCardset.module.css';
 import Link from 'next/link';
+import { PrivateCardsetModal } from '@/components/PrivateCardsetModal';
 import { AuthContext } from  "../../utils/authcontext"
 import { useContext } from 'react';
 
@@ -29,7 +30,7 @@ export default function CardsetPage() {
     const [isEditPageOpen, setIsEditPageOpen] = useState(false);
     const [cardset, setCardset] = useState([]);
     const [access, setAccess] = useState(true);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [isadmin, setadmin] = useState(false);
     const [showSharePopup, setShowSharePopup] = useState(false);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
@@ -39,7 +40,14 @@ export default function CardsetPage() {
     const [Owner, SetOwner] = useState('');
     const [ownerId, setOwnerId] = useState(0);
     const [userAvatar, setUserAvatar] = useState('');
+    const [isRequestPending, setIsRequestPending] = useState(false);
+    const [openModal , setOpenModal] = useState(false);
     const cardsetId = router.query.cardsetId;
+
+    useEffect(() => {
+        fetchCardsetData();
+    }, []);
+
     useEffect(() => {
         if (cardset.subject) {
             const { bgColor, txtColor } = getSubjectStyle(cardset.subject);
@@ -53,8 +61,6 @@ export default function CardsetPage() {
         }
     }, [Owner])
 
-    console.log(cardset)
-
     useEffect(() => {
 
         if (!userData) {
@@ -67,6 +73,7 @@ export default function CardsetPage() {
         fetchFlashCards();
         checkaccess();
         checkFriendship();
+        checkIfRequested();
     }, [userData]);
 
     const fetchUserData = async () => {
@@ -78,6 +85,14 @@ export default function CardsetPage() {
             const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/users/getuser', { params: { firebaseId: firebaseId } });
             const userData = await response.data.user;
             setUserData(userData);
+        } catch (error) {
+            console.error('Error fetching card sets:', error);
+        }
+    };
+
+    const fetchCardsetData = async () => {
+        try {
+            const resp = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/cardsets/${cardsetId}`);
         } catch (error) {
             console.error('Error fetching card sets:', error);
         }
@@ -102,6 +117,23 @@ export default function CardsetPage() {
             console.error('Error checking friendship status:', error);
         }
     };
+
+    const checkIfRequested = async () => {
+        const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/cardsets/${cardsetId}/request?requestorId=${userData?.id}`)
+        .then(response => {
+            if (response.data.authority === 'edit') {
+                setIsRequestPending(true);
+            }
+        })
+        .catch(error => {
+            if (error.response && error.response.status === 404) {
+                setIsRequestPending(false);
+            } else {
+                // Other error occurred
+                console.error('Error fetching cardset requests:', error);
+            }
+        });
+    }
 
     const toggleSharePopup = () => {
         setShowSharePopup(!showSharePopup);
@@ -128,13 +160,12 @@ export default function CardsetPage() {
             const flashcards = response.data.flashcards;
             setCurrentCardsetData(flashcards);
             // get current cardset's info - for edits
-            const resp = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}`);
+            const resp = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/cardsets/${cardsetId}`);
             const cardsetData = resp.data;
             setCardset(cardsetData);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching flashcards:', error);
-
         }
     }
 
@@ -143,12 +174,11 @@ export default function CardsetPage() {
             const resp = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + `/api/users/${userData.id}/cardsets/${cardsetId}`);
             const cardsetData = resp.data;
             const id = cardsetData.userId;
-            const ispublic = cardsetData.isPublic
+            const ispublic = cardsetData.isPublic;
 
             const owner = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}`);
             SetOwner(owner.data.user.username)
             setOwnerId(owner.data.user.id)
-
             if (!ispublic) {
                 setAccess(false)
             }
@@ -158,22 +188,26 @@ export default function CardsetPage() {
                 setCanEdit(true);
                 setIsOwner(true);
             }
-
             try {
                 // Make a GET request to fetch shared cardsets for the user
                 if (!isOwner){
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${userData.id}/cardsets/${cardsetId}/shared`);
-                // Handle successful response
-                const role = response.data[0].authority;
-                setAccess(true)
-                if (role == 'admin') {
-                    setadmin(true)
-                    setCanEdit(true)
+                    const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${userData.id}/cardsets/${cardsetId}/shared`);
+                    // Handle successful response
+                    if(response.data[0] === undefined){
+                        setOpenModal(true);
+                    }
+                    const role = response.data[0].authority;
+
+                    setAccess(true)
+                    if (role == 'admin') {
+                        setadmin(true)
+                        setCanEdit(true)
+                    }
+                    if (role == 'edit') {
+                        setCanEdit(true)
+                    }
                 }
-                if (role == 'edit') {
-                    setCanEdit(true)
-                }
-            }
+
 
             } catch (error) {
                 // Handle error
@@ -190,10 +224,6 @@ export default function CardsetPage() {
         setIsEditPageOpen(false);
         fetchFlashCards();
     }
-
-
-
-
 
     const handleDelete = () => {
         toggleDeletePopup();
@@ -224,23 +254,42 @@ export default function CardsetPage() {
         event.target.src = '/userAvatar.jpg';
     };
 
+    const handleRequestAccess = async (accessLevel) => {
+        try{
+            if(!userData){
+                console.error('User cannot be verified, try logging in again');
+            }
+            await axios.post(process.env.NEXT_PUBLIC_SERVER_URL + `/api/cardsets/${cardsetId}/request`, {
+                requestorId: userData.id,
+                requestedAuthority: accessLevel
+            });
+            checkIfRequested();
+        } catch (error) {
+            console.error('Error requesting access to the card set: ', error );
+        }
+    }
 
     // Render flashcard data
     return (
+        <>
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
+
             <Navbar userId={userData?.id} />
             <div className="container">
                 <div className="row mt-5">
-                    <div className='col'>
-                        <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>
-                    </div>
+                    {access || isOwner ?                    
+                        <div className='col'>
+                            <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>
+                        </div> 
+                        : null
+                    }
                     <div className="row">
                         <h1 className="text-center">{cardset.title}</h1>
                     </div>
-                    {!access ? (
-                        <div>
-                            This card set is NOT PUBLIC.
-                        </div>
+                    {openModal  ? (
+                            <div>
+                                <PrivateCardsetModal handleRequestAccess={handleRequestAccess} userId={userData?.id} cardsetId={cardsetId} access={access}/>
+                            </div>
                     ) : (
                         <div className="container">
                             <div className="row">
@@ -304,7 +353,7 @@ export default function CardsetPage() {
                                 </div>
                             ) : null}
                             {/*Edit/Delete Flashcard set */}
-                            {canEdit && (
+                            {canEdit ? (
                                 <>
                                     <div className='col d-flex justify-content-end'>
                                         <div className="d-flex align-items-center">
@@ -324,7 +373,20 @@ export default function CardsetPage() {
                                         </div>
                                     </div>
                                 </>
-                            )}
+                            )
+                            : access && !loading && !isRequestPending ?
+                            /*User has read only access, provide a request editor access button*/
+                            (<>
+                            <div>
+                            <div className='col d-flex justify-content-start my-2'>
+                                        <div className="d-flex align-items-center">
+                                            <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => handleRequestAccess('edit')}>Request Edit Access</button>
+                                        </div>
+                                    </div>
+                            </div>
+                            </>)
+                            : null
+                            }
 
                             {/* Delete message */}
                             {
@@ -519,6 +581,6 @@ export default function CardsetPage() {
                 </div>
             </div>
         </div>
+        </>
     );
-
 }
