@@ -51,6 +51,21 @@ router.route('/changePassword')
         }
     })
 
+    // change username
+router.route('/changeUsername')
+.post(async(req, res) => {
+    try {
+        const { updatedUsername, firebaseId } = req.body;
+        const user = await User.findOne({ where: { firebaseId }});
+        await user.update({ username: updatedUsername });
+        return res.status(200).json({ success: true });
+    } catch (error) {
+        console.error('Error updating username:', error);
+        res.status(500).json({ error: 'Error updating username' });
+    }
+})
+
+
 //Get all Users
 router.route('/')
     .get(async (req, res) => {
@@ -64,7 +79,20 @@ router.route('/')
     });
 
 
-//Get user's database entry using their firebaseId
+// //Get user's database entry using their firebaseId
+// router.route('/getuser')
+// .get(async(req, res) => {
+//     try{
+//         const { firebaseId } = req.query;
+//         const user = await User.findOne({ where: { id: req.params.userid }});
+//         res.status(200).json({ user });
+//     } catch (error) {
+//         console.error('Error fetching database user:', error);
+//         res.status(500).json({ error: 'Error fetching database user' });
+//     }
+// });
+
+//Get user's database entry using their firebaseId WOULD THIS WORK??????
 router.route('/getuser')
 .get(async(req, res) => {
     try{
