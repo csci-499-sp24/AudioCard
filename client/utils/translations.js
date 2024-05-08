@@ -2,6 +2,13 @@ export const getTranslation = (phrase, language) => {
     let translation = '';
 
     switch (language) {
+        case 'en-US':
+            case 'en-GB':
+                switch (phrase) {
+                    default:
+                        translation = phrase;
+                }
+                break;
         case 'fr-FR':
             switch (phrase) {
                 case 'Try again.':
@@ -9,6 +16,18 @@ export const getTranslation = (phrase, language) => {
                     break;
                 case 'The correct answer is':
                     translation = "La réponse correcte est";
+                    break;
+                case 'shuffle':
+                    translation = "mélange";
+                    break;
+                case 'exit':
+                    translation = "quitte";
+                    break;
+                case 'restart':
+                    translation = "redémarre";
+                    break;
+                case 'Say "shuffle", "restart", or "exit"':
+                    translation = "Dites mélange , redémarre ou quitte";
                     break;
                 default:
                     translation = phrase;
@@ -25,6 +44,18 @@ export const getTranslation = (phrase, language) => {
                 case 'Correct.':
                     translation = "Correcto";
                     break;
+                case 'shuffle':
+                    translation = "baraja";
+                    break;
+                case 'exit':
+                    translation = "salida";
+                    break;
+                case 'restart':
+                    translation = "reinicia";
+                    break;
+                case 'Say "shuffle", "restart", or "exit"':
+                    translation = "Di baraja, reinicia o salida";
+                    break;
                 default:
                     translation = phrase;
             }
@@ -39,6 +70,18 @@ export const getTranslation = (phrase, language) => {
                         break;
                     case 'Correct.':
                         translation = "সঠিক";
+                        break;
+                    case 'shuffle':
+                        translation = "অদলবদল";
+                        break;
+                    case 'exit':
+                        translation = "প্রস্থান";
+                        break;
+                    case 'restart':
+                        translation = "আবার শুরু";
+                        break;
+                    case 'Say "shuffle", "restart", or "exit"':
+                        translation = "বলুন অদলবদল, আবার শুরু বা প্রস্থান";
                         break;
                     default:
                         translation = phrase;
@@ -55,6 +98,19 @@ export const getTranslation = (phrase, language) => {
                     case 'Correct.':
                         translation = "正确的";
                         break;
+                    case 'shuffle': 
+                        translation = "打乱";
+                        break;
+                    case 'exit':
+                        translation = "退出";
+                        break;
+                    case 'restart':
+                        translation = "重新开始";
+                        break;
+                    case 'Say "shuffle", "restart", or "exit"':
+                        translation = "说 打乱 重新开始 或 退出";
+                        break;
+                    
                     default:
                         translation = phrase;
                 }
@@ -70,10 +126,104 @@ export const getTranslation = (phrase, language) => {
                     case 'Correct.':
                         translation = "Правильно";
                         break;
+                    case 'shuffle':
+                        translation = "перемешать";
+                        break;
+                    case 'exit':
+                        translation = "выход";
+                        break;
+                    case 'restart':
+                        translation = "перезапуск";
+                        break;
+                    case 'Say "shuffle", "restart", or "exit"':
+                        translation = "сказать перемешать, перезапуск или выход";
+                        break;
                     default:
                         translation = phrase;
                 }
                 break;
+                case 'hi-IN':
+                    switch(phrase) {
+                        case 'Try again.':
+                            translation = "पुनः प्रयास करें";
+                            break;
+                        case 'The correct answer is':
+                            translation = "सही उत्तर है";
+                            break;
+                        case 'Correct.':
+                            translation = "सही";
+                            break;
+                        case 'shuffle':
+                            translation = "मिश्रण";
+                            break;
+                        case 'exit':
+                            translation = "बाहर निकलना";
+                            break;
+                        case 'restart':
+                            translation = "पुनः आरंभ करें";
+                            break;
+                        case 'Say "shuffle", "restart", or "exit"':
+                            translation = '"शफ़ल करें", "पुनः प्रारंभ करें" या "बाहर निकलें" कहें';
+                            break;
+                        default:
+                            translation = phrase;
+                    }
+                    break;
+                    case 'pt-BR':
+                        switch(phrase) {
+                            case 'Try again.':
+                                translation = "Tente novamente.";
+                                break;
+                            case 'The correct answer is':
+                                translation = "A resposta correta é";
+                                break;
+                            case 'Correct.':
+                                translation = "Correto.";
+                                break;
+                            case 'shuffle':
+                                translation = "Embaralhar";
+                                break;
+                            case 'exit':
+                                translation = "Sair";
+                                break;
+                            case 'restart':
+                                translation = "Reiniciar";
+                                break;
+                            case 'Say "shuffle", "restart", or "exit"':
+                                translation = 'Diga "embaralhar", "reiniciar" ou "sair"';
+                                break;
+                            default:
+                                translation = phrase;
+                        }
+                        break;
+                    case 'ar-XA':
+                        switch(phrase) {
+                            case 'Try again.':
+                                translation = "حاول مرة أخرى.";
+                                break;
+                            case 'The correct answer is':
+                                translation = "الإجابة الصحيحة هي";
+                                break;
+                            case 'Correct.':
+                                translation = "صحيح.";
+                                break;
+                            case 'shuffle':
+                                translation = "خلط";
+                                break;
+                            case 'exit':
+                                translation = "خروج";
+                                break;
+                            case 'restart':
+                                translation = "إعادة تشغيل";
+                                break;
+                            case 'Say "shuffle", "restart", or "exit"':
+                                translation = 'قل "خلط"، "إعادة التشغيل" أو "الخروج"';
+                                break;
+                            default:
+                                translation = phrase;
+                        }
+                        break;
+                
 
         default:
             translation = phrase; 
@@ -104,5 +254,14 @@ export const numberSpellings = {
     ],
     'bn-IN': [
         ['এক', 'দুই', 'তিন', 'চার', 'পাঁচ', 'ছয়', 'সাত', 'আট', 'নয়', 'দশ']
+    ],
+    'hi-IN': [
+        ['एक', 'दो', 'तीन', 'चार', 'पांच', 'छह', 'सात', 'आठ', 'नौ', 'दस']
+    ],
+    'pt-BR': [
+        ['um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove', 'dez']
+    ],
+    'ar-XA': [
+        ['واحد', 'اثنان', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة', 'عشرة']
     ]
 };

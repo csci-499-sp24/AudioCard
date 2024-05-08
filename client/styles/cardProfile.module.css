@@ -1,0 +1,12 @@
+#cardLight,
+#cardDark {
+    border-radius: 5px;
+}
+
+#cardDetails {
+    color: #626262;
+}
+
+#cardDetailsDark {
+    color: #0e0e0e;
+}

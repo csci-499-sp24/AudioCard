@@ -63,27 +63,29 @@ export const Flashcard = ({ cardData, userId, cardsetId, canEdit }) => {
   return (
     <div className="container">
       <div className="row mb-5">
-        <div className='d-flex justify-content-between mb-3'>
-          {isEditing ? null : (
+        <div className={isEditing && editingCard ? '' :'d-flex justify-content-between mb-3'} > 
+          {isEditing && editingCard  ? null : (
             <div className="align-self-center mx-auto" id={style.Previous}>
               <button className="btn btn-secondary" onClick={() => handleChange(-1)}>Prev</button>
             </div>
           )}
 
           {isEditing && editingCard ? (
-            <EditFlashcard userId={userId} cardsetId={cardsetId} flashcard={editingCard} onEditFlashcard={handleEditComplete} onCancel={handleEditCancel} />
+            <div id={isDarkMode ? style.editContainerDark : style.editContainerLight}>
+              <EditFlashcard userId={userId} cardsetId={cardsetId} flashcard={editingCard} onEditFlashcard={handleEditComplete} onCancel={handleEditCancel} />
+            </div>
           ) : (
             <RotatingCard flashcards={flashcards} index={index} />
           )}
 
-          {isEditing ? null : (
+          {isEditing && editingCard ? null : (
             <div className="align-self-center mx-auto" id={style.Next}>
               <button className="btn btn-secondary" onClick={() => handleChange(1)}>Next</button>
             </div>
           )}
         </div>
 
-        <div className="d-flex flex-row justify-content-around" id={style.ButtonsSmallScreen}>
+        <div className="d-flex flex-row justify-content-around" id={isEditing && editingCard ? style.ButtonsSmallNoScreen : style.ButtonsSmallScreen }>
           <div className="p-2"><button className="btn btn-secondary" onClick={() => handleChange(-1)}>Prev</button></div>
           <div className="p-2"><button className="btn btn-secondary" onClick={() => handleChange(1)}>Next</button></div>
         </div>

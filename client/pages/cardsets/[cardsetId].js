@@ -14,14 +14,15 @@ import Image from 'next/image';
 import examDark from '../../assets/images/exam2_dark.png';
 import examLight from '../../assets/images/exam2_light.png';
 import styles from '../../styles/navbar.module.css';
+import style from '@/styles/editCardset.module.css';
 import Link from 'next/link';
-
-
+import { AuthContext } from  "../../utils/authcontext"
+import { useContext } from 'react';
 
 export default function CardsetPage() {
    
     const { isDarkMode } = useDarkMode();
-    const [user, setUser] = useState(null);
+    const user = useContext(AuthContext).user;
     const router = useRouter();
     const [userData, setUserData] = useState(null);
     const [currentCardsetData, setCurrentCardsetData] = useState([]);
@@ -55,17 +56,11 @@ export default function CardsetPage() {
     console.log(cardset)
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(null);
-            }
-        });
+
         if (!userData) {
             fetchUserData();
         }
-        return () => unsubscribe();
+    
     }, [user, userData]);
 
     useEffect(() => {
@@ -97,13 +92,12 @@ export default function CardsetPage() {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userData.id}/friends/${id}`);
 
             if (response.data.status !== 'pending' && friendshiponly == true) {
-                const shareresponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}/cardsets/${cardsetId}/shared/${cardsetId}/share?userid=${userData.id}&authority=read-only`);
+                const shareresponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${id}/cardsets/${cardsetId}/shared/${cardsetId}/share?userid=${userData.id}&authority=friend-only`);
                 console.log('Sharing response:', shareresponse.data);
                 setAccess(true);
                 window.location.reload();
                 return;
             }
-            
         } catch (error) {
             console.error('Error checking friendship status:', error);
         }
@@ -167,6 +161,7 @@ export default function CardsetPage() {
 
             try {
                 // Make a GET request to fetch shared cardsets for the user
+                if (!isOwner){
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${userData.id}/cardsets/${cardsetId}/shared`);
                 // Handle successful response
                 const role = response.data[0].authority;
@@ -178,7 +173,7 @@ export default function CardsetPage() {
                 if (role == 'edit') {
                     setCanEdit(true)
                 }
-
+            }
 
             } catch (error) {
                 // Handle error
@@ -278,7 +273,8 @@ export default function CardsetPage() {
                                     <div className="">
                                         <h3>Flashcard Set: {cardset.title}</h3>
                                         <div> Subject: <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
-                                        <div> {currentCardsetData.length} flashcards </div>
+                                        <div> Language: {cardset.language} </div>
+                                        <div> Flashcards: {currentCardsetData.length} </div>
                                         <Link href={`/profile/${ownerId}`} style={{ textDecoration: 'none' }}>
                                             <div className={`${isDarkMode ? 'text-light' : 'text-dark'}`}>
                                                 Creator:
@@ -300,7 +296,7 @@ export default function CardsetPage() {
 
                                         {canEdit ?
                                             <div>
-                                                <CollaboratorList cardsetId={cardset.id} isOwner={isOwner} isadmin={isadmin} />
+                                                <CollaboratorList currentUserId={userData.id} cardsetId={cardset.id} isOwner={isOwner} isadmin={isadmin}/>
                                             </div>
                                             : null}
 
@@ -319,7 +315,7 @@ export default function CardsetPage() {
                                                 : null}
                                             <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
                                             {isOwner && <button className="btn deleteButton" onClick={() => {
-handleDelete()
+                                                handleDelete()
                                             }}>
                                                 <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
                                             </button>
@@ -383,7 +379,7 @@ handleDelete()
                             </div>
                             {/* Edit Flashcards set */}
                             {isEditPageOpen && (
-                                <div className="edit-page-view" style={{ backgroundColor: isDarkMode ? '#0a092d' : '#ADD8E6' }}>
+                                <div className="edit-page-view" style={{ backgroundColor: isDarkMode ? 'black' : '#F2F5F6' }}>
                                     <div className="edit-page-content">
                                         <button className="close-btn" style={{ color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseEditPage}>
                                             &times;
@@ -395,6 +391,7 @@ handleDelete()
                                                 cardsetId={cardsetId}
                                                 cardsetTitle={cardset.title}
                                                 cardsetSubject={cardset.subject}
+                                                cardsetLanguage={cardset.language}
                                                 cardsetIsPublic={cardset.isPublic}
                                                 cardsetIsFriendsOnly={cardset.isFriendsOnly}
                                             />

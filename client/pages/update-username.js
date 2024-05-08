@@ -61,9 +61,6 @@ const UpdateUsername = ({username}) => {
         <div className="container">
             <div className="row mt-5 justify-content-md-center">
                 <div className="col col-md-4 col-sm-12">
-                    <div className="d-flex justify-content-center">
-                        <Image src={logo} alt="logo"/>
-                    </div>
 
                     <h2 className="m-4 text-center">Update Username</h2>
 

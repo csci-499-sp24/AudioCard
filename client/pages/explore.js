@@ -9,6 +9,9 @@ import { CardsetSearchBar } from "@/components/Explore/CardsetSearchBar";
 import { UserSearchBar } from "@/components/Explore/UserSearchBar";
 import { UserCard } from "@/components/Cards/UserCard";
 import BackToTopButton from "@/components/BackToTopButton";
+import { AuthContext } from  "../utils/authcontext";
+import React, { useContext } from 'react';
+import styles from '@/styles/explore.module.css';
 
 const Explore = () => {
     const { isDarkMode} = useDarkMode();
@@ -20,21 +23,13 @@ const Explore = () => {
     const [searchTopic, setSearchTopic] = useState('card sets');
     const [filteredCardsets, setFilteredCardsets] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
-    const [user, setUser] = useState(null);
+    const user = useContext(AuthContext).user;
     const [userData, setUserData] = useState(null);
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(null);
-            }
-        });
         if (!userData) {
             fetchUserData();
         }
-        return () => unsubscribe();
     }, [user, userData]);
 
     useEffect(() => {
@@ -110,6 +105,7 @@ const Explore = () => {
     return (
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={userData?.id}/>
+
             <div className="container mt-5">
                 <h1 className="mb-4">Explore {searchTopic === 'card sets' ? "Card Sets" : "Users" }</h1>
                 {searchTopic === 'card sets' ? 
@@ -142,10 +138,11 @@ const Explore = () => {
                         )
                     }
                 </div>
+                
                 {isDetailedViewOpen && (
-                    <div className="detailed-cardset-view" style={{ backgroundColor: isDarkMode ? '#0a092d' : '#ADD8E6' }}>
-                        <div className="detailed-cardset-content">
-                            <button className="close-btn" style={{color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseDetailedView}>
+                    <div id={`${isDarkMode ? styles.modalDark : styles.modalLight}`}>
+                        <div id={styles.detailedCardsetContent} className="detailedCardsetContent ">
+                            <button id={styles.bntClose} style={{color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseDetailedView}>
                                 &times;
                             </button>
                             {selectedCardset && (
@@ -155,42 +152,11 @@ const Explore = () => {
                         </div>
                     </div>
                 )}
+
                 <BackToTopButton /> 
+
+                {isDetailedViewOpen && <div id={`${isDarkMode ? styles.backdropDark : styles.backdropLight}`} ></div>}
             </div>
-            <style jsx>{`
-                    .container {
-                    margin-right: ${isDetailedViewOpen ? "50%" : "auto"};
-                    transition: margin-right 0.3s ease;
-                  }
-                .card:hover {
-                        transform: scale(1.03); 
-                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-                        transition: transform 0.3s ease, box-shadow 0.3s ease; 
-                    }
-                .detailed-cardset-view {
-                    position: fixed;
-                    top: 0;
-                    right: 0;
-                    width: 50%; /* Adjust as needed */
-                    height: 100%;
-                    z-index: 999;
-                    overflow-y: auto;
-                    transition: transform 0.3s ease;
-                    transform: translateX(${isDetailedViewOpen ? "0" : "100%"});
-                  }
-                  .detailed-cardset-content {
-                    padding: 20px;
-                  }
-                  .close-btn {
-                    position: absolute;
-                    top: 10px;
-                    right: 10px;
-                    font-size: 24px;
-                    cursor: pointer;
-                    background: none;
-                    border: none;
-                  }
-                `}</style>
         </div>
     );
 }

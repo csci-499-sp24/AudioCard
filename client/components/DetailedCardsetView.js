@@ -3,8 +3,10 @@ import axios from 'axios';
 import { auth } from '../utils/firebase';
 import { useRouter } from 'next/router';
 import { useDarkMode } from '../utils/darkModeContext';
+import { TermCard } from '../components/Cards/TermCard';
+import { getSubjectStyle } from '@/utils/getSubjectStyles';
 import styles from '../styles/navbar.module.css'; 
-// Corrected import with capitalization
+import style from '../styles/explore.module.css'; 
 
 export const CardsetView = ({ cardset }) => {
     const { isDarkMode } = useDarkMode();
@@ -13,6 +15,7 @@ export const CardsetView = ({ cardset }) => {
     const [userData, setUserData] = useState(null);
     const [copyCreated, setCopyCreated] = useState(false);
     const [userAvatar, setUserAvatar] = useState(''); 
+    const [txtColor, setTxtColor] = useState('');
     const router = useRouter();
 
     useEffect(() => {
@@ -21,8 +24,14 @@ export const CardsetView = ({ cardset }) => {
 
     useEffect(() => {
         fetchuserAvatar(cardset.user?.username); 
-    }
-    , [cardset]);
+    }, [cardset]);
+
+    useEffect(() => {
+        if (cardset.subject) {
+            const { bgColor, txtColor } = getSubjectStyle(cardset.subject);
+            setTxtColor(txtColor);
+        }
+    }, [cardset]);
 
     const fetchUserData = async () => {
         try {
@@ -103,34 +112,29 @@ export const CardsetView = ({ cardset }) => {
             <div className='row'>
                 <div className='col'>
                     <div className="cardsetTitleContainer">
-                        <h1>Flashcard Set: {cardset.title}</h1>
-                        <div> Subject: {cardset.subject} </div>
-                        <div> {cardset.flashcardCount} flashcards </div>
+                        <h3>Flashcard Set: {cardset.title}</h3>
+                        <div> Subject:  <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
+                        <div> Flashcards: {cardset.flashcardCount} </div>
                         <div className='mb-2'>Created by:
                             <span
-                                style={{ cursor: 'pointer', color: 'blue' , marginLeft: '3px'}}
+                                style={{cursor: 'pointer', marginLeft: '3px', color: isDarkMode ? '#137eff' : 'blue'}}
                                 onClick={() => navigateToUserProfile(cardset.user?.id)}
                             >
                                 {cardset.user?.username}
                                 <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} style={{borderColor: 'white', marginLeft: '5px'}} />
                             </span>
                         </div>
-
-                       
-                        
                     </div>
                 </div>
                 <div className='col d-flex justify-content-end align-items-center'>
-                    <button className="btn btn-secondary copybutton" onClick={() => makeCopy()} disabled={copyCreated}>
+                    <button id={`${isDarkMode ? style.copyBtnDark : style.copyBtnLight}`}
+                    className="btn btn-secondary copybutton" onClick={() => makeCopy()} disabled={copyCreated}>
                         {copyCreated ? "Copy created" : "Make a copy"} </button>
                 </div>
             </div>
-            <div className="flashcardContainer">
+            <div className="flashcardContainer  mt-3" id={style.cardsetsContainerScrollable}>
                 {currentCardsetData.map(flashcard => (
-                    <div key={flashcard.id} className="flashcard" style={{ backgroundColor: isDarkMode ? '#2e3956' : '#FFFFFF' }}>
-                        <div>Question: {flashcard.term}</div>
-                        <div>Answer: {flashcard.definition}</div>
-                    </div>
+                    <TermCard key={flashcard.id} flashcard={flashcard} />
                 ))}
             </div>
             <style jsx>{`

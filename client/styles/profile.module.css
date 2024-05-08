@@ -1,3 +1,45 @@
+/* Left Side of the Page*/
+
+#UserInfoCol {
+    background: white;
+    border: 1px solid #0000002d;
+    border-radius: 5px;
+}
+
+#UserInfoColDark {
+    background-color: #252526;
+    border: 1px solid #d3d3d340;
+    border-radius: 5px;
+}
+
+#CardsetsInfoCol {
+    background: white;
+    border: 1px solid #0000002d;
+    border-radius: 5px;
+    margin: 0;
+}
+
+#CardsetsInfoColDark {
+    background-color: #252526;
+    border: 1px solid #d3d3d340;
+    border-radius: 5px;
+    margin: 0;
+}
+
+#UserInfoContainer {
+    background: #eeeeee;
+    padding: 15px;
+    margin: 20px 10px;
+    border-radius: 5px;
+}
+
+#UserInfoContainerDark {
+    background: #38383a;
+    padding: 15px;
+    margin: 20px 10px;
+    border-radius: 5px;
+}
+
 .profileContainer {
     display: flex;
     margin: 0 auto;
@@ -20,13 +62,12 @@
 }
 
 .avatarImage {
-    width: 200px;
-    height: 200px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 1.5rem;
+    margin-bottom: 10px;
     margin-top: 1rem;
-    border: 3px solid #333;
 }
 
 .friendList {
@@ -38,7 +79,7 @@
 }
 
 .addButton {
-    margin-top: 10px;
+    margin: 15px 0;
     padding: 10px 20px;
     cursor: pointer;
     background-color: #007bff;
@@ -48,10 +89,10 @@
 }
 
 .deleteButton {
-    margin-top: 10px;
+    margin: 15px 0;
     padding: 10px 20px;
     cursor: pointer;
-    background-color: #ff0000;
+    background-color: #DC3545;
     color: white;
     border: none;
     border-radius: 5px;
@@ -64,10 +105,16 @@
     height: 100px;
 }
 
-.cardSetTitle {
-    margin-top: 0;
-    margin-bottom: 20px;
-    text-align: center;
+#cardSetTitle {
+    margin: 0;
+}
+
+#userEmail {
+    color: #626262;
+}
+
+#userEmailDark {
+    color: #bdbdbd;
 }
 
 .container {
@@ -81,13 +128,18 @@
     width: 100%;
 }
 
+#friendListScrollable {
+    max-height: 260px;
+    overflow: scroll;
+}
+
 .friendListUl {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-.friendListItem {
+#friendListItem {
     display: flex;
     align-items: center;
     padding: 10px;
@@ -96,27 +148,33 @@
     transition: background-color 0.3s; 
 }
 
-.friendListItem:hover {
-    background-color: #dddde7; 
+#friendListItem:hover {
+    background-color: #89b0e433; 
 }
 
-.darkFriendListItem {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    cursor: pointer; 
-    transition: background-color 0.3s; 
+#darkFriendListItem {
+    background-color: #252526;
+    border: 1px solid #d3d3d340;
+    color: white;
+    cursor: pointer;
 }
 
-.darkFriendListItem:hover {
-    background-color: #dddde7; 
-    color: black;
+#darkFriendListItem:hover {
+    background-color: #1e1f1f; 
+    color: white;
+}
+
+#friendListItemSetsDark {
+    color: #8f8e8e;
+}
+
+#friendListItemSets {
+    color: #808080bf;
 }
 
 .friendAvatar {
-    width: 50px; 
-    height: 50px;
+    width: 40px; 
+    height: 40px;
     border-radius: 50%;
     overflow: hidden;
     margin-right: 10px; 
@@ -126,7 +184,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border: 1px solid black; 
 }
 
 .friendName {
@@ -136,10 +193,67 @@
     align-items: center;
 }
 
+/* Right Side of the Page*/
+
+#cardsetsContainer {}
+
+#cardsetsContainerScrollable {
+    max-height: 360px;
+    overflow: scroll;
+}
+
+#cardsetsContainerScrollable::-webkit-scrollbar-corner { 
+    background: transparent;
+    width: 0;
+    height: 0;
+    border-left: 16px solid transparent;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    border-right: 16px solid transparent;
+}
+
+#cardsetsContainerScrollable::-webkit-scrollbar { 
+    width: 8px; 
+} 
+
+#cardsetsContainerScrollable::-webkit-scrollbar-thumb { 
+    background: #888; 
+    border-radius: 20px;
+} 
+
+#cardsetsContainerScrollable::-webkit-scrollbar-thumb:hover { 
+    background: #555; 
+} 
+
+#cardsetsContainerScrollable::-webkit-scrollbar-button { 
+    display: none; 
+} 
+
 @media (max-width: 1300px) {
 
     .profileCol {
         margin-right: 10vw; 
     }
 
+}
+
+@media (min-width: 992px) and (max-width: 1200px) { 
+    #cardsetsContainerScrollable {
+        max-height: 380px;
+        overflow: scroll;
+    }
+}
+
+@media (max-width: 991px) { 
+    #cardsetsContainerScrollable {
+        max-height: 340px;
+        overflow: scroll;
+    }
+}
+
+@media (max-width: 768px) {
+    #cardsetsContainerScrollable {
+        max-height: 360px;
+        overflow: scroll;
+    }
 }

@@ -1,7 +1,8 @@
 import { numberSpellings } from "@/utils/translations";
 
-export const ListenForVoiceCommands = ({ isVoiceCommandsEnabled, shuffleCards, handleRestartTest, voiceCommands }) => {
+export const ListenForVoiceCommands = ({ isVoiceCommandsEnabled, shuffleCards, handleRestartTest, voiceCommands, language}) => {
     const recognition = new webkitSpeechRecognition();
+    recognition.lang = language;
     recognition.continuous = true;
     recognition.interimResults = true;
     let voiceCommandTriggered = false;

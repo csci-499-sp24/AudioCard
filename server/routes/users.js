@@ -1,16 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const { Cardset, User, Flashcard, Notification, SharedCardset, Friend } = require('../models/modelRelations');
+const { Cardset, User, Flashcard } = require('../models/modelRelations');
 const flashcards = require ('./flashcards');
 const sharedCardsets = require ('./sharedCardsets');
 const friends = require ('./friends');
+const notifications = require ('./notifications');
 
 const { Sequelize } = require('sequelize');
 const { checkCardsetAuthority } = require('./functions');
 
 router.use('/:userid/cardsets/:cardsetid/flashcards', flashcards);
 router.use('/:userid/cardsets/:cardsetid/shared', sharedCardsets);
-router.use('/:userid/friends', friends)
+router.use('/:userid/friends', friends);
+router.use('/:userid/notifications', notifications);
 
 router.route('/signup')
     .post(async (req, res) => {
@@ -326,70 +328,47 @@ router.route('/userCheck/:identifier')
         }
     });
 
-router.route('/:userid/notifications')
-.get(async (req, res) => {
-    try {
-        const userWithNotifs = await User.findByPk(req.params.userid, {
-            include: {
-                model: Notification,
-                include: [
-                    {
-                        model: SharedCardset,
-                        required: false,
-                        where: Sequelize.literal('`notifications`.`type` = "sharedCardset" OR `notifications`.`type` = "unSharedCardset"'),
-                        as: 'sharedCardsetItem', // Alias for the association
-                        include: [
-                            {
-                                model: Cardset,
-                                required: false,
-                                as: 'cardset'
-                            }
-                        ]
-                    },
-                    {
-                        model: Friend,
-                        required: false,
-                        where: Sequelize.literal('`notifications`.`type` = "friend"'),
-                        as: 'friendItem', // Alias for the association
-                        include: [
-                            {
-                                model: User,
-                                required: false,
-                                as: 'requestor',
-                                attributes: ['id', 'username', 'email']
-                            }
-                        ]
-                    }
-                ]
+router.route('/:userid/prefLanguage')
+    .get(async (req, res) => {
+        try {
+            const { userid } = req.params; 
+            const user = await User.findOne({
+                attributes: ['prefLanguage'], 
+                where: { id: userid }
+            });
+            
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
             }
-        });
-        const notifications = userWithNotifs.notifications;
-        return res.status(200).json({notifications});
-    } catch (error) {
-        console.error("Error getting user's notifications:", error);
-        return res.status(500).json({ error: "Internal Server Error" });
-    }
-})
-.delete(async (req, res) => {
-    try { //Currently only for deleting shared cardset notifications
-        const {notificationId} = req.body;
-        const notification = await Notification.findByPk(notificationId);
-        const sharedCardset = await SharedCardset.findOne({
-            where: {
-                id: notification.dataValues.sourceId,
-            }
-        });
-        if (sharedCardset.dataValues.authority === 'revoked'){
-            sharedCardset.destroy();
+
+            res.status(200).json({ prefLanguage: user.prefLanguage });
+        } catch (error) {
+            console.error('Error fetching user\'s preferred language:', error);
+            res.status(500).json({ error: 'Error fetching user\'s preferred language' });
         }
-        await notification.destroy();
-        res.status(200).send('Notification deleted');
-    } catch (error) {
-        console.error("Error getting user's notifications:", error);
-        return res.status(500).json({ error: "Internal Server Error" });
-    }
-})
-;
+    })
+    .put(async (req, res) => {
+        try {
+            const { userid } = req.params;
+            const { prefLanguage } = req.body;
+
+            const user = await User.findOne({ where: { id: userid } });
+
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+
+            user.prefLanguage = prefLanguage;
+            await user.save();
+
+            res.status(200).json({ message: 'Preferred language updated successfully' });
+        } catch (error) {
+            console.error('Error updating user\'s preferred language:', error);
+            res.status(500).json({ error: 'Error updating user\'s preferred language' });
+        }
+    });
+
+
 
 
 

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
+import styles from '../styles/CardSet.module.css';
 import {useDarkMode} from '../utils/darkModeContext'
 
 export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
@@ -12,6 +13,7 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
             const newSetData = {
                 title: event.target.title.value,
                 subject: event.target.subject.value,
+                language: event.target.language.value,
                 isPublic: event.target.isPublic.checked,
                 isFriendsOnly: isFriendsOnly
             }
@@ -22,13 +24,13 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
     }
 
     return (
-        <div className="mb-5 p-4" style={{ borderRadius: '10px', backgroundColor: isDarkMode ? '#252526':'white', color: isDarkMode? 'white':'black', width: '75%'}}>
+        <div className="mb-5 p-4" style={{ borderRadius: '10px', backgroundColor: isDarkMode ? '#252526':'white', color: isDarkMode? 'white':'black' }}>
             <div className="d-flex justify-content-end">
                 <button className="btn" style={{color: isDarkMode ? 'white' : 'gray' }} onClick={onClickToggle}>X</button>
             </div>
-            <h5>Create a new card set</h5>
+            <h5 className="text-center">Create a new card set</h5>
 
-            <form className="row row-cols-lg-auto g-3 align-items-center" onSubmit={(e) => onSubmit(e)}>
+            <form className="row row-cols-lg-auto g-3 mt-2 mb-2 justify-content-center" onSubmit={(e) => onSubmit(e)}>
                 <div className="col-12">
                     <label className="visually-hidden" htmlFor="title">Title</label>
                     <div className="input-group">
@@ -54,8 +56,23 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
                         <option value="Other">Other</option>
                     </select>
                 </div>
-
                 <div className="col-12">
+                    <label className="visually-hidden" htmlFor="language">Language</label>
+                    <select class="form-select" aria-label="Default select example"id="language">
+                        <option value="English (US)" selected>English (US)</option>
+                        <option value="English (UK)">English (UK)</option>
+                        <option value = "Arabic (Standard)">Arabic (Standard)</option>
+                        <option value="Chinese (Mandarin)">Chinese (Mandarin)</option>
+                        <option value="Bengali">Bengali</option>
+                        <option value="French">French</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Portuguese">Portuguese</option>
+                        <option value="Russian">Russian</option>
+                        <option value="Spanish">Spanish</option>
+                    </select>
+                </div>
+
+                <div className="col-12 d-flex align-items-center">
                     <div className="form-check">
                         <input className="form-check-input" type="checkbox" id="isPublic" checked={isPublicChecked} onChange={() => setIsPublicChecked(!isPublicChecked)}/>
                         <label className="form-check-label" htmlFor="isPublic">
@@ -88,7 +105,7 @@ export const CreateCardset = ({userId, onCreateCardset, onClickToggle}) => {
                     </div>
                 </div>
             )}
-                <div className="col-12">
+                <div className="col-12" id={styles.creatBtn}>
                     <button type="submit" className="btn btn-secondary">
                         Create
                     </button>

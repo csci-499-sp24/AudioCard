@@ -7,19 +7,19 @@ export const getSubjectStyle = (subject, isDarkMode) => {
         switch (subject) {
             case 'History': 
                 bgColor = '#ede176';
-                txtColor = '#642020';
+                txtColor = '#87701c';
                 break;
             case 'Math': 
                 bgColor = '#c25b5b';
-                txtColor = '#742d2d';
+                txtColor = '#8a2121';
                 break;
             case 'Science': 
                 bgColor = '#377ec9';
-                txtColor = '#053a74';
+                txtColor = '#0f3764';
                 break;
             case 'English': 
                 bgColor = '#c999c6';
-                txtColor = '#734470';
+                txtColor = '#6a2966';
                 break;
             case 'Programming': 
                 bgColor = '#4ad7be';
