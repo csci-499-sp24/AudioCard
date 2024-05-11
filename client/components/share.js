@@ -57,7 +57,7 @@ const ShareFunction = ({ userid, cardsetId, isOwner, isPublic }) => {
     return (
         <div>
             <div>
-                <h3 className='text-center'>Share your card set</h3>
+                <h2 className='text-center mt-2'>Share your card set</h2>
             </div> 
             <div class="mb-3 row d-flex justify-content-center mt-4">
                 <div class="col-sm-10">
@@ -96,6 +96,7 @@ const ShareFunction = ({ userid, cardsetId, isOwner, isPublic }) => {
             <div className='text-center '>
                 <button className='btn btn-secondary mt-3' onClick={() => handleShare()}>Share</button>
             </div>
+            
             <div className='linkShareContainer mb-2'>
             <div className='row mt-4 d-flex justify-content-center'>  
             <div className='col text-center d-flex align-items-center'>
