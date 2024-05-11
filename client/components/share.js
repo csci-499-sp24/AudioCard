@@ -58,13 +58,7 @@ const ShareFunction = ({ userid, cardsetId, isOwner, isPublic }) => {
         <div>
             <div>
                 <h3 className='text-center'>Share your card set</h3>
-            </div>
-
-            {isPublic &&
-            <div className='text-center '>
-                <button className='btn btn-secondary mt-3' onClick={handleCardSetURLCopy}>{isCopySuccess ? 'URL Copied' : 'Copy Card Set URL'}</button>
-            </div>}
-
+            </div> 
             <div class="mb-3 row d-flex justify-content-center mt-4">
                 <div class="col-sm-10">
                     <input type="text" readonly class="form-control" placeholder="Enter Email or Username" value={emailOrUsername} onChange={(e) => setEmailOrUsername(e.target.value)} />
@@ -87,7 +81,11 @@ const ShareFunction = ({ userid, cardsetId, isOwner, isPublic }) => {
                         <i className="bi bi-question-circle-fill " style={{ 'marginLeft': '5px'}}
                         data-tooltip-id="rolesTip"
                         data-tooltip-place='right'
-                        data-tooltip-html="Admins can edit, add or remove editors/viewers, view collaborator list<br/>Editors can edit, view collaborator list<br/>Viewers can view the card set."></i>
+                        data-tooltip-html={
+                            isPublic 
+                            ? "Admins can edit, add or remove editors, view collaborator list<br/>Editors can edit, view collaborator list"
+                            : "Admins can edit, add or remove editors/viewers, view collaborator list<br/>Editors can edit, view collaborator list<br/>Viewers can view the card set"
+                        }></i>
                         <Tooltip id = "rolesTip"/> 
                     </div>
                 </div>
@@ -98,6 +96,28 @@ const ShareFunction = ({ userid, cardsetId, isOwner, isPublic }) => {
             <div className='text-center '>
                 <button className='btn btn-secondary mt-3' onClick={() => handleShare()}>Share</button>
             </div>
+            <div className='linkShareContainer mb-2'>
+            <div className='row mt-4 d-flex justify-content-center'>  
+            <div className='col text-center d-flex align-items-center'>
+                <hr className="w-50" />
+                <span className="mx-2">OR</span>
+                <hr className="w-50" />
+            </div>
+            </div> 
+            <div className='row mt-4'>
+                <div className='text-center d-flex align-items-center justify-content-center'>
+                <div className='me-3 ms-2'>Copy link:</div> 
+                <button className='btn btn-secondary me-2' onClick={handleCardSetURLCopy} disabled={isCopySuccess}>
+                    <i className="bi bi-copy"></i>
+                </button>
+                <span style={{ width: '1.25rem' }}>
+                    {isCopySuccess && <i className="bi bi-check-lg" style={{color: 'green', fontSize: 'large'}}></i>}
+                </span>
+                </div>
+            </div>
+            </div> 
+
+
         </div>
     );
 };
