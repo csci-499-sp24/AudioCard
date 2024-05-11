@@ -116,7 +116,7 @@ export const CardsetView = ({ cardset }) => {
                     <div className="cardsetTitleContainer">
                         <h3>Flashcard Set: {cardset.title}</h3>
                         <div> Subject:  <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
-                        {cardset.language != 'English (US)' && <div> Language: {cardset.language}</div>} 
+                        <div> Language: {cardset.language}</div>
                         <div> Flashcards: {cardset.flashcardCount} </div>
                         <div className='mb-2'>Created by:
                             <span
