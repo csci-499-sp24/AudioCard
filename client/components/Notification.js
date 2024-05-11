@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import styles from '../styles/notification.module.css';
 import axios from 'axios';
 import { useDarkMode } from '@/utils/darkModeContext';
-import ShareFunction from './share';
 
 const Notification = ({ userId }) => {
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);

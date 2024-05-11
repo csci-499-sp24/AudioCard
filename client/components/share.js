@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Tooltip } from 'react-tooltip'
 import axios from 'axios';
 
-const ShareFunction = ({ userid, cardsetId, isOwner,isPublic }) => {
+const ShareFunction = ({ userid, cardsetId, isOwner, isPublic }) => {
     const [emailOrUsername, setEmailOrUsername] = useState('');
     const [role, setRole] = useState('');
     const [curuserId, setcurUserId] = useState(null); // State to store the user ID
     const [error, setError] = useState(null); // State to handle errors
+    const [isCopySuccess, setIsCopySuccess] = useState(false);
 
     useEffect(() => {
         if (curuserId !== null) {
@@ -38,11 +39,31 @@ const ShareFunction = ({ userid, cardsetId, isOwner,isPublic }) => {
         }
     };
 
+    const handleCardSetURLCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+
+            setIsCopySuccess(true);
+
+            setTimeout(() => {
+                setIsCopySuccess(false);
+            }, 2000);
+        } 
+        catch (error) {
+            console.error(error.message);
+        }
+    }
+
     return (
         <div>
             <div>
                 <h3 className='text-center'>Share your card set</h3>
             </div>
+
+            {isPublic &&
+            <div className='text-center '>
+                <button className='btn btn-secondary mt-3' onClick={handleCardSetURLCopy}>{isCopySuccess ? 'URL Copied' : 'Copy Card Set URL'}</button>
+            </div>}
 
             <div class="mb-3 row d-flex justify-content-center mt-4">
                 <div class="col-sm-10">
