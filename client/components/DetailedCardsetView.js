@@ -69,7 +69,9 @@ export const CardsetView = ({ cardset }) => {
             const newSetData = {
                 title: cardset.title,
                 subject: cardset.subject,
+                language: cardset.language, 
                 isPublic: false,
+                isFriendsOnly: false
             };
             const newCardsetResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userData.id}/cardsets`, { newSetData });
 
@@ -114,6 +116,7 @@ export const CardsetView = ({ cardset }) => {
                     <div className="cardsetTitleContainer">
                         <h3>Flashcard Set: {cardset.title}</h3>
                         <div> Subject:  <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
+                        <div> Language: {cardset.language}</div>
                         <div> Flashcards: {cardset.flashcardCount} </div>
                         <div className='mb-2'>Created by:
                             <span
