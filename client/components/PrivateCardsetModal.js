@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import modalStyles from '@/styles/requestModal.module.css';
+import styles from '@/styles/requestModal.module.css';
 import axios from 'axios';
 import { useDarkMode } from '@/utils/darkModeContext';
 
@@ -44,42 +44,47 @@ export const PrivateCardsetModal = ({ handleRequestAccess, userId, cardsetId, ac
     };
 
     return (
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div className="modal-dialog">
-                <div className="modal-content text-center" id={`${isDarkMode ? modalStyles.modalDark : modalStyles.modaLight}`}>
-                <div className="">
-                    <h1 className="modal-title fs-3" id="staticBackdropLabel">
-                        Private Card set
-                    </h1>
-                </div>
-                <div className="modal-body">
-                    Request access or return to the previous page
-                </div>
-                <div className="modal-body">
-                    {requestMade &&
-                    <div>The card set owner has been notified of your request</div>}
-                    {!isRequestPending && !requestMade ? <div>
-                        Request 
-                    <select className='mx-2' value={requestedAuthority} onChange={(e) => setRequestedAuthority(e.target.value)}>
-                        <option value="read-only">Viewing</option>
-                        <option value="edit">Editing</option>
-                    </select>
-                    access to this cardset {/*"{testCardsetData?.title}" from user "{Owner}"*/}
-                    <br/>
-                    <button type="button" className="btn btn-primary" onClick={handleSubmit}>Request Access</button>
-                        </div>
-                        : !requestMade ?
-                        <div>You already have a pending request</div>
-                        : isRequestPending &&
-                        <div>You already have a pending request</div>
+        <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div className="modal-dialog" id={`${isDarkMode ? styles.RequestModalDarkContainer : styles.RequestModalLightContainer}`}>
+                <div className="modal-content text-center" id={`${isDarkMode ? styles.RequestModalDark : styles.RequestModalLight}`}>
+                    <div className="d-flex justify-content-center align-items-center">
+                        <span className="bi bi-lock" id={styles.lock} title="restricted"></span>
+                        <h1 className="modal-title fs-3" id="staticBackdropLabel">Private Card set</h1>
+                    </div>
 
-                    }
-                    
-                </div>
+                    <div className="modal-body">
+                        Request access or return to the previous page
+                    </div>
 
-                <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => router.back()}>Return</button>
-                </div>
+                    <div className="modal-body">
+                        {requestMade &&
+                            <div>The card set owner has been notified of your request</div>
+                        }
+
+                        {!isRequestPending && !requestMade ? 
+
+                            <div class="form-group mb-3 row d-flex justify-content-center">
+                                <label className='col-sm-2 col-form-label'>Request</label> 
+                                <div class="col-sm-10 d-flex justify-content-begin align-items-center">
+                                    <select class="form-select" aria-label="Default select example"  value={requestedAuthority} onChange={(e) => setRequestedAuthority(e.target.value)}>
+                                        <option value="read-only">Viewing access</option>
+                                        <option value="edit">Editing access</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            : !requestMade ?
+                                <div className="alert alert-success" id={styles.boldInfo}>You already have a pending request</div>
+                            : isRequestPending &&
+                                <div className="alert alert-success" id={styles.boldInfo}>You already have a pending request</div>
+                        }
+                    </div>
+
+                    <div className="modal-footer d-flex justify-content-center">
+                        {!isRequestPending && !requestMade ? <button type="button" className="btn btn-secondary" onClick={handleSubmit}>Send Request</button> : null}
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => router.back()}>Return</button>
+                    </div>
                 </div>
             </div>
         </div>
