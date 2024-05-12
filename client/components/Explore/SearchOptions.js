@@ -16,10 +16,10 @@ export const SearchOptions = ({ changeSearchTopic, searchTopic, onSortChange, so
             <div className="col-sm-6 col-md-4 col-lg-10 mb-4">
                 <div className='d-flex'>
                     <div className='d-flex form-inline col-lg-2'>
-                        {searchTopic ===  'card sets' ? <button type="button" className="btn btn-primary me-2" onClick={(e) => onClickTopic(e, 'users')}>Card Sets</button>
-                        : <button type="button" className="btn btn-secondary me-2" onClick={(e) => onClickTopic(e, 'card sets')}>Card Sets</button>}
-                        {searchTopic ===  'users' ? <button type="button" className="btn btn-primary me-2" onClick={(e) => onClickTopic(e, 'card sets')}>Users</button>
-                        : <button type="button" className="btn btn-secondary me-2" onClick={(e) => onClickTopic(e, 'users')}>Users</button>}
+                        {searchTopic ===  'card sets' ? <button type="button" className="btn btn-outline-dark active me-2" onClick={(e) => onClickTopic(e, 'users')}>Card Sets</button>
+                        : <button type="button" className="btn btn-outline-dark me-2 " onClick={(e) => onClickTopic(e, 'card sets')}>Card Sets</button>}
+                        {searchTopic ===  'users' ? <button type="button" className="btn btn-outline-dark active" onClick={(e) => onClickTopic(e, 'card sets')}>Users</button>
+                        : <button type="button" className="btn btn-outline-dark" onClick={(e) => onClickTopic(e, 'users')}>Users</button>}
                     </div>
                 </div>
             </div>

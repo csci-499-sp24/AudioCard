@@ -143,47 +143,93 @@ const Settings = () => {
     return (
         <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
             <Navbar userId={userData?.id} />
-            <div className={styles.container}>
-                <h1>Avatar</h1>
-                <AvatarChangeModal
-                    isOpen={editorOpen}
-                    onClose={closeModal}
-                    imageSrc={selectedFile ? URL.createObjectURL(selectedFile) : null}
-                    onSave={handleSaveAvatar}
-                    username={username}
-                    isDarkMode={isDarkMode}
-                />
-                <img src={userAvatar} alt="User Avatar" onError={setDefaultAvatar} className={styles.avatarImage} />
-                <input
-                    id="avatarUploadInput"
-                    type="file"
-                    onChange={handleFileChange}
-                    style={{ display: 'none' }}
-                />
-                <button onClick={handleAvatarChangeClick} className={styles.uploadButton}>
-                    Upload Your Avatar
-                </button>
-                <div className={styles.container}>
-                    <Link href="/update-password" className={`${styles.uploadButton} text-light link-secondary link-underline-opacity-0`}>
-                        Update Your Password
-                    </Link>                
-                </div>
 
-                <div  className={styles.container}>
-                    <Link href="/update-username" className={`${styles.uploadButton} text-light link-secondary link-underline-opacity-0`}>
-                        Update Your Username
-                    </Link>
-                </div>
+            <div class="container min-vh-100 d-flex flex-column">
+                <div class="row flex-grow-1 px-2 mb-5 mt-5">
+                    <div class="col mb-5">
+                        <div className="row flex-column mb-5 h-100" id={`${isDarkMode ? styles.settingsInfoColDark : styles.settingsInfoColLight}`}>
+                            <div id={styles.profileInfoContainer}>
+                                <div className="text-center">
+                                    <h4 className='mt-4 mb-3'>Account Settings</h4>
+                                </div>
 
-                <div className={styles.container}>
-                    <h3>Preferred Language: {prefLanguage}</h3>
-                    <select value={selectedLanguage} onChange={handleLanguageSelection} className={styles.selectDropdown}>
-                        <option value="">No preferred language</option>
-                        {languages.map(lang => (
-                            <option key={lang.code} value={lang.name}>{lang.name}</option>
-                        ))}
-                    </select>
-                    <button className={styles.updateButton} onClick={updatePreferredLanguage}>Update Language</button>
+                                <div className='form-group row mt-5' >
+                                    <label class="col-sm-2 col-form-label">Profile Picture</label>
+                                    <div class="col-sm-10">
+                                        <AvatarChangeModal
+                                            isOpen={editorOpen}
+                                            onClose={closeModal}
+                                            imageSrc={selectedFile ? URL.createObjectURL(selectedFile) : null}
+                                            onSave={handleSaveAvatar}
+                                            username={username}
+                                            isDarkMode={isDarkMode}
+                                        />
+                                        <div>
+                                            <img src={userAvatar} alt="User Avatar" onError={setDefaultAvatar} className={styles.avatarImage} />
+                                            <input
+                                                id="avatarUploadInput"
+                                                type="file"
+                                                onChange={handleFileChange}
+                                                style={{ display: 'none' }}
+                                            />
+                                            <button onClick={handleAvatarChangeClick} className={`${isDarkMode ? "btn btn-outline-light" : "btn btn-outline-dark"}`}
+                                            id={styles.buttonRightAction}>
+                                                Change Profile Picture
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr/>
+
+                                <div class="form-group row mt-3" >
+                                    <label class="col-sm-2 col-form-label">Password</label>
+                                    <div class="col-sm-10">
+                                        <div>
+                                            <button className={`${isDarkMode ? "btn btn-outline-light" : "btn btn-outline-dark"}`}>
+                                                <Link href="/update-password" id={`${isDarkMode ? styles.linkBtnDark : styles.linkBtnLight}`}>
+                                                    Change Password
+                                                </Link>    
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr/>
+
+                                <div class="form-group row mt-3" >
+                                    <label class="col-sm-2 col-form-label">Username</label>
+                                    <div class="col-sm-10">
+                                        <div>
+                                            <button className={`${isDarkMode ? "btn btn-outline-light" : "btn btn-outline-dark"}`}>   
+                                                <Link href="/update-username" id={`${isDarkMode ? styles.linkBtnDark : styles.linkBtnLight}`}>
+                                                    Change Username
+                                                </Link>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr/>
+
+                                <div class="form-group row mt-3" >
+                                    <label class="col-sm-2 col-form-label">Language</label>
+                                    <div class="col-sm-10">
+                                        <select value={selectedLanguage} onChange={handleLanguageSelection} className={styles.selectDropdown}>
+                                            <option value="">No preferred language</option>
+                                            {languages.map(lang => (
+                                                <option key={lang.code} value={lang.name}>{lang.name}</option>
+                                            ))}
+                                        </select>
+
+                                        <button className={`${isDarkMode ? "btn btn-outline-light" : "btn btn-outline-dark"}`} id={styles.buttonRightAction} onClick={updatePreferredLanguage}>
+                                            Change Language
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -10,6 +10,10 @@
     color: black !important;
 }
 
+#exploreLink {
+    padding-left: 0;
+}
+
 #mobileExploreLink {
     display: none !important;
 }
@@ -30,9 +34,10 @@
 .dropdownMenu {
     position: absolute;
     top: 100%;
+    right: 6.5%;
     background: white;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border: 1px solid #dee2e6;
     width: 200px;
     z-index: 1000;
 }

@@ -274,316 +274,326 @@ export default function CardsetPage() {
     // Render flashcard data
     return (
         <>
-        <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
+            <div className={isDarkMode ? 'wrapperDark' : 'wrapperLight'}>
+                <Navbar userId={userData?.id} />
+                <div className="container">
+                    <div className="row mt-5">
+                        {access || isOwner ?                    
+                            <div className='col'>
+                                <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>
+                            </div> 
+                            : null
+                        }
+                        
+                        <div className="row">
+                            <h1 className="text-center">{cardset.title}</h1>
+                        </div>
 
-            <Navbar userId={userData?.id} />
-            <div className="container">
-                <div className="row mt-5">
-                    {access || isOwner ?                    
-                        <div className='col'>
-                            <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => router.back()}>Back</button>
-                        </div> 
-                        : null
-                    }
-                    <div className="row">
-                        <h1 className="text-center">{cardset.title}</h1>
-                    </div>
-                    {openModal  ? (
+                        {openModal  ? (
+                                <div>
+                                    <PrivateCardsetModal handleRequestAccess={handleRequestAccess} userId={userData?.id} cardsetId={cardsetId} access={access}/>
+                                </div>
+                        ) : (
+                            null
+                        )}
+
+                        {/* Main Flashcard  */}
+                        {!access || loading ? (
+                            <div className='text-center'><h5>Loading...</h5></div>
+                        ) : (
                             <div>
-                                <PrivateCardsetModal handleRequestAccess={handleRequestAccess} userId={userData?.id} cardsetId={cardsetId} access={access}/>
+                            <div className="container">
+                                <div className="row">
+                                    <div className="row d-flex align-items-center">
+                                        <div className='col d-flex justify-content-center mb-4 mt-3'>
+                                            <button className="btn btn-lg testButton" style={{ backgroundColor: isDarkMode ? '#377ec9' : 'white', color: isDarkMode ? 'white' : 'black' }} onClick={navigateToTestPage}> <Image style={{ height: '20px', width: '20px' }} src={isDarkMode ? examLight : examDark} /> Test</button>
+                                            <button className="btn btn-lg ReviewButton" style={{ backgroundColor: isDarkMode ? '#377ec9' : 'white', color: isDarkMode ? 'white' : 'black' }} onClick={navigateToReviewPage}>
+                                                <i className="bi bi-headphones"></i> Review</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                    ) : (
-                        null
-                    )}
-                    {/* Main Flashcard  */}
-                    {!access || loading ? (
-                        <div className='text-center'><h5>Loading...</h5></div>
-                    ) : (
-                        <div>
+                                <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards} canEdit={canEdit} />
+                                <hr />
+                            </div>
+                        )}
+
+                        {/* All Flashcards in the set  */}
                         <div className="container">
                             <div className="row">
-                                <div className="row d-flex align-items-center">
-                                    <div className='col d-flex justify-content-center mb-4 mt-3'>
-                                        <button className="btn btn-lg testButton" style={{ backgroundColor: isDarkMode ? '#377ec9' : 'white', color: isDarkMode ? 'white' : 'black' }} onClick={navigateToTestPage}> <Image style={{ height: '20px', width: '20px' }} src={isDarkMode ? examLight : examDark} /> Test</button>
-                                        <button className="btn btn-lg ReviewButton" style={{ backgroundColor: isDarkMode ? '#377ec9' : 'white', color: isDarkMode ? 'white' : 'black' }} onClick={navigateToReviewPage}>
-                                            <i className="bi bi-headphones"></i> Review</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                            <CardsetView cardset={currentCardsetData} userId={userData?.id} cardsetId={cardsetId} fetchFlachcardPage={fetchFlashCards} canEdit={canEdit} />
-                            <hr />
-                        </div>
-                    )}
-
-                    {/* All Flashcards in the set  */}
-                    <div className="container">
-                        <div className="row">
-                            {/* Flashcard Info */}
-                            {access && !loading ? (
-                                <div className="col mt-5 mb-2">
-                                    <div className="">
-                                        <h3>Flashcard Set: {cardset.title}</h3>
-                                        <div> Subject: <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
-                                        <div> Language: {cardset.language} </div>
-                                        <div> Flashcards: {currentCardsetData.length} </div>
-                                        <Link href={`/profile/${ownerId}`} style={{ textDecoration: 'none' }}>
-                                            <div className={`${isDarkMode ? 'text-light' : 'text-dark'}`}>
-                                                Creator:
-                                                <span style={{ fontWeight: 'bold', margin: '0 5px' }}>{Owner}</span>
-                                                <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} style={{ borderColor: isDarkMode ? 'white' : 'black' }} />
-                                            </div>
-                                        </Link>
-                                        {cardset.isPublic ?
-                                            <div>
-                                                <span className="bi bi-globe" title="public"></span>
-                                            </div>
-                                            :
-                                            <div>
-                                                <div style={{ display: 'inline-flex', alignItems: 'center' }}>
-                                                    <span className="bi bi-lock me-2" title="restricted"></span>
-                                                    {cardset.isFriendsOnly && <div style={{ color: 'red', fontWeight: 'bold' }}>Friends Only</div>}
+                                {/* Flashcard Info */}
+                                {access && !loading ? (
+                                    <div className="col mt-5 mb-2">
+                                        <div className="">
+                                            <h3>Flashcard Set: {cardset.title}</h3>
+                                            <div> Subject: <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
+                                            <div> Language: {cardset.language} </div>
+                                            <div> Flashcards: {currentCardsetData.length} </div>
+                                            <Link href={`/profile/${ownerId}`} style={{ textDecoration: 'none' }}>
+                                                <div className={`${isDarkMode ? 'text-light' : 'text-dark'}`}>
+                                                    Creator:
+                                                    <span style={{ fontWeight: 'bold', margin: '0 5px' }}>{Owner}</span>
+                                                    <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} style={{ borderColor: isDarkMode ? 'white' : 'black' }} />
                                                 </div>
-                                            </div>}
-
-                                        {canEdit ?
-                                            <div>
-                                                <CollaboratorList currentUserId={userData.id} cardsetId={cardset.id} isOwner={isOwner} isadmin={isadmin}/>
-                                            </div>
-                                            : null}
-
-                                    </div>
-                                </div>
-                            ) : null}
-                            {/*Edit/Delete Flashcard set */}
-                            {canEdit ? (
-                                <>
-                                    <div className='col d-flex justify-content-end'>
-                                        <div className="d-flex align-items-center">
-                                            {isadmin ?
-                                                <button className='btn' style={{ color: isDarkMode ? 'white' : 'gray' }} onClick={toggleSharePopup}>
-                                                    <i className="bi bi-share"></i>
-                                                </button>
-                                                : null}
-                                            <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
-                                            {isOwner && <button className="btn deleteButton" onClick={() => {
-                                                handleDelete()
-                                            }}>
-                                                <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
-                                            </button>
-                                            }
-                                            
-                                        </div>
-                                    </div>
-                                </>
-                            )
-                            : access && !loading && !isRequestPending ?
-                            /*User has read only access, provide a request editor access button*/
-                            (<>
-                            <div>
-                            <div className='col d-flex justify-content-start my-2'>
-                                        <div className="d-flex align-items-center">
-                                            <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => handleRequestAccess('edit')}>Request Edit Access</button>
-                                        </div>
-                                    </div>
-                            </div>
-                            </>)
-                            : null
-                            }
-
-                            {/* Delete message */}
-                            {
-                                <div>
-                                    {showDeletePopup && (
-                                        <div className="modal-content " style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white', color: isDarkMode ? 'white' : 'black' }}>
-                                            <div className='row'>
-                                                <div className='col d-flex justify-content-center'>
-                                                    <div className="delete-confirmation">
-                                                        <p>Are you sure you want to delete this set: {cardset.title}?</p>
-                                                        <div className="d-flex justify-content-center">
-                                                            <button onClick={confirmDelete} className="btn btn-danger">Yes</button>
-                                                            <button onClick={toggleDeletePopup} className="btn btn-secondary">No</button>
-                                                        </div>
+                                            </Link>
+                                            {cardset.isPublic ?
+                                                <div>
+                                                    <span className="bi bi-globe" title="public"></span>
+                                                </div>
+                                                :
+                                                <div>
+                                                    <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+                                                        <span className="bi bi-lock me-2" title="restricted"></span>
+                                                        {cardset.isFriendsOnly && <div style={{ color: 'red', fontWeight: 'bold' }}>Friends Only</div>}
                                                     </div>
+                                                </div>}
 
-
-                                                    <button className="close-btn" style={{ color: isDarkMode ? 'white' : 'black' }} onClick={toggleDeletePopup}>
-                                                        &times;
-                                                    </button>
+                                            {canEdit ?
+                                                <div>
+                                                    <CollaboratorList currentUserId={userData.id} cardsetId={cardset.id} isOwner={isOwner} isadmin={isadmin}/>
                                                 </div>
-                                            </div>
+                                                : null}
 
                                         </div>
-                                    )}
-                                </div>
-                            }
+                                    </div>
+                                ) : null}
 
-                            {isadmin && (
-                                <div>
-                                    {showSharePopup && (
-                                        <div className="modal-content " style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white', color: isDarkMode ? 'white' : 'black' }}>
-                                            <div className='row'>
-                                                <div className='col d-flex justify-content-end'>
-                                                    <button className="close-btn" style={{ color: isDarkMode ? 'white' : 'black' }} onClick={toggleSharePopup}>
-                                                        &times;
+                                {/*Edit/Delete Flashcard set */}
+                                {canEdit ? (
+                                    <>
+                                        <div className='col d-flex justify-content-end'>
+                                            <div className="d-flex align-items-center">
+                                                {isadmin ?
+                                                    <button className='btn' style={{ color: isDarkMode ? 'white' : 'gray' }} onClick={toggleSharePopup}>
+                                                        <i className="bi bi-share"></i>
                                                     </button>
-                                                </div>
-                                            </div>
-                                            <div className='row'>
-                                                <ShareFunction isPublic={cardset.isPublic} userid={userData?.id} cardsetId={cardsetId} isOwner={isOwner} />
+                                                    : null}
+                                                <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => setIsEditPageOpen(true)}>Edit Set</button>
+                                                {isOwner && <button className="btn deleteButton" onClick={() => {
+                                                    handleDelete()
+                                                }}>
+                                                    <i className="bi bi-trash" style={{ fontSize: '1.2em' }}></i>
+                                                </button>
+                                                }
+                                                
                                             </div>
                                         </div>
-                                    )}
-                                </div>
-                            )}
-                            {/* All Flashcards in the set */}
-                            <div className="flashcardContainer mb-5">
-                                {currentCardsetData.map(flashcard => (
-                                    <TermCard key={flashcard.id} flashcard={flashcard} />
-                                ))}
-                            </div>
-                            {/* Edit Flashcards set */}
-                            {isEditPageOpen && (
-                                <div className="edit-page-view" style={{ backgroundColor: isDarkMode ? 'black' : '#F2F5F6' }}>
-                                    <div className="edit-page-content">
-                                        <button className="close-btn" style={{ color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseEditPage}>
-                                            &times;
-                                        </button>
-                                        {currentCardsetData && (
-                                            <EditView
-                                                cardset={currentCardsetData}
-                                                userId={userData.id}
-                                                cardsetId={cardsetId}
-                                                cardsetTitle={cardset.title}
-                                                cardsetSubject={cardset.subject}
-                                                cardsetLanguage={cardset.language}
-                                                cardsetIsPublic={cardset.isPublic}
-                                                cardsetIsFriendsOnly={cardset.isFriendsOnly}
-                                            />
+                                    </>
+                                )
+                                : access && !loading && !isRequestPending ?
+                                /*User has read only access, provide a request editor access button*/
+                                (
+                                    <>
+                                        <div>
+                                            <div className='col d-flex justify-content-start my-2'>
+                                                <div className="d-flex align-items-center">
+                                                    <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} onClick={() => handleRequestAccess('edit')}>Request Edit Access</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )
+                                : null
+                                }
+
+                                {/* Delete message */}
+                                {
+                                    <div>
+                                        {showDeletePopup && (
+                                            <div className="modal-content " style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white', color: isDarkMode ? 'white' : 'black' }}>
+                                                <div className='row'>
+                                                    <div className='col d-flex justify-content-center'>
+                                                        <div className="delete-confirmation">
+                                                            <p>Are you sure you want to delete this set: {cardset.title}?</p>
+                                                            <div className="d-flex justify-content-center">
+                                                                <button onClick={confirmDelete} className="btn btn-danger">Yes</button>
+                                                                <button onClick={toggleDeletePopup} className="btn btn-secondary">No</button>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <button className="close-btn" style={{ color: isDarkMode ? 'white' : 'black' }} onClick={toggleDeletePopup}>
+                                                            &times;
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
                                         )}
                                     </div>
+                                }
+
+                                {isadmin && (
+                                    <div>
+                                        {showSharePopup && (
+                                            <div className="modal-content " style={{ backgroundColor: isDarkMode ? '#2e3956' : 'white', color: isDarkMode ? 'white' : 'black' }}>
+                                                <div className='row'>
+                                                    <div className='col d-flex justify-content-end'>
+                                                        <button className="close-btn" style={{ color: isDarkMode ? 'white' : 'black' }} onClick={toggleSharePopup}>
+                                                            &times;
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div className='row'>
+                                                    <ShareFunction isPublic={cardset.isPublic} userid={userData?.id} cardsetId={cardsetId} isOwner={isOwner} />
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                                {/* All Flashcards in the set */}
+                                <div className="flashcardContainer mb-5">
+                                    {currentCardsetData.map(flashcard => (
+                                        <TermCard key={flashcard.id} flashcard={flashcard} />
+                                    ))}
                                 </div>
-                            )}
+
+                                {/* Edit Flashcards set */}
+                                {isEditPageOpen && (
+                                    <div className="edit-page-view" style={{ backgroundColor: isDarkMode ? 'black' : '#F2F5F6' }}>
+                                        <div className="edit-page-content">
+                                            <button className="close-btn" style={{ color: isDarkMode ? 'white' : 'black' }} onClick={handleCloseEditPage}>
+                                                &times;
+                                            </button>
+                                            {currentCardsetData && (
+                                                <EditView
+                                                    cardset={currentCardsetData}
+                                                    userId={userData.id}
+                                                    cardsetId={cardsetId}
+                                                    cardsetTitle={cardset.title}
+                                                    cardsetSubject={cardset.subject}
+                                                    cardsetLanguage={cardset.language}
+                                                    cardsetIsPublic={cardset.isPublic}
+                                                    cardsetIsFriendsOnly={cardset.isFriendsOnly}
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
+                        
+                         {/* Modals */}
+                        {showSharePopup && <div className="backdrop"></div>}
+                        {showDeletePopup && <div className="backdrop"></div>}
+
+                        <style jsx>
+                            {`
+                            .backdrop {
+                                position: fixed;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                background-color: rgba(0, 0, 0, 0.4);
+                                backdrop-filter: blur(5px);
+                                z-index: 999;
+                            }
+            
+            
+                            .modal-content {
+                                padding: 20px;
+                                border-radius: 10px;
+                                position: fixed;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                width: 80%; 
+                                max-width: 500px; 
+                                z-index: 1000; 
+                            }
+            
+                            .close-btn {
+                                position: absolute;
+                                top: 10px;
+                                right: 10px;
+                                font-size: 24px;
+                                cursor: pointer;
+                                background: none;
+                                border: none;
+                                color: #fff; 
+                            } 
+
+                            .heading{
+                                margin-top: 20px;
+                            }
+                            .cardsetRow {
+                                display: flex;
+                                flex-wrap: wrap;
+                                justify-content: space-between;
+                            }
+
+                            .cardsetItem {
+                                width: calc(25% - 10px); /* Adjust the width as needed */
+                                display: flex; 
+                                justify-content: center;
+                                margin-bottom: 10px;
+                                background-color: #fDfDfD;
+                                padding: 50px;
+                                border: 1px solid black;
+                            }
+
+                            .pagination {
+                                margin-top: 20px;
+                            }
+
+                            .pagination button {
+                                margin-right: 10px;
+                            }
+
+                            .flashcardContainer {
+                                display: grid;
+                                grid-gap: 20px;
+                            }
+
+                            .edit-page-view {
+                                position: fixed;
+                                top: 0;
+                                left: 0; 
+                                width: 100%; 
+                                height: 100%;
+                                z-index: 999;
+                                overflow-y: auto;
+                                transition: transform 0.3s ease;
+                                transform: translateX(${isEditPageOpen ? "0" : "100%"});
+                            }
+                        
+                            .editButton{
+                                marin-right:5px;
+                            }
+
+                            .deleteButton {
+                                background-color: #DC3545;
+                                margin-left: 5px;
+                                box-shadow: none;
+                                padding-top: 3px;
+                                padding-bottom: 3px;
+                                padding-left: 20px;
+                                padding-right: 20px;
+                            }
+
+                            .btn-danger{
+                                margin-right: 10px;
+                            }
+                            .delete-confirmation {
+                                margin-bottom: 10px; 
+                            }
+                            .close-btn {
+                                top: 10px;
+                                right: 10px;
+                                font-size: 24px;
+                                cursor: pointer;
+                                background: none;
+                                border: none;
+                            }
+                            .ReviewButton {
+                                margin-left: 10px;
+                            }
+                        `}
+                        </style>
                     </div>
-                    {showSharePopup && <div className="backdrop"></div>}
-                    <style jsx>{`
-                    
-                    .backdrop {
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        background-color: rgba(0, 0, 0, 0.5);
-                        backdrop-filter: blur(5px);
-                        z-index: 999;
-                    }
-    
-    
-                    .modal-content {
-                        padding: 20px;
-                        border-radius: 10px;
-                        box-shadow: ${isDarkMode ? '0 0 10px rgba(255, 255, 255, 0.5)' : '0 0 10px rgba(0, 0, 0, 0.3)'};
-                        position: fixed;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        width: 80%; 
-                        max-width: 500px; 
-                        z-index: 1000; 
-                    }
-    
-                    .close-btn {
-                        position: absolute;
-                        top: 10px;
-                        right: 10px;
-                        font-size: 24px;
-                        cursor: pointer;
-                        background: none;
-                        border: none;
-                        color: #fff; 
-                    } 
-
-                    .heading{
-                        margin-top: 20px;
-                    }
-                    .cardsetRow {
-                        display: flex;
-                        flex-wrap: wrap;
-                        justify-content: space-between;
-                    }
-
-                    .cardsetItem {
-                        width: calc(25% - 10px); /* Adjust the width as needed */
-                        display: flex; 
-                        justify-content: center;
-                        margin-bottom: 10px;
-                        background-color: #fDfDfD;
-                        padding: 50px;
-                        border: 1px solid black;
-                    }
-
-                    .pagination {
-                        margin-top: 20px;
-                    }
-
-                    .pagination button {
-                        margin-right: 10px;
-                    }
-
-                    .flashcardContainer {
-                        display: grid;
-                        grid-gap: 20px;
-                    }
-
-                    .edit-page-view {
-                        position: fixed;
-                        top: 0;
-                        left: 0; 
-                        width: 100%; 
-                        height: 100%;
-                        z-index: 999;
-                        overflow-y: auto;
-                        transition: transform 0.3s ease;
-                        transform: translateX(${isEditPageOpen ? "0" : "100%"});
-                    }
-                
-                    .editButton{
-                        marin-right:5px;
-                    }
-
-                    .deleteButton {
-                        background-color: #DC3545;
-                        margin-left: 5px;
-                        box-shadow: none;
-                        padding-top: 3px;
-                        padding-bottom: 3px;
-                        padding-left: 20px;
-                        padding-right: 20px;
-                    }
-
-                    .btn-danger{
-                        margin-right: 10px;
-                    }
-                    .delete-confirmation {
-                        margin-bottom: 10px; 
-                    }
-                    .close-btn {
-                        top: 10px;
-                        right: 10px;
-                        font-size: 24px;
-                        cursor: pointer;
-                        background: none;
-                        border: none;
-                      }
-                    .ReviewButton {
-                        margin-left: 10px;
-                    }
-                    `}</style>
                 </div>
             </div>
-        </div>
         </>
     );
 }

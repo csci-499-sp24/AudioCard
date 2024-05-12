@@ -25,7 +25,6 @@
 
 .startButton {
     padding: 10px; 
-    width: 10%; 
     border-radius: 10px;
     background-color: #1477b9;
     color: white; 
@@ -37,4 +36,22 @@
     color: rgb(54, 163, 54); 
     transform: scale(1.1); 
     transition: transform 0.2s ease; 
+}
+
+#reviewModeGreen {
+    color: green;
+}
+
+#reviewModeGreenSub {
+    color: green;
+    padding-left: 40px;
+}
+
+#reviewModeOrange {
+    color: #FFA500;
+}
+
+#reviewModeOrangeSub {
+    color: #FFA500;
+    padding-left: 40px;
 }

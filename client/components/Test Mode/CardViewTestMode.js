@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FlashcardTestMode } from './FlashcardTestMode';
 import { ASRTestMode } from './ASRTestMode';
 import styles from '../../styles/CardSet.module.css';
+import style from '../../styles/testmode.module.css';
 import { useDarkMode } from '@/utils/darkModeContext';
 
 export const CardViewTestMode = ({ cardset, userId }) => {
@@ -75,40 +76,35 @@ export const CardViewTestMode = ({ cardset, userId }) => {
                 {selectedMode === 'type' && currentCardsetData.length > 0 &&  <FlashcardTestMode cardData={currentCardsetData}  />}
                 
                 {!selectedMode &&
-                <div className='container d-flex justify-content-center mt-5' style={{backgroundColor: isDarkMode? '#252526' : 'white', width: '70%', borderRadius: '10px',}}>
-                    <div className='container2'>
-                        <div className='headingContainer mt-5'>
-                            <div className='row'>
-                                <h1>Test your knowledge!</h1>
+                    <div className='container d-flex justify-content-center mt-5 mb-5' style={{backgroundColor: isDarkMode? '#252526' : 'white', width: '70%', borderRadius: '10px',}}>
+                        <div className='container2'>
+                            <div className='headingContainer mt-5'>
+                                <div className='row'>
+                                    <h1 className='text-center'>Test your knowledge!</h1>
+                                </div>
+                            </div>
+                            
+                            <div className='d-flex flex-column justify-content-center align-content-center'>
+                                <div className='row'>
+                                    <div className='text-center'>Select a mode above to start.</div>
+                                </div>
+
+                                <div className='d-flex flex-column justify-content-center mt-5 mb-5'>
+                                    <div id={style.reviewModeGreen}>&#127911; Speak Mode:</div>
+                                    <p id={style.reviewModeGreenSub}>The app will speak out your flashcard terms and definitions, all you have to do is listen! &#128266;</p>
+                                    
+                                    <div id={style.reviewModeGreen}>&#x1F5A5; Type Mode:</div>
+                                    <p id={style.reviewModeGreenSub}>Match your terms by typing and submitting your answers <i class="bi bi-input-cursor-text" style={{color: isDarkMode ? 'white': 'black'}}></i></p>
+
+                                    <div id={style.reviewModeOrange}>	&#x2699; Settings:</div>
+                                    <p id={style.reviewModeOrangeSub}>Adjust time limits, maximum number of attempts</p>
+                                    <p id={style.reviewModeOrangeSub}>&#127911;: -set the gender, language, and speaking rate!</p>
+                                    <p id={style.reviewModeOrangeSub}> &#128483; -voice commands: &apos;shuffle&apos;, &apos;restart&apos;, or &apos;exit&apos;</p>
+                                </div>
                             </div>
                         </div>
-                        <div classname='bodyContainer'>
-                            <div className='row'>
-                                <div>Select a mode above to start.</div>
-                            </div>
-                            <div className='row mt-5' style={{color: 'green'}}>
-                                <div>&#127911; Speak Mode:</div>
-                            </div>
-                            <div className='row' style={{color:'green'}}>
-                                <p style={{paddingLeft: '40px'}}>Make learning hands-free! The app will speak terms out to you and listen for your answers &#127897;</p>
-                            </div>
-                            <div className='row mt-5' style={{color: 'green'}}>
-                                <div>&#x1F5A5; Type Mode:</div>
-                            </div>
-                            <div className='row' style={{color:'green'}}>
-                                <p style={{paddingLeft: '40px'}}>Match your terms by typing and submitting your answers <i class="bi bi-input-cursor-text" style={{color: isDarkMode ? 'white': 'black'}}></i></p>
-                            </div>
-                            <div className='row mt-5' style={{color: '#FFA500'}}>
-                                <div>	&#x2699; Settings:</div>
-                            </div>
-                            <div className='row mb-5' style={{color:'#FFA500'}}>
-                                <p style={{paddingLeft: '40px'}}>Adjust time limits, maximum number of attempts</p>
-                                <p style={{paddingLeft: '40px'}}>&#127911;: -set the gender, language, and speaking rate!</p>
-                                <p style={{paddingLeft: '65px'}}>-voice commands: &apos;shuffle&apos;, &apos;restart&apos;, or &apos;exit&apos; &#128483;</p>
-                            </div>
-                        </div>
-                </div>
-                </div>}
+                    </div>
+                }
             </div>
         </div>
     )
