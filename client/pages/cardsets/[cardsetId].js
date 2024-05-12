@@ -282,6 +282,7 @@ export default function CardsetPage() {
                             </div> 
                             : null
                         }
+                        
                         <div className="row">
                             <h1 className="text-center">{cardset.title}</h1>
                         </div>

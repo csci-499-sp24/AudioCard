@@ -111,8 +111,8 @@ const Notification = ({ userId }) => {
                 <div className={styles.notificationContainer}>
                     <span className={styles.notificationText}>{`Your request for access to card set '${notification.cardset.title}' has been denied`}</span>
                     <div className={styles.buttonGroup}>
-                        <button onClick={() => deleteCardsetNotification(notification)} className={styles.acceptButton}>
-                            <i className="bi bi-check"></i>
+                        <button onClick={() => deleteCardsetNotification(notification)} className={styles.declineButton}>
+                            <i className="bi bi-x"></i>
                         </button>
                     </div>
                 </div>
