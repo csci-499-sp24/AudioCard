@@ -11,15 +11,15 @@ export const SearchOptions = ({ changeSearchTopic, searchTopic, onSortChange, so
     
   return (
     <div className='container'>
-        <div className='text-muted'> Search for </div>
+        <div className={isDarkMode ? "text-white" : "text-muted"}> Search for </div>
         <div className='row d-flex align-items-center'>
             <div className="col-sm-6 col-md-4 col-lg-10 mb-4">
                 <div className='d-flex'>
-                    <div className='d-flex form-inline col-lg-2'>
-                        {searchTopic ===  'card sets' ? <button type="button" className="btn btn-outline-dark active me-2" onClick={(e) => onClickTopic(e, 'users')}>Card Sets</button>
-                        : <button type="button" className="btn btn-outline-dark me-2 " onClick={(e) => onClickTopic(e, 'card sets')}>Card Sets</button>}
-                        {searchTopic ===  'users' ? <button type="button" className="btn btn-outline-dark active" onClick={(e) => onClickTopic(e, 'card sets')}>Users</button>
-                        : <button type="button" className="btn btn-outline-dark" onClick={(e) => onClickTopic(e, 'users')}>Users</button>}
+                    <div className='d-flex form-inline col-lg-2'> 
+                        {searchTopic ===  'card sets' ? <button type="button" className={isDarkMode ? "btn btn-outline-light active me-2" : "btn btn-outline-dark active me-2"} onClick={(e) => onClickTopic(e, 'users')}>Card Sets</button>
+                        : <button type="button" className={isDarkMode ? "btn btn-outline-light me-2" : "btn btn-outline-dark me-2"} onClick={(e) => onClickTopic(e, 'card sets')}>Card Sets</button>}
+                        {searchTopic ===  'users' ? <button type="button" className={isDarkMode ? "btn btn-outline-light active" : "btn btn-outline-dark active"} onClick={(e) => onClickTopic(e, 'card sets')}>Users</button>
+                        : <button type="button" className={isDarkMode ? "btn btn-outline-light" : "btn btn-outline-dark"} onClick={(e) => onClickTopic(e, 'users')}>Users</button>}
                     </div>
                 </div>
             </div>
