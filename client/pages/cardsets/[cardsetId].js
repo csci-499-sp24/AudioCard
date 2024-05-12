@@ -464,7 +464,8 @@ export default function CardsetPage() {
                             )}
                         </div>
                     </div>
-                    {showSharePopup || showDeletePopup && <div className="backdrop"></div>}
+                    {showSharePopup && <div className="backdrop"></div>}
+                    {showDeletePopup && <div className="backdrop"></div>}
                     <style jsx>{`
                     
                     .backdrop {
