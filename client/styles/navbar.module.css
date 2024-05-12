@@ -10,6 +10,10 @@
     color: black !important;
 }
 
+#exploreLink {
+    padding-left: 0;
+}
+
 #mobileExploreLink {
     display: none !important;
 }
