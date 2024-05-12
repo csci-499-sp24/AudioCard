@@ -287,17 +287,13 @@ export default function CardsetPage() {
                             <h1 className="text-center">{cardset.title}</h1>
                         </div>
 
-                        <div>
-                            <PrivateCardsetModal handleRequestAccess={handleRequestAccess} userId={userData?.id} cardsetId={cardsetId} access={access}/>
-                        </div>
-                        
-                        {/* {openModal  ? (
+                        {openModal  ? (
                                 <div>
                                     <PrivateCardsetModal handleRequestAccess={handleRequestAccess} userId={userData?.id} cardsetId={cardsetId} access={access}/>
                                 </div>
                         ) : (
                             null
-                        )} */}
+                        )}
 
                         {/* Main Flashcard  */}
                         {!access || loading ? (

@@ -61,17 +61,19 @@ export const PrivateCardsetModal = ({ handleRequestAccess, userId, cardsetId, ac
                             <div>The card set owner has been notified of your request</div>
                         }
 
-                        {isRequestPending && requestMade ? 
-                            <div>
-                                Request 
-                                <select className='mx-2' value={requestedAuthority} onChange={(e) => setRequestedAuthority(e.target.value)}>
-                                    <option value="read-only">Viewing</option>
-                                    <option value="edit">Editing</option>
-                                </select>
-                                access to this cardset {/*"{testCardsetData?.title}" from user "{Owner}"*/}
-                                <br/>
-                                <button type="button" className="btn btn-primary" onClick={handleSubmit}>Request Access</button>
+                        {!isRequestPending && !requestMade ? 
+
+                            <div class="form-group mb-3 row d-flex justify-content-center">
+                                <label className='col-sm-2 col-form-label'>Request</label> 
+                                <div class="col-sm-10 d-flex justify-content-begin align-items-center">
+                                    <select class="form-select" aria-label="Default select example"  value={requestedAuthority} onChange={(e) => setRequestedAuthority(e.target.value)}>
+                                        <option value="read-only">Viewing access</option>
+                                        <option value="edit">Editing access</option>
+                                    </select>
+
+                                </div>
                             </div>
+
                             : !requestMade ?
                                 <div className="alert alert-success" id={styles.boldInfo}>You already have a pending request</div>
                             : isRequestPending &&
@@ -80,6 +82,7 @@ export const PrivateCardsetModal = ({ handleRequestAccess, userId, cardsetId, ac
                     </div>
 
                     <div className="modal-footer d-flex justify-content-center">
+                        {!isRequestPending && !requestMade ? <button type="button" className="btn btn-secondary" onClick={handleSubmit}>Send Request</button> : null}
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => router.back()}>Return</button>
                     </div>
                 </div>
