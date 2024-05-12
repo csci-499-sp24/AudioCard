@@ -464,7 +464,7 @@ export default function CardsetPage() {
                             )}
                         </div>
                     </div>
-                    {showSharePopup && <div className="backdrop"></div>}
+                    {showSharePopup || showDeletePopup && <div className="backdrop"></div>}
                     <style jsx>{`
                     
                     .backdrop {
@@ -473,7 +473,7 @@ export default function CardsetPage() {
                         left: 0;
                         width: 100%;
                         height: 100%;
-                        background-color: rgba(0, 0, 0, 0.5);
+                        background-color: rgba(0, 0, 0, 0.4);
                         backdrop-filter: blur(5px);
                         z-index: 999;
                     }
@@ -482,7 +482,6 @@ export default function CardsetPage() {
                     .modal-content {
                         padding: 20px;
                         border-radius: 10px;
-                        box-shadow: ${isDarkMode ? '0 0 10px rgba(255, 255, 255, 0.5)' : '0 0 10px rgba(0, 0, 0, 0.3)'};
                         position: fixed;
                         top: 50%;
                         left: 50%;
