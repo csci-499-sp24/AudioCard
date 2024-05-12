@@ -21,3 +21,12 @@
     color: black;
     padding: 20px;
 }
+
+#lock {
+    font-size: 25px;
+    margin-right: 5px;
+}
+
+#boldInfo {
+    font-weight: bold;
+}

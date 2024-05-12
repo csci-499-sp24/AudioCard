@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import modalStyles from '@/styles/requestModal.module.css';
+import styles from '@/styles/requestModal.module.css';
 import axios from 'axios';
 import { useDarkMode } from '@/utils/darkModeContext';
 
@@ -44,10 +44,11 @@ export const PrivateCardsetModal = ({ handleRequestAccess, userId, cardsetId, ac
     };
 
     return (
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div className="modal-dialog" id={`${isDarkMode ? modalStyles.RequestModalDarkContainer : modalStyles.RequestModalLightContainer}`}>
-                <div className="modal-content text-center" id={`${isDarkMode ? modalStyles.RequestModalDark : modalStyles.RequestModalLight}`}>
-                    <div className="">
+        <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div className="modal-dialog" id={`${isDarkMode ? styles.RequestModalDarkContainer : styles.RequestModalLightContainer}`}>
+                <div className="modal-content text-center" id={`${isDarkMode ? styles.RequestModalDark : styles.RequestModalLight}`}>
+                    <div className="d-flex justify-content-center align-items-center">
+                        <span className="bi bi-lock" id={styles.lock} title="restricted"></span>
                         <h1 className="modal-title fs-3" id="staticBackdropLabel">Private Card set</h1>
                     </div>
 
@@ -60,7 +61,7 @@ export const PrivateCardsetModal = ({ handleRequestAccess, userId, cardsetId, ac
                             <div>The card set owner has been notified of your request</div>
                         }
 
-                        {!isRequestPending && !requestMade ? 
+                        {isRequestPending && requestMade ? 
                             <div>
                                 Request 
                                 <select className='mx-2' value={requestedAuthority} onChange={(e) => setRequestedAuthority(e.target.value)}>
@@ -72,9 +73,9 @@ export const PrivateCardsetModal = ({ handleRequestAccess, userId, cardsetId, ac
                                 <button type="button" className="btn btn-primary" onClick={handleSubmit}>Request Access</button>
                             </div>
                             : !requestMade ?
-                                <div>You already have a pending request</div>
+                                <div className="alert alert-success" id={styles.boldInfo}>You already have a pending request</div>
                             : isRequestPending &&
-                                <div>You already have a pending request</div>
+                                <div className="alert alert-success" id={styles.boldInfo}>You already have a pending request</div>
                         }
                     </div>
 
