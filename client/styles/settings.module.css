@@ -31,6 +31,10 @@
     text-decoration: none;
 }
 
+#linkBtnDark:hover  {
+    color: black;
+}
+
 .wrapper {
     color: #333;
     /* Dark text color for contrast */

@@ -172,7 +172,8 @@ const Settings = () => {
                                                 onChange={handleFileChange}
                                                 style={{ display: 'none' }}
                                             />
-                                            <button onClick={handleAvatarChangeClick} className="btn btn-outline-dark" id={styles.buttonRightAction}>
+                                            <button onClick={handleAvatarChangeClick} className={`${isDarkMode ? "btn btn-outline-light" : "btn btn-outline-dark"}`}
+                                            id={styles.buttonRightAction}>
                                                 Change Profile Picture
                                             </button>
                                         </div>
@@ -185,7 +186,7 @@ const Settings = () => {
                                     <label class="col-sm-2 col-form-label">Password</label>
                                     <div class="col-sm-10">
                                         <div>
-                                            <button className="btn btn-outline-dark">
+                                            <button className={`${isDarkMode ? "btn btn-outline-light" : "btn btn-outline-dark"}`}>
                                                 <Link href="/update-password" id={`${isDarkMode ? styles.linkBtnDark : styles.linkBtnLight}`}>
                                                     Change Password
                                                 </Link>    
@@ -200,7 +201,7 @@ const Settings = () => {
                                     <label class="col-sm-2 col-form-label">Username</label>
                                     <div class="col-sm-10">
                                         <div>
-                                            <button className="btn btn-outline-dark">   
+                                            <button className={`${isDarkMode ? "btn btn-outline-light" : "btn btn-outline-dark"}`}>   
                                                 <Link href="/update-username" id={`${isDarkMode ? styles.linkBtnDark : styles.linkBtnLight}`}>
                                                     Change Username
                                                 </Link>
@@ -221,7 +222,7 @@ const Settings = () => {
                                             ))}
                                         </select>
 
-                                        <button className="btn btn-outline-dark" id={styles.buttonRightAction} onClick={updatePreferredLanguage}>
+                                        <button className={`${isDarkMode ? "btn btn-outline-light" : "btn btn-outline-dark"}`} id={styles.buttonRightAction} onClick={updatePreferredLanguage}>
                                             Change Language
                                         </button>
                                     </div>
