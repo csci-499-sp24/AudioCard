@@ -72,7 +72,7 @@ export default function CardsetPage() {
     useEffect(() => {
         fetchFlashCards();
         checkaccess();
-        checkFriendship();
+        //checkFriendship();
         checkIfRequested();
     }, [userData]);
 
@@ -182,7 +182,7 @@ export default function CardsetPage() {
             if (!ispublic) {
                 setAccess(false)
             }
-            if (id == userData.id) {
+            if (id == userData.id) { //Check if current user owns the cardset
                 setAccess(true);
                 setadmin(true);
                 setCanEdit(true);
@@ -194,8 +194,10 @@ export default function CardsetPage() {
                     const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/shared/${userData.id}/cardsets/${cardsetId}/shared`);
                     // Handle successful response
                     if(response.data[0] === undefined){
+                        checkFriendship();
                         setOpenModal(true);
                     }
+                    //Shared card set entry does exist, user has access.
                     const role = response.data[0].authority;
 
                     setAccess(true)
