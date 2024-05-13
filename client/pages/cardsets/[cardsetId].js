@@ -380,9 +380,10 @@ export default function CardsetPage() {
                                         </div>
                                     </>
                                 )
-                                : access && !loading && !isRequestPending ?
+                                : access && !loading ? 
                                 /*User has read only access, provide a request editor access button*/
                                 (
+                                    !isRequestPending ? (
                                     <>
                                         <div>
                                             <div className='col d-flex justify-content-start my-2'>
@@ -391,9 +392,18 @@ export default function CardsetPage() {
                                                 </div>
                                             </div>
                                         </div>
-                                    </>
+                                    </> ) : 
+                                    (
+                                        <div>
+                                            <div className='col d-flex justify-content-start my-2'>
+                                                <div className="d-flex align-items-center">
+                                                <button className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-dark'}`} disabled={true}>Pending Edit Request</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
                                 )
-                                : null
+                                : null 
                                 }
 
                                 {/* Delete message */}
