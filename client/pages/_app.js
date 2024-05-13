@@ -23,7 +23,7 @@ function AppContent({ Component, pageProps }) {
 
   useEffect(() => {
       const timer = setTimeout(() => {
-        if (!user && !router.pathname.startsWith('/cardset/') && router.pathname !== '/login' && router.pathname !== '/signup' && router.pathname !== '/welcome') {
+        if (!user && !router.pathname.startsWith('/cardsets/') && router.pathname !== '/login' && router.pathname !== '/signup' && router.pathname !== '/welcome') {
           router.push('/welcome');
         }
         setLoading(false);
