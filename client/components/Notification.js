@@ -193,7 +193,7 @@ const Notification = ({ userId }) => {
     }
 
     return (
-        <div style={{ padding: '5px' }}>
+        <div style={{ padding: '5px' , position: 'relative'}}>
             <div className={styles.bellWrapper} onClick={toggleNotification}>
                 <i className={`bi bi-bell ${styles.bellIcon}`}></i>
                 {notifications.length > 0 && (
