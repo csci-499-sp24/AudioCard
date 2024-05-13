@@ -247,7 +247,7 @@ export const EditView = ({ cardset, userId, cardsetId, cardsetTitle, cardsetSubj
                             <>
                             <div className='col'>
                                 <h2>Set Name: {newTitle} </h2>
-                                <h2>Subject: {newSubject} </h2>
+                                <h2 className='d-flex'>Subject: <div style={{ color: txtColor, marginInlineStart: '6px'}}>{newSubject}</div></h2>
                                 <h2>Language: {newLanguage} </h2>
 
                             </div>
