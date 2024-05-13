@@ -22,6 +22,7 @@ const LandingPage = () => {
     const { isDarkMode, toggleDarkMode } = useDarkMode();
     const [cardset, setCardset] = useState(null); // Use null as initial state
     const [showCardset, setShowCardset] = useState(false); // State to control cardset visibility
+    const [cardsetLanguage, setCardsetLanguage] = useState('English (US)'); 
 
     const handleLogin = () => {
         router.push('/login');
@@ -79,7 +80,7 @@ const LandingPage = () => {
                                 
                                 {/* Rotating and dummy cards */}
                                 { showCardset && cardset ? (
-                                    <ASRTestModeLandingPage cardData={cardset}/>
+                                    <ASRTestModeLandingPage cardData={cardset} cardsetLanguage={cardsetLanguage}/>
                                 ) : (
                                     <div className='d-flex justify-content-center'>
                                         <button id={styles.dummyCardButton} onClick={handleTryItOut}>
