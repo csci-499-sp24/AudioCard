@@ -5,8 +5,9 @@ import { useRouter } from 'next/router';
 import { useDarkMode } from '../utils/darkModeContext';
 import { TermCard } from '../components/Cards/TermCard';
 import { getSubjectStyle } from '@/utils/getSubjectStyles';
-import styles from '../styles/navbar.module.css'; 
-import style from '../styles/explore.module.css'; 
+import styles from '../styles/navbar.module.css';
+import style from '../styles/explore.module.css';
+import Link from 'next/link';
 
 export const CardsetView = ({ cardset }) => {
     const { isDarkMode } = useDarkMode();
@@ -14,7 +15,7 @@ export const CardsetView = ({ cardset }) => {
     const firebaseId = auth.currentUser?.uid;
     const [userData, setUserData] = useState(null);
     const [copyCreated, setCopyCreated] = useState(false);
-    const [userAvatar, setUserAvatar] = useState(''); 
+    const [userAvatar, setUserAvatar] = useState('');
     const [txtColor, setTxtColor] = useState('');
     const router = useRouter();
 
@@ -23,7 +24,7 @@ export const CardsetView = ({ cardset }) => {
     }, [firebaseId]);
 
     useEffect(() => {
-        fetchuserAvatar(cardset.user?.username); 
+        fetchuserAvatar(cardset.user?.username);
     }, [cardset]);
 
     useEffect(() => {
@@ -69,7 +70,7 @@ export const CardsetView = ({ cardset }) => {
             const newSetData = {
                 title: cardset.title,
                 subject: cardset.subject,
-                language: cardset.language, 
+                language: cardset.language,
                 isPublic: false,
                 isFriendsOnly: false
             };
@@ -114,24 +115,26 @@ export const CardsetView = ({ cardset }) => {
             <div className='row'>
                 <div className='col'>
                     <div className="cardsetTitleContainer">
-                        <h3>Flashcard Set: {cardset.title}</h3>
+                        <Link href={`/cardsets/${cardset.id}`}>
+                            <h3>Flashcard Set: {cardset.title}</h3>
+                        </Link>
                         <div> Subject:  <span style={{ color: `${txtColor}` }}>{cardset.subject}</span> </div>
                         <div> Language: {cardset.language}</div>
                         <div> Flashcards: {cardset.flashcardCount} </div>
                         <div className='mb-2'>Created by:
                             <span
-                                style={{cursor: 'pointer', marginLeft: '3px', color: isDarkMode ? '#137eff' : 'blue'}}
+                                style={{ cursor: 'pointer', marginLeft: '3px', color: isDarkMode ? '#137eff' : 'blue' }}
                                 onClick={() => navigateToUserProfile(cardset.user?.id)}
                             >
                                 {cardset.user?.username}
-                                <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} style={{borderColor: 'white', marginLeft: '5px'}} />
+                                <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} style={{ borderColor: 'white', marginLeft: '5px' }} />
                             </span>
                         </div>
                     </div>
                 </div>
                 <div className='col d-flex justify-content-end align-items-center'>
                     <button id={`${isDarkMode ? style.copyBtnDark : style.copyBtnLight}`}
-                    className="btn btn-secondary copybutton" onClick={() => makeCopy()} disabled={copyCreated}>
+                        className="btn btn-secondary copybutton" onClick={() => makeCopy()} disabled={copyCreated}>
                         {copyCreated ? "Copy created" : "Make a copy"} </button>
                 </div>
             </div>
