@@ -43,7 +43,6 @@ const UpdateUsername = ({username}) => {
         try {
             await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/changeUsername`, { updatedUsername, firebaseId });
             alert('Username updated successfully');
-            router.push('/settings');
         }
         catch(e) {
             console.log('Error updating username', e);
@@ -54,7 +53,9 @@ const UpdateUsername = ({username}) => {
         } catch (e) {
             console.log('Error updating user avatar, its possible user avatar does not exist.'); 
         }
-        
+
+        router.push('/settings');
+    
     };
 
     return (
