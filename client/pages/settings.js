@@ -180,20 +180,6 @@ const Settings = () => {
                                     </div>
                                 </div>
 
-                                <hr/>
-
-                                <div class="form-group row mt-3" >
-                                    <label class="col-sm-2 col-form-label">Password</label>
-                                    <div class="col-sm-10">
-                                        <div>
-                                            <button className={`${isDarkMode ? "btn btn-outline-light" : "btn btn-outline-dark"}`}>
-                                                <Link href="/update-password" id={`${isDarkMode ? styles.linkBtnDark : styles.linkBtnLight}`}>
-                                                    Change Password
-                                                </Link>    
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <hr/>
 
@@ -205,6 +191,21 @@ const Settings = () => {
                                                 <Link href="/update-username" id={`${isDarkMode ? styles.linkBtnDark : styles.linkBtnLight}`}>
                                                     Change Username
                                                 </Link>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr/>
+
+                                <div class="form-group row mt-3" >
+                                    <label class="col-sm-2 col-form-label">Password</label>
+                                    <div class="col-sm-10">
+                                        <div>
+                                            <button className={`${isDarkMode ? "btn btn-outline-light" : "btn btn-outline-dark"}`}>
+                                                <Link href="/update-password" id={`${isDarkMode ? styles.linkBtnDark : styles.linkBtnLight}`}>
+                                                    Change Password
+                                                </Link>    
                                             </button>
                                         </div>
                                     </div>
