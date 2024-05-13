@@ -118,20 +118,20 @@ const Navbar = ({ userId }) => {
                                 id={styles.isDropdownOpen} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
                                 <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} style={{borderColor: isDarkMode ? 'white': 'black'}}/>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
+                            <ul class="dropdown-menu dropdown-menu-end" style={{backgroundColor: isDarkMode? '#252526': 'white'}}>
                                 <li>
-                                    <Link href={`/profile/${userId}`} class="dropdown-item">
+                                    <Link href={`/profile/${userId}`} class="dropdown-item" style={{color: isDarkMode? 'white': 'black'}}>
                                         Profile
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/settings" class="dropdown-item">
+                                    <Link href="/settings" class="dropdown-item"  style={{color: isDarkMode? 'white': 'black'}}>
                                         Settings
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/login" class="dropdown-item"
-                                        onClick={() => { auth.signOut(); router.push('/login'); }}
+                                    <Link href="/login" class="dropdown-item"  style={{color: isDarkMode? 'white': 'black'}}
+                                        onClick={() => { auth.signOut(); router.push('/welcome'); }}
                                     >
                                         Logout
                                     </Link>
