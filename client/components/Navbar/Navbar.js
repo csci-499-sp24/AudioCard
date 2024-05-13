@@ -112,28 +112,31 @@ const Navbar = ({ userId }) => {
                             </button>
                         </li>
 
-                        <li className="nav-item">
-                            <button className={isDarkMode ? 'nav-link text-white' : 'nav-link text-dark'} id={styles.navLink} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                        <li class="nav-item dropdown">
+                            <a className={isDarkMode ? 'nav-link text-white nav-link dropdown-toggle' : 'nav-link text-dark nav-link dropdown-toggle'}
+                                href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                id={styles.isDropdownOpen} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
                                 <img src={userAvatar} onError={setDefaultAvatar} alt="User Avatar" className={styles.navUserAvatar} style={{borderColor: isDarkMode ? 'white': 'black'}}/>
-                            </button>
-
-                            <div ref={dropdownRef}>
-                                {isDropdownOpen && (
-                                    <div className={styles.dropdownMenu} style={{ backgroundColor: isDarkMode ? '#252526' : 'white' }}>
-                                        <Link href={`/profile/${userId}`} className={isDarkMode ? styles.darkDropdownItem : styles.dropdownItem}>
-                                            Profile
-                                        </Link>
-                                        <Link href="/settings" className={isDarkMode ? styles.darkDropdownItem : styles.dropdownItem}>
-                                            Settings
-                                        </Link>
-                                        <Link href="/login" className={isDarkMode ? styles.darkDropdownItem : styles.dropdownItem}
-                                            onClick={() => { auth.signOut(); router.push('/login'); }}
-                                        >
-                                            Logout
-                                        </Link>
-                                    </div>
-                                )}
-                            </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <Link href={`/profile/${userId}`} class="dropdown-item">
+                                        Profile
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/settings" class="dropdown-item">
+                                        Settings
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/login" class="dropdown-item"
+                                        onClick={() => { auth.signOut(); router.push('/login'); }}
+                                    >
+                                        Logout
+                                    </Link>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
