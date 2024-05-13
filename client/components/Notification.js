@@ -10,11 +10,11 @@ const Notification = ({ userId }) => {
     const { isDarkMode } = useDarkMode();
 
     const notificationRef = useRef(null);
-    const toggleNotification = () => {
-        fetchNotifications();
-        setIsNotificationOpen(!isNotificationOpen);
-    }
 
+    const toggleNotification = () => {
+        setIsNotificationOpen(!isNotificationOpen); 
+        fetchNotifications(); 
+    }
     useEffect(() => {
         if (userId) {
             fetchNotifications();
@@ -23,10 +23,11 @@ const Notification = ({ userId }) => {
     
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+            const bellIcon = document.querySelector(`.${styles.bellIcon}`);
+            if (!notificationRef.current.contains(event.target) && event.target !== bellIcon) {
                 setIsNotificationOpen(false);
             }
-        };
+        }
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
@@ -118,7 +119,9 @@ const Notification = ({ userId }) => {
                 </div>
                 : notification.type === 'request' ? 
                 <div className={styles.notificationContainer}>
-                    <span className={styles.notificationText}>{`User ${notification.sender.username} has requested ${notification.authority} access to card set '${notification.cardset.title}'`}</span>
+                <span className={styles.notificationText}>
+                    <strong>{notification.sender.username}</strong> has requested {notification.authority} access to card set '{notification.cardset.title}'
+                </span>
                     <div className={styles.buttonGroup}>
                         <button onClick={() => acceptCardsetRequest(notification)} className={styles.acceptButton}>
                             <i className="bi bi-check"></i>
@@ -149,7 +152,7 @@ const Notification = ({ userId }) => {
                 {
                 notification.type === 'pending' ?     
                 <div className={styles.notificationContainer}>
-                    <span className={styles.notificationText}>{`${notification.sender.username} wants to be your friend`}</span>
+                    <span className={styles.notificationText}><strong>{notification.sender.username}</strong> wants to be your friend</span>
                     <div className={styles.buttonGroup}>
                         <button onClick={() => acceptFriendRequest(notification.sender.id)} className={styles.acceptButton}>
                             <i className="bi bi-check"></i>
@@ -161,7 +164,7 @@ const Notification = ({ userId }) => {
                 </div>
                 : notification.type === 'confirmed' ?
                 <div className={styles.notificationContainer}>
-                    <span className={styles.notificationText}>{`${notification.sender.username} has accepted your friend request`}</span>
+                    <span className={styles.notificationText}><strong>{notification.sender.username}</strong> accepted your friend request</span>
                     <div className={styles.buttonGroup}>
                         <button onClick={() => deleteFriendNotification(notification.id)} className={styles.acceptButton}>
                             <i className="bi bi-x"></i>
@@ -170,7 +173,7 @@ const Notification = ({ userId }) => {
                 </div>
                 : notification.type === 'denied' ?
                 <div className={styles.notificationContainer}>
-                    <span className={styles.notificationText}>{`${notification.sender.username} has declined your friend request`}</span>
+                    <span className={styles.notificationText}><strong>{notification.sender.username}</strong> declined your friend request</span>
                     <div className={styles.buttonGroup}>
                         <button onClick={() => deleteFriendNotification(notification.id)} className={styles.acceptButton}>
                             <i className="bi bi-x"></i>
@@ -180,7 +183,7 @@ const Notification = ({ userId }) => {
                 </div>
                 : notification.type === 'unfriended' &&
                 <div className={styles.notificationContainer}>
-                    <span className={styles.notificationText}>{`${notification.sender.username} has unfriended you`}</span>
+                    <span className={styles.notificationText}><strong>{notification.sender.username}</strong> has unfriended you</span>
                     <div className={styles.buttonGroup}>
                         <button onClick={() => deleteFriendNotification(notification.id)} className={styles.acceptButton}>
                             <i className="bi bi-x"></i>
