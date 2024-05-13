@@ -120,7 +120,7 @@ const Notification = ({ userId }) => {
                 : notification.type === 'request' ? 
                 <div className={styles.notificationContainer}>
                 <span className={styles.notificationText}>
-                    <strong>{notification.sender.username}</strong> has requested {notification.authority} access to card set '{notification.cardset.title}'
+                    <strong>{notification.sender.username}</strong> has requested {notification.authority} access to card set &apos;{notification.cardset.title}&apos;
                 </span>
                     <div className={styles.buttonGroup}>
                         <button onClick={() => acceptCardsetRequest(notification)} className={styles.acceptButton}>
