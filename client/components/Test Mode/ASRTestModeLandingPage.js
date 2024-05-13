@@ -9,7 +9,7 @@ import TimerComponentLanding from './timerComponentLanding';
 import { getTranslation } from '@/utils/translations';
 import { getLanguageCode } from '@/utils/languageCodes';
 
-export const ASRTestModeLandingPage = ({ cardData }) => {
+export const ASRTestModeLandingPage = ({ cardData, cardsetLanguage }) => {
     const {isDarkMode} = useDarkMode();
     const [index, setIndex] = useState(0);
     const [flashcards, setFlashcards] = useState([]);
@@ -28,7 +28,7 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
     const mounted = useRef(false);
     const [timeLimit, setTimeLimit] = useState(7);
     const [voiceGender, setVoiceGender] = useState('NEUTRAL');
-    const [language, setLanguage] = useState(getLanguageCode(cardData.language));
+    const [language, setLanguage] = useState(getLanguageCode(cardsetLanguage));
     const [ringSize, setRingSize] = useState('scaleDown');
     const [micBorder, setMicBorder] = useState('');
     const [phrases, setPhrases] = useState(
@@ -59,6 +59,7 @@ export const ASRTestModeLandingPage = ({ cardData }) => {
       }, []);
     
     useEffect (() => {
+        console.log("Language here: ", language)
         if (language !== 'en-US' && language !== 'en-GB'){
             setPhrases({
                 tryAgain: getTranslation('Try again.', language),
