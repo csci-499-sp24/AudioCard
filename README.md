@@ -1,7 +1,7 @@
 # AudioCard
 
 ##Overview: 
-AudioCard is an audio-based flashcard app that uses automated speech recognition to test its users. It is currently deployed [here](https://audiocard-client-9rn8.onrender.com/welcome) 
+AudioCard is an audio-based flashcard app that uses automated speech recognition to test its users, creating a hands-free learning experience. It is currently deployed [here](https://audiocard-client-9rn8.onrender.com/welcome) 
 
 ##Features: 
 
@@ -16,3 +16,9 @@ Add friends, visit their profile page, see their friends-only cardsets. Share yo
 
 ###Explore: 
 Visit the explore page to search through all public cardsets and users. Make a private copy of any cardset you find. 
+
+###Test Mode: 
+Test your knowledge of cardsets, either in Type Mode or Speak Mode. Set time limits and attempts. Use voice commands, change the gender, language, and speaking rate in Speak Mode. 
+
+###Review Mode: 
+Have your cardset played to you using our Text to Speech capabilities. Enable voice commands, change the gender, language, and speaking rate in Speak Mode. 
